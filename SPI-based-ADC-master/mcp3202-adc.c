@@ -33,7 +33,13 @@ int readAdc(spiData *data){
 	}
 	data->tx[2] = DNT_CARE_BYTE;
 
+	expander_t *exp = expander_init(0x27);
+	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+	expander_resetOnlyPinSetOthersGPIO(exp, 4);
+	
 	spiTransfer(data);
+
+	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 	printf("The analog input value is \n");
 	reData = (((data->rx[1] << 8) + data->rx[2]) & MSBF_MASK);
