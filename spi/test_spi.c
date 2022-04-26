@@ -93,7 +93,7 @@ int main(){
     bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_65536); // The default
     
 	//digitalWrite(0, LOW);
-	bcm2835_spi_transfernb(data, rx, 1);
+	bcm2835_spi_transfernb(data, rx, 2);
 	digitalWrite(0, HIGH);
 
 
