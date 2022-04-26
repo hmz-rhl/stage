@@ -5,7 +5,6 @@
  * @date 24/04/2022
  * 
  * 
- * 
  **/
 
 
@@ -221,6 +220,11 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
+        if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin selectionne non compris entre 0 et 7\n", __func__);
+        exit(EXIT_FAILURE);
+    }
 
     uint8_t ret = expander_getAllPinsGPIO(exp);
 
@@ -245,10 +249,10 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-    if(pin > 7 || pin < 0){
-
-        printf("pin doit etre entre 0 et 7\n");
-        close(exp->fd);
+    
+    if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
     uint8_t ancienGPIO = expander_getAllPinsGPIO(exp);
@@ -290,12 +294,12 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
         exit(EXIT_FAILURE);
     }
 
-    if(pin > 7 || pin < 0){
-
-        printf("pin doit etre entre 0 et 7\n");
-        close(exp->fd);
+    if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
+
     uint8_t ancienGPIO = expander_getAllPinsGPIO(exp);
     uint8_t nouveauGPIO = ancienGPIO & ~(0x01 << pin);
 
@@ -307,7 +311,7 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     exp->buff[1] = nouveauGPIO;
 
 
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    printf("__Ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
@@ -335,6 +339,12 @@ void
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exit(EXIT_FAILURE);
+    }
+
+    if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -429,6 +439,11 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         exit(EXIT_FAILURE);
     }
     
+    if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
+        exit(EXIT_FAILURE);
+    }
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x01 << pin;
 
@@ -459,6 +474,12 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
+
+    if(pin > 7 || pin < 0)
+    {
+        printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
+        exit(EXIT_FAILURE);
+    }
     
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = ~(0x01 << pin);
@@ -473,6 +494,26 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
 }
 
 
+void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
+
+        
+    if(exp == NULL || exp == 0)
+    {
+        printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exit(EXIT_FAILURE);
+    }
+    
+    exp->buff[0] = REG_OLAT;
+    exp->buff[1] = config;
+
+    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur OLAT\r\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("mise a %02x du GPIO\n", config);
+}
 
 /**
  * 

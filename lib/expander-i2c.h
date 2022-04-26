@@ -12,6 +12,8 @@
 #include <linux/i2c-dev.h>
 #include <stdarg.h>
 
+#define VERSION         "0.9"
+
 
 
 #define I2C_DEVICE          "/dev/i2c-1"
@@ -68,6 +70,8 @@ void expander_togglePinGPIO(expander_t*, uint8_t);
 
 void expander_setAllPinsGPIO(expander_t*);
 void expander_resetAllPinsGPIO(expander_t*);
+
+void expander_setAndResetSomePinsGPIO(expander_t*, uint8_t);
 
 
 void expander_printGPIO(expander_t*);
