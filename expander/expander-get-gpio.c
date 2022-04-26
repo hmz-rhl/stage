@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
      
     if(addr > 27 || addr < 20){
 
-        printf("fonction %s : addresse doit etre entre 20 et 27\n");
+        printf("fonction %s : addresse doit etre entre 20 et 27\n", __func__);
         exit(EXIT_FAILURE);
     }
     
