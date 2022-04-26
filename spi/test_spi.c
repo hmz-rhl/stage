@@ -1,7 +1,7 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
-#include "expander-i2c.h"
+#include "../lib/expander-i2c.h"
 #include "../lib/bcm2835.h"
 
 #include <stdio.h>
