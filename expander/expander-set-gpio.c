@@ -53,16 +53,16 @@ int main(int argc, char* argv[]) {
 
 
     if(argc != 10){
-        printf("Usage: ./set_expander1_gpio <addr> <GPIO 7> ... <GPIO 0> \n");
-        printf("exemple: ./set_expander1_gpio 26 0 1 0 1 0 1 1 1\n");
+        printf("Usage:   ./expander-get-gpio <addr> <GPIO 7> ... <GPIO 0> \n");
+        printf("exemple: ./expander-get-gpio 26 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
     if(argc == 2 && (!strcmp(argv[1],"-h") || !strcmp(argv[1],"--help"))){
-        printf("Usage: ./set_expander1_gpio -h, --help affiche ce message d'aide \n");
-        printf("       ./set_expander1_gpio <GPIO 7> ... <GPIO 0> \n");
+        printf("Usage: ./expander-get-gpio -h, --help affiche ce message d'aide \n");
+        printf("       ./expander-get-gpio <GPIO 7> ... <GPIO 0> \n");
 
-        printf("exemple: ./set_expander1_gpio 0 1 0 1 0 1 1 1\n");
+        printf("exemple: ./expander-get-gpio 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
