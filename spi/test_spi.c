@@ -73,7 +73,7 @@ int main(){
 	delay(2);
 	digitalWrite(0, HIGH);
 	delay (250);
-	uint8_t data, rx;
+	uint8_t data[] = "hamza", rx[10];
 	data = STATUS_READ;
 
 
@@ -92,13 +92,13 @@ int main(){
     bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
     bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_65536); // The default
     
-	digitalWrite(0, LOW);
-	bcm2835_spi_transfernb(&data, &rx, 1);
+	//digitalWrite(0, LOW);
+	bcm2835_spi_transfernb(data, rx, 1);
 	digitalWrite(0, HIGH);
 
 
 
-	printf("status %d \n", rx);
+	printf("status %s \n", rx);
     bcm2835_close();
 
 
