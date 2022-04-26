@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     uint8_t addr = 0x00;
     for (int i = 0; i < 2; i++)
     {
-        addr += pow(10,i)*(atoi(argv[1][2-i]));
+        addr += pow(10,i)*(atoi(argv[1]));
     }
      
     if(addr > 27 || addr < 20){
