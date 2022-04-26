@@ -27,7 +27,6 @@
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
 
-#include "../lib/expander-i2c.h"
 
 #include "spi-dev-lib.h"
 
@@ -110,14 +109,10 @@ int spiTransfer(spiData *data){
 	};
 	
 	/* Send data */
-	expander_t exp = expander_init(0x27);
 
-	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-	expander_resetOnlyPinSetOthersGPIO(exp, 4);
 
 	ret = ioctl(data->fileDescriptor, SPI_IOC_MESSAGE(1), &tr);
-
-	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	
 	
 	
 	return ret;
