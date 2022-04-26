@@ -21,6 +21,12 @@
 #define I2C_DEVICE          "/dev/i2c-1"
 #define MCP23008_ADDR       (0x26)
 
+/**
+ * 
+ * a corgier le dynamisme de l'adresse
+ * 
+ **/
+
 
 // registers
 #define REG_IODIR   0x00   //!< I/O direction register
@@ -35,6 +41,7 @@
 #define REG_GPIO    0x09   //!< Port register
 #define REG_OLAT    0x0A   //!< Output latch register
 
+#define VERSION "1.1"
 
 int fd;
 int ret;
@@ -45,9 +52,9 @@ uint8_t buff[4];
 int main(int argc, char* argv[]) {
 
 
-    if(argc != 9){
-        printf("Usage: ./set_expander1_gpio <GPIO 7> ... <GPIO 0> \n");
-        printf("exemple: ./set_expander1_gpio 0 1 0 1 0 1 1 1\n");
+    if(argc != 10){
+        printf("Usage: ./set_expander1_gpio <addr> <GPIO 7> ... <GPIO 0> \n");
+        printf("exemple: ./set_expander1_gpio 26 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
@@ -56,6 +63,13 @@ int main(int argc, char* argv[]) {
         printf("       ./set_expander1_gpio <GPIO 7> ... <GPIO 0> \n");
 
         printf("exemple: ./set_expander1_gpio 0 1 0 1 0 1 1 1\n");
+        exit(EXIT_FAILURE);
+
+    }
+    if(argc == 2 && (!strcmp(argv[1],"-v") || !strcmp(argv[1],"--version"))){
+        
+        printf("version : %s\n", VERSION);
+        putchar('\n');
         exit(EXIT_FAILURE);
 
     }
@@ -73,7 +87,7 @@ int main(int argc, char* argv[]) {
  * Setting de l'address esclave de l'interface I2C de la RPZ
  **/
     if(ioctl(fd,I2C_SLAVE,MCP23008_ADDR) < 0) {
-        printf("probleme de setting du l'address l'interface I2C de la RPZ ...\n");
+        printf("probleme de setting du l'addresse l'interface I2C de la RPZ ...\n");
         exit(EXIT_FAILURE);
     }
 
