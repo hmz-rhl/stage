@@ -7,6 +7,9 @@
 #include "spi-dev-lib.h"
 #include "mcp3202-adc.h"
 
+#include "../lib/expander-i2c.h"
+
+
 /******************************************************************************/
 int readAdc(spiData *data){
 	uint8_t tx[] = {0};
@@ -36,7 +39,7 @@ int readAdc(spiData *data){
 	expander_t *exp = expander_init(0x27);
 	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 	expander_resetOnlyPinSetOthersGPIO(exp, 4);
-	
+
 	spiTransfer(data);
 
 	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
