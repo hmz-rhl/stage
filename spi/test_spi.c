@@ -74,7 +74,7 @@ int main(){
 	digitalWrite(0, HIGH);
 	delay (250);
 	uint8_t data[] = "hamza", rx[10];
-	data = STATUS_READ;
+	//data = STATUS_READ;
 
 
 	if (!bcm2835_init())
