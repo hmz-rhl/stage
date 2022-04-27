@@ -173,8 +173,8 @@ uint16_t ADE9078_getVersion(){
 
   addr = addr << 4;
 
-  tx[0] = (uint8_t)addr >> 8;
-  tx[1] = (uint8_t)(addr & 0x00FF) | 0x8;
+  tx[0] = 0x4F;
+  tx[1] = 0xE8;
   // tx[2] = 0x00;
   // tx[3] = 0x00;
   // tx[4] = 0x00;
