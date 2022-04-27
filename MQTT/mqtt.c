@@ -49,7 +49,7 @@ struct mosquitto* init_mqtt()
  **/
 int test_topic(char *topic)
 {
-    for(int cpt = 0; cpt < 23; cpt++)
+    for(int cpt = 0; cpt < 25; cpt++)
     {
         if(strcmp(topic, tab_topics[cpt])==0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
         {
