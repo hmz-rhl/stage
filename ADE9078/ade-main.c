@@ -26,6 +26,10 @@
 
 #define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
+#define PM0             7     // Pin pour controler le mode de calcul de l'ADE
+
+#define PM1             6     // Pin pour controler le mode de calcul de l'ADE
+
 static void pabort(const char *s)
 {
         perror(s);
@@ -140,26 +144,41 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
 }
 
 
-  uint16_t ADE9078_getVersion(expander_t *EXPANDER_2 /*exp*/){
+uint16_t ADE9078_getVersion(expander_t *exp ){
 
+  uint8_t configAvant expander_getAllPinsGPIO(exp);
+  // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
+  expander_setPinGPIO(exp, PM_CS);
 
-    // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
-    expander_setPinGPIO(EXPANDER_2, PM_CS);
+  // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
+  expander_resetPinGPIO(exp, PM0);
+  expander_resetPinGPIO(exp, PM1);
 
-    spiData data;
+  sleep(1);
 
-    data.mode = 3;                     
-	  data.bits = 8;                   
-	  data.speed = 2000000;           
-	  data.delay = 0;
+  expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  spiData data;
 
-    // on mets le cs a 0 de l'ade pour initier la comm SPI 
-    expander_resetOnlyPinSetOthersGPIO(EXPANDER_2, PM_CS);
+  data.mode = 3;                     
+  data.bits = 8;                   
+  data.speed = 2000000;           
+  data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
+  data.tx[0] = 0x4F;
+  data.tx[1] = 0xE8;
+  data.tx[2] = 0x00;
+  data.tx[3] = 0x00;
+  // on mets le cs a 0 de l'ade pour initier la comm SPI 
+  sleep(1);
+
+  spiTransfer(&data);
+
+  expander_setAndResetSomePinsGPIO(exp, configAvant);
+  printf("version = 0x%X %X\n",data[1], data[0]);
 
     
 
 
-	  return ADE9078_spiRead16(VERSION_16, EXPANDER_2);
+  return 1;
 }
 
 
@@ -173,12 +192,14 @@ int main(){
     // if (send_data != read_data)
     //   printf("Do you have the loopback from MOSI to MISO connected?\n");
     // bcm2835_spi_end();
+    versionADE9078_getVersion(exp);
+    // printf("version : %04x\n",versionADE9078_getVersion(exp));
+    // for ( int i=0; i>8; i++)
+    // {
+    //   printf("%04x \n",data.rx[i])
+    // }
 
-    printf("version %04x\n",versionADE9078_getVersion(EXPANDER_2));
-    for ( int i=0; i>8; i++)
-    {
-      printf("%08x \n",data.rx[i])
-    }
+    expander_closeAndFree(exp);
 
 
   return 0;

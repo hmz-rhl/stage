@@ -55,7 +55,6 @@ int main() {
 	mosquitto_destroy(mosq); // Use to free memory associated with a mosquitto client instance.
 	mosquitto_lib_cleanup(); //Call to free resources associated with the library.
 
-
 	return 0;
 }
 
