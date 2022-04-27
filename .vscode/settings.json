@@ -2,6 +2,7 @@
     "files.associations": {
         "expander-get-gpio": "cpp",
         "mosquitto.h": "c",
-        "logging_mosq.h": "c"
+        "logging_mosq.h": "c",
+        "SimuSPI.C": "cpp"
     }
 }

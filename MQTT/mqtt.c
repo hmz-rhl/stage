@@ -117,7 +117,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  * 
  *
  **/
-void mqtt_subscribe(char *topic,void (*call)(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg))
+void mqtt_subscribe(char *topic,void (*call))
 {
     while(!test_topic(topic))
     {
