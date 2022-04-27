@@ -272,7 +272,7 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
-    printf("mise a 1 de GPIO[%d]\n", pin);
+    printf("mise a 1 de GPIO[%d] %s\n", pin, exp->label[pin]);
 }
 
 
@@ -317,7 +317,7 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
-    printf("mise a 0 de GPIO[%d]\n", pin);
+    printf("mise a 0 de GPIO[%d] %s\n", pin , exp->label[pin]);
 
 }
 
@@ -453,7 +453,7 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
-    printf("mise a 1 du seul GPIO[%d]\n", pin);
+    printf("mise a 1 du seul GPIO[%d] %s\n", pin, exp->label[pin]);
 }
 
 
