@@ -64,6 +64,8 @@ void mqtt_publish(char *topic, char *message)
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
+        scanf("Veuillez saisir un topic valide svp : %s", &topic);
+        mqtt_publish(topic, message);
     }
 
     struct mosquitto *mosq = init_mqtt;
@@ -87,7 +89,7 @@ void mqtt_publish(char *topic, char *message)
  **/
 void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg) 
 {
-	printf("New message with topic %s: %s\n", msg->topic, (char *) msg->payload);
+	printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 }
 
 /**
@@ -103,14 +105,15 @@ void mqtt_subscribe(char *topic)
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
-    
+        scanf("Veuillez saisir un topic valide svp : %s", &topic);
+        mqtt_subscribe(topic);
     }
     struct mosquitto *mosq = init_mqtt;
     mosquitto_subscribe(mosq, NULL, "topic", 6, "message", 0, false);
     mosquitto_message_callback_set(mosq, on_message);
 
     mosquitto_loop_start(init_mqtt()); // begin of a new thread 
-	printf("Press Enter to quit...\n");
+	printf("Tapez Entree pour quitter...\n");
 	getchar();
 	mosquitto_loop_stop(mosq, true); // stop of the thread
 
