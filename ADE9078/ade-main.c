@@ -176,7 +176,7 @@ uint16_t ADE9078_getVersion(){
   data.mode = 3;                     
   data.bits = 8;                   
   data.speed = 2000000; 
-  data.lsbFirst = 0;          
+  data.lsbFirst = 1;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   strcpy(data.device,"/dev/spidev0.0");
