@@ -51,12 +51,12 @@ int test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 23; cpt++)
     {
-        if(strcmp(topic, tab_topics[cpt])!=1) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
+        if(strcmp(topic, tab_topics[cpt])!=0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
         {
-            return 0;
+            return 1;
         }
     }
-    return 1;
+    return 0;
 }
 
 
