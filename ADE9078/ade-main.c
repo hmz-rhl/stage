@@ -170,7 +170,7 @@ uint16_t ADE9078_getVersion(){
   tx[2] = 0x00;
   tx[3] = 0x00;
 
-  expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  expander_resetPinGPIO(exp, PM_CS);
   spiData data;
   
   data.mode = 3;                     
