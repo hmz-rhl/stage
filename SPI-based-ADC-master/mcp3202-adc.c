@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <errno.h>
 
-#include "spi-dev-lib.h"
+#include "../lib/spi-dev-lib.h"
 #include "mcp3202-adc.h"
 
 #include "../lib/expander-i2c.h"

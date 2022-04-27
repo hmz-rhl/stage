@@ -1,6 +1,7 @@
 #include "expander-i2c.h"
 #include "bcm2835.h"
 
+#include "../lib/spi-dev-lib.h"
 
 #include <stdint.h>
 #include <unistd.h>
@@ -12,14 +13,18 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
+
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
+#define PM_CS            5
 
-
-#define VERSION_16 0x4FE //Reset: 0x0040 Access: R
+#define VERSION_16       0x4FE //Reset: 0x0040 Access: R
 
 #define ADE9078_VERBOSE_DEBUG
 
+#define EXPANDER_1      0x26  // Adresse de l'expander 1 d'Output
+
+#define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
 static void pabort(const char *s)
 {
@@ -137,13 +142,30 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
 
   uint16_t ADE9078_getVersion(expander_t *exp){
 
-	  return ADE9078_spiRead16(VERSION_16, exp);
+
+    // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
+    expander_setPinGPIO(EXPANDER_2, PM_CS);
+
+    spiData data;
+
+    data.mode = 3;                     
+	  data.bits = 8;                   
+	  data.speed = 2000000;           
+	  data.delay = 0;
+
+    // on mets le cs a 0 de l'ade pour initier la comm SPI 
+    expander_resetOnlyPinSetOthersGPIO(EXPANDER_2, PM_CS);
+
+    
+
+
+	  return ADE9078_spiRead16(VERSION_16, EXPANDER_2);
 }
 
 
 int main(){
 
-    expander_t *exp = expander_init(0x27);
+    expander_t *exp = expander_init(EXPANDER_2);
     //spi_init();
     // uint8_t send_data = 0x23;
     // uint8_t read_data = bcm2835_spi_transfer(send_data);
@@ -152,13 +174,8 @@ int main(){
     //   printf("Do you have the loopback from MOSI to MISO connected?\n");
     // bcm2835_spi_end();
 
-    
+    printf("version %04x\n",versionADE9078_getVersion(EXPANDER_2));
 
-    printf("version %04x\n",versionADE9078_getVersion(exp));
-    printf("version %04x\n",versionADE9078_getVersion(exp));
-
-
-    bcm2835_close();
 
   return 0;
 }
