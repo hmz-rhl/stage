@@ -51,7 +51,7 @@ int test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 23; cpt++)
     {
-        if(strcmp(topic, tab_topics[cpt])!=0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
+        if(strcmp(topic, tab_topics[cpt])==0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
         {
             return 1;
         }
@@ -60,7 +60,7 @@ int test_topic(char *topic)
 }
 
 
-
+//--------------------OK----------------------------------------
 /**
  ** 
  * @brief   publication d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
@@ -89,6 +89,8 @@ void mqtt_publish(char *topic, char *message)
 	mosquitto_lib_cleanup();
 }
 
+
+
 /**
  ** 
  * @brief   Affiche le topic
@@ -103,6 +105,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 {
 	printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 }
+
+
 
 /**
  ** 
