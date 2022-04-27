@@ -68,7 +68,7 @@ void mqtt_publish(char *topic, char *message)
         
     }
 
-    mqtt_publish(topic, message);
+    // mqtt_publish(topic, message);
 
     struct mosquitto *mosq = init_mqtt();
 
@@ -110,7 +110,7 @@ void mqtt_subscribe(char *topic,void(*call))
         scanf("Veuillez saisir un topic valide svp : %s", &topic);
     }
     
-    mqtt_subscribe(topic);
+    // mqtt_subscribe(topic,);
     struct mosquitto *mosq = init_mqtt();
     mosquitto_subscribe(mosq, NULL, topic, 0, false);
     mosquitto_message_callback_set(mosq, call);
