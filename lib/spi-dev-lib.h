@@ -3,7 +3,7 @@
 
 /* Variables for struct spi_ioc_transfer */
 typedef struct{
-	uint8_t tx[8];          // Tableau contenant les donnees a transmettre ( 8 octets)
+	uint8_t *tx;          // Tableau contenant les donnees a transmettre ( 8 octets)
 	uint8_t rx[8];			// Tableau contenant les donnees a recuperer ( 8 octets)
 	uint8_t mode;           // Mode de SPI           
 	uint8_t bits;           // bits par transmition
