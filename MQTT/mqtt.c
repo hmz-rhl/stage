@@ -66,10 +66,12 @@ void mqtt_publish(char *topic, char *message)
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
     }
 
-    mosquitto_publish(init_mqtt(), NULL, "topic", 6, "message", 0, false);
+    struct mosquitto *mosq = init_mqtt;
+
+    mosquitto_publish(mosq, NULL, "topic", 6, "message", 0, false);
     
-    mosquitto_disconnect(init_mqtt());
-	mosquitto_destroy(init_mqtt());
+    mosquitto_disconnect(mosq);
+	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 }
 
@@ -101,7 +103,7 @@ void mqtt_subscribe(char *topic)
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
-        mqtt_subscribe(topic);
+    
     }
     struct mosquitto *mosq = init_mqtt;
     mosquitto_subscribe(mosq, NULL, "topic", 6, "message", 0, false);

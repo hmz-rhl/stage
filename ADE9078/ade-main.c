@@ -172,7 +172,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   data.mode = 3;                     
   data.bits = 8;                   
   data.speed = 2000000; 
-  data.msbFirst = 1;          
+  data.msbFirst = 0;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
