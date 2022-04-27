@@ -4,11 +4,10 @@
 
 /**
  ** 
- * @brief   configure l'interface i2c, et lui fait connaitre l'adresse de l'expander
- * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
- * 
- * @return  
+ * @brief   initialisation : création d'une instance de connexion au broker, validation de la connexion
+ *
+ * @return  struct mosquitto* qui sera nécessaire pour l'utilisation de la fonction publish
+ *
  **/
 struct mosquitto* init_mqtt()
 {
@@ -29,6 +28,16 @@ struct mosquitto* init_mqtt()
     return mosq;
 }
 
+
+/**
+ ** 
+ * @brief   initialisation : création d'une instance de connexion au broker, validation de la connexion
+ *
+ * @
+ *
+ * @return  struct mosquitto* qui sera nécessaire pour l'utilisation de la fonction publish
+ *
+ **/
 void publish(char *topic, char *message)
 {
     while(!test_topic(topic))

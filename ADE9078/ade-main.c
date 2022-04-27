@@ -51,7 +51,7 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 // {
 // //Returns as integer an address of a specified byte - basically a byte controlled shift register with "byteVal" controlling the byte that is read and returned
 //   uint16_t x = ((addr >> (8*byteVal)) & 0xff);
-
+//
 //   #ifdef ADE9078_VERBOSE_DEBUG
 //    printf(" ADE9078::functionBitVal function (separates high and low command bytes of provided addresses) details: ");
 //    printf(" Address input (dec): ");
@@ -64,10 +64,10 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 //    printf("%02x\n", x);
 //    printf(" ADE9078::functionBitVal function completed ");
 //   #endif
-
+//
 //   return x;
 // }
-
+//
 // uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the algorithm that reads from a register in the ADE9078. The arguments are the MSB and LSB of the address of the register respectively. The values of the arguments are obtained from the list of functions above.
 //     #ifdef ADE9078_VERBOSE_DEBUG
 //      printf(" ADE9078::spiRead16 function started \n");
@@ -79,30 +79,30 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 //    temp_address = (((address << 4) & 0xFFF0)+8); //shift address  to align with cmd packet, convert the 16 bit address into the 12 bit command header. + 8 for isRead versus write
 //    uint8_t commandHeader1 = functionBitVal(temp_address, 1); //lookup and return first byte (MSB) of the 12 bit command header, sent first
 //    uint8_t commandHeader2 = functionBitVal(temp_address, 0); //lookup and return second byte (LSB) of the 12 bit command header, sent second
-
+//
 //     uint8_t one, two; //holders for the read values from the SPI Transfer
-
-
+//
+//
 //     expander_printGPIO(exp);
-
+//
 //     if (!bcm2835_init())
 //     {
 //       printf("bcm2835_init failed. Are you running as root??\n");
 //       exit(EXIT_FAILURE);
 //     }
-
+//
 //     if (!bcm2835_spi_begin())
 //     {
 //       printf("bcm2835_spi_begin failed. Are you running as root??\n");
 //       exit(EXIT_FAILURE);
 //     }
-
+//
 //     expander_t *exp = expander_init(0x27);
 // 	  uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 //   	expander_resetOnlyPinSetOthersGPIO(exp, 4);
-
+//
 // 	  spiTransfer(data);
-
+//
 // 	    expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 //       expander_resetOnlyPinSetOthersGPIO(exp, 5);
 //       // bcm2835_spi_transfer(commandHeader1); //Send MSB
@@ -111,7 +111,7 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 //       // two = bcm2835_spi_transfer(WRITE);  //dummy write LSB, read out LSB
 //       // expander_setPinGPIO(exp,5);
 //       // bcm2835_spi_end();
-
+//
 // 	#ifdef AVRESP8266 //Arduino SPI Routine
 //     // beginTransaction is first
 //     SPI.beginTransaction(defaultSPISettings);  // Clock is high when inactive. Read at rising edge: SPIMODE3.
@@ -124,7 +124,7 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 //     digitalWrite(_SS, HIGH);  //End data transfer by bringing SS line HIGH
 //     SPI.endTransaction();      // end SPI Transaction
 // 	#endif
-
+//
 //     #ifdef ADE9078_VERBOSE_DEBUG
 //      printf(" ADE9078::spiRead16 function details: \n");
 //      printf(" Command Header: \n");
@@ -137,7 +137,7 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 //      printf("%02x\n", two);  //print LSB
 //      printf(" ADE9078::spiRead16 function completed \n");
 //     #endif
-
+//
 // 	  readval_unsigned = (one << 8);  //Process MSB  (Alternate bitshift algorithm)
 //     readval_unsigned = readval_unsigned + two;  //Process LSB
 // 	return readval_unsigned;
