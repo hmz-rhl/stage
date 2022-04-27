@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib/mosquitto-master/lib/mosquitto.h"
+#include <mosquitto.h>
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc) 
 {
