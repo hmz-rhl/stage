@@ -9,6 +9,7 @@ typedef struct{
 	uint8_t bits;           // bits par transmition
 	uint32_t speed;         // vitesse de communication en Hz ( 10 Mhz pour l'ADE )
 	uint16_t delay;  		// Temps entre chaque paquets 
+	uint16_t msbFirst;  		// Temps entre chaque paquets 
 
 	char device[20];
 	int fileDescriptor;

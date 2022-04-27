@@ -67,21 +67,21 @@ int spiInit(spiData *data){
 	/* check if Bits per word was set successfully */
 	retVal = ioctl(data->fileDescriptor, SPI_IOC_RD_BITS_PER_WORD, &(data->bits));
 	if(retVal < 0){
-		perror("Can't get bits per word");
+		perror("Can't get lsb/msb first per word");
 		return retVal;
 	}
 
 		/* set msb first */
-	retVal = ioctl(data->fileDescriptor, SPI_IOC_WR_MSB_FIRST, &(data->bits));
+	retVal = ioctl(data->fileDescriptor, SPI_IOC_WR_LSB_FIRST, &(data->msbFirst));
 	if(retVal < 0){
-		perror("Can't set bits per word");
+		perror("Can't set lsb/msb first");
 		return retVal;
 	}
 
 	/* check if msb first was set successfully */
-	retVal = ioctl(data->fileDescriptor, SPI_IOC_RD_MSB_FIRST, &(data->bits));
+	retVal = ioctl(data->fileDescriptor, SPI_IOC_RD_LSB_FIRST, &(data->msbFirst));
 	if(retVal < 0){
-		perror("Can't get bits per word");
+		perror("Can't set lsb/msb first");
 		return retVal;
 	}
 

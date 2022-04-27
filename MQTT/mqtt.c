@@ -1,8 +1,6 @@
 //Hicham GHANEM et Raphaël GANDUS
 
 #include "mqtt.h"
-#include "topic.h"
-
 
 /**
  ** 
@@ -21,9 +19,9 @@ struct mosquitto* init_mqtt()
 
 	rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 	if(rc != 0){
-		printf("Client could not connect to broker! Error Code: %d\n", rc);
+		printf("Le client n'a pas pu se connecter au broker. Message d'erreur: %d\n", rc);
 		mosquitto_destroy(mosq);
-		return -1;
+        return mosq;
 	}
 	printf("We are now connected to the broker!\n");
 
@@ -81,7 +79,7 @@ void mqtt_publish(char *topic, char *message)
  *
  * @param   mosq   une instance mosquitto valide
  * @param   obj   the user data provided in mosquitto_new
- * @param   msg   une instance mosquitto valide
+ * @param   msg   le message recu
  * 
  *
  **/
@@ -103,12 +101,19 @@ void mqtt_subscribe(char *topic)
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
+        mqtt_subscribe(topic);
     }
-    mosquitto_subscribe(init_mqtt(), NULL, "topic", 6, "message", 0, false);
-    mosquitto_message_callback_set(init_mqtt(), on_message);
+    struct mosquitto *mosq = init_mqtt;
+    mosquitto_subscribe(mosq, NULL, "topic", 6, "message", 0, false);
+    mosquitto_message_callback_set(mosq, on_message);
 
-    mosquitto_disconnect(init_mqtt());
-	mosquitto_destroy(init_mqtt());
+    mosquitto_loop_start(init_mqtt()); // begin of a new thread 
+	printf("Press Enter to quit...\n");
+	getchar();
+	mosquitto_loop_stop(mosq, true); // stop of the thread
+
+    mosquitto_disconnect(mosq);
+	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 }
 
