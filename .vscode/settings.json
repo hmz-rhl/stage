@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "expander-get-gpio": "cpp"
+        "expander-get-gpio": "cpp",
+        "mosquitto.h": "c",
+        "logging_mosq.h": "c"
     }
 }
