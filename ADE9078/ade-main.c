@@ -146,7 +146,7 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 
 uint16_t ADE9078_getVersion(expander_t *exp ){
 
-  uint8_t configAvant expander_getAllPinsGPIO(exp);
+  uint8_t configAvant = expander_getAllPinsGPIO(exp);
   // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
   expander_setPinGPIO(exp, PM_CS);
 
@@ -167,6 +167,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   data.tx[1] = 0xE8;
   data.tx[2] = 0x00;
   data.tx[3] = 0x00;
+  data.
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
   sleep(1);
 
