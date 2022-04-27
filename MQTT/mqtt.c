@@ -77,13 +77,13 @@ void mqtt_publish(char *topic, char *message)
         scanf("%s", topic);
         getchar();
     }
-
     // mqtt_publish(topic, message);
 
     struct mosquitto *mosq = init_mqtt();
 
     mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     
+    printf("topic :%s\n", topic);
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
