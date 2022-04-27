@@ -175,7 +175,9 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   spiTransfer(&data);
 
   expander_setAndResetSomePinsGPIO(exp, configAvant);
-  printf("Part ID : 0x%02x%02x%02x%02x\n",data.rx[3], data.rx[2],data.rx[1], data.rx[0]);
+  printf("ADE73370 : \n",((data.rx[3] >> 21) & 0x01);
+  printf("ADE9000 : \n",(data.rx[3] >> 20) & 0x01);
+  printf("ADE9004 : \n",(data.rx[3] >> 16) & 0x01);
 
     
 

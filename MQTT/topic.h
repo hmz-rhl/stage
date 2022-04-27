@@ -1,5 +1,3 @@
-#include <string.h>
-
 #define a "down/charger/pwm"
 #define b "down/main_led"
 #define c "down/btn_led"
@@ -25,8 +23,7 @@
 #define w "down/type2/open"
 #define x "down/type2/close"
 #define y "down/status"
-#define z "down/status"
 
-char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z};
+char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y};
 
 

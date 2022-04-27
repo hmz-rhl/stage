@@ -29,11 +29,20 @@ struct mosquitto* init_mqtt()
     return mosq;
 }
 
+/**
+ ** 
+ * @brief   test des topics
+ *
+ * @param   topic   le topic à tester
+ *
+ * @return  true si le topic est dans la liste, faux sinon
+ *
+ **/
 bool test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 23; cpt++)
     {
-        if(strcmp(topic, tab_topics[cpt])!=0)
+        if(strcmp(topic, tab_topics[cpt])!=0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
         {
             return false;
         }
@@ -57,7 +66,12 @@ void publish(char *topic, char *message)
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
     }
+
     mosquitto_publish(init_mqtt(), NULL, "topic", 6, "message", 0, false);
+    
+    mosquitto_disconnect(init_mqtt());
+	mosquitto_destroy(init_mqtt());
+	mosquitto_lib_cleanup();
 }
 
 /**
@@ -65,11 +79,33 @@ void publish(char *topic, char *message)
  * @brief   publication d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
  *
  * @param   topic   choix du topic mqtt
- * @param   message message à publier
+ * 
  *
  **/
-void subscribe(char *topic, char *message)
+void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg) 
 {
-    
+	printf("New message with topic %s: %s\n", msg->topic, (char *) msg->payload);
+}
+
+/**
+ ** 
+ * @brief   subscription d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
+ *
+ * @param   topic   choix du topic mqtt
+ * 
+ *
+ **/
+void subscribe(char *topic)
+{
+    while(!test_topic(topic))
+    {
+        printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
+    }
+    mosquitto_subscribe(init_mqtt(), NULL, "topic", 6, "message", 0, false);
+    mosquitto_message_callback_set(init_mqtt(), on_message);
+
+    mosquitto_disconnect(init_mqtt());
+	mosquitto_destroy(init_mqtt());
+	mosquitto_lib_cleanup();
 }
 
