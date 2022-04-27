@@ -179,7 +179,7 @@ uint16_t ADE9078_getVersion(){
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
-  spiInit(data);
+  spiInit(&data);
   sleep(1);
 
   spiTransfer(&data);
@@ -188,7 +188,7 @@ uint16_t ADE9078_getVersion(){
   expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
 
   printf("version : %x %x\n",data.rx[1], data.rx[0]);
-
+expander_closeAndFree(exp);
 
   return 1;
 }
@@ -260,7 +260,7 @@ int main(){
     //   printf("%04x \n",data.rx[i])
     // }
 
-    expander_closeAndFree();
+    
 
 
   return 0;
