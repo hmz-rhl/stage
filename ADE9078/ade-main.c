@@ -143,6 +143,11 @@ const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to
 // 	return readval_unsigned;
 // }
 
+/*
+  printf("ADE73370\t: %d\n",(data.rx[3] >> 21) & 0x01);
+  printf("ADE9000\t: %d\n",(data.rx[3] >> 20) & 0x01);
+  printf("ADE9004\t: %d\n",(data.rx[3] >> 16) & 0x01);
+  */
 
 uint16_t ADE9078_getVersion(expander_t *exp ){
 
@@ -155,7 +160,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   expander_resetPinGPIO(exp, PM1);
 
   sleep(1);
-
+  
   uint8_t tx[4];
   tx[0] = 0x47;
   tx[1] = 0x28;
@@ -175,9 +180,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   spiTransfer(&data);
 
   expander_setAndResetSomePinsGPIO(exp, configAvant);
-  printf("ADE73370\t: %d\n",(data.rx[3] >> 21) & 0x01);
-  printf("ADE9000\t: %d\n",(data.rx[3] >> 20) & 0x01);
-  printf("ADE9004\t: %d\n",(data.rx[3] >> 16) & 0x01);
+  printf("version = %x %x\n",data.rx[1], data.rx[0]);
 
     
 

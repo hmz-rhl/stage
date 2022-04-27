@@ -1,13 +1,14 @@
+//Hicham GHANEM et Raphaël GANDUS
+
 #include "mqtt.h"
 #include "topic.h"
-#include <string.h>
 
 
 /**
  ** 
  * @brief   initialisation : création d'une instance de connexion au broker, validation de la connexion
  *
- * @return  struct mosquitto* qui sera nécessaire pour l'utilisation de la fonction publish
+ * @return  struct mosquitto* qui sera nécessaire pour l'utilisation des fonctions mqtt_publish et mqtt_subscribe
  *
  **/
 struct mosquitto* init_mqtt()
@@ -60,7 +61,7 @@ bool test_topic(char *topic)
  * @param   message message à publier
  *
  **/
-void publish(char *topic, char *message)
+void mqtt_publish(char *topic, char *message)
 {
     while(!test_topic(topic))
     {
@@ -76,9 +77,11 @@ void publish(char *topic, char *message)
 
 /**
  ** 
- * @brief   publication d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
+ * @brief   Affiche le topic
  *
- * @param   topic   choix du topic mqtt
+ * @param   mosq   une instance mosquitto valide
+ * @param   obj   the user data provided in mosquitto_new
+ * @param   msg   une instance mosquitto valide
  * 
  *
  **/
@@ -89,13 +92,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 /**
  ** 
- * @brief   subscription d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
+ * @brief   subscription à un topic, le topic doit correspondre à ceux créés par Gilles
  *
  * @param   topic   choix du topic mqtt
  * 
  *
  **/
-void subscribe(char *topic)
+void mqtt_subscribe(char *topic)
 {
     while(!test_topic(topic))
     {

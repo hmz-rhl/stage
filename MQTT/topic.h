@@ -1,3 +1,5 @@
+//Hicham GHANEM et Raphaël GANDUS
+
 #define a "down/charger/pwm"
 #define b "down/main_led"
 #define c "down/btn_led"
