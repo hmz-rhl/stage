@@ -160,24 +160,24 @@ uint16_t ADE9078_getVersion(){
   // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
   setAllCS(exp);
 
-  // on mets le cs a 0 de l'ade pour initier la comm SPI 
-  expander_resetPinGPIO(exp, PM_CS);
   // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
   expander_resetPinGPIO(exp, PM0);
   expander_resetPinGPIO(exp, PM1);
 
   sleep(1);
 
-  uint8_t tx[6];
+  uint8_t tx[4] ={0};
+  uint8_t rx[4] ={0};
+
 
   addr = addr << 4;
 
-  tx[0] = addr>>8;
+  tx[0] = addr >> 8;
   tx[1] = addr | 0x8;
-  tx[2] = 0x00;
-  tx[3] = 0x00;
-  tx[4] = 0x00;
-  tx[5] = 0x00;
+  // tx[2] = 0x00;
+  // tx[3] = 0x00;
+  // tx[4] = 0x00;
+  // tx[5] = 0x00;
 
   spiData data;
   
@@ -194,6 +194,9 @@ uint16_t ADE9078_getVersion(){
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   strcpy(data.device,"/dev/spidev0.0");
+  // on mets le cs a 0 de l'ade pour initier la comm SPI 
+  expander_resetPinGPIO(exp, PM_CS);
+  
   spiInit(&data);
 
   sleep(1);
@@ -201,7 +204,7 @@ uint16_t ADE9078_getVersion(){
   spiTransfer(&data);
 
   expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
-  
+
   expander_setPinGPIO(exp, PM_CS);
 
   printf("version : %X %X\n",data.rx[1], data.rx[0]);
