@@ -1,6 +1,16 @@
-//Hicham GHANEM et Raphaël GANDUS
+/**
+ * 
+ * @authors Hicham GHANEM et Raphaël GANDUS
+ * 
+ * @date 27 april 2022
+ * 
+ * 
+ **/
+ 
 
 #include "mqtt.h"
+
+char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y};
 
 /**
  ** 

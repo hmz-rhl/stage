@@ -26,6 +26,6 @@
 #define x "down/type2/close"
 #define y "down/status"
 
-char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y};
+
 
 
