@@ -91,7 +91,7 @@ uint16_t ADE9078_spiRead16(uint16_t address) { //This is the algorithm that read
     //expander_printGPIO(exp);
 
   	expander_resetOnlyPinSetOthersGPIO(exp, 4);
-
+    spiData data;
 	  spiTransfer(data);
 
 	    expander_setAndResetSomePinsGPIO(exp, ancienne_config);
