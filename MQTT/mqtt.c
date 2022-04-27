@@ -30,7 +30,10 @@ struct mosquitto* init_mqtt()
 
 bool test_topic(char *topic)
 {
-    
+    for(int i = 0; i < 23; i++)
+    {
+        if(strcmp(topic, ))
+    }
 }
 
 
@@ -51,3 +54,4 @@ void publish(char *topic, char *message)
     }
     mosquitto_publish(init_mqtt(), NULL, "topic", 6, "message", 0, false);
 }
+

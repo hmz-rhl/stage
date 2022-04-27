@@ -157,8 +157,8 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   sleep(1);
 
   uint8_t tx[4];
-  tx[0] = 0x4F;
-  tx[1] = 0xE8;
+  tx[0] = 0x47;
+  tx[1] = 0x28;
   tx[2] = 0x00;
   tx[3] = 0x00;
   expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
@@ -175,7 +175,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
   spiTransfer(&data);
 
   expander_setAndResetSomePinsGPIO(exp, configAvant);
-  printf("version = %04x %04x\n",data.rx[1], data.rx[0]);
+  printf("version = %02x %02x\n",data.rx[1], data.rx[0]);
 
     
 
