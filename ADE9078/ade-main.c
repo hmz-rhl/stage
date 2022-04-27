@@ -226,7 +226,7 @@ uint16_t ADE9078_run(){
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
-  spiInit(data);
+  spiInit(&data);
   sleep(1);
 
   spiTransfer(&data);
