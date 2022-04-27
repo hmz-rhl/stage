@@ -178,7 +178,7 @@ uint16_t ADE9078_getVersion(){
   data.lsbFirst = 0;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
-  data.device = "/dev/spidev0.0"
+  data.device = "/dev/spidev0.0";
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
   spiInit(&data);
   sleep(1);
