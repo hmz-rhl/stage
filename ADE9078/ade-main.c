@@ -175,6 +175,10 @@ int main(){
     // bcm2835_spi_end();
 
     printf("version %04x\n",versionADE9078_getVersion(EXPANDER_2));
+    for ( int i=0; i>8; i++)
+    {
+      printf("%08x \n",data.rx[i])
+    }
 
 
   return 0;
