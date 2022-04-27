@@ -55,6 +55,7 @@ int test_topic(char *topic)
         {
             return 1;
         }
+        printf("pas %s\n", tab_topics[cpt]);
     }
     return 0;
 }
