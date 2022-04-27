@@ -1,5 +1,6 @@
 #include "mqtt.h"
 #include "topic.h"
+#include <string.h>
 
 
 /**
@@ -30,10 +31,14 @@ struct mosquitto* init_mqtt()
 
 bool test_topic(char *topic)
 {
-    for(int i = 0; i < 23; i++)
+    for(int cpt = 0; cpt < 23; cpt++)
     {
-        if(strcmp(topic, ))
+        if(strcmp(topic, tab_topics[cpt])!=0)
+        {
+            return false;
+        }
     }
+    return true;
 }
 
 
@@ -53,5 +58,18 @@ void publish(char *topic, char *message)
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
     }
     mosquitto_publish(init_mqtt(), NULL, "topic", 6, "message", 0, false);
+}
+
+/**
+ ** 
+ * @brief   publication d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
+ *
+ * @param   topic   choix du topic mqtt
+ * @param   message message à publier
+ *
+ **/
+void subscribe(char *topic, char *message)
+{
+    
 }
 
