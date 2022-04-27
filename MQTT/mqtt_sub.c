@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+//#include "paho.h" librairie C pour mqtt à installer https://github.com/eclipse/paho.mqtt.c
 
 
 /**
@@ -8,9 +8,23 @@
  * 
  **/
 
+ #include <stdio.h>
+#include <stdlib.h>
 
-int main(int argc, char const *argv[])
-{
-    /* code */
-    return 0;
+#include <mosquitto.h>
+
+
+
+
+
+int main() {
+	
+    mosquitto_connect("up/value/temp", "127.0.0.1", 1883, 30);
+    
+
+
+	return 0;
 }
+
+
+
