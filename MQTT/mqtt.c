@@ -127,6 +127,9 @@ void mqtt_subscribe(char *topic,void(*call))
     mosquitto_message_callback_set(mosq, call);
 
     mosquitto_loop_start(init_mqtt()); // begin of a new thread 
+    printf("topic :%s\n", topic);
+
+
 	printf("Tapez Entree pour quitter...\n");
 	getchar();
 	mosquitto_loop_stop(mosq, true); // stop of the thread
