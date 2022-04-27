@@ -69,13 +69,18 @@ uint8_t functionBitVal(uint16_t addr, uint8_t byteVal)
 }
 
 uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the algorithm that reads from a register in the ADE9078. The arguments are the MSB and LSB of the address of the register respectively. The values of the arguments are obtained from the list of functions above.
+    
     #ifdef ADE9078_VERBOSE_DEBUG
      printf(" ADE9078::spiRead16 function started \n");
     #endif
    //Prepare the 12 bit command header from the inbound address provided to the function
+
+    expander_t *exp = expander_init(0x27);
+
+	  uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
     expander_setAllPinsGPIO(exp);
+
    uint16_t temp_address, readval_unsigned;
-   uint8_t data[]
    temp_address = (((address << 4) & 0xFFF0)+8); //shift address  to align with cmd packet, convert the 16 bit address into the 12 bit command header. + 8 for isRead versus write
    uint8_t commandHeader1 = functionBitVal(temp_address, 1); //lookup and return first byte (MSB) of the 12 bit command header, sent first
    uint8_t commandHeader2 = functionBitVal(temp_address, 0); //lookup and return second byte (LSB) of the 12 bit command header, sent second
@@ -83,22 +88,8 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
     uint8_t one, two; //holders for the read values from the SPI Transfer
 
 
-    expander_printGPIO(exp);
+    //expander_printGPIO(exp);
 
-    if (!bcm2835_init())
-    {
-      printf("bcm2835_init failed. Are you running as root??\n");
-      exit(EXIT_FAILURE);
-    }
-
-    if (!bcm2835_spi_begin())
-    {
-      printf("bcm2835_spi_begin failed. Are you running as root??\n");
-      exit(EXIT_FAILURE);
-    }
-
-    expander_t *exp = expander_init(0x27);
-	  uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	expander_resetOnlyPinSetOthersGPIO(exp, 4);
 
 	  spiTransfer(data);
@@ -111,6 +102,7 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
       // two = bcm2835_spi_transfer(WRITE);  //dummy write LSB, read out LSB
       // expander_setPinGPIO(exp,5);
       // bcm2835_spi_end();
+
 
 	#ifdef AVRESP8266 //Arduino SPI Routine
     // beginTransaction is first
@@ -148,39 +140,100 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
   printf("ADE9000\t: %d\n",(data.rx[3] >> 20) & 0x01);
   printf("ADE9004\t: %d\n",(data.rx[3] >> 16) & 0x01);
   */
+void setAllCS(expander_t *exp)
+{
+  expander_setPinGPIO(exp, 2);
+  expander_setPinGPIO(exp, 3);
+  expander_setPinGPIO(exp, 4);
+  expander_setPinGPIO(exp, 5);
+}
 
-uint16_t ADE9078_getVersion(expander_t *exp ){
+uint16_t ADE9078_getVersion(){
+
+  expander_t *exp = expander_init(EXPANDER_2);
 
   uint8_t configAvant = expander_getAllPinsGPIO(exp);
+
   // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
-  expander_setPinGPIO(exp, PM_CS);
+  setAllCS(exp);
 
   // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
   expander_resetPinGPIO(exp, PM0);
   expander_resetPinGPIO(exp, PM1);
 
   sleep(1);
-  
+
   uint8_t tx[4];
   tx[0] = 0x47;
   tx[1] = 0x28;
   tx[2] = 0x00;
   tx[3] = 0x00;
+
   expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
   spiData data;
   
   data.mode = 3;                     
   data.bits = 8;                   
   data.speed = 2000000; 
-  data.msbFirst = 0;          
+  data.lsbFirst = 0;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
+  spiInit(data);
   sleep(1);
 
   spiTransfer(&data);
 
-  expander_setAndResetSomePinsGPIO(exp, configAvant);
+  expander_setPinGPIO(exp, PM_CS);
+  expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
+
+  printf("version : %x %x\n",data.rx[1], data.rx[0]);
+
+
+  return 1;
+}
+
+
+
+uint16_t ADE9078_run(){
+
+  expander_t *exp = expander_init(EXPANDER_2);
+
+  uint8_t configAvant = expander_getAllPinsGPIO(exp);
+
+  // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
+  setAllCS(exp);
+
+  // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
+  expander_resetPinGPIO(exp, PM0);
+  expander_resetPinGPIO(exp, PM1);
+
+  sleep(1);
+
+  uint8_t tx[4];
+  tx[0] = 0x47;
+  tx[1] = 0x28;
+  tx[2] = 0x00;
+  tx[3] = 0x00;
+
+  expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  spiData data;
+  
+  data.mode = 3;                     
+  data.bits = 8;                   
+  data.speed = 2000000; 
+  data.lsbFirst = 0;          
+  data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
+  data.tx = tx;
+  // on mets le cs a 0 de l'ade pour initier la comm SPI 
+  spiInit(data);
+  sleep(1);
+
+  spiTransfer(&data);
+
+  expander_setPinGPIO(exp, PM_CS);
+  expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
+
   printf("version : %x %x\n",data.rx[1], data.rx[0]);
 
     
@@ -192,7 +245,7 @@ uint16_t ADE9078_getVersion(expander_t *exp ){
 
 int main(){
 
-    expander_t *exp = expander_init(EXPANDER_2);
+
     //spi_init();
     // uint8_t send_data = 0x23;
     // uint8_t read_data = bcm2835_spi_transfer(send_data);
@@ -200,14 +253,14 @@ int main(){
     // if (send_data != read_data)
     //   printf("Do you have the loopback from MOSI to MISO connected?\n");
     // bcm2835_spi_end();
-    ADE9078_getVersion(exp);
+    ADE9078_getVersion();
     // printf("version : %04x\n",versionADE9078_getVersion(exp));
     // for ( int i=0; i>8; i++)
     // {
     //   printf("%04x \n",data.rx[i])
     // }
 
-    expander_closeAndFree(exp);
+    expander_closeAndFree();
 
 
   return 0;
