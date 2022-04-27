@@ -140,7 +140,7 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
 }
 
 
-  uint16_t ADE9078_getVersion(expander_t *exp){
+  uint16_t ADE9078_getVersion(expander_t *EXPANDER_2 /*exp*/){
 
 
     // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)

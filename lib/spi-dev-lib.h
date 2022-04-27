@@ -12,7 +12,6 @@ typedef struct{
 
 	char device[20];
 	int fileDescriptor;
-	int channelNo;          /* FIXME: not generic to spi-dev */       
 }spiData;
 
 /******************************************************************************/
