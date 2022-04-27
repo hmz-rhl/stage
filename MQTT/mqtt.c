@@ -28,14 +28,19 @@ struct mosquitto* init_mqtt()
     return mosq;
 }
 
+bool test_topic(char *topic)
+{
+    
+}
+
+
 
 /**
  ** 
- * @brief   initialisation : création d'une instance de connexion au broker, validation de la connexion
+ * @brief   publication d'un message vers un topic, le topic doit correspondre à ceux créés par Gilles
  *
- * @
- *
- * @return  struct mosquitto* qui sera nécessaire pour l'utilisation de la fonction publish
+ * @param   topic   choix du topic mqtt
+ * @param   message message à publier
  *
  **/
 void publish(char *topic, char *message)
