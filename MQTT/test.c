@@ -8,7 +8,7 @@ void traitement(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 int main(int argc, char const *argv[])
 {
     /* code */
-    // mqtt_subscribe(argv[1], traitement);
-    mqtt_publish(argv[1], "22");
+    mqtt_subscribe(argv[1], traitement);
+    // mqtt_publish(argv[1], "22");
     return 0;
 }
