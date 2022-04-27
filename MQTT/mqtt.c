@@ -117,7 +117,7 @@ void mqtt_subscribe(char *topic,void(*call))
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant:\n");
-        scanf("Veuillez saisir un topic valide svp : %s", topic);
+        scanf("%s", topic);
         getchar();
     }
     
