@@ -72,14 +72,14 @@ int spiInit(spiData *data){
 	}
 
 		/* set msb first */
-	retVal = ioctl(data->fileDescriptor, SPI_IOC_WR_LSB_FIRST, &(data->msbFirst));
+	retVal = ioctl(data->fileDescriptor, SPI_IOC_WR_LSB_FIRST, &(data->lsbFirst));
 	if(retVal < 0){
 		perror("Can't set lsb/msb first");
 		return retVal;
 	}
 
 	/* check if msb first was set successfully */
-	retVal = ioctl(data->fileDescriptor, SPI_IOC_RD_LSB_FIRST, &(data->msbFirst));
+	retVal = ioctl(data->fileDescriptor, SPI_IOC_RD_LSB_FIRST, &(data->lsbFirst));
 	if(retVal < 0){
 		perror("Can't set lsb/msb first");
 		return retVal;
