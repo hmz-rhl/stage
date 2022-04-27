@@ -161,6 +161,7 @@ uint16_t ADE9078_getVersion(){
   setAllCS(exp);
 
   // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
+  expander_setAllPinsGPIO(exp);
   expander_resetPinGPIO(exp, PM0);
   expander_resetPinGPIO(exp, PM1);
 
@@ -200,7 +201,7 @@ uint16_t ADE9078_getVersion(){
 
   spiTransfer(&data);
 
-  expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
+  expander_setAndResetSomePinsGPIO(exp, 0xb00111100 | configAvant);
 
   expander_setPinGPIO(exp, PM_CS);
 
