@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib/mosquitto-master/lib/mosquitto.h"
+#include <mosquitto.h>
 
 
 
