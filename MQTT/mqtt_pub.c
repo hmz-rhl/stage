@@ -24,7 +24,6 @@ int main(){
 
 	mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
-
 	mosquitto_lib_cleanup();
 	return 0;
 }

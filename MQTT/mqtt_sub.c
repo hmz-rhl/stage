@@ -52,8 +52,10 @@ int main() {
 	mosquitto_loop_stop(mosq, true); // stop of the thread
 
 	mosquitto_disconnect(mosq); // Disconnect from the broker.
-	mosquitto_destroy(mosq);
-	mosquitto_lib_cleanup();
+	mosquitto_destroy(mosq); // Use to free memory associated with a mosquitto client instance.
+	mosquitto_lib_cleanup(); //Call to free resources associated with the library.
+
+Returns
 
 	return 0;
 }
