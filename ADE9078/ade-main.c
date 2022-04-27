@@ -151,6 +151,8 @@ void setAllCS(expander_t *exp)
 
 uint16_t ADE9078_getVersion(){
 
+
+  uint16_t addr = 0x4fe;
   expander_t *exp = expander_init(EXPANDER_2);
 
   uint8_t configAvant = expander_getAllPinsGPIO(exp);
@@ -158,39 +160,52 @@ uint16_t ADE9078_getVersion(){
   // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
   setAllCS(exp);
 
+  // on mets le cs a 0 de l'ade pour initier la comm SPI 
+  expander_resetPinGPIO(exp, PM_CS);
   // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
   expander_resetPinGPIO(exp, PM0);
   expander_resetPinGPIO(exp, PM1);
 
   sleep(1);
 
-  uint8_t tx[4];
-  tx[0] = 0x47;
-  tx[1] = 0x28;
+  uint8_t tx[6];
+
+  addr = addr << 4;
+
+  tx[0] = addr>>8;
+  tx[1] = addr | 0x8;
   tx[2] = 0x00;
   tx[3] = 0x00;
+  tx[4] = 0x00;
+  tx[5] = 0x00;
 
-  expander_resetPinGPIO(exp, PM_CS);
   spiData data;
   
   data.mode = 3;                     
-  data.bits = 8;                   
+  data.bits = 8;
+  for (size_t i = 0; i < 8; i++)
+  {
+    /* code */
+    data.rx[i] = 0;
+  }
+                
   data.speed = 2000000; 
-  data.lsbFirst = 1;          
+  data.lsbFirst = 0;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
   data.tx = tx;
   strcpy(data.device,"/dev/spidev0.0");
-  // on mets le cs a 0 de l'ade pour initier la comm SPI 
   spiInit(&data);
+
   sleep(1);
 
   spiTransfer(&data);
 
-  expander_setPinGPIO(exp, PM_CS);
   expander_setAndResetSomePinsGPIO(exp, 0x3c | configAvant);
+  
+  expander_setPinGPIO(exp, PM_CS);
 
-  printf("version : %x %x\n",data.rx[1], data.rx[0]);
-expander_closeAndFree(exp);
+  printf("version : %X %X\n",data.rx[1], data.rx[0]);
+  expander_closeAndFree(exp);
 
   return 1;
 }
@@ -248,19 +263,8 @@ uint16_t ADE9078_run(){
 int main(){
 
 
-    //spi_init();
-    // uint8_t send_data = 0x23;
-    // uint8_t read_data = bcm2835_spi_transfer(send_data);
-    // printf("Sent to SPI: 0x%02X. Read back from SPI: 0x%02X.\n", send_data, read_data);
-    // if (send_data != read_data)
-    //   printf("Do you have the loopback from MOSI to MISO connected?\n");
-    // bcm2835_spi_end();
     ADE9078_getVersion();
-    // printf("version : %04x\n",versionADE9078_getVersion(exp));
-    // for ( int i=0; i>8; i++)
-    // {
-    //   printf("%04x \n",data.rx[i])
-    // }
+
 
     
 
