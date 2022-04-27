@@ -112,7 +112,7 @@ void mqtt_subscribe(char *topic,void(*call))
     
     // mqtt_subscribe(topic,);
     struct mosquitto *mosq = init_mqtt();
-    mosquitto_subscribe(mosq, NULL, topic, 0, false);
+    mosquitto_subscribe(mosq, NULL, topic, 0);
     mosquitto_message_callback_set(mosq, call);
 
     mosquitto_loop_start(init_mqtt()); // begin of a new thread 
