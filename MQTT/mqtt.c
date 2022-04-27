@@ -34,19 +34,19 @@ struct mosquitto* init_mqtt()
  *
  * @param   topic   le topic à tester
  *
- * @return  true si le topic est dans la liste, faux sinon
+ * @return 1 si le topic est dans la liste, 0 sinon
  *
  **/
-bool test_topic(char *topic)
+int test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 23; cpt++)
     {
         if(strcmp(topic, tab_topics[cpt])!=0) //voir "topic.h" pour la liste des topics, stockés dans le tableau tab_topics
         {
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
 
@@ -65,12 +65,14 @@ void mqtt_publish(char *topic, char *message)
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
         scanf("Veuillez saisir un topic valide svp : %s", &topic);
-        mqtt_publish(topic, message);
+        
     }
+
+    mqtt_publish(topic, message);
 
     struct mosquitto *mosq = init_mqtt();
 
-    mosquitto_publish(mosq, NULL, "topic", 6, "message", 0, false);
+    mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
@@ -100,17 +102,18 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  * 
  *
  **/
-void mqtt_subscribe(char *topic)
+void mqtt_subscribe(char *topic,void(*call))
 {
     while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant");
         scanf("Veuillez saisir un topic valide svp : %s", &topic);
-        mqtt_subscribe(topic);
     }
+    
+    mqtt_subscribe(topic);
     struct mosquitto *mosq = init_mqtt();
-    mosquitto_subscribe(mosq, NULL, "topic", 6, "message", 0, false);
-    mosquitto_message_callback_set(mosq, on_message);
+    mosquitto_subscribe(mosq, NULL, topic, 0, false);
+    mosquitto_message_callback_set(mosq, call);
 
     mosquitto_loop_start(init_mqtt()); // begin of a new thread 
 	printf("Tapez Entree pour quitter...\n");
