@@ -59,24 +59,24 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    // Write block #6
-    uint8_t block_number = 6;
-    uint8_t DATA[] = {0x00, 0x01, 0x02, 0x03};
-    pn532_error = PN532_Ntag2xxWriteBlock(&pn532, DATA, block_number);
-    if (pn532_error) {
-        printf("Error: 0x%02x\r\n", pn532_error);
-        return -1;
-    }
-    pn532_error = PN532_Ntag2xxReadBlock(&pn532, buff, block_number);
-    if (pn532_error) {
-        printf("Error: 0x%02x\r\n", pn532_error);
-        return -1;
-    }
-    for (uint8_t i = 0; i < sizeof(DATA); i++) {
-        if (DATA[i] != buff[i]) {
-            printf("Write block %d failed\r\n", block_number);
-            return -1;
-        }
-    }
-    printf("Write block %d successfully\r\n", block_number);
+    // // Write block #6
+    // uint8_t block_number = 6;
+    // uint8_t DATA[] = {0x00, 0x01, 0x02, 0x03};
+    // pn532_error = PN532_Ntag2xxWriteBlock(&pn532, DATA, block_number);
+    // if (pn532_error) {
+    //     printf("Error: 0x%02x\r\n", pn532_error);
+    //     return -1;
+    // }
+    // pn532_error = PN532_Ntag2xxReadBlock(&pn532, buff, block_number);
+    // if (pn532_error) {
+    //     printf("Error: 0x%02x\r\n", pn532_error);
+    //     return -1;
+    // }
+    // for (uint8_t i = 0; i < sizeof(DATA); i++) {
+    //     if (DATA[i] != buff[i]) {
+    //         printf("Write block %d failed\r\n", block_number);
+    //         return -1;
+    //     }
+    // }
+    // printf("Write block %d successfully\r\n", block_number);
 }
