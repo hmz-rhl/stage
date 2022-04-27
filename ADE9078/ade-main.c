@@ -172,8 +172,8 @@ uint16_t ADE9078_getVersion(){
 
   addr = addr << 4;
 
-  tx[0] = addr >> 8;
-  tx[1] = addr | 0x8;
+  tx[0] = (uint8_t)addr >> 8;
+  tx[1] = (uint8_t)addr | 0x8;
   // tx[2] = 0x00;
   // tx[3] = 0x00;
   // tx[4] = 0x00;
@@ -182,18 +182,14 @@ uint16_t ADE9078_getVersion(){
   spiData data;
   
   data.mode = 3;                     
-  data.bits = 8;
-  for (size_t i = 0; i < 8; i++)
-  {
-    /* code */
-    data.rx[i] = 0;
-  }
-                
+  data.bits = 8;                
   data.speed = 2000000; 
   data.lsbFirst = 0;          
   data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
+
   data.tx = tx;
   data.rx = rx;
+
   strcpy(data.device,"/dev/spidev0.0");
   // on mets le cs a 0 de l'ade pour initier la comm SPI 
   expander_resetPinGPIO(exp, PM_CS);
