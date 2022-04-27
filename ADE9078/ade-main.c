@@ -1,5 +1,5 @@
 #include "../lib/expander-i2c.h"
-#include "bcm2835.h"
+#include "../lib/bcm2835.h"
 
 #include "../lib/spi-dev-lib.h"
 

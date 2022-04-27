@@ -2,7 +2,14 @@
 #include "topic.h"
 
 
-
+/**
+ ** 
+ * @brief   configure l'interface i2c, et lui fait connaitre l'adresse de l'expander
+ * 
+ * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * 
+ * @return  
+ **/
 struct mosquitto* init_mqtt()
 {
     int rc;
