@@ -66,6 +66,7 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
    //Prepare the 12 bit command header from the inbound address provided to the function
     expander_setAllPinsGPIO(exp);
    uint16_t temp_address, readval_unsigned;
+   uint8_t data[]
    temp_address = (((address << 4) & 0xFFF0)+8); //shift address  to align with cmd packet, convert the 16 bit address into the 12 bit command header. + 8 for isRead versus write
    uint8_t commandHeader1 = functionBitVal(temp_address, 1); //lookup and return first byte (MSB) of the 12 bit command header, sent first
    uint8_t commandHeader2 = functionBitVal(temp_address, 0); //lookup and return second byte (LSB) of the 12 bit command header, sent second
@@ -86,13 +87,21 @@ uint16_t ADE9078_spiRead16(uint16_t address, expander_t *exp) { //This is the al
       printf("bcm2835_spi_begin failed. Are you running as root??\n");
       exit(EXIT_FAILURE);
     }
+
+    expander_t *exp = expander_init(0x27);
+	  uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  	expander_resetOnlyPinSetOthersGPIO(exp, 4);
+
+	  spiTransfer(data);
+
+	    expander_setAndResetSomePinsGPIO(exp, ancienne_config);
       expander_resetOnlyPinSetOthersGPIO(exp, 5);
-      bcm2835_spi_transfer(commandHeader1); //Send MSB
-      bcm2835_spi_transfer(commandHeader2); //Send MSB
-      one = bcm2835_spi_transfer(WRITE);  //dummy write MSB, read out MSB
-      two = bcm2835_spi_transfer(WRITE);  //dummy write LSB, read out LSB
-      expander_setPinGPIO(exp,5);
-      bcm2835_spi_end();
+      // bcm2835_spi_transfer(commandHeader1); //Send MSB
+      // bcm2835_spi_transfer(commandHeader2); //Send MSB
+      // one = bcm2835_spi_transfer(WRITE);  //dummy write MSB, read out MSB
+      // two = bcm2835_spi_transfer(WRITE);  //dummy write LSB, read out LSB
+      // expander_setPinGPIO(exp,5);
+      // bcm2835_spi_end();
 
 	#ifdef AVRESP8266 //Arduino SPI Routine
     // beginTransaction is first
