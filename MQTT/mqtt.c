@@ -105,6 +105,7 @@ void mqtt_publish(char *topic, char *message)
 void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg) 
 {
 	printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
+    return
 }
 
 
@@ -119,7 +120,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  **/
 
  
-char* mqtt_subscribe(char *topic, void (*call)(struct mosquitto, void *, const struct mosquitto_message *))
+char* mqtt_subscribe(char *topic)
 {
     while(!test_topic(topic))
     {
@@ -133,6 +134,7 @@ char* mqtt_subscribe(char *topic, void (*call)(struct mosquitto, void *, const s
 
     mosquitto_subscribe(mosq, NULL, topic, 0);
     mosquitto_message_callback_set(mosq, on_message);
+    
 
     mosquitto_loop_start(mosq); // begin of a new thread 
     printf("topic :%s\n", topic);
