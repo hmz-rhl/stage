@@ -9,35 +9,29 @@
 
 #include "../lib/expander-i2c.h"
 
+#include <wiringPi.h>
+
 
 /******************************************************************************/
-int readAdc(spiData *data){
+int readAdc(){
+
 	uint8_t tx[] = {0};
 	uint8_t rx[ARRAY_SIZE(tx)] = {0};
+	
 	unsigned int reData = 0;           
 
-	data->tx[0] = START_BIT;
-	if(data->channelNo < 0 || data->channelNo > 1){
-		printf("MCP3202 had two channels, CHN0, CHN1\n");
-		return -1;
-	}
-	switch(data->channelNo){
-		case 0:
-			data->tx[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
-		break;
+	tx[0] = START_BIT;
 
-		case 1:
-			data->tx[1] = ADC_CONFIG_SGL_MODE_MSBF_CN1;
-		break;
-		
-		default:
-			data->tx[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
-		break;
-	}
-	data->tx[2] = DNT_CARE_BYTE;
+	tx[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
+
+	tx[2] = DNT_CARE_BYTE;
 
 	expander_t *exp = expander_init(0x27);
+
 	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+
+	
+
 	expander_resetOnlyPinSetOthersGPIO(exp, 4);
 
 	spiTransfer(data);
