@@ -64,7 +64,6 @@ static void pabort(const char *s)
 //    printf(" Returned Value (dec): ");
 //    printf("%d\n", x);
 //    printf(" Returned Value (HEX): ");
-//    printf("%02x\n", x);
 //    printf(" ADE9078::functionBitVal function completed ");
 //   #endif
 
@@ -123,13 +122,9 @@ static void pabort(const char *s)
 //     #ifdef ADE9078_VERBOSE_DEBUG
 //      printf(" ADE9078::spiRead16 function details: \n");
 //      printf(" Command Header: \n");
-//      printf("%02x\n",commandHeader1);
-//      printf("%02x\n",commandHeader2);
 //      printf(" Address Byte 1(MSB)[HEX]: \n");
 //      printf(" Returned bytes (1(MSB) and 2) [HEX]: \n");
-//      printf("%02x", one); //print MSB
 //      printf("\n");
-//      printf("%02x\n", two);  //print LSB
 //      printf(" ADE9078::spiRead16 function completed \n");
 //     #endif
 
@@ -170,7 +165,6 @@ uint16_t ADE9078_getRun(){
 
 
 
-  printf("on envoie : 0x%02X %02X %02X %02X\n", data[3], data[2], data[1], data[0]);
   
   while(digitalRead(IRQ1));
 
@@ -200,11 +194,9 @@ uint16_t ADE9078_getRun(){
 
 
 
-  printf("recu : 0x%02X %02X\n",data[3], data[2]);
 
   uint16_t recu = data[3] + (data[2] << 8);
 
-  printf("Run : 0x%02X\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -230,7 +222,6 @@ void ADE9078_setRun(){
 
 
 #ifdef DEBUG
-  printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
 #endif
 // on attend que irq1 pas a 0
  while(digitalRead(IRQ1));
@@ -439,7 +430,6 @@ uint32_t ADE9078_getPartID(){
 
 
 
-  printf("on envoie: 0x%02X %02X\n", data[1], data[0]);
   
   while(digitalRead(IRQ1));
 
@@ -466,11 +456,10 @@ uint32_t ADE9078_getPartID(){
 
 
 
-  printf("recu : 0x%02X %02X\n",data[3], data[2]);
 
   uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
-  printf("VERSION : %X\n\n", recu); 
+  printf("part ID : %X\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
