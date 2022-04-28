@@ -33,6 +33,7 @@
 
 #define PART_ID         0x472
 
+#define PGA_GAIN        0x4B9  //  0x******* Vc Vb Va In Ic Ib Ia (chaqun sur 2bits (1 2 4 4) donc sur les 14 premiers bits du registre )
 static void pabort(const char *s)
 {
         perror(s);
@@ -457,7 +458,7 @@ uint32_t ADE9078_getPartID(){
 
 
 
-  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
+  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[1] << 24);
 
   printf("part ID : %X\n\n", recu); 
   expander_closeAndFree(exp);
