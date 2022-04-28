@@ -206,7 +206,7 @@ uint16_t ADE9078_getRun(){
 }
 
 
-uint16_t ADE9078_setRun(){
+void ADE9078_setRun(){
        
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
@@ -252,7 +252,6 @@ uint16_t ADE9078_setRun(){
 
   expander_closeAndFree(exp);
 
-  return recu;
 }
 
 
@@ -318,6 +317,9 @@ int main(){
 
 
     ADE9078_getVersion();
+    ADE9078_getRun();
+    ADE9078_getVersion
+    ADE9078_setRun();
 
 
     
