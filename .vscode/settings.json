@@ -4,6 +4,7 @@
         "mosquitto.h": "c",
         "logging_mosq.h": "c",
         "SimuSPI.C": "cpp",
-        "xutility": "c"
+        "xutility": "c",
+        "mcp3202-adc.h": "c"
     }
 }

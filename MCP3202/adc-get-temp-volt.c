@@ -5,7 +5,7 @@
 #include <errno.h>
 
 #include "../lib/spi-dev-lib.h"
-#include "mcp3202-adc.h"
+#include "../lib/mcp3202-adc.h"
 
 #include "../lib/expander-i2c.h"
 
@@ -13,7 +13,8 @@
 #include <wiringPiSPI.h>
 
 // L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
-// On a 1C tous les 12 pas.
+// On a 1C tous les 12 pas en sortie chez l'adc.
+// Range du termometre: -40C - 150C ; 0,1V a 2V.
 
 #define DEBUG
 /******************************************************************************/
@@ -23,7 +24,7 @@ int readAdc(int channel){
 	
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
-		printf("Erreur de setup de SPI dans %s", __func__);
+		perror("Erreur de setup de SPI dans %s", __func__);
 		return reData;
 	}
 	uint8_t data[3] = {0};
@@ -59,7 +60,7 @@ int readAdc(int channel){
 
 #ifdef DEBUG
 	printf("The analog input value is \n");
-	printf("Value at MCP3202 CH0 is: %d D \n", data);
+	printf("Value at MCP3202 CH%d is: %d D \n", channel, data);
 #endif
 	return reData;
 }
@@ -68,7 +69,7 @@ int readAdc(int channel){
 int main(int argc, char **argv){
 
 	
-	int retVal = readAdc();
+	int retVal = readAdc(0);
 	if(retVal < 0){
 		perror("Failed to read ADC");
 	}
