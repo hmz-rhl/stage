@@ -37,8 +37,8 @@ static void pabort(const char *s)
         abort();
 }
 
-const uint8_t WRITE = 0b00000000; //This value tells the ADE9078 that data is to be written to the requested register.
-const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to be read from the requested register.
+// const uint8_t WRITE = 0b00000000; //This value tells the ADE9078 that data is to be written to the requested register.
+// const uint8_t READ = 0b10000000;  //This value tells the ADE9078 that data is to be read from the requested register.
 
 //////////
 // Init SPIdev
