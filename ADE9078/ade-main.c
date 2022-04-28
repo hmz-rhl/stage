@@ -195,7 +195,7 @@ uint16_t ADE9078_getVersion(){
 
 
 
-  printf("RUN : %x %x %x %x\n",data[3], data[2], data[1], data[0]);
+  printf("Version : %x %x %x %x\n",data[3], data[2], data[1], data[0]);
   expander_closeAndFree(exp);
 
   return 1;
