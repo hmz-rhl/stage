@@ -178,7 +178,7 @@ uint16_t ADE9078_getVersion(){
 
 	wiringPiSPIDataRW(0, data, 4);
 
-  expander_setPinGPIO(PM_CS);
+  expander_setPinGPIO(exp, PM_CS);
 
 	//expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
