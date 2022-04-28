@@ -5,6 +5,7 @@
         "logging_mosq.h": "c",
         "SimuSPI.C": "cpp",
         "xutility": "c",
-        "mcp3202-adc.h": "c"
+        "mcp3202-adc.h": "c",
+        "pn532_rpi_i2c.h": "c"
     }
 }
