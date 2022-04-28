@@ -3,6 +3,13 @@
 void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
 {
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
+    if(!strcmp(msg->payload, "1")){
+        printf("allumage de la led\n");
+    }
+    else if(!strcmp(msg->payload, "")){
+        printf("éteignage de la led\n");
+
+    }
 }
 void triple(int num)
 {
