@@ -14,16 +14,16 @@ void moitie(int num)
     printf("%f\n", num/2.0);
 }
 
+void fonctionCeption(void (*fun)(int))
+{
+    fun(10);
+}
 void utiliseFonction(void (*fun)(int), int ii )
 {
     fonctionCeption(fun);
     printf("fin de la fonction uiliseFonction\n");
 }
 
-void fonctionCeption(void (*fun)(int))
-{
-    fun(10);
-}
 
 int main(int argc, char const *argv[])
 {
