@@ -72,7 +72,7 @@ int main(int argc, char **argv){
 	int retVal;
 	while(1){
 
-		udelay(500000);
+		usleep(500000);
 		retVal = readAdc(0);
 		if(retVal < 0){
 			perror("Failed to read ADC");
