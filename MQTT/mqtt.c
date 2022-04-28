@@ -119,7 +119,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  **/
 
  
-void mqtt_subscribe(char *topic, void (*call)(struct mosquitto, void *, const struct mosquitto_message *))
+char* mqtt_subscribe(char *topic, void (*call)(struct mosquitto, void *, const struct mosquitto_message *))
 {
     while(!test_topic(topic))
     {
@@ -130,19 +130,21 @@ void mqtt_subscribe(char *topic, void (*call)(struct mosquitto, void *, const st
     
     // mqtt_subscribe(topic,);
     struct mosquitto *mosq = init_mqtt();
-    mosquitto_subscribe(mosq, NULL, topic, 0);
-    mosquitto_message_callback_set(mosq, call);
 
-    mosquitto_loop_start(init_mqtt()); // begin of a new thread 
+    mosquitto_subscribe(mosq, NULL, topic, 0);
+    mosquitto_message_callback_set(mosq, on_message);
+
+    mosquitto_loop_start(mosq); // begin of a new thread 
     printf("topic :%s\n", topic);
 
 
 	printf("Tapez Entree pour quitter...\n");
 	getchar();
-	mosquitto_loop_stop(mosq, true); // stop of the thread
+	mosquitto_loop_stop(mosq, true); // stop of the thread 
 
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
+    return msg->payload;
 }
 
