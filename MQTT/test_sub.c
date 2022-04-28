@@ -36,7 +36,7 @@ void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_messag
 int main(int argc, char const *argv[])
 {
     /* code */
-    mqtt_subscribe(argv[1], traitement);
+    mqtt_subscribe(argv[1], traitement());
     //mqtt_publish(argv[1], "2");
     //utiliseFonction(moitie, 2);
     return 0;
