@@ -26,6 +26,7 @@
 
 #define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
+#define IRQ1              24
 
 static void pabort(const char *s)
 {
@@ -162,7 +163,7 @@ uint16_t ADE9078_getVersion(){
 	data[1] = 0x00;
 	data[2] = 0x00;
 
-  //while(!digitalRead(26));
+  while(!digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
