@@ -200,6 +200,10 @@ uint16_t ADE9078_getRun(){
 
   uint16_t recu = data[3] + (data[2] << 8);
 
+#ifdef DEBUG
+  printf("RUN : %d\n", recu);
+#endif
+
   expander_closeAndFree(exp);
 
   return recu;
