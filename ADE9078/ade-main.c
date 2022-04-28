@@ -303,7 +303,7 @@ uint16_t ADE9078_getVersion(){
 
   printf("recu : 0x%x %x\n",data[3], data[2]);
 
-  uint16_t recu = data[3] + data[2] << 8;
+  uint16_t recu = data[3] + (data[2] << 8);
 
   printf("VERSION : %x\n", recu); 
   expander_closeAndFree(exp);
