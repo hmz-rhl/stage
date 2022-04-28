@@ -147,6 +147,6 @@ void mqtt_subscribe(char *topic)
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
-    return msg->payload;
+    
 }
 
