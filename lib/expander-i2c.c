@@ -265,14 +265,17 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 
     exp->buff[1] = nouveauGPIO;
 
-
+#ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+#endif
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+    #ifdef DEBUG
     printf("mise a 1 de GPIO[%d] %s\n", pin, exp->label[pin]);
+#endif
 }
 
 
@@ -310,14 +313,17 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
     exp->buff[1] = nouveauGPIO;
 
-
+#ifdef DEBUG
     printf("__Ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+#endif
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+    #ifdef DEBUG
     printf("mise a 0 de GPIO[%d] %s\n", pin , exp->label[pin]);
+#endif
 
 }
 
@@ -377,14 +383,17 @@ void expander_setAllPinsGPIO(expander_t *exp){
  **/
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0xFF;
-
+#ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+#endif
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+#ifdef DEBUG
     printf("mise a 1 de tous les GPIO\n");
+#endif
 }
 
 
@@ -410,14 +419,16 @@ void expander_resetAllPinsGPIO(expander_t *exp){
  **/
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x00;
-
+#ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-
+#endif
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+#ifdef DEBUG
     printf("mise a 0 de tous les GPIO\n");
+    #endif
 }
 
 
@@ -446,14 +457,16 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
     }
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x01 << pin;
-
+    #ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-
+    #endif
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+    #ifdef DEBUG
     printf("mise a 1 du seul GPIO[%d] %s\n", pin, exp->label[pin]);
+    #endif
 }
 
 
@@ -483,14 +496,16 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
     
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = ~(0x01 << pin);
-
+#ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-
+#endif
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+    #ifdef DEBUG
     printf("mise a 1 du seul GPIO[%d]\n", pin);
+#endif
 }
 
 
@@ -505,14 +520,17 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
     
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = config;
-
+#ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+#endif
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur OLAT\r\n");
         exit(EXIT_FAILURE);
     }
+    #ifdef DEBUG
     printf("mise a %02x du GPIO\n", config);
+#endif
 }
 
 /**
