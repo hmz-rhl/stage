@@ -66,6 +66,8 @@ int readAdc(int channel){
 	return reData;
 }
 
+
+
 void sendAdcMqtt(int data){
 
 	data = data*3.3/4096;
@@ -76,13 +78,13 @@ void sendAdcMqtt(int data){
 int main(int argc, char **argv){
 
 	int retVal;
-	char buffer[10];
+	//char buffer[10];
 	while(1){
 
 		usleep(500000);
 		retVal = readAdc(0);
-		itoa(retVal, buffer, 10);
-		printf("en string %s\n", buffer);
+		//itoa(retVal, buffer, 10);
+		//printf("en string %s\n", buffer);
 		if(retVal < 0){
 			perror("Failed to read ADC");
 		}
