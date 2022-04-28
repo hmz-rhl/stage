@@ -199,7 +199,7 @@ uint16_t ADE9078_getRun(){
 
   uint16_t recu = data[3] + (data[2] << 8);
 
-  printf("Run : 0x%x\n", recu); 
+  printf("Run : 0x%x\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -225,7 +225,7 @@ void ADE9078_setRun(){
 
 
 
-  printf("on envoie : 0x%x %x %x %x\n", data[3], data[2], data[1], data[0]);
+  printf("on envoie : 0x%x %x %x %x\n\n", data[3], data[2], data[1], data[0]);
   
   //while(!digitalRead(IRQ1));
 
@@ -274,7 +274,7 @@ uint16_t ADE9078_getVersion(){
 
 
 
-  printf("Reiceved %x %x\n", data[3], data[2]);
+  printf("on envoie: %x %x\n", data[3], data[2]);
   
   //while(!digitalRead(IRQ1));
 
@@ -305,7 +305,7 @@ uint16_t ADE9078_getVersion(){
 
   uint16_t recu = data[3] + (data[2] << 8);
 
-  printf("VERSION : %x\n", recu); 
+  printf("VERSION : %x\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -317,6 +317,9 @@ int main(){
 
 
     ADE9078_getVersion();
+    ADE9078_getRun();
+    ADE9078_getVersion();
+    ADE9078_setRun();
     ADE9078_getRun();
     ADE9078_getVersion();
     ADE9078_setRun();
