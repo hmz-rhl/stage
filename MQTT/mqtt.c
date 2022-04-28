@@ -120,7 +120,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  **/
 
  
-void mqtt_subscribe(char *topic)
+void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , const struct mosquitto_message*))
 {
     while(!test_topic(topic))
     {
@@ -133,7 +133,7 @@ void mqtt_subscribe(char *topic)
     struct mosquitto *mosq = init_mqtt();
 
     mosquitto_subscribe(mosq, NULL, topic, 0);
-    mosquitto_message_callback_set(mosq, on_message);
+    mosquitto_message_callback_set(mosq, traitement);
 
 
     mosquitto_loop_start(mosq); // begin of a new thread 

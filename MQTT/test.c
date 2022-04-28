@@ -1,6 +1,6 @@
 #include "mqtt.h"
 
-void traitement(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg)
+void traitement(void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*)
 {
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 }
@@ -28,8 +28,8 @@ void utiliseFonction(void (*fun)(int), int ii )
 int main(int argc, char const *argv[])
 {
     /* code */
-    //mqtt_subscribe(argv[1], traitement);
+    mqtt_subscribe(argv[1], traitement);
     //mqtt_publish(argv[1], "25");
-    utiliseFonction(moitie, 2);
+    //utiliseFonction(moitie, 2);
     return 0;
 }
