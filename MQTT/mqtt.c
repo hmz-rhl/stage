@@ -10,7 +10,10 @@
 
 #include "mqtt.h"
 
+
 char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y};
+
+struct mosquitto* mosq = init_mqtt();
 
 /**
  ** 
@@ -70,7 +73,7 @@ int test_topic(char *topic)
  * @param   message message à publier
  *
  **/
-void mqtt_publish(char *topic, char *message)
+void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
 {
     while(!test_topic(topic))
     {
@@ -80,7 +83,7 @@ void mqtt_publish(char *topic, char *message)
     }
     // mqtt_publish(topic, message);
 
-    struct mosquitto *mosq = init_mqtt();
+    //struct mosquitto *mosq = init_mqtt();
 
     mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     
@@ -117,7 +120,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  * 
  *
  **/
-void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , const struct mosquitto_message*))
+void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq)
 {
     while(!test_topic(topic))
     {
@@ -125,7 +128,7 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
         scanf("%s", topic);
         getchar();
     }
-    struct mosquitto *mosq = init_mqtt();
+        //struct mosquitto *mosq = init_mqtt();
 
     mosquitto_subscribe(mosq, NULL, topic, 0);
     mosquitto_message_callback_set(mosq, traitement);
