@@ -139,11 +139,12 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
     mosquitto_loop_start(mosq); // begin of a new thread 
     printf("topic :%s\n", topic);
 
-
-	printf("Tapez Entree pour quitter...\n");
-	getchar();
+    while(1)
+    {
+        printf("Tapez Entree pour quitter...\n");
+	    getchar();
+    }
 	mosquitto_loop_stop(mosq, true); // stop of the thread 
-
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
