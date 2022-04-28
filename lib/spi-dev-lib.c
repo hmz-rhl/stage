@@ -39,7 +39,7 @@ int spiInit(spiData *data){
 	/* open file */
 	data->fileDescriptor = open(data->device, O_RDWR);
 	if(data->fileDescriptor < 0){
-		perror("Can't open device");
+		perror("Can't open device %s", data->device);
 		return retVal;
 	}
 

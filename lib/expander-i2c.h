@@ -19,7 +19,18 @@
 #define I2C_DEVICE          "/dev/i2c-1"
 //#define EXP2_ADDR       (0x27)
 #define MAX_STRING          255
-  
+
+
+
+// les cs de l'expander 0x27
+
+#define PM0             7       //  Pin pour controler le mode de calcul de l'ADE
+#define PM1             6       //  Pin pour controler le mode de calcul de l'ADE
+#define PM_CS           5       //  Pin pour controler le cs de l'ADE
+#define T_CS            4       //  Pin pour controler l'adc Temperature
+#define CP_CS           3       
+#define PP_CS           2       
+
 
 // registers
 #define MCP23008_IODIR 0x00   //!< I/O direction register

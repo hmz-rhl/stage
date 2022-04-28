@@ -17,8 +17,6 @@
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
-#define PM_CS            5
-
 #define VERSION_16       0x4FE //Reset: 0x0040 Access: R
 
 #define ADE9078_VERBOSE_DEBUG
@@ -27,9 +25,6 @@
 
 #define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
-#define PM0             7     // Pin pour controler le mode de calcul de l'ADE
-
-#define PM1             6     // Pin pour controler le mode de calcul de l'ADE
 
 static void pabort(const char *s)
 {
