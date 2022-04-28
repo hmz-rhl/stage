@@ -81,7 +81,8 @@ int main(int argc, char **argv){
 
 		usleep(500000);
 		retVal = readAdc(0);
-		printf("en string %s\n", itoa(retVal, buffer, 10));
+		itoa(retVal, buffer, 10);
+		printf("en string %s\n", buffer);
 		if(retVal < 0){
 			perror("Failed to read ADC");
 		}
