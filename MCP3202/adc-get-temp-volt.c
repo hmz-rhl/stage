@@ -76,11 +76,12 @@ void sendAdcMqtt(int data){
 int main(int argc, char **argv){
 
 	int retVal;
+	char buffer[10];
 	while(1){
 
 		usleep(500000);
 		retVal = readAdc(0);
-		printf("en string %s\n", itoa(retVal, NULL, 10));
+		printf("en string %s\n", itoa(retVal, buffer, 10));
 		if(retVal < 0){
 			perror("Failed to read ADC");
 		}
