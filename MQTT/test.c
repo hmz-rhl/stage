@@ -14,7 +14,7 @@ void moitie(int num)
     printf("%f\n", num/2.0);
 }
 
-void utiliseFonction(void (*fun)(int) )
+void utiliseFonction(void (*fun)(void) )
 {
     fun(10);
     printf("fin de la fonction uiliseFonction\n");
