@@ -161,8 +161,8 @@ uint16_t ADE9078_getVersion(){
 
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) | READ;
+	data[0] = 0x00FF & (VERSION_16 >> 4) ;
+	data[1] = ((VERSION_16 & 0x00F) << 4) | READ;
   // data[2] = 0x00;
   // data[3] = 0x01;
 
@@ -196,6 +196,10 @@ uint16_t ADE9078_getVersion(){
 
 
   printf("RUN : %x %x %x %x\n",data[3], data[2], data[1], data[0]);
+
+  uint16_t recu = data[3] + data[2] << 8;
+
+  printf("recu : %x\n", recu); 
   expander_closeAndFree(exp);
 
   return 1;
