@@ -306,7 +306,7 @@ uint16_t ADE9078_getVersion(){
 
   uint16_t recu = data[3] + (data[2] << 8);
 
-  printf("VERSION : Ox%02X\n\n", recu); 
+  printf("VERSION : 0x%02X\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -373,13 +373,9 @@ int main(){
 
 
     ADE9078_setRun();
+    ADE9078_resetRun();
     ADE9078_getRun();
     ADE9078_getVersion();
-    // ADE9078_getVersion();
-    // ADE9078_getRun();
-    // ADE9078_getVersion();
-    // ADE9078_setRun();
-    // ADE9078_getRun();
     ADE9078_getPartID();
 
     
