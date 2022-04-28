@@ -16,7 +16,7 @@
 /******************************************************************************/
 int readAdc(){
 
-	unsigned int reData = -1;           
+	unsigned int reData = 0;           
 	
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
@@ -50,26 +50,19 @@ int readAdc(){
 
 #ifdef DEBUG
 	printf("The analog input value is \n");
-	printf("Value at MCP3202 CH%d is: %d D : %X H \n", data->channelNo, reData, reData);
+	printf("Value at MCP3202 CH0 is: %d D \n", data);
 #endif
-	return 0;
+	return reData;
 }
 
 /******************************************************************************/
 int main(int argc, char **argv){
 
-	if(spiInit(data)){
-		perror("SPI Init failed");
-		exit(-1);
-	}
 	
-	retVal = readAdc(data);
+	int retVal = readAdc(data);
 	if(retVal < 0){
 		perror("Failed to read ADC");
 	}
-
-	free(data);
-	close(data->fileDescriptor);
 
 	return retVal;               
 }
