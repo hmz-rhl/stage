@@ -14,9 +14,9 @@ void moitie(int num)
     printf("%f\n", num/2.0);
 }
 
-void utiliseFonction(void (*fun)(void) )
+void utiliseFonction(void (*fun)(int), int ii )
 {
-    fun(10);
+    fun(ii);
     printf("fin de la fonction uiliseFonction\n");
 }
 
@@ -25,6 +25,6 @@ int main(int argc, char const *argv[])
     /* code */
     //mqtt_subscribe(argv[1], traitement);
     //mqtt_publish(argv[1], "25");
-    utiliseFonction(moitie);
+    utiliseFonction(moitie, 2);
     return 0;
 }
