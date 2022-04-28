@@ -9,6 +9,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //mqtt_subscribe(argv[1], traitement);
-    mqtt_publish(argv[1], "25");
+    mqtt_publish("down/charger/pwm", "25");
     return 0;
 }
