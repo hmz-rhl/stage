@@ -1,6 +1,6 @@
 #include "mqtt.h"
 
-void traitement(void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*)
+void traitement(struct mosquitto *, void* , const struct mosquitto_message*)
 {
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 }
