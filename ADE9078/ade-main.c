@@ -170,7 +170,7 @@ uint16_t ADE9078_getVersion(){
 
   printf("%x %x %x %x\n", data[3], data[2], data[1], data[0]);
   
-  //while(!digitalRead(IRQ1));
+  while(!digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
