@@ -182,7 +182,7 @@ uint16_t ADE9078_getVersion(){
 	
 	usleep(1);
 
-	wiringPiSPIDataRW(0, data,4);
+	wiringPiSPIDataRW(0, data,6);
 
   expander_setPinGPIO(exp, PM_CS);
 
