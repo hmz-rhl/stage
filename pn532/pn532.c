@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include "pn532.h"
-#include "PN532_Rpi_I2C.h"
+
 
 
 const uint8_t PN532_ACK[] = {0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00};
@@ -43,36 +43,6 @@ const uint8_t PN532_FRAME_START[] = {0x00, 0x00, 0xFF};
   *     Note that less than length bytes might be returned!
   * @retval: Returns -1 if there is an error parsing the frame.  
   */
-
-void PN532_I2C_Init(PN532* pn532) {
-    // init the pn532 functions
-    pn532->reset = PN532_Reset;
-    pn532->read_data = PN532_I2C_ReadData;
-    pn532->write_data = PN532_I2C_WriteData;
-    pn532->wait_ready = PN532_I2C_WaitReady;
-    pn532->wakeup = PN532_I2C_Wakeup;
-    pn532->log = PN532_Log;
-    char devname[20];
-    snprintf(devname, 19, "/dev/i2c-%d", _I2C_CHANNEL);
-    fd = open(devname, O_RDWR);
-    if (fd < 0) {
-        fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
-        return;
-    }
-    if (ioctl(fd, I2C_SLAVE, _I2C_ADDRESS) < 0) {
-        fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
-        return;
-    }
-    if (wiringPiSetupGpio() < 0) {  // using Broadcom GPIO pin mapping
-        return;
-    }
-    pinMode(_REQ_PIN, OUTPUT);
-    pinMode(_RESET_PIN, OUTPUT);
-    // hardware reset
-    pn532->reset();
-    // hardware wakeup
-    pn532->wakeup();
-}
 
 
 
