@@ -170,7 +170,7 @@ uint16_t ADE9078_getRun(){
 
   printf("on envoie : 0x%02X %02X %02X %02X\n", data[3], data[2], data[1], data[0]);
   
-  //while(!digitalRead(IRQ1));
+  while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
@@ -185,6 +185,9 @@ uint16_t ADE9078_getRun(){
 	
 	usleep(1);
 
+#ifdef DEBUG
+  printf("|read run register|\n");
+#endif
 	wiringPiSPIDataRW(0, data,4);
 
   expander_setPinGPIO(exp, PM_CS);
@@ -224,10 +227,11 @@ void ADE9078_setRun(){
   data[3] = 0x01;
 
 
-
+#ifdef DEBUG
   printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
-  
-  //while(!digitalRead(IRQ1));
+#endif
+// on attend que irq1 pas a 0
+ while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
@@ -241,7 +245,9 @@ void ADE9078_setRun(){
   expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
-
+#ifdef DEBUG
+  printf("|write 1 on run register|\n");
+#endif
 	wiringPiSPIDataRW(0, data,4);
 
   expander_setPinGPIO(exp, PM_CS);
@@ -276,7 +282,7 @@ void ADE9078_resetRun(){
 
   printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
   
-  //while(!digitalRead(IRQ1));
+  while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
@@ -326,7 +332,7 @@ uint16_t ADE9078_getVersion(){
 
   printf("on envoie: 0x%02X %02X\n", data[1], data[0]);
   
-  //while(!digitalRead(IRQ1));
+  while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
