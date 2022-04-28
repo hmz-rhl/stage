@@ -192,7 +192,7 @@ uint16_t ADE9078_getVersion(){
 
 
 
-  printf("version : %X %X\n",data[2], data[3]);
+  printf("version : %X %X\n",data[1], data[0]);
   expander_closeAndFree(exp);
 
   return 1;
