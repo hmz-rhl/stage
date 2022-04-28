@@ -1,0 +1,1 @@
+sudo gcc ade-main.c ../lib/expander-i2c.c -o version -lwiringPi
