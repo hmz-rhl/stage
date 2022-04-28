@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //mqtt_subscribe(argv[1], traitement);
-    mqtt_publish(argv[1], "2");
+    mqtt_publish(argv[1], argv[2]);
     //utiliseFonction(moitie, 2);
     return 0;
 }

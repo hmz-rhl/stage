@@ -105,7 +105,6 @@ void mqtt_publish(char *topic, char *message)
 void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg) 
 {
 	printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
-    //return
 }
 
 
@@ -143,11 +142,12 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
     {
         printf("Tapez Entree pour quitter...\n");
 	    getchar();
+        break;
     }
 	mosquitto_loop_stop(mosq, true); // stop of the thread 
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
-    
 }
+
 
