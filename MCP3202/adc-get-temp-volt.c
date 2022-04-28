@@ -69,13 +69,16 @@ int readAdc(int channel){
 /******************************************************************************/
 int main(int argc, char **argv){
 
-	
-	int retVal = readAdc(0);
-	if(retVal < 0){
-		perror("Failed to read ADC");
+	int retVal;
+	while(1){
+
+		retVal = readAdc(0);
+		if(retVal < 0){
+			perror("Failed to read ADC");
+		}
 	}
 
-	return retVal;               
+	return EXIT_SUCCESS;               
 }
 
  	
