@@ -80,7 +80,6 @@ int main(int argc, char **argv){
 	int retVal;
 	//char buffer[10];
 	while(1){
-
 		usleep(500000);
 		retVal = readAdc(0);
 		//itoa(retVal, buffer, 10);
