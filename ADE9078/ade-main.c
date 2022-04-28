@@ -370,8 +370,8 @@ int main(){
     ADE9078_getRun();
     ADE9078_setRun();
     ADE9078_getVersion();
-    ADE9078_resetRun();
     ADE9078_getRun();
+    ADE9078_resetRun();
     ADE9078_getVersion();
     ADE9078_resetRun();
     ADE9078_getRun();
