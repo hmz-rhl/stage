@@ -60,7 +60,7 @@ int readAdc(int channel){
 
 #ifdef DEBUG
 	printf("The analog input value is \n");
-	printf("Value at MCP3202 CH%d is: %d D \n", channel, data);
+	printf("Value at MCP3202 CH%d is: %d D \n", channel, redata);
 #endif
 	return reData;
 }
