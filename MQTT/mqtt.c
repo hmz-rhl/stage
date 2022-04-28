@@ -120,7 +120,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  **/
 
  
-char* mqtt_subscribe(char *topic)
+void mqtt_subscribe(char *topic)
 {
     while(!test_topic(topic))
     {
