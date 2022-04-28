@@ -69,7 +69,7 @@ int readAdc(int channel){
 int main(int argc, char **argv){
 
 	
-	int retVal = readAdc(0);
+	int retVal = readAdc(1);
 	if(retVal < 0){
 		perror("Failed to read ADC");
 	}
