@@ -16,8 +16,13 @@ void moitie(int num)
 
 void utiliseFonction(void (*fun)(int), int ii )
 {
-    fun(ii);
+    fonctionCeption(fun);
     printf("fin de la fonction uiliseFonction\n");
+}
+
+void fonctionCeption(void (*fun)(int))
+{
+    fun(10);
 }
 
 int main(int argc, char const *argv[])
