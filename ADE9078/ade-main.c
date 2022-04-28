@@ -162,9 +162,9 @@ uint16_t ADE9078_getVersion(){
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
 	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) & WRITE;
-  data[2] = 0x00;
-  data[3] = 0x00;
+	data[1] = ((RUN & 0x00F) << 4) | READ;
+  // data[2] = 0x00;
+  // data[3] = 0x00;
 
 
 
