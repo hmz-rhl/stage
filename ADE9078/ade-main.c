@@ -255,6 +255,56 @@ void ADE9078_setRun(){
 }
 
 
+void ADE9078_resetRun(){
+       
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+
+	uint8_t data[6] = {0};
+
+	
+    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+	data[0] = 0x00FF & (RUN >> 4) ;
+	data[1] = ((RUN & 0x00F) << 4) & WRITE;
+  data[2] = 0x00;
+  data[3] = 0x00;
+
+
+
+  printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
+  
+  //while(!digitalRead(IRQ1));
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+  setAllCS(exp);
+
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	usleep(1);
+	
+  expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+
+	wiringPiSPIDataRW(0, data,4);
+
+  expander_setPinGPIO(exp, PM_CS);
+
+	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+  expander_closeAndFree(exp);
+
+}
+
+
+
 uint16_t ADE9078_getVersion(){
        
 	if(wiringPiSPISetup(0, 2000000) < 0)
@@ -319,10 +369,10 @@ int main(){
     ADE9078_getVersion();
     ADE9078_getRun();
     ADE9078_getVersion();
-    ADE9078_setRun();
+    ADE9078_resetRun();
     ADE9078_getRun();
     ADE9078_getVersion();
-    ADE9078_setRun();
+    ADE9078_resetRun();
 
 
     
