@@ -1,0 +1,1 @@
+sudo gcc testPN532.c pn532.c PN532_Rpi_I2C.c -o test2 -lwiringpi

@@ -29,6 +29,8 @@
 
 #include <stdio.h>
 #include "pn532.h"
+#include "PN532_Rpi_I2C.h"
+
 
 const uint8_t PN532_ACK[] = {0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00};
 const uint8_t PN532_FRAME_START[] = {0x00, 0x00, 0xFF};
