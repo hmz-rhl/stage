@@ -158,10 +158,10 @@ uint16_t ADE9078_getVersion(){
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
 	data[0] = 0x00FF & (VERSION_16 >> 4) ;
 	data[1] = 0xe8;//((VERSION_16 & 0x00F) << 4) | 0b1000;
-	data[1] = 0x00;
 	data[2] = 0x00;
+	data[3] = 0x00;
 
-  printf("%02x %02x\n", data[0], data[1]);
+  printf("%x %x\n", data[1], data[0]);
   
   //while(!digitalRead(IRQ1));
 
