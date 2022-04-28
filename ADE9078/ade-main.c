@@ -168,16 +168,19 @@ uint16_t ADE9078_getVersion(){
 	expander_t *exp = expander_init(EXPANDER_2);
 
 	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-
+  expander_resetAllPinsGPIO(exp);
+  setAllCS(exp);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 
 	wiringPiSPIDataRW(0, data, 4);
 
-	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+  expander_setPinGPIO(PM_CS);
+
+	//expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 	usleep(1);
 
