@@ -250,8 +250,6 @@ typedef struct _PN532 {
     void (*log)(const char* log);
 } PN532;
 
-void PN532_I2C_Init(PN532* pn532);
-
 int PN532_WriteFrame(PN532* pn532, uint8_t* data, uint16_t length);
 int PN532_ReadFrame(PN532* pn532, uint8_t* buff, uint16_t length);
 int PN532_CallFunction(PN532* pn532, uint8_t command, uint8_t* response, uint16_t response_length, uint8_t* params, uint16_t params_length, uint32_t timeout);
