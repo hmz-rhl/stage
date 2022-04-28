@@ -11,7 +11,7 @@ void triple(int num)
 
 void moitie(int num)
 {
-    printf("%f\n", num/2);
+    printf("%f\n", num/2.0);
 }
 
 void utiliseFonction(void (*fun)(int) )
