@@ -32,6 +32,7 @@ void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_messag
 // }
 
 
+
 int main(int argc, char const *argv[])
 {
     /* code */

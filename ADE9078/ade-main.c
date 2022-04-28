@@ -13,6 +13,7 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include <string.h>
+#include <wiringPi.h>
 
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
@@ -145,62 +146,41 @@ void setAllCS(expander_t *exp)
 }
 
 uint16_t ADE9078_getVersion(){
+       
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+
+	uint8_t data[3] = {0};
+
+	
+
+	data[0] = 0x4f;
+	data[1] = 0xe8;
+	data[1] = 0x00;
+	data[2] = 0x00;
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
 
-  uint16_t addr = 0x4fe;
-  expander_t *exp = expander_init(EXPANDER_2);
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+	
+	usleep(1);
 
-  uint8_t configAvant = expander_getAllPinsGPIO(exp);
+	wiringPiSPIDataRW(0, data, 3);
 
-  // on mets a 1 on sait jamais ( detection de front descendant donc on met a 1 puis 0)
-  setAllCS(exp);
+	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-  // On met PM0 et PM1 a 0 pour mettre le bon mode de calcul 
-  expander_setAllPinsGPIO(exp);
-  expander_resetPinGPIO(exp, PM0);
-  expander_resetPinGPIO(exp, PM1);
-
-  sleep(1);
-
-  uint8_t tx[4] ={0};
-  uint8_t rx[4] ={0};
+	usleep(1);
 
 
-  addr = addr << 4;
 
-  tx[0] = 0x4F;
-  tx[1] = 0xE8;
-  // tx[2] = 0x00;
-  // tx[3] = 0x00;
-  // tx[4] = 0x00;
-  // tx[5] = 0x00;
-
-  spiData data;
-  
-  data.mode = 3;                     
-  data.bits = 8;                
-  data.speed = 2000000; 
-  data.lsbFirst = 0;          
-  data.delay = 0;// 0x4fe -> 0x4fe0 -> 0x4fe8
-
-  data.tx = tx;
-  data.rx = rx;
-
-  strcpy(data.device,"/dev/spidev0.0");
-  // on mets le cs a 0 de l'ade pour initier la comm SPI 
-  expander_resetPinGPIO(exp, PM_CS);
-
-  spiInit(&data);
-
-  sleep(1);
-
-  spiTransfer(&data);
-
-  expander_setAndResetSomePinsGPIO(exp, 0xb00111100 | configAvant);
-
-  expander_setPinGPIO(exp, PM_CS);
-
-  printf("version : %X %X\n",data.rx[1], data.rx[0]);
+  printf("version : %X %X\n",data[1], data[0]);
   expander_closeAndFree(exp);
 
   return 1;
