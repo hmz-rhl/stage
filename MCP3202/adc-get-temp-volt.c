@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <errno.h>
 
+
 #include "../lib/mcp3202-adc.h"
 
 #include "../lib/expander-i2c.h"
@@ -23,7 +24,7 @@ int readAdc(int channel){
 	
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
-		perror("Erreur de setup de SPI dans %s", __func__);
+		perror("Erreur de setup de SPI");
 		return reData;
 	}
 	uint8_t data[3] = {0};
