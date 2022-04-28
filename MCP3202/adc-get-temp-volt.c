@@ -12,25 +12,31 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
+// L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
+// On a 1C tous les 12 pas.
+
 #define DEBUG
 /******************************************************************************/
-int readAdc(){
+int readAdc(int channel){
 
-	unsigned int reData = 0;           
+	unsigned int reData = -1;           
 	
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		printf("Erreur de setup de SPI dans %s", __func__);
 		return reData;
 	}
-	uint8_t data[] = {0};
+	uint8_t data[3] = {0};
 
 	
 
 	data[0] = START_BIT;
-
-	data[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
-
+	if(channel == 0){
+		data[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
+	}
+	else{
+		data[1] = ADC_CONFIG_SGL_MODE_MSBF_CN1;
+	}
 	data[2] = DNT_CARE_BYTE;
 
 	expander_t *exp = expander_init(0x27);
@@ -39,7 +45,8 @@ int readAdc(){
 
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	expander_resetOnlyPinSetOthersGPIO(exp, 4);
+	expander_resetOnlyPinSetOthersGPIO(exp, T_CS);
+	
 	sleep(1);
 
 	wiringPiSPIDataRW(0, data, 3);
@@ -47,6 +54,8 @@ int readAdc(){
 	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
+
+	expander_closeAndFree(exp);
 
 #ifdef DEBUG
 	printf("The analog input value is \n");
@@ -59,7 +68,7 @@ int readAdc(){
 int main(int argc, char **argv){
 
 	
-	int retVal = readAdc(data);
+	int retVal = readAdc();
 	if(retVal < 0){
 		perror("Failed to read ADC");
 	}
