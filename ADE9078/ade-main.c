@@ -1,5 +1,5 @@
 #include "../lib/expander-i2c.h"
-
+#include "../lib/ADE9078registers.h"
 
 #include <stdint.h>
 #include <unistd.h>
@@ -29,22 +29,54 @@
 #define IRQ1              24
 #define IRQ0              25
 
-#define AV_PCF_32		0x20B
-#define BV_PCF_32		0x22B
-#define CV_PCF_32		0x24B
-
-
 
 #define RUN             0x480
 
 #define READ            0x0008
 #define WRITE            0xFFF6
 
-#define PART_ID         0x472
-
-#define PGA_GAIN        0x4B9  //  0x******* Vc Vb Va In Ic Ib Ia (chaqun sur 2bits (1 2 4 4) donc sur les 14 premiers bits du registre )
 
 #define DEBUG
+
+typedef struct {
+  // All gains are 2 bits. Options: 1, 2, 3, 4
+  uint8_t vAGain;
+  uint8_t vBGain;
+  uint8_t vCGain;
+
+  uint8_t iAGain;
+  uint8_t iBGain;
+  uint8_t iCGain;
+  uint8_t iNGain;
+
+  uint32_t powerAGain;
+  uint32_t powerBGain;
+  uint32_t powerCGain;
+
+  uint8_t vConsel;
+  uint8_t iConsel;
+}InitializationSettings;
+
+uint8_t functionBitVal(uint16_t addr, uint8_t byteVal)
+{
+//Returns as integer an address of a specified byte - basically a byte controlled shift register with "byteVal" controlling the byte that is read and returned
+  uint16_t x = ((addr >> (8*byteVal)) & 0xff);
+
+  #ifdef ADE9078_VERBOSE_DEBUG
+   Serial.print(" ADE9078::functionBitVal function (separates high and low command bytes of provided addresses) details: ");
+   Serial.print(" Address input (dec): ");
+   Serial.print(addr, DEC);
+   Serial.print(" Byte requested (dec): ");
+   Serial.print(byteVal, DEC);
+   Serial.print(" Returned Value (dec): ");
+   Serial.print(x, DEC);
+   Serial.print(" Returned Value (HEX): ");
+   Serial.print(x, HEX);
+   Serial.println(" ADE9078::functionBitVal function completed ");
+  #endif
+
+  return x;
+}
 
 
 void waitForSPIReady(expander_t *exp){
@@ -120,8 +152,8 @@ uint16_t ADE9078_getRun(){
 
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) | READ;
+	data[0] = 0x00FF & (RUN_16 >> 4) ;
+	data[1] = ((RUN_16 & 0x00F) << 4) | READ;
   // data[2] = 0x00;
   // data[3] = 0x01;
 
@@ -180,8 +212,8 @@ void ADE9078_setRun(){
 
 	
 
-	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) & WRITE;
+	data[0] = 0x00FF & (RUN_16 >> 4) ;
+	data[1] = ((RUN_16 & 0x00F) << 4) & WRITE;
   	data[2] = 0x00;
   	data[3] = 0x01;
 
@@ -227,54 +259,6 @@ void ADE9078_setRun(){
 
 }
 
-void ADE9078_ConfigAPGAIN(){
-       
-
-	uint8_t data[6] = {0};
-
-	
-    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) & WRITE;
-  	data[2] = 0x00;
-  	data[3] = 0x00;
-
-
-
-  	printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
-  
-
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
-  	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  	// expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
-
-	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	usleep(1);
-	
-  	expander_resetPinGPIO(exp, PM_CS);
-	
-	usleep(1);
-
-	wiringPiSPIDataRW(0, data,4);
-
-  	expander_setPinGPIO(exp, PM_CS);
-
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-
-	usleep(1);
-
-  expander_closeAndFree(exp);
-
-}
-
 void ADE9078_resetRun(){
        
 
@@ -282,8 +266,8 @@ void ADE9078_resetRun(){
 
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (RUN >> 4) ;
-	data[1] = ((RUN & 0x00F) << 4) & WRITE;
+	data[0] = 0x00FF & (RUN_16 >> 4) ;
+	data[1] = ((RUN_16 & 0x00F) << 4) & WRITE;
   	data[2] = 0x00;
   	data[3] = 0x00;
 
@@ -322,8 +306,6 @@ void ADE9078_resetRun(){
   	expander_closeAndFree(exp);
 
 }
-
-
 
 uint16_t ADE9078_getVersion(){
        
@@ -388,8 +370,8 @@ uint32_t ADE9078_getPartID(){
 
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (PART_ID >> 4) ;
-	data[1] = ((PART_ID & 0x00F) << 4) | READ;
+	data[0] = 0x00FF & (PART_ID_32 >> 4) ;
+	data[1] = ((PART_ID_32 & 0x00F) << 4) | READ;
   // data[2] = 0x00;
   // data[3] = 0x01;
 
@@ -485,44 +467,110 @@ uint32_t ADE9078_getInstVoltageB(){
   printf("Tension phase B: %dV", recu); 
   expander_closeAndFree(exp);
 
-	return value;
+	return recu;
 }
 
-uint32_t ADE9078_getPartID(){
-       
+void spiWrite16(uint16_t addresse, uint16_t data){
+	      
 
 	uint8_t data[6] = {0};
 
 	
-    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (PART_ID >> 4) ;
-	data[1] = ((PART_ID & 0x00F) << 4) | READ;
-  // data[2] = 0x00;
-  // data[3] = 0x01;
+
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (data >> 4) ;
+	data[3] = ((data & 0x00FF)) ;
+  	
 
 
-
-  
+#ifdef DEBUG
+#endif
+// on attend que irq1 passe a 0
 
 	expander_t *exp = expander_init(EXPANDER_2);
+
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	
 	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
 		exit(EXIT_FAILURE);
 	}
-  	while(digitalRead(IRQ1));
+ 	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+ 	setAllCS(exp);
 
-	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
+#ifdef DEBUG
+ 	printf("|write %x on run register %x|\n", data, addresse);
+#endif
+	wiringPiSPIDataRW(0, data,4);
 
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+  	expander_closeAndFree(exp);
+
+}
+
+
+void spiWrite32(uint16_t addresse, uint32_t data){
+	      
+
+	uint8_t data[6] = {0};
+
+	
+
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (data >> 24) ;
+	data[3] = 0x00FF & (data >> 16);
+  	data[4] = 0x00FF & (data >> 8) ;
+	data[5] = ((data & 0x00FF)) ;
+  	
+
+
+#ifdef DEBUG
+#endif
+// on attend que irq1 passe a 0
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+ 	while(digitalRead(IRQ1));
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+ 	setAllCS(exp);
+
+	usleep(1);
+	
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+#ifdef DEBUG
+ 	printf("|write %x on run register %x|\n", data, addresse);
+#endif
 	wiringPiSPIDataRW(0, data,6);
 
   	expander_setPinGPIO(exp, PM_CS);
@@ -531,29 +579,133 @@ uint32_t ADE9078_getPartID(){
 
 	usleep(1);
 
+  	expander_closeAndFree(exp);
+
+}
 
 
+void ADE9078_initialize(InitializationSettings *is){
 
-  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
-  printf("part ID : 0x%X\n\n", recu); 
-  expander_closeAndFree(exp);
+  #ifdef ADE9078_VERBOSE_DEBUG
+   printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
+  #endif
 
-  return recu;
+	if(is == NULL)
+	{
+		printf("Erreur %s : argument NULL", __func__);
+		exit(EXIT_FAILURE);
+	}
+  // Page 56 of datasheet quick start
+  // #1: Ensure power sequence completed
+  
+  
+  //delay(30);
+
+
+  // Is always printing right now. Might be an issue?
+  // if (!checkBit((int)read32BitAndScale(STATUS1_32), 16)) {
+  //   printf("WARNING, POWER UP MAY NOT BE FINISHED\n");
+  // }
+   // #2: Configure Gains
+   spiWrite32(APGAIN_32, is->powerAGain);
+   spiWrite32(BPGAIN_32, is->powerBGain);
+   spiWrite32(CPGAIN_32, is->powerCGain);
+
+   uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
+                      (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
+   spiWrite16(PGA_GAIN_16, pgaGain);
+   uint32_t vLevelData = 0x117514;  // #5 : Write VLevel 0x117514
+   spiWrite32(VLEVEL_32, vLevelData); // #5
+
+  spiWrite16(CONFIG0_32, 0x00000000);  // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
+  // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
+  uint16_t settingsACCMODE = (is->iConsel << 6) + (is->vConsel << 5);
+
+  spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
+
+  spiWrite16(RUN_16, 1);  // 8: Write 1 to Run register
+  spiWrite16(EP_CFG_16, 1);  // 9: Write 1 to EP_CFG register
+
+  /*
+  Potentially useful registers to configure:
+  The following were in the 9078:
+    0x49A ZX_LP_SEL : to configure "zero crossing signal"
+    0x41F PHNOLOAD : To say if something is "no load".
+    Phase calibrations, such as APHCAL1_32
+  */
+  spiWrite16(CONFIG1_16, 0x0000);
+  spiWrite16(CONFIG2_16, 0x0000);
+  spiWrite16(CONFIG3_16, 0x0000);
+  spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
+
+  /* Registers configured in ADE9000 code */
+  // zx_lp_sel
+  // mask0, mask1, event_mask,
+  // wfb_cfg,
+  spiWrite16(EGY_TIME_16, 0x0001);
+  spiWrite16(EP_CFG_16, 0x0021); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
+
+  #ifdef ADE9078_VERBOSE_DEBUG
+   printf(" ADE9078:initialize function completed. Showing values and registers written \n");
+   printf(" APGAIN: ");
+   printf("%d \n",is->powerAGain);
+   printf(" BPGAIN: ");
+   printf("%d \n",is->powerBGain);
+   printf(" CPGAIN: ");
+   printf("%d \n",is->powerCGain);
+   printf(" PGA_GAIN: ");
+   printf("%d \n",is->pgaGain);
+   printf(" VLEVEL: ");
+   printf("%d \n",is->vLevelData);
+   printf(" CONFIG0-3, ALL 0'Sn \n");
+   printf(" ACCMODE: ");
+   printf("%d \n",settingsACCMODE);
+   printf(" RUN: \n");
+   printf(1);
+   printf(" EP_CFG: \n");
+   printf(1);
+   printf(" DICOEFF: \n");
+   printf(0xFFFFE000);
+  #endif
 }
 
 
 
 int main(){
 
+	InitializationSettings is ={
+		
+		.vAGain=1;
+		.vBGain=1;
+		.vCGain=1;
+
+		.iAGain=1;
+		.iBGain=1;
+		.iCGain=1;
+		.iNGain=1;
+
+		.powerAGain=1;
+		.powerBGain=1;
+		.powerCGain=1;
+
+		//Use these settings to configure wiring configuration at stertup
+		//FYI: B010=2 in DEC
+		//FYI: B100 = 4 in DEC
+
+		//4 Wire Wye configuration - non-Blondel compliant:
+		.vConsel=0;
+		.iConsel=0;
+	}
+	
 	ADE9078_PSM0();
-    ADE9078_setRun();
-    ADE9078_getRun();
+
+    ADE9078_initialize(&is);
     while(1)
     {
-      ADE9078_getVersion();
-      ADE9078_getPartID();
-      usleep(500000);
+
+	  ADE9078_getInstVoltageB();
+      usleep(2000000);
     }
 
     
