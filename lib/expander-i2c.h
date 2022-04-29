@@ -22,14 +22,26 @@
 
 
 
-// les cs de l'expander 0x27
+//l'expander 0x26
+
+#define RCD_RESET       6       //  Pin pour controler le mode de calcul de l'ADE
+#define RCD_TST         5       //  Pin pour controler le mode de calcul de l'ADE
+#define RCD_DIS         4      //  Pin pour controler le cs de l'ADE
+#define LOCK_D          3       //  Pin pour controler l'adc Temperature
+#define TYPE_E_F_ON     2       
+#define TYPE_2_L2L3_ON  1      
+#define TYPE_2_NL1_ON   0      
+
+//l'expander 0x27
 
 #define PM0             7       //  Pin pour controler le mode de calcul de l'ADE
 #define PM1             6       //  Pin pour controler le mode de calcul de l'ADE
 #define PM_CS           5       //  Pin pour controler le cs de l'ADE
 #define T_CS            4       //  Pin pour controler l'adc Temperature
 #define CP_CS           3       
-#define PP_CS           2       
+#define PP_CS           2  
+#define CP_DIS          1 
+#define LED_DIS         0  
 
 
 // registers

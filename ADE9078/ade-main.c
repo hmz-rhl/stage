@@ -27,6 +27,8 @@
 #define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
 #define IRQ1              24
+#define IRQ0              25
+
 
 #define RUN             0x480
 
@@ -63,6 +65,42 @@ void setAllCS(expander_t *exp)
   expander_setPinGPIO(exp, 3);
   expander_setPinGPIO(exp, 4);
   expander_setPinGPIO(exp, 5);
+}
+
+void ADE9078_PSM0(){
+	
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	expander_resetPinGPIO(exp, PM0);
+	expander_resetPinGPIO(exp, PM1);
+
+}
+
+void ADE9078_PSM1(){
+	
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	expander_setPinGPIO(exp, PM0);
+	expander_resetPinGPIO(exp, PM1);
+
+}
+
+void ADE9078_PSM2(){
+	
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	expander_resetPinGPIO(exp, PM0);
+	expander_setPinGPIO(exp, PM1);
+
+}
+
+void ADE9078_PSM3(){
+	
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	expander_setPinGPIO(exp, PM0);
+	expander_setPinGPIO(exp, PM1);
+
 }
 
 uint16_t ADE9078_getRun(){
@@ -125,7 +163,6 @@ uint16_t ADE9078_getRun(){
   return recu;
 }
 
-
 void ADE9078_setRun(){
        
 
@@ -147,6 +184,7 @@ void ADE9078_setRun(){
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
+	
 	waitForReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
@@ -178,7 +216,6 @@ void ADE9078_setRun(){
   	expander_closeAndFree(exp);
 
 }
-
 
 void ADE9078_ConfigAPGAIN(){
        
@@ -228,7 +265,6 @@ void ADE9078_ConfigAPGAIN(){
 
 }
 
-
 void ADE9078_resetRun(){
        
 
@@ -276,8 +312,6 @@ void ADE9078_resetRun(){
   	expander_closeAndFree(exp);
 
 }
-
-
 
 uint16_t ADE9078_getVersion(){
        
@@ -334,8 +368,6 @@ uint16_t ADE9078_getVersion(){
 
   return recu;
 }
-
-
 
 uint32_t ADE9078_getPartID(){
        
@@ -394,7 +426,7 @@ uint32_t ADE9078_getPartID(){
 
 int main(){
 
-
+	ADE9078_PSM0();
     ADE9078_setRun();
     ADE9078_getRun();
     while(1)
