@@ -764,7 +764,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // #1: Ensure power sequence completed
   
   
-  delay(30);
+  sleep(30);
 
 
   // Is always printing right now. Might be an issue?
