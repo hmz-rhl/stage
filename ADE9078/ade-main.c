@@ -57,27 +57,6 @@ typedef struct {
   uint8_t iConsel;
 }InitializationSettings;
 
-uint8_t functionBitVal(uint16_t addr, uint8_t byteVal)
-{
-//Returns as integer an address of a specified byte - basically a byte controlled shift register with "byteVal" controlling the byte that is read and returned
-  uint16_t x = ((addr >> (8*byteVal)) & 0xff);
-
-  #ifdef ADE9078_VERBOSE_DEBUG
-   Serial.print(" ADE9078::functionBitVal function (separates high and low command bytes of provided addresses) details: ");
-   Serial.print(" Address input (dec): ");
-   Serial.print(addr, DEC);
-   Serial.print(" Byte requested (dec): ");
-   Serial.print(byteVal, DEC);
-   Serial.print(" Returned Value (dec): ");
-   Serial.print(x, DEC);
-   Serial.print(" Returned Value (HEX): ");
-   Serial.print(x, HEX);
-   Serial.println(" ADE9078::functionBitVal function completed ");
-  #endif
-
-  return x;
-}
-
 
 void waitForSPIReady(expander_t *exp){
 	
@@ -697,7 +676,7 @@ int main(){
 		.vConsel=0;
 		.iConsel=0;
 	}
-	
+
 	ADE9078_PSM0();
 
     ADE9078_initialize(&is);
