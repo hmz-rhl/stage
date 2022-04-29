@@ -95,17 +95,7 @@ int main(int argc, char* argv[]) {
 /**
  * Lecture des gpio de l'expander
  **/
-    buff[0] = REG_GPIO;
-   if(write(fd,buff,1) != 1) {
-        printf("probleme de selection du registre GPIO\n");
-        exit(EXIT_FAILURE);
-    }
-
-       if(read(fd,buff,1) != 1) {
-        printf("probleme de lecture sur GPIO\n");
-        exit(EXIT_FAILURE);
-    }
-
+    buff[0] = expander_get;
 /**
  * Affichage des gpio de l'expander sur la console
  **/
@@ -121,7 +111,7 @@ int main(int argc, char* argv[]) {
 /**
  * Ecriture des gpio de l'expander
  **/
-    buff[0] = REG_OLAT;
+
     buff[1] = 0x00;
 
 /**
@@ -131,41 +121,8 @@ int main(int argc, char* argv[]) {
     {
        buff[1] += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
     }
-    putchar('\n');
 
 
-    printf("ecriture sur OLAT de 0x%02x...\n",buff[1]);
-
-    if(write(fd,buff,2) != 2) {
-        printf("probleme d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
-/**
- * Selection du registre GPIIO de l'expander
- **/
-    buff[0] = REG_GPIO;
-   if(write(fd,buff,1) != 1) {
-        printf("probleme de selection du registre GPIO\n");
-        exit(EXIT_FAILURE);
-    }
-/**
- * Lecture des ports GPIO de l'expander
- **/
-
-       if(read(fd,buff,1) != 1) {
-        printf("probleme de lecture sur GPIO\n");
-        exit(EXIT_FAILURE);
-    }
-        
-
-/**
- * Affichage des gpio de l'expander sur la console
- **/
-    for (size_t i = 0; i < 8; i++)
-    {
-        
-        printf("%d : %d\r\n", i, (buff[0] >> i ) & 0x01);
-    }
 
 
 
