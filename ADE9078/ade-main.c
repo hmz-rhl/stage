@@ -665,7 +665,7 @@ int main(){
 		//4 Wire Wye configuration - non-Blondel compliant:
 		.vConsel=0;
 		.iConsel=0;
-	}
+	};
 
 	ADE9078_PSM0();
 
