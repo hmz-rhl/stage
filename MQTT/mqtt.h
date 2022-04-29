@@ -9,7 +9,7 @@
 
 #include "topic.h"
 
-
+//Déclarations des fonctions mqtt
 struct mosquitto* init_mqtt();
 void mqtt_publish(char *topic, char *message, struct mosquitto* mosq);
 void mqtt_subscribe(char *topic, void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq);

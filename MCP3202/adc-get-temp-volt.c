@@ -80,10 +80,11 @@ int readAdc(int channel){
 
 	wiringPiSPIDataRW(0, data, 3);
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-	setAllCS(exp);
 
 
 	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
+	expander_setPinGPIO(exp, T_CS);
+
 
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
 
