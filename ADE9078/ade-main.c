@@ -733,6 +733,8 @@ void ADE9078_initialize(InitializationSettings *is){
 
 int main(){
 
+	expander_t *exp = expander_init();
+	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
 		.vAGain=1,
@@ -763,8 +765,8 @@ int main(){
     while(1)
     {
 
-	  printf("tension : %dV\n", ADE9078_getInstVoltageA());
-	  printf("courant : %dA\n", ADE9078_getInstCurrentA());
+	  printf("tension : %uV\n", ADE9078_getInstVoltageA());
+	  printf("courant : %uA\n", ADE9078_getInstCurrentA());
       usleep(2000000);
     }
 
