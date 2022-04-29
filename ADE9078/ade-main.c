@@ -862,10 +862,12 @@ int main(){
 	sleep(30);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getPartID();
-    while(!ADE9078_isDoneSampling())
-    {
+	while(1){
 
-	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+		// while(!ADE9078_isDoneSampling())
+		// {
+		// }
+	 	printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
       usleep(2000000);
     }
     
