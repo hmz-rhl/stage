@@ -859,7 +859,7 @@ int main(){
 
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
-    while(ADE9078_isDoneSampling())
+    while(!ADE9078_isDoneSampling())
     {
 
 	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
