@@ -634,7 +634,7 @@ uint32_t ADE9078_getInstVoltageA(){
 	while(((spiRead32(STATUS1_32) >> 16) & 0x01) == 1);
 	uint32_t value=0;
 	value=spiRead32(AV_PCF_32);
-	return value;
+	return value * 220 /74520000;
 }
 
 uint32_t ADE9078_getInstCurrentA(){
