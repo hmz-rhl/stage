@@ -86,8 +86,8 @@ uint16_t ADE9078_getRun(){
 
   
   	while(digitalRead(IRQ1));
-	waitForReady(exp);
 	expander_t *exp = expander_init(EXPANDER_2);
+	waitForReady(exp);
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
