@@ -764,7 +764,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // #1: Ensure power sequence completed
   
   
-  sleep(30);
+  	sleep(30);
 
 
   // Is always printing right now. Might be an issue?
@@ -875,7 +875,7 @@ int main(){
 		while(!ADE9078_dataReady())
 		{
 		}
-	 	printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
       	usleep(200000);
     }
     
