@@ -450,7 +450,8 @@ uint32_t ADE9078_getInstVoltageB(){
 }
 
 void spiWrite16(uint16_t addresse, uint16_t value){
-	      
+
+	uint8_t data[4] ={0};
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
 	data[2] = 0x00FF & (value >> 4) ;
@@ -502,6 +503,8 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 
 void spiWrite32(uint16_t addresse, uint32_t data){
 
+
+	uint8_t data[6] = {0};
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
 	data[2] = 0x00FF & (value >> 24) ;
