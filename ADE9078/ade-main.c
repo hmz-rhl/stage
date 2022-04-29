@@ -736,7 +736,17 @@ void ADE9078_startFillingBuffer(){
   //printf("wfb fill start\n");
 }
 
+int ADE9078_dataReady(){
 
+	int check = 0;
+	uint32_t status = spiRead32(STATUS0_32);
+	//printf(status,BIN);
+	// 23th bit tells you that the buffer is full
+	status = (status >> 15);
+	check = (status & 0b1);
+	//printf(check);
+	return check;
+}
 
 void ADE9078_initialize(InitializationSettings *is){
 
@@ -754,7 +764,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // #1: Ensure power sequence completed
   
   
-  //delay(30);
+  delay(30);
 
 
   // Is always printing right now. Might be an issue?
@@ -857,18 +867,16 @@ int main(){
 
 	ADE9078_PSM0();
 	ADE9078_resetRun();
-	sleep(1);
     ADE9078_initialize(&is);
-	sleep(30);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getPartID();
 	while(1){
 
-		// while(!ADE9078_isDoneSampling())
-		// {
-		// }
+		while(!ADE9078_dataReady())
+		{
+		}
 	 	printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
-      usleep(2000000);
+      	usleep(200000);
     }
     
 	expander_closeAndFree(exp);
