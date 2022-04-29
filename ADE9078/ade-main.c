@@ -44,7 +44,7 @@
 
 void waitForReady(expander_t *exp){
 	
-	if(expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000 == 0b11000000)
+	if((expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000) == 0b11000000)
 	{
 		printf(" l'ADE est en PSM3 (idle mode) : donc pas fonctionnel veuillez le set a PSM/PSM1/PSM2/\n");
 		exit(EXIT_FAILURE);
@@ -148,11 +148,11 @@ uint16_t ADE9078_getRun(){
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
 
 
