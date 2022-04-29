@@ -20,11 +20,11 @@
 #define R "up/value/temp"
 #define S "up/value/charge"
 #define T "up/btn/released"
-#define u "up/scan"
-#define v "down/type_ef/open"
-#define w "down/type2/open"
-#define x "down/type2/close"
-#define y "down/status"
+#define U "up/scan"
+#define V "down/type_ef/open"
+#define W "down/type2/open"
+#define X "down/type2/close"
+#define Y "down/status"
 
 
 

@@ -449,12 +449,12 @@ uint32_t ADE9078_getInstVoltageB(){
 	return recu;
 }
 
-void spiWrite16(uint16_t addresse, uint16_t data){
+void spiWrite16(uint16_t addresse, uint16_t value){
 	      
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (data >> 4) ;
-	data[3] = ((data & 0x00FF)) ;
+	data[2] = 0x00FF & (value >> 4) ;
+	data[3] = ((value & 0x00FF)) ;
   	
 
 
@@ -485,7 +485,7 @@ void spiWrite16(uint16_t addresse, uint16_t data){
 	
 	usleep(1);
 #ifdef DEBUG
- 	printf("|write %x on run register %x|\n", data, addresse);
+ 	printf("|write %x on run register %x|\n", value, addresse);
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
@@ -504,10 +504,10 @@ void spiWrite32(uint16_t addresse, uint32_t data){
 
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (data >> 24) ;
-	data[3] = 0x00FF & (data >> 16);
-  	data[4] = 0x00FF & (data >> 8) ;
-	data[5] = ((data & 0x00FF)) ;
+	data[2] = 0x00FF & (value >> 24) ;
+	data[3] = 0x00FF & (value >> 16);
+  	data[4] = 0x00FF & (value >> 8) ;
+	data[5] = ((value & 0x00FF)) ;
   	
 
 
@@ -538,7 +538,7 @@ void spiWrite32(uint16_t addresse, uint32_t data){
 	
 	usleep(1);
 #ifdef DEBUG
- 	printf("|write %x on run register %x|\n", data, addresse);
+ 	printf("|write %x on run register %x|\n", value, addresse);
 #endif
 	wiringPiSPIDataRW(0, data,6);
 
