@@ -58,6 +58,16 @@ typedef struct {
 }InitializationSettings;
 
 
+
+void setAllCS(expander_t *exp)
+{
+  expander_setPinGPIO(exp, 2);
+  expander_setPinGPIO(exp, 3);
+  expander_setPinGPIO(exp, 4);
+  expander_setPinGPIO(exp, 5);
+}
+
+
 void waitForSPIReady(expander_t *exp){
 	
 	if((expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000) == 0b11000000)
@@ -79,6 +89,7 @@ void waitForSPIReady(expander_t *exp){
 		}
 	}
 }
+
 
 void spiWrite16(uint16_t addresse, uint16_t value){
 
@@ -193,7 +204,6 @@ uint16_t spiRead16(uint16_t addresse){
 }
 
 
-
 uint32_t spiRead32(uint16_t addresse){
        
 
@@ -256,7 +266,6 @@ uint32_t spiRead32(uint16_t addresse){
 }
 
 
-
 void spiWrite32(uint16_t addresse, uint32_t value){
 
 
@@ -311,15 +320,6 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 
 }
 
-
-
-void setAllCS(expander_t *exp)
-{
-  expander_setPinGPIO(exp, 2);
-  expander_setPinGPIO(exp, 3);
-  expander_setPinGPIO(exp, 4);
-  expander_setPinGPIO(exp, 5);
-}
 
 void ADE9078_PSM0(){
 	
