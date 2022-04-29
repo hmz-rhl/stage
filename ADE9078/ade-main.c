@@ -697,7 +697,7 @@ void ADE9078_initialize(InitializationSettings *is){
     0x41F PHNOLOAD : To say if something is "no load".
     Phase calibrations, such as APHCAL1_32
   */
-  spiWrite16(CONFIG1_16, 0x0000);
+  spiWrite16(CONFIG1_16, 0x0001);
   spiWrite16(CONFIG2_16, 0x0000);
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
@@ -709,7 +709,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // wfb_cfg,
   spiWrite16(EGY_TIME_16, 0x0001);
   spiWrite16(EP_CFG_16, 0x0021); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
-
+  
   #ifdef ADE9078_VERBOSE_DEBUG
    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
    printf(" APGAIN: ");
