@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <errno.h>
+#include <time.h>
 
 
 #include "../lib/mcp3202-adc.h"
@@ -18,6 +19,23 @@
 
 #define DEBUG
 /******************************************************************************/
+
+void waitForReady(exp){
+	
+	time_t start, end;
+	double attente = 0;
+	start = clock();
+	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
+	{
+		end = clock();
+		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
+		if(attente > 5)
+		{
+			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
 int readAdc(int channel){
 
 	unsigned int reData = -1;           
@@ -42,16 +60,16 @@ int readAdc(int channel){
 
 	expander_t *exp = expander_init(0x27);
 
-	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
-
+	waitForReady(exp);
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetOnlyPinSetOthersGPIO(exp, T_CS);
 	
 	usleep(1);
 
 	wiringPiSPIDataRW(0, data, 3);
-	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
 
