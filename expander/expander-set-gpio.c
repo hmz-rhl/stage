@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
  **/
     for (size_t i = 0; i < 8; i++)
     {
-       buff[1] += (uint8_t)(pow(2,i)*(atoi(argv[8-i])));
+       buff[1] += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
     }
     putchar('\n');
 
