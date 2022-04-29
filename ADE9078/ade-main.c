@@ -40,7 +40,7 @@
 #define DEBUG
 
 
-void waitForReady(exp){
+void waitForReady(expander_t *exp){
 	
 	time_t start, end;
 	double attente = 0;
@@ -253,7 +253,7 @@ void ADE9078_resetRun(){
   	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
-	waitForReadyexp(exp);
+	waitForReady(exp);
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -407,5 +407,5 @@ int main(){
     
 
 
-  return 0;
+  return EXIT_SUCCESS;
 }

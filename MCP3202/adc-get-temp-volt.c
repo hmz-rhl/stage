@@ -20,7 +20,7 @@
 #define DEBUG
 /******************************************************************************/
 
-void waitForReady(exp){
+void waitForReady(expander_t *exp){
 	
 	time_t start, end;
 	double attente = 0;
