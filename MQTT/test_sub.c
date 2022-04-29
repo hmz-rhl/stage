@@ -15,6 +15,7 @@ void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_messag
 int main(int argc, char const *argv[])
 {
     /* code */
+    struct mosquitto* mosq = init_mqtt();
     mqtt_subscribe(argv[1], traitement, mosq);
     return 0;
 }

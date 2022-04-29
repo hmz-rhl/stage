@@ -13,7 +13,6 @@
 
 char* tab_topics[] = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y};
 
-struct mosquitto* mosq = init_mqtt();
 
 /**
  ** 
@@ -71,6 +70,7 @@ int test_topic(char *topic)
  *
  * @param   topic   choix du topic mqtt
  * @param   message message à publier
+ * @param   mosq    instance de connexion au broker
  *
  **/
 void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
@@ -81,16 +81,10 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
         scanf("%s", topic);
         getchar();
     }
-    // mqtt_publish(topic, message);
-
-    //struct mosquitto *mosq = init_mqtt();
 
     mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     
     printf("topic :%s\n", topic);
-    mosquitto_disconnect(mosq);
-	mosquitto_destroy(mosq);
-	mosquitto_lib_cleanup();
 }
 
 
@@ -114,9 +108,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 /**
  ** 
- * @brief   subscription à un topic, le topic doit correspondre à ceux créés par Gilles
+ * @brief   abonnement à un topic, le topic doit correspondre à ceux créés par Gilles
  *
  * @param   topic   choix du topic mqtt
+ * @param   mosq    instance de connexion au broker
  * 
  *
  **/
@@ -128,25 +123,28 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
         scanf("%s", topic);
         getchar();
     }
-        //struct mosquitto *mosq = init_mqtt();
 
     mosquitto_subscribe(mosq, NULL, topic, 0);
     mosquitto_message_callback_set(mosq, traitement);
 
-
     mosquitto_loop_start(mosq); // begin of a new thread 
     printf("topic :%s\n", topic);
-
-    while(1)
-    {
-        printf("Tapez Entree pour quitter...\n");
-	    getchar();
-        break;
-    }
 	mosquitto_loop_stop(mosq, true); // stop of the thread 
+}
+
+
+/**
+ ** 
+ * @brief   permet de se déconnecter du broker et de détruire l'instance mqtt
+ *
+ * @param   mosq  instance de connexion au brpker
+ * 
+ *
+ **/
+void mqtt_free(struct mosquitto* mosq)
+{
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 }
-
 
