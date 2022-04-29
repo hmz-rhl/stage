@@ -648,26 +648,26 @@ int main(){
 
 	InitializationSettings is ={
 		
-		.vAGain=1;
-		.vBGain=1;
-		.vCGain=1;
+		.vAGain=1,
+		.vBGain=1,
+		.vCGain=1,
 
-		.iAGain=1;
-		.iBGain=1;
-		.iCGain=1;
-		.iNGain=1;
+		.iAGain=1,
+		.iBGain=1,
+		.iCGain=1,
+		.iNGain=1,
 
-		.powerAGain=1;
-		.powerBGain=1;
-		.powerCGain=1;
+		.powerAGain=1,
+		.powerBGain=1,
+		.powerCGain=1,
 
 		//Use these settings to configure wiring configuration at stertup
 		//FYI: B010=2 in DEC
 		//FYI: B100 = 4 in DEC
 
 		//4 Wire Wye configuration - non-Blondel compliant:
-		.vConsel=0;
-		.iConsel=0;
+		.vConsel=0,
+		.iConsel=0
 	};
 
 	ADE9078_PSM0();
