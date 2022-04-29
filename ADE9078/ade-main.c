@@ -733,7 +733,7 @@ void ADE9078_initialize(InitializationSettings *is){
 
 int main(){
 
-	expander_t *exp = expander_init(26);
+	expander_t *exp = expander_init(0x26);
 	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
