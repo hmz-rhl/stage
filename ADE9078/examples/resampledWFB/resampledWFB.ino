@@ -115,18 +115,11 @@ void loop() {
       uint16_t startingAddress = BURST_MEMORY_BASE + burstMemoryOffset;
       myADE9078.spiBurstResampledWFB(startingAddress);
 
-      // Serial.print("Outer Loop: ");
-      // Serial.println(i);
 
       //memcpy
       for (int seg=0; seg < WFB_RESAMPLE_SEGMENTS; ++seg)
       {
-        // Serial.print("Loop position: ");
-        // Serial.print(i);
-        // Serial.print(", ");
-        // Serial.println(seg);
-        // Serial.print("Segment Offset: ");
-        // Serial.println(segOffSet);
+
         int segOffSet = seg + (i*64);
 
         Serial.println("Ia,Va, Ib,Vb, Ic,Vc, In: ");
