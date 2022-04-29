@@ -96,7 +96,7 @@ uint16_t ADE9078_getRun(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -161,7 +161,7 @@ void ADE9078_setRun(){
 	usleep(1);
 	
 	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+ 	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
@@ -212,7 +212,7 @@ void ADE9078_ConfigAPGAIN(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -261,7 +261,7 @@ void ADE9078_resetRun(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -311,7 +311,7 @@ uint16_t ADE9078_getVersion(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -368,7 +368,7 @@ uint32_t ADE9078_getPartID(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 

@@ -64,7 +64,7 @@ int readAdc(int channel){
 	data[2] = DNT_CARE_BYTE;
 
 	expander_t *exp = expander_init(0x27);
-	
+
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
 	waitForReady(exp);
@@ -74,7 +74,7 @@ int readAdc(int channel){
 		return reData;
 	}
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	expander_resetOnlyPinSetOthersGPIO(exp, T_CS);
+	expander_resetPinGPIO(exp, T_CS);
 	
 	usleep(1);
 
