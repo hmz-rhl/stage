@@ -36,6 +36,8 @@
 #define WRITE            0xFFF6
 
 
+
+
 //#define ADE9078_VERBOSE_DEBUG
 
 typedef struct {
@@ -764,16 +766,16 @@ int main(){
 	ADE9078_PSM0();
 
     ADE9078_initialize(&is);
-    while(1)
-    {
+    // while(1)
+    // {
 
-	  printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
-	  ADE9078_getPartID();
-      usleep(2000000);
-    }
-
+	//   printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
+	//   ADE9078_getPartID();
+    //   usleep(2000000);
+    // }
+	prtinf("Burst : %x\n",spiRead16(WFB_CFG_16));
     
-
+	expander_closeAndFree(exp);
 
   return EXIT_SUCCESS;
 }
