@@ -113,11 +113,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	// on si on depasse un certain timeout on return
 	
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -162,11 +158,7 @@ uint16_t spiRead16(uint16_t addresse){
   
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
   	while(digitalRead(IRQ1));
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
@@ -223,11 +215,7 @@ uint32_t spiRead32(uint16_t addresse){
   
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
 
   	while(digitalRead(IRQ1));
 
@@ -291,11 +279,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	// on si on depasse un certain timeout on return
 	
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -376,11 +360,7 @@ uint16_t ADE9078_getRun(){
   
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
   	while(digitalRead(IRQ1));
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
@@ -442,11 +422,7 @@ void ADE9078_setRun(){
 	// on si on depasse un certain timeout on return
 	
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -492,11 +468,7 @@ void ADE9078_resetRun(){
 
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
   	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
@@ -540,11 +512,7 @@ uint16_t ADE9078_getVersion(){
 	expander_t *exp = expander_init(EXPANDER_2);
 
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
   	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
@@ -595,11 +563,7 @@ uint32_t ADE9078_getPartID(){
 
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
+
   	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -754,7 +718,11 @@ void ADE9078_initialize(InitializationSettings *is){
   #ifdef ADE9078_VERBOSE_DEBUG
    printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
   #endif
-
+		if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
 	if(is == NULL)
 	{
 		printf("Erreur %s : argument NULL", __func__);
@@ -779,13 +747,14 @@ void ADE9078_initialize(InitializationSettings *is){
    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
    spiWrite16(PGA_GAIN_16, pgaGain);
-   uint32_t vLevelData = 0x117514;  // #5 : Write VLevel 0x117514
+   uint32_t vLevelData = 0x35A98F;  // #5 : Write VLevel 0x117514
    spiWrite32(VLEVEL_32, vLevelData); // #5
 
   spiWrite16(CONFIG0_32, 0x00000000);  // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
   // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
-  uint16_t settingsACCMODE = (is->iConsel << 6) + (is->vConsel << 5);
+  uint16_t settingsACCMODE = 0x0040;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
+  spiWrite16(FREQS)
   spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
   spiWrite16(RUN_16, 1);  // 8: Write 1 to Run register
@@ -802,14 +771,14 @@ void ADE9078_initialize(InitializationSettings *is){
   spiWrite16(CONFIG2_16, 0x0000);
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  spiWrite16(WFB_CFG_16, 0x1111);
+  //spiWrite16(WFB_CFG_16, 0x1111);
  
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
   // mask0, mask1, event_mask,
   // wfb_cfg,
   spiWrite16(EGY_TIME_16, 0x0001);
-  spiWrite16(EP_CFG_16, 0x0021); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
+  spiWrite16(EP_CFG_16, 1); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
 
   #ifdef ADE9078_VERBOSE_DEBUG
    printf(" ADE9078:initialize function completed. Showing values and registers written \n");

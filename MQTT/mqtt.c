@@ -11,9 +11,6 @@
 #include "mqtt.h"
 
 
-char* tab_topics[] = {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y};
-
-
 /**
  ** 
  * @brief   initialisation : création d'une instance de connexion au broker, validation de la connexion
@@ -49,7 +46,7 @@ struct mosquitto* init_mqtt()
  * @return 1 si le topic est dans la liste, 0 sinon
  *
  **/
-int test_topic(char *topic)
+/*int test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 25; cpt++)
     {
@@ -60,7 +57,7 @@ int test_topic(char *topic)
         printf("pas %s\n", tab_topics[cpt]);
     }
     return 0;
-}
+}*/
 
 
 //--------------------OK----------------------------------------
@@ -75,12 +72,12 @@ int test_topic(char *topic)
  **/
 void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
 {
-    while(!test_topic(topic))
+    /*while(!test_topic(topic))
     {
         printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant :\n");
         scanf("%s", topic);
         getchar();
-    }
+    }*/
 
     mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     
