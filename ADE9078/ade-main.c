@@ -763,8 +763,8 @@ int main(){
     while(1)
     {
 
-	  printf("tension : %dV\n", ADE9078_getInstVoltageA();
-	  printf("courant : %dA\n", ADE9078_getInstCurrentA();
+	  printf("tension : %dV\n", ADE9078_getInstVoltageA());
+	  printf("courant : %dA\n", ADE9078_getInstCurrentA());
       usleep(2000000);
     }
 
