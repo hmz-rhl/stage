@@ -80,6 +80,239 @@ void waitForSPIReady(expander_t *exp){
 	}
 }
 
+void spiWrite16(uint16_t addresse, uint16_t value){
+
+	uint8_t data[4] ={0};
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (value >> 4) ;
+	data[3] = ((value & 0x00FF)) ;
+  	
+
+
+#ifdef DEBUG
+#endif
+// on attend que irq1 passe a 0
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+ 	while(digitalRead(IRQ1));
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+ 	setAllCS(exp);
+
+	usleep(1);
+	
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+#ifdef DEBUG
+ 	printf("|write %x on run register %x|\n", value, addresse);
+#endif
+	wiringPiSPIDataRW(0, data,4);
+
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+  	expander_closeAndFree(exp);
+
+}
+
+
+uint16_t spiRead16(uint16_t addresse){
+       
+
+	uint8_t data[6] = {0};
+
+	
+    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) | READ;
+  // data[2] = 0x00;
+  // data[3] = 0x01;
+
+
+
+  
+	expander_t *exp = expander_init(EXPANDER_2);
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+  	while(digitalRead(IRQ1));
+
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+  	setAllCS(exp);
+
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	usleep(1);
+	
+  	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+
+#ifdef DEBUG
+  	printf("|read register %x|\n", addresse);
+#endif
+	wiringPiSPIDataRW(0, data,4);
+
+	usleep(1);
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+
+
+
+
+  	uint16_t recu = data[3] + (data[2] << 8);
+
+#ifdef DEBUG
+  	printf("RUN : %d\n", recu);
+#endif
+
+  	expander_closeAndFree(exp);
+
+  return recu;
+}
+
+
+
+uint32_t spiRead32(uint16_t addresse){
+       
+
+	uint8_t data[6] = {0};
+
+	
+    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) | READ;
+  // data[2] = 0x00;
+  // data[3] = 0x01;
+
+
+
+  
+	expander_t *exp = expander_init(EXPANDER_2);
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+
+  	while(digitalRead(IRQ1));
+
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  	// expander_resetAllPinsGPIO(exp);
+  	setAllCS(exp);
+
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	usleep(1);
+	
+  	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+
+#ifdef DEBUG
+  	printf("|read register %x|\n", addresse);
+#endif
+	wiringPiSPIDataRW(0, data,6);
+
+	usleep(1);
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+
+
+
+
+	uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
+
+#ifdef DEBUG
+  	printf("RUN : %d\n", recu);
+#endif
+
+  	expander_closeAndFree(exp);
+
+  return recu;
+}
+
+
+
+void spiWrite32(uint16_t addresse, uint32_t value){
+
+
+	uint8_t data[6] = {0};
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (value >> 24) ;
+	data[3] = 0x00FF & (value >> 16);
+  	data[4] = 0x00FF & (value >> 8) ;
+	data[5] = ((value & 0x00FF)) ;
+  	
+
+
+#ifdef DEBUG
+#endif
+// on attend que irq1 passe a 0
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+ 	while(digitalRead(IRQ1));
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+ 	setAllCS(exp);
+
+	usleep(1);
+	
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+#ifdef DEBUG
+ 	printf("|write %x on run register %x|\n", value, addresse);
+#endif
+	wiringPiSPIDataRW(0, data,6);
+
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+  	expander_closeAndFree(exp);
+
+}
+
+
+
 void setAllCS(expander_t *exp)
 {
   expander_setPinGPIO(exp, 2);
@@ -396,165 +629,19 @@ uint32_t ADE9078_getPartID(){
   return recu;
 }
 
-uint32_t ADE9078_getInstVoltageB(){
-
-	uint8_t data[6] = {0};
-
-	
-    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (BV_PCF_32 >> 4) ;
-	data[1] = ((BV_PCF_32 & 0x00F) << 4) | READ;
-  // data[2] = 0x00;
-  // data[3] = 0x01;
+uint32_t ADE9078_getInstVoltageA(){
 
 
-
-  
-
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
-  	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
-
-	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	usleep(1);
-	
-  	expander_resetPinGPIO(exp, PM_CS);
-	
-	usleep(1);
-
-	wiringPiSPIDataRW(0, data,6);
-
-  	expander_setPinGPIO(exp, PM_CS);
-
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-
-	usleep(1);
-
-
-
-
-  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
-
-  printf("Tension phase B: %dV", recu); 
-  expander_closeAndFree(exp);
-
-	return recu;
+	uint32_t value=0;
+	value=spiRead32(AV_PCF_32);
+	return value;
 }
 
-void spiWrite16(uint16_t addresse, uint16_t value){
-
-	uint8_t data[4] ={0};
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 4) ;
-	data[3] = ((value & 0x00FF)) ;
-  	
-
-
-#ifdef DEBUG
-#endif
-// on attend que irq1 passe a 0
-
-	expander_t *exp = expander_init(EXPANDER_2);
-
-	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
-	// on si on depasse un certain timeout on return
-	
-	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
- 	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
-
-	usleep(1);
-	
-	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
-	
-	usleep(1);
-#ifdef DEBUG
- 	printf("|write %x on run register %x|\n", value, addresse);
-#endif
-	wiringPiSPIDataRW(0, data,4);
-
-  	expander_setPinGPIO(exp, PM_CS);
-
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-
-	usleep(1);
-
-  	expander_closeAndFree(exp);
-
+uint32_t ADE9078_getInstCurrentA(){
+	uint32_t value=0;
+	value=spiRead32(AI_PCF_32);
+	return value;
 }
-
-
-void spiWrite32(uint16_t addresse, uint32_t value){
-
-
-	uint8_t data[6] = {0};
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 24) ;
-	data[3] = 0x00FF & (value >> 16);
-  	data[4] = 0x00FF & (value >> 8) ;
-	data[5] = ((value & 0x00FF)) ;
-  	
-
-
-#ifdef DEBUG
-#endif
-// on attend que irq1 passe a 0
-
-	expander_t *exp = expander_init(EXPANDER_2);
-
-	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
-	// on si on depasse un certain timeout on return
-	
-	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup du SPI");
-		exit(EXIT_FAILURE);
-	}
- 	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
-
-	usleep(1);
-	
-	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
-	
-	usleep(1);
-#ifdef DEBUG
- 	printf("|write %x on run register %x|\n", value, addresse);
-#endif
-	wiringPiSPIDataRW(0, data,6);
-
-  	expander_setPinGPIO(exp, PM_CS);
-
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-
-	usleep(1);
-
-  	expander_closeAndFree(exp);
-
-}
-
 
 void ADE9078_initialize(InitializationSettings *is){
 
@@ -676,7 +763,8 @@ int main(){
     while(1)
     {
 
-	  ADE9078_getInstVoltageB();
+	  printf("tension : %dV\n", ADE9078_getInstVoltageA();
+	  printf("courant : %dA\n", ADE9078_getInstCurrentA();
       usleep(2000000);
     }
 
