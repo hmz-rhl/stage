@@ -697,11 +697,11 @@ void ADE9078_initialize(InitializationSettings *is){
     0x41F PHNOLOAD : To say if something is "no load".
     Phase calibrations, such as APHCAL1_32
   */
-  spiWrite16(CONFIG1_16, 0x0001);
+  spiWrite16(CONFIG1_16, 0x0000);
   spiWrite16(CONFIG2_16, 0x0000);
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  spiWrite16(WFB_CFG_16, 0x0001);
+  spiWrite16(WFB_CFG_16, 0x0000);
 
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
@@ -771,7 +771,7 @@ int main(){
     while(1)
     {
 
-	  printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
+	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA(), spiRead32(CVA_32));
 	  ADE9078_getPartID();
       usleep(2000000);
     }
