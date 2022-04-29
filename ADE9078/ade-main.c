@@ -767,8 +767,7 @@ int main(){
     while(1)
     {
 
-	  printf("tension : %uV\n", ADE9078_getInstVoltageA());
-	  printf("courant : %uA\n", ADE9078_getInstCurrentA());
+	  printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
 	  ADE9078_getPartID();
       usleep(2000000);
     }
