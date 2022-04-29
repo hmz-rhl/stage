@@ -85,9 +85,9 @@ uint16_t ADE9078_getRun(){
 
 
   
-  	while(digitalRead(IRQ1));
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForReady(exp);
+  	while(digitalRead(IRQ1));
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -96,7 +96,7 @@ uint16_t ADE9078_getRun(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -114,13 +114,13 @@ uint16_t ADE9078_getRun(){
 
 
 
-  uint16_t recu = data[3] + (data[2] << 8);
+  	uint16_t recu = data[3] + (data[2] << 8);
 
 #ifdef DEBUG
-  printf("RUN : %d\n", recu);
+  	printf("RUN : %d\n", recu);
 #endif
 
-  expander_closeAndFree(exp);
+  	expander_closeAndFree(exp);
 
   return recu;
 }
@@ -147,13 +147,13 @@ void ADE9078_setRun(){
 #ifdef DEBUG
 #endif
 // on attend que irq1 passe a 0
- 	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
 	waitForReady(exp);
+ 	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
  	setAllCS(exp);
@@ -161,7 +161,7 @@ void ADE9078_setRun(){
 	usleep(1);
 	
 	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
+ 	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
@@ -175,7 +175,7 @@ void ADE9078_setRun(){
 
 	usleep(1);
 
-  expander_closeAndFree(exp);
+  	expander_closeAndFree(exp);
 
 }
 
@@ -194,25 +194,25 @@ void ADE9078_ConfigAPGAIN(){
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
 	data[0] = 0x00FF & (RUN >> 4) ;
 	data[1] = ((RUN & 0x00F) << 4) & WRITE;
-  data[2] = 0x00;
-  data[3] = 0x00;
+  	data[2] = 0x00;
+  	data[3] = 0x00;
 
 
 
-  printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
+  	printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
   
-  	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForReady(exp);
+  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
+  	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -250,10 +250,10 @@ void ADE9078_resetRun(){
 
   	printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
   
-  	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForReady(exp);
+  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -261,7 +261,7 @@ void ADE9078_resetRun(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -298,12 +298,12 @@ uint16_t ADE9078_getVersion(){
 
 
 
-  printf("on envoie: 0x%02X %02X\n", data[1], data[0]);
+  	printf("on envoie: 0x%02X %02X\n", data[1], data[0]);
   
-  	while(digitalRead(IRQ1));
 	expander_t *exp = expander_init(EXPANDER_2);
 
 	waitForReady(exp);
+  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -311,7 +311,7 @@ uint16_t ADE9078_getVersion(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 
@@ -357,10 +357,10 @@ uint32_t ADE9078_getPartID(){
 
 
   
-  	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForReady(exp);
+  	while(digitalRead(IRQ1));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -368,7 +368,7 @@ uint32_t ADE9078_getPartID(){
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetOnlyPinSetOthersGPIO(exp, PM_CS);
 	
 	usleep(1);
 
