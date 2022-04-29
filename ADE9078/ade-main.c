@@ -793,6 +793,7 @@ void ADE9078_initialize(InitializationSettings *is){
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
   spiWrite16(WFB_CFG_16, 0x0000);
+  spiWrite32(ADC_REDIRECT_32, 0x0000);
 
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
@@ -856,8 +857,10 @@ int main(){
 	};
 
 	ADE9078_PSM0();
-
+	ADE9078_resetRun();
+	sleep(1);
     ADE9078_initialize(&is);
+	sleep(30);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
     while(!ADE9078_isDoneSampling())
     {
