@@ -773,7 +773,7 @@ int main(){
 	//   ADE9078_getPartID();
     //   usleep(2000000);
     // }
-	prtinf("Burst : %x\n",spiRead16(WFB_CFG_16));
+	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
     
 	expander_closeAndFree(exp);
 
