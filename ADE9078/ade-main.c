@@ -709,7 +709,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // wfb_cfg,
   spiWrite16(EGY_TIME_16, 0x0001);
   spiWrite16(EP_CFG_16, 0x0021); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
-  
+
   #ifdef ADE9078_VERBOSE_DEBUG
    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
    printf(" APGAIN: ");
@@ -767,14 +767,14 @@ int main(){
 	ADE9078_PSM0();
 
     ADE9078_initialize(&is);
-    // while(1)
-    // {
-
-	//   printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
-	//   ADE9078_getPartID();
-    //   usleep(2000000);
-    // }
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
+    while(1)
+    {
+
+	  printf("\rtension : %uV  \t courant : %uA   ", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA());
+	  ADE9078_getPartID();
+      usleep(2000000);
+    }
     
 	expander_closeAndFree(exp);
 
