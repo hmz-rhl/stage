@@ -29,6 +29,11 @@
 #define IRQ1              24
 #define IRQ0              25
 
+#define AV_PCF_32		0x20B
+#define BV_PCF_32		0x22B
+#define CV_PCF_32		0x24B
+
+
 
 #define RUN             0x480
 
@@ -318,6 +323,8 @@ void ADE9078_resetRun(){
 
 }
 
+
+
 uint16_t ADE9078_getVersion(){
        
 
@@ -427,6 +434,114 @@ uint32_t ADE9078_getPartID(){
 
   return recu;
 }
+
+uint32_t ADE9078_getInstVoltageB(){
+
+	uint8_t data[6] = {0};
+
+	
+    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+	data[0] = 0x00FF & (BV_PCF_32 >> 4) ;
+	data[1] = ((BV_PCF_32 & 0x00F) << 4) | READ;
+  // data[2] = 0x00;
+  // data[3] = 0x01;
+
+
+
+  
+
+	expander_t *exp = expander_init(EXPANDER_2);
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+  	while(digitalRead(IRQ1));
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+  	setAllCS(exp);
+
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	usleep(1);
+	
+  	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+
+	wiringPiSPIDataRW(0, data,6);
+
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+
+
+
+  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
+
+  printf("Tension phase B: %dV", recu); 
+  expander_closeAndFree(exp);
+
+	return value;
+}
+
+uint32_t ADE9078_getPartID(){
+       
+
+	uint8_t data[6] = {0};
+
+	
+    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+	data[0] = 0x00FF & (PART_ID >> 4) ;
+	data[1] = ((PART_ID & 0x00F) << 4) | READ;
+  // data[2] = 0x00;
+  // data[3] = 0x01;
+
+
+
+  
+
+	expander_t *exp = expander_init(EXPANDER_2);
+	waitForSPIReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup du SPI");
+		exit(EXIT_FAILURE);
+	}
+  	while(digitalRead(IRQ1));
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+  	setAllCS(exp);
+
+	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	usleep(1);
+	
+  	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+
+	wiringPiSPIDataRW(0, data,6);
+
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+
+	usleep(1);
+
+
+
+
+  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
+
+  printf("part ID : 0x%X\n\n", recu); 
+  expander_closeAndFree(exp);
+
+  return recu;
+}
+
 
 
 int main(){

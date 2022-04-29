@@ -134,12 +134,11 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
 
 
 /**
- ** 
+ *
  * @brief   permet de se déconnecter du broker et de détruire l'instance mqtt
  *
  * @param   mosq  instance de connexion au brpker
  * 
- *
  **/
 void mqtt_free(struct mosquitto* mosq)
 {
