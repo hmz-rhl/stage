@@ -7,12 +7,14 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <fcntl.h>
+#include <time.h>
 #include <sys/ioctl.h>
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include <string.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -142,7 +144,7 @@ void ADE9078_setRun(){
 	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ) && (attente < 5))
 	{
 		end = clock();
-		attente = (double)(end - start) / double(CLOCKS_PER_SEC);
+		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
 	}
 	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
