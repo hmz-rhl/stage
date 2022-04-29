@@ -20,6 +20,16 @@
 #define DEBUG
 /******************************************************************************/
 
+
+void setAllCS(expander_t *exp)
+{
+  expander_setPinGPIO(exp, 2);
+  expander_setPinGPIO(exp, 3);
+  expander_setPinGPIO(exp, 4);
+  expander_setPinGPIO(exp, 5);
+}
+
+
 void waitForReady(expander_t *exp){
 	
 	time_t start, end;
@@ -54,7 +64,7 @@ int readAdc(int channel){
 	data[2] = DNT_CARE_BYTE;
 
 	expander_t *exp = expander_init(0x27);
-
+	
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
 	waitForReady(exp);
@@ -70,7 +80,7 @@ int readAdc(int channel){
 
 	wiringPiSPIDataRW(0, data, 3);
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-	expander_setAllPinsGPIO(exp);
+	setAllCS(exp);
 
 
 	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
