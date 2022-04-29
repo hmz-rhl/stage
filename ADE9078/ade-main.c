@@ -501,7 +501,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 }
 
 
-void spiWrite32(uint16_t addresse, uint32_t data){
+void spiWrite32(uint16_t addresse, uint32_t value){
 
 
 	uint8_t data[6] = {0};
