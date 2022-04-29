@@ -30,7 +30,7 @@ void setAllCS(expander_t *exp)
 }
 
 
-void waitForReady(expander_t *exp){
+void waitForSPIReady(expander_t *exp){
 	
 	time_t start, end;
 	double attente = 0;
@@ -67,7 +67,7 @@ int readAdc(int channel){
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup de SPI");

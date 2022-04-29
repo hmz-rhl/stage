@@ -42,7 +42,7 @@
 #define DEBUG
 
 
-void waitForReady(expander_t *exp){
+void waitForSPIReady(expander_t *exp){
 	
 	if((expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000) == 0b11000000)
 	{
@@ -124,7 +124,7 @@ uint16_t ADE9078_getRun(){
 
   
 	expander_t *exp = expander_init(EXPANDER_2);
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
@@ -190,7 +190,7 @@ void ADE9078_setRun(){
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
 	
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
@@ -240,7 +240,7 @@ void ADE9078_ConfigAPGAIN(){
   
 
 	expander_t *exp = expander_init(EXPANDER_2);
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
@@ -288,7 +288,7 @@ void ADE9078_resetRun(){
   
 
 	expander_t *exp = expander_init(EXPANDER_2);
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
@@ -336,7 +336,7 @@ uint16_t ADE9078_getVersion(){
   
 	expander_t *exp = expander_init(EXPANDER_2);
 
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
@@ -391,7 +391,7 @@ uint32_t ADE9078_getPartID(){
   
 
 	expander_t *exp = expander_init(EXPANDER_2);
-	waitForReady(exp);
+	waitForSPIReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup du SPI");
