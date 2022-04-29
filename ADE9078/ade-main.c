@@ -37,6 +37,11 @@
 
 #define DEBUG
 
+clock_t start,end;
+
+double attente = 0;
+
+
 void setAllCS(expander_t *exp)
 {
   expander_setPinGPIO(exp, 2);
@@ -117,36 +122,44 @@ void ADE9078_setRun(){
 	uint8_t data[6] = {0};
 
 	
-    //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
+
 	data[0] = 0x00FF & (RUN >> 4) ;
 	data[1] = ((RUN & 0x00F) << 4) & WRITE;
-  data[2] = 0x00;
-  data[3] = 0x01;
+  	data[2] = 0x00;
+  	data[3] = 0x01;
 
 
 #ifdef DEBUG
 #endif
-// on attend que irq1 pas a 0
- while(digitalRead(IRQ1));
+// on attend que irq1 passe a 0
+ 	while(digitalRead(IRQ1));
 
 	expander_t *exp = expander_init(EXPANDER_2);
 
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	start = clock();
+	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ) && (attente < 5))
+	{
+		end = clock();
+		attente = (double)(end - start) / double(CLOCKS_PER_SEC);
+	}
 	uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
-  setAllCS(exp);
+ 	setAllCS(exp);
 
-	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  expander_resetPinGPIO(exp, PM_CS);
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
-  printf("|write 1 on run register|\n");
+ 	printf("|write 1 on run register|\n");
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
-  expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp, PM_CS);
 
 	expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
@@ -373,13 +386,13 @@ int main(){
 
 
     ADE9078_setRun();
-    ADE9078_getRun();
-    while(1)
-    {
-      ADE9078_getVersion();
-      ADE9078_getPartID();
-      usleep(500000);
-    }
+    // ADE9078_getRun();
+    // while(1)
+    // {
+    //   ADE9078_getVersion();
+    //   ADE9078_getPartID();
+    //   usleep(500000);
+    // }
 
     
 
