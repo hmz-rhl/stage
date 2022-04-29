@@ -701,7 +701,7 @@ void ADE9078_initialize(InitializationSettings *is){
   spiWrite16(CONFIG2_16, 0x0000);
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  spiWrite16(WFB_CFG_16, 0x0001)
+  spiWrite16(WFB_CFG_16, 0x0001);
 
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
