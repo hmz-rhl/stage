@@ -40,11 +40,6 @@ int readAdc(int channel){
 
 	unsigned int reData = -1;           
 	
-	if(wiringPiSPISetup(0, 2000000) < 0)
-	{
-		perror("Erreur de setup de SPI");
-		return reData;
-	}
 	uint8_t data[3] = {0};
 
 	
@@ -63,6 +58,11 @@ int readAdc(int channel){
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
 	waitForReady(exp);
+	if(wiringPiSPISetup(0, 2000000) < 0)
+	{
+		perror("Erreur de setup de SPI");
+		return reData;
+	}
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetOnlyPinSetOthersGPIO(exp, T_CS);
 	
