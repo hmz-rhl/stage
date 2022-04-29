@@ -70,7 +70,7 @@ int readAdc(int channel){
 
 	wiringPiSPIDataRW(0, data, 3);
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-	expander_setAllPinsGPIO(exp, T_CS);
+	expander_setAllPinsGPIO(exp);
 
 
 	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
