@@ -44,6 +44,11 @@
 
 void waitForReady(expander_t *exp){
 	
+	if(expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000 == 0b11000000)
+	{
+		printf(" l'ADE est en PSM3 (idle mode) : donc pas fonctionnel veuillez le set a PSM/PSM1/PSM2/\n")
+		exit(EXIT_FAILURE);
+	}
 	time_t start, end;
 	double attente = 0;
 	start = clock();
