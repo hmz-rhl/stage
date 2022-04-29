@@ -627,9 +627,9 @@ void ADE9078_initialize(InitializationSettings *is){
    printf(" CPGAIN: ");
    printf("%d \n",is->powerCGain);
    printf(" PGA_GAIN: ");
-   printf("%d \n",is->pgaGain);
+   printf("%d \n",pgaGain);
    printf(" VLEVEL: ");
-   printf("%d \n",is->vLevelData);
+   printf("%d \n",vLevelData);
    printf(" CONFIG0-3, ALL 0'Sn \n");
    printf(" ACCMODE: ");
    printf("%d \n",settingsACCMODE);
