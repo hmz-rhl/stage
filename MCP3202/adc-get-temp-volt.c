@@ -57,7 +57,7 @@ int readAdc(int channel){
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
 
-	//waitForReady(exp);
+	waitForReady(exp);
 	if(wiringPiSPISetup(0, 2000000) < 0)
 	{
 		perror("Erreur de setup de SPI");
