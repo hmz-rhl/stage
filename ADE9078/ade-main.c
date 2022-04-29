@@ -451,11 +451,6 @@ uint32_t ADE9078_getInstVoltageB(){
 
 void spiWrite16(uint16_t addresse, uint16_t data){
 	      
-
-	uint8_t data[6] = {0};
-
-	
-
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
 	data[2] = 0x00FF & (data >> 4) ;
@@ -506,11 +501,6 @@ void spiWrite16(uint16_t addresse, uint16_t data){
 
 
 void spiWrite32(uint16_t addresse, uint32_t data){
-	      
-
-	uint8_t data[6] = {0};
-
-	
 
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
@@ -640,12 +630,12 @@ void ADE9078_initialize(InitializationSettings *is){
    printf(" CONFIG0-3, ALL 0'Sn \n");
    printf(" ACCMODE: ");
    printf("%d \n",settingsACCMODE);
-   printf(" RUN: \n");
-   printf(1);
-   printf(" EP_CFG: \n");
-   printf(1);
-   printf(" DICOEFF: \n");
-   printf(0xFFFFE000);
+   printf(" RUN: ");
+   printf("1\n");
+   printf(" EP_CFG: ");
+   printf("1\n");
+   printf(" DICOEFF: ");
+   printf("0xFFFFE000\n");
   #endif
 }
 
