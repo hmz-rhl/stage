@@ -30,7 +30,6 @@ Copyright (C) The Regents of the University of California, 2019
 #define RASPBERRYPIZ
 
 //Debug Control:
-#define ADE9078_VERBOSE_DEBUG //This line turns on verbose debug via serial monitor (Normally off or //'ed).  Use sparingly and in a test program to debug operation!  Turning this on can take a lot of memory and the delay from USB printing out every statement is taxing temporally!  This is non-specific and for all functions, beware, it's a lot of output that can challenge device memory!  Reported bytes are typically in HEX
 //#define ADE9078_Calibration //Shows the output of the type cast functions to allow the raw values to be seen - very helpful in calibration
 #define ADE9078_CRC_Output //Used to output debug information for the CRC check functions
 #include "ADE9078registers.h"
