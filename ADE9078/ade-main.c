@@ -631,13 +631,26 @@ uint32_t ADE9078_getPartID(){
   return recu;
 }
 
+uint32_t ADE9078_getVpeak(){
+	uint32_t value=0;
+	value=spiRead32(VPEAK_32);
+	return value;
+}
+
 uint32_t ADE9078_getInstVoltageA(){
 
 	// while(((spiRead32(STATUS1_32) >> 16) & 0x01) != 1);
 	uint32_t value=0;
 	value=spiRead32(AV_PCF_32);
-	return value * 230 /74520000;
+	return value;
 }
+
+// double ADE9078_getInstApparentPowerA(){
+// 	uint32_t value=0;
+// 	value=spiRead32(AVA_32);
+// 	double decimal = decimalize(value, AAppPowerGain, AAppPowerOffset,0); //convert to double with calibration factors specified
+// 	return (decimal);
+// }
 
 uint32_t ADE9078_getInstCurrentA(){
 
@@ -646,6 +659,84 @@ uint32_t ADE9078_getInstCurrentA(){
 	value=spiRead32(AI_PCF_32);
 	return value;
 }
+
+void ADE9078_configureWFB(){
+	int i;
+	uint16_t writeValue = spiRead16(WFB_CFG_16);
+	//stop filling buffer to config buffer
+  	writeValue &= ~(0b1 << 4);  //set WF_CAP_EN bit to 0 in the WFB_CFG register
+  	spiWrite16(WFB_CFG_16, writeValue);
+
+	//enable INeutral: uncomment the following
+	writeValue = (writeValue | (0b1 << 12));
+	//disable INeutral: uncomment the following
+	//writeValue = (writeValue & ~(-0b1<<12));
+
+	//sinc4output
+	writeValue = (writeValue & ~(0b1 << 8));//WF_SRC bit to 00
+  	writeValue = (writeValue & ~(0b1 << 9));
+	//mode 0//Stop when buffer is full mode
+	writeValue &= ~(0b1<<6); //WF_MODE bits = 00
+	writeValue &= ~(0b1<<7);
+	//read resampled data
+	writeValue &= ~(0b1<<5); //WF_CAP_SEL = 0
+	//burstAllChannels
+	for (i = 0; i == 3; i++){
+		writeValue = writeValue & ~(0b1<<i);
+	}
+
+	printf("writing to WFB_CFG: ");
+	printf("%d  \n",writeValue);
+	spiWrite16(WFB_CFG_16, writeValue);
+	//printf("WFB configured\n");
+}
+
+int ADE9078_isDoneSampling()
+{
+		int check = 0;
+		uint32_t status = spiRead32(STATUS0_32);
+		//printf(status,BIN);
+		// 23th bit tells you that the buffer is full
+		status = (status >> 23);
+		check = (status & 0b1);
+		//printf(check);
+		return check;
+}
+
+void ADE9078_stopFillingBuffer(){
+  uint16_t addressContent = spiRead16(WFB_CFG_16);
+  addressContent = (addressContent & ~(0b1 << 4));  //set WF_CAP_EN bit to 0 in the WFB_CFG register
+
+	// printf("WFB_CFG disable\t\n");
+	// printf(addressContent,BIN);
+
+	spiWrite16(WFB_CFG_16, addressContent);
+  // printf("wfb stopped\n");
+}
+
+//this resets the bit in STATUS0_32 called COH_WFB_FULL so we can once again be notified if the thing is full
+void ADE9078_resetFullBufferBit(){
+	uint32_t addressContent = spiRead32(STATUS0_32);
+	// printf("buff check read\t\n");
+	// printf(addressContent,BIN);
+	addressContent = (addressContent & ~(0b1 << 23));
+	// printf("buff check writ\t\n");
+	// printf(addressContent,BIN);
+	spiWrite32(STATUS0_32, addressContent);
+}
+//Start the WFB
+void ADE9078_startFillingBuffer(){
+  uint16_t addressContent = spiRead16(WFB_CFG_16);
+  addressContent = (addressContent | (0b1 << 4));  //set WF_CAP_EN bit to 1 in the WFB_CFG register to start filling the buffer from Address 0x800.
+
+	// printf("WFB_CFG enable\t\n");
+	// printf(addressContent,BIN);
+
+	spiWrite16(WFB_CFG_16, addressContent);
+  //printf("wfb fill start\n");
+}
+
+
 
 void ADE9078_initialize(InitializationSettings *is){
 
@@ -768,10 +859,10 @@ int main(){
 
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
-    while(1)
+    while(ADE9078_isDoneSampling())
     {
 
-	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getInstVoltageA(), ADE9078_getInstCurrentA(), spiRead32(CVA_32));
+	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
 	  ADE9078_getPartID();
       usleep(2000000);
     }
