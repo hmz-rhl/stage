@@ -792,9 +792,8 @@ void ADE9078_initialize(InitializationSettings *is){
   spiWrite16(CONFIG2_16, 0x0000);
   spiWrite16(CONFIG3_16, 0x0000);
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  spiWrite16(WFB_CFG_16, 0x0000);
-  spiWrite32(ADC_REDIRECT_32, 0x0000);
-
+  spiWrite16(WFB_CFG_16, 0x1111);
+ 
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
   // mask0, mask1, event_mask,
@@ -862,11 +861,11 @@ int main(){
     ADE9078_initialize(&is);
 	sleep(30);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
+	ADE9078_getPartID();
     while(!ADE9078_isDoneSampling())
     {
 
 	  printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getVpeak(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
-	  ADE9078_getPartID();
       usleep(2000000);
     }
     
