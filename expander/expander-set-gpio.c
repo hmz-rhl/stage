@@ -80,6 +80,8 @@ int main(int argc, char* argv[]) {
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
+    expander_printGPIO(expp)
+
     expander_closeAndFree(expp);
 
     }
@@ -90,6 +92,7 @@ int main(int argc, char* argv[]) {
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
+    expander_printGPIO(expp)
     expander_closeAndFree(expp);
 
     }
