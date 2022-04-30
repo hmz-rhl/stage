@@ -74,7 +74,9 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
 
     }
-    if(!strcmp(argv[0], "26"))expander_t exp = expander_init(0x26);
+    if(!strcmp(argv[0], "26")){
+        expander_t exp = expander_init(0x26);
+    }
     else if(!strcmp(argv[0], "27")){
         expander_t exp = expander_init(0x27);
     }
