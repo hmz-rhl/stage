@@ -98,7 +98,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	uint8_t data[4] ={0};
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 4) ;
+	data[2] = 0x00FF & (value >> 8) ;
 	data[3] = ((value & 0x00FF)) ;
   	
 
