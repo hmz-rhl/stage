@@ -37,7 +37,7 @@
 
 
 #define AVrmsGain 	0.00003
-#define AVrmsOffset 11.67676
+#define AVrmsOffset 0
 
 
 
@@ -886,7 +886,7 @@ int main(){
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getAIrms() );
 		usleep(10);
-		printf("Puissance : %dW\n", spiRead32(AVRMSOS_32));
+		printf("Puissance : %dW\n", spiRead32());
       	usleep(200000);
     }
     
