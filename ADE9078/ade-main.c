@@ -610,9 +610,9 @@ uint32_t ADE9078_getPartID(){
 
 
 
-  uint32_t recu = data[3] + (data[2] << 8) + (data[1] << 16) + (data[0] << 24);
+  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
-  printf("part ID : 0x%X\n\n", recu); 
+  printf("part ID : 0x%02X\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -886,7 +886,7 @@ int main(){
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getAIrms() );
 		usleep(10);
-		printf("Puissance : %dW\n", spiRead32(AWATT_32));
+		printf("Puissance : %dW\n", spiRead32(AWATTOS_32));
       	usleep(200000);
     }
     
