@@ -66,12 +66,12 @@ typedef struct {
 double decimalize(uint32_t input, double factor, double offset, int absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
 {
 	#ifdef ADE9078_VERBOSE_DEBUG
-	Serial.print(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
-	Serial.println(input);
+	printf(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
+	printf("%d\n", input);
 	#endif
 	#ifdef ADE9078_Calibration
-	Serial.print(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
-	Serial.println(input);
+	printf(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
+	printf("%d\n", input);
 	#endif
 	//Warning, you can get overflows due to the printout of returned values in Arduino, See: http://forum.arduino.cc/index.php/topic,46931.0.html
 	if(absolutevalue == 0){
