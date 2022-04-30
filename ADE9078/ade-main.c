@@ -811,7 +811,7 @@ int main(){
 	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
-		.vAGain=2,
+		.vAGain=4,
 		.vBGain=1,
 		.vCGain=1,
 
@@ -833,6 +833,8 @@ int main(){
 		.iConsel=0
 	};
 
+	ADE9078_PSM3();
+	sleep(1);
 	ADE9078_PSM0();
 	ADE9078_resetRun();
     ADE9078_initialize(&is);
@@ -842,8 +844,9 @@ int main(){
 
 		while(!ADE9078_dataReady())
 		{
+			sleep(1);
 		}
-	 	printf("tension : %uV  \t courant : %uA   Puissance : %u W\n", ADE9078_getInstVoltageA() * 0.24 /0b111111111111111111111111111, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %dV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getInstVoltageA() * 0.230 /0x0474E650, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
       	usleep(200000);
     }
     
