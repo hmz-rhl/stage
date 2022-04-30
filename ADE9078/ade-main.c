@@ -836,6 +836,7 @@ double ADE9078_getAVrms(){
 int main(){
 
 	expander_t *exp = expander_init(0x26);
+	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
@@ -874,7 +875,11 @@ int main(){
 		{
 			sleep(1);
 		}
-	 	printf("tension : %lfV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getAVrms(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %lfV\n", (int)ADE9078_getAVrms() );
+		usleep(10);
+		printf("courant : %dA\n", ADE9078_getInstCurrentA() );
+		usleep(10);
+		printf("Puissance : %uW\n", spiRead32(AVA_32));
       	usleep(200000);
     }
     
