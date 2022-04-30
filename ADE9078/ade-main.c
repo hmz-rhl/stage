@@ -610,7 +610,7 @@ uint32_t ADE9078_getPartID(){
 
 
 
-  uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
+  uint32_t recu = data[3] + (data[2] << 8) + (data[1] << 16) + (data[0] << 24);
 
   printf("part ID : 0x%X\n\n", recu); 
   expander_closeAndFree(exp);
