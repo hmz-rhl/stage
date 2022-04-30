@@ -833,6 +833,13 @@ double ADE9078_getAVrms(){
 	return decimal;
 }
 
+double ADE9078_getAIrms(){
+	uint32_t value=0;
+	value=spiRead32(AIRMS_32);
+	double decimal = decimalize(value, 1, 0,0); //convert to double with calibration factors specified, no abs value
+	return decimal;
+}
+
 int main(){
 
 	expander_t *exp = expander_init(0x26);
@@ -877,7 +884,7 @@ int main(){
 		}
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
 		usleep(10);
-		printf("courant : %dA\n", ADE9078_getInstCurrentA() );
+		printf("courant : %dA\n", ADE9078_getAIrms() );
 		usleep(10);
 		printf("Puissance : %dW\n", spiRead32(AWATT_32));
       	usleep(200000);
