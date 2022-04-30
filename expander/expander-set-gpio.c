@@ -17,6 +17,7 @@
 #include <linux/ioctl.h>
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
+#include "../lib/expander-i2c.h"
 
 #define I2C_DEVICE          "/dev/i2c-1"
 #define MCP23008_ADDR       (0x26)
@@ -45,7 +46,7 @@
 
 int fd;
 int ret;
-uint8_t buff[4];
+uint8_t buff = 0;;
 
 
 
@@ -73,59 +74,19 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
 
     }
-
-/**
- * Ouverture de l'interface I2C de la RPZ
- **/
-
-    fd = open(I2C_DEVICE, O_RDWR);
-    if(fd < 0) {
-        printf("probleme d'ouverture l'interface I2C de la RPZ...\n");
-        exit(EXIT_FAILURE);
+    if(!strcmp(argv[0], "26"))expander_t exp = expander_init(0x26);
+    else if(!strcmp(argv[0], "27")){
+        expander_t exp = expander_init(0x27);
     }
-/**
- * Setting de l'address esclave de l'interface I2C de la RPZ
- **/
-    if(ioctl(fd,I2C_SLAVE,MCP23008_ADDR) < 0) {
-        printf("probleme de setting du l'addresse l'interface I2C de la RPZ ...\n");
-        exit(EXIT_FAILURE);
-    }
-
-
-/**
- * Lecture des gpio de l'expander
- **/
-    buff[0] = expander_get;
-/**
- * Affichage des gpio de l'expander sur la console
- **/
-
-    printf("Avant :\n\n");
     for (size_t i = 0; i < 8; i++)
     {
-        
-        printf("GPIO[%d] : %d\r\n", i, (buff[0] >> i ) & 0x01);
-    }
-    putchar('\n');
-
-/**
- * Ecriture des gpio de l'expander
- **/
-
-    buff[1] = 0x00;
-
-/**
- * Recuperation de la configuration souhaite des gpio de l'expander
- **/
-    for (size_t i = 0; i < 8; i++)
-    {
-       buff[1] += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+       buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
     }
 
+    expander_setAndResetSomePinsGPIO(exp, buff);
 
 
-
-
+    expander_closeAndFree(exp);
     close(fd);
 
     exit(EXIT_SUCCESS);
