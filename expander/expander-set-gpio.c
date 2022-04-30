@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
     expander_setAndResetSomePinsGPIO(expp, buff);
 
 
-    expander_closeAndFree(exp);
+    expander_closeAndFree(expp);
     close(fd);
 
     exit(EXIT_SUCCESS);
