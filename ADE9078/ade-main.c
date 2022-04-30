@@ -888,9 +888,9 @@ int main(){
 		}
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
 		usleep(10);
-		printf("courant : %dA\n", ADE9078_getAIrms() );
+		printf("courant : %lfA\n", ADE9078_getAIrms() );
 		usleep(10);
-		printf("Puissance : %dW\n", spiRead32(AWATT_ACC_32));
+		printf("Puissance : %lfW\n", spiRead32(AWATT_ACC_32));
       	usleep(200000);
     }
     
