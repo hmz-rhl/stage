@@ -74,24 +74,26 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
 
     }
-    if(!strcmp(argv[0], "26")){
+    if(!strcmp(argv[1], "26")){
         expander_t *expp = expander_init(0x26);
         for (size_t i = 0; i < 8; i++)
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
-    expander_printGPIO(expp);
+        expander_setAndResetSomePinsGPIO(expp, buff);
 
-    expander_closeAndFree(expp);
+        expander_printGPIO(expp);
+
+        expander_closeAndFree(expp);
 
     }
     else{
         expander_t *expp = expander_init(0x27);
-        expander_setAndResetSomePinsGPIO(expp, buff);
         for (size_t i = 0; i < 8; i++)
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
+        expander_setAndResetSomePinsGPIO(expp, buff);
     expander_printGPIO(expp);
     expander_closeAndFree(expp);
 
