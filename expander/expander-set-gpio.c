@@ -75,17 +75,17 @@ int main(int argc, char* argv[]) {
 
     }
     if(!strcmp(argv[0], "26")){
-        expander_t exp = expander_init(0x26);
+        expander_t expp = expander_init(0x26);
     }
-    else if(!strcmp(argv[0], "27")){
-        expander_t exp = expander_init(0x27);
+    else{
+        expander_t expp = expander_init(0x27);
     }
     for (size_t i = 0; i < 8; i++)
     {
        buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
     }
 
-    expander_setAndResetSomePinsGPIO(exp, buff);
+    expander_setAndResetSomePinsGPIO(expp, buff);
 
 
     expander_closeAndFree(exp);
