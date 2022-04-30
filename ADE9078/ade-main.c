@@ -38,6 +38,8 @@
 
 #define AVrmsGain 	0.00000307
 #define AVrmsOffset 0
+#define AIrmsGain 	0.00000000021
+#define AIrmsOffset 0
 
 
 
@@ -833,10 +835,12 @@ double ADE9078_getAVrms(){
 	return decimal;
 }
 
+
+
 double ADE9078_getAIrms(){
 	uint32_t value=0;
 	value=spiRead32(AIRMS_32);
-	double decimal = decimalize(value, 1, 0,0); //convert to double with calibration factors specified, no abs value
+	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return decimal;
 }
 
