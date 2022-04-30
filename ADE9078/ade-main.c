@@ -875,7 +875,7 @@ int main(){
 		{
 			sleep(1);
 		}
-	 	printf("tension : %lfV\n", (int)ADE9078_getAVrms() );
+	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getInstCurrentA() );
 		usleep(10);
