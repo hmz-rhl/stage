@@ -41,6 +41,10 @@
 #define AIrmsGain 	0.00000000021
 #define AIrmsOffset 0
 
+#define AAppPowerGain 1
+#define AAppPowerOffset 0
+
+
 
 
 //#define ADE9078_VERBOSE_DEBUG
@@ -844,6 +848,13 @@ double ADE9078_getAIrms(){
 	return decimal;
 }
 
+double ADE9078_getInstApparentPowerA(){
+	uint32_t value=0;
+	value=spiRead32(AVA_32);
+	double decimal = decimalize(value, AAppPowerGain, AAppPowerOffset,0); //convert to double with calibration factors specified
+	return (decimal);
+}
+
 int main(){
 
 	expander_t *exp = expander_init(0x26);
@@ -890,7 +901,7 @@ int main(){
 		usleep(10);
 		printf("courant : %lfA\n", ADE9078_getAIrms() );
 		usleep(10);
-		printf("Puissance : %lfW\n", spiRead32(AWATT_ACC_32));
+		printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
       	usleep(200000);
     }
     
