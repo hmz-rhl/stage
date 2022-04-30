@@ -864,7 +864,7 @@ int main(){
 
 	ADE9078_PSM3();
 	sleep(1);
-	ADE9078_PSM0();
+	ADE9078_PSM1();
 	ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
@@ -879,7 +879,7 @@ int main(){
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getInstCurrentA() );
 		usleep(10);
-		printf("Puissance : %uW\n", spiRead32(AWATT_32));
+		printf("Puissance : %dW\n", spiRead32(AWATT_32));
       	usleep(200000);
     }
     
