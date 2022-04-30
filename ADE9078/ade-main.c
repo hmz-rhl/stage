@@ -879,7 +879,7 @@ int main(){
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getInstCurrentA() );
 		usleep(10);
-		printf("Puissance : %uW\n", spiRead32(AVA_32));
+		printf("Puissance : %uW\n", spiRead32(AWATT_32));
       	usleep(200000);
     }
     
