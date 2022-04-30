@@ -76,16 +76,20 @@ int main(int argc, char* argv[]) {
     }
     if(!strcmp(argv[0], "26")){
         expander_t *expp = expander_init(0x26);
+        for (size_t i = 0; i < 8; i++)
+        {
+        buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
     }
     else{
         expander_t *expp = expander_init(0x27);
-    }
-    for (size_t i = 0; i < 8; i++)
-    {
-       buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        expander_setAndResetSomePinsGPIO(expp, buff);
+        for (size_t i = 0; i < 8; i++)
+        {
+        buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
     }
 
-    expander_setAndResetSomePinsGPIO(expp, buff);
 
 
     expander_closeAndFree(expp);
