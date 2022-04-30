@@ -840,7 +840,7 @@ int main(){
 	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
-		.vAGain=4,
+		.vAGain=1,
 		.vBGain=1,
 		.vCGain=1,
 
