@@ -886,7 +886,7 @@ int main(){
 		usleep(10);
 		printf("courant : %dA\n", ADE9078_getAIrms() );
 		usleep(10);
-		printf("Puissance : %dW\n", spiRead32(AWATTOS_32));
+		printf("Puissance : %dW\n", spiRead32(AVRMSOS_32);
       	usleep(200000);
     }
     
