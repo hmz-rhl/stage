@@ -846,7 +846,7 @@ int main(){
 		{
 			sleep(1);
 		}
-	 	printf("tension : %dV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getInstVoltageA() * 0.230 /0x0474E650, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %dV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getInstVoltageA() * 230 /48600500, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
       	usleep(200000);
     }
     
