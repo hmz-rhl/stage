@@ -80,6 +80,8 @@ int main(int argc, char* argv[]) {
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
+    expander_closeAndFree(expp);
+
     }
     else{
         expander_t *expp = expander_init(0x27);
@@ -88,11 +90,12 @@ int main(int argc, char* argv[]) {
         {
         buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
+    expander_closeAndFree(expp);
+
     }
 
 
 
-    expander_closeAndFree(expp);
     close(fd);
 
     exit(EXIT_SUCCESS);
