@@ -36,6 +36,9 @@
 #define WRITE            0xFFF6
 
 
+#define AVrmsGain 	0.000014186
+#define AVrmsOffset 11.67676
+
 
 
 //#define ADE9078_VERBOSE_DEBUG
@@ -803,7 +806,12 @@ void ADE9078_initialize(InitializationSettings *is){
   #endif
 }
 
-
+double ADE9078_getAVrms(){
+	uint32_t value=0;
+	value=spiRead32(AVRMS_32);
+	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
+	return decimal;
+}
 
 int main(){
 
@@ -846,7 +854,7 @@ int main(){
 		{
 			sleep(1);
 		}
-	 	printf("tension : %dV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getInstVoltageA() * 230 /48600500, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %lfV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getAVrms(), ADE9078_getInstCurrentA(), spiRead32(AVA_32));
       	usleep(200000);
     }
     
