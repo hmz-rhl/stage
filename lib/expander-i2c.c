@@ -260,6 +260,14 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 
 /* Ecriture des gpio de l'expander
  **/
+
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
+        exit(EXIT_FAILURE);
+    }
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x00;
 
@@ -308,6 +316,14 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
 /* Ecriture des gpio de l'expander
  **/
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
+        exit(EXIT_FAILURE);
+    }
+
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x00;
 
@@ -381,6 +397,14 @@ void expander_setAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
+        exit(EXIT_FAILURE);
+    }
+
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0xFF;
 #ifdef DEBUG
@@ -417,6 +441,14 @@ void expander_resetAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
+        exit(EXIT_FAILURE);
+    }
+
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = 0x00;
 #ifdef DEBUG
@@ -453,6 +485,14 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
     if(pin > 7 || pin < 0)
     {
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
+        exit(EXIT_FAILURE);
+    }
+
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
     exp->buff[0] = REG_OLAT;
@@ -493,6 +533,13 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
+    exp->buff[0] = 0x00;
+    exp->buff[1] = 0;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur IODIR\r\n");
+        exit(EXIT_FAILURE);
+    }
     
     exp->buff[0] = REG_OLAT;
     exp->buff[1] = ~(0x01 << pin);
@@ -521,7 +568,7 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         exp->buff[1] = 0;
 
     if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IOCON\r\n");
+        printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
 
