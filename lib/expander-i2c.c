@@ -517,7 +517,7 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-        exp->buff[0] = REG_IOCON;
+        exp->buff[0] = 0x00;
         exp->buff[1] = 0;
 
     if(write(exp->fd,exp->buff,2) != 2) {
