@@ -63,7 +63,7 @@ typedef struct {
 }InitializationSettings;
 
 
-double decimalize(uint32_t input, double factor, double offset, bool absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
+double decimalize(uint32_t input, double factor, double offset, int absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
 {
 	#ifdef ADE9078_VERBOSE_DEBUG
 	Serial.print(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
