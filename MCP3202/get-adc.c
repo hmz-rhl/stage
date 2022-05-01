@@ -61,7 +61,7 @@ int main(int argc, char **argv){
 		TEMP = (int)temp;
 		printf("temp %d c", TEMP);
 		printf("cp %lf", cp*4);
-		printf("pp %lf", pp*4);
+		printf("pp %lf", pp);
 		sprintf(str_temp, "%d", TEMP);
 		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
@@ -93,31 +93,30 @@ int main(int argc, char **argv){
 		sprintf(str_cp, "%d", CP);
 		mqtt_publish("up/value/cp_test", str_cp, mosq);
 
-		if (pp > 9.5){
+		if (pp < 0.58){
 
             PP = 80;
 		}
-        else if( pp >= 7.5){
+        else if( pp < 0.9 ){
 
             PP = 63;
 		}
-        else if( pp >= 4.5){
+        else if( pp < 1.5 ){
 
             PP = 32;
 		}
-        else if( pp >= 1.5){
+        else if( pp < 2.2 ){
 
-            PP = 20;
+            PP = 20
 		}
-        else if( pp > -1.5){
+        else if( pp < 2.6 ){
 
             PP = 13;
 		}
         else{
 			
-			PP = 6;
+            PP = 6;
 		}
-
 		sprintf(str_pp, "%d", PP);
 		mqtt_publish("up/value/pp_test", str_pp, mosq);
 		mqtt_free(mosq);
