@@ -107,7 +107,7 @@ int main(int argc, char **argv){
 		}
         else if( pp < 2.2 ){
 
-            PP = 20
+            PP = 20;
 		}
         else if( pp < 2.6 ){
 
