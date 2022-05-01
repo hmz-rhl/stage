@@ -1,33 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <errno.h>
-#include <time.h>
+#include "MCP3202.h"
 
 
-#include "../lib/mcp3202-adc.h"
-
-#include "../lib/expander-i2c.h"
-
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
-
-// L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
-// On a 1C tous les 12 pas en sortie chez l'adc.
-// Range du termometre: -40C - 150C ; 0,1V a 2V.
-
-#define DEBUG
-/******************************************************************************/
-
-
-void setAllCS(expander_t *exp)
-{
-  expander_setPinGPIO(exp, 2);
-  expander_setPinGPIO(exp, 3);
-  expander_setPinGPIO(exp, 4);
-  expander_setPinGPIO(exp, 5);
-}
 
 
 void waitForSPIReady(expander_t *exp){
@@ -46,7 +19,19 @@ void waitForSPIReady(expander_t *exp){
 		}
 	}
 }
-int readAdc(int channel){
+
+
+/**
+ * 
+ * @brief  renvoi le code de conversion sur 12bitsde l'adc d'un channel precis et d'un adc precis
+ * 
+ * @param   channel le channel à lire 0 ou 1 
+ * @param   cs le chip select de l'adc a lire (utiliser les constante de la lib expander-i2c.h (T_CS, PP_CS...))
+ * 
+ * @return  l'output code entre 0 et 4095 
+ * 
+ *  **/
+int readAdc(int channel, uint8_t cs){
 
 	unsigned int reData = -1;           
 	
@@ -74,7 +59,7 @@ int readAdc(int channel){
 		return reData;
 	}
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
-	expander_resetPinGPIO(exp, T_CS);
+	expander_resetPinGPIO(exp, cs);
 	
 	usleep(1);
 
@@ -83,7 +68,7 @@ int readAdc(int channel){
 
 
 	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
-	expander_setPinGPIO(exp, T_CS);
+	expander_setPinGPIO(exp, cs);
 
 
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
@@ -98,31 +83,21 @@ int readAdc(int channel){
 }
 
 
+/**
+ * 
+ * @brief  convertie l'output code du mcp3202 en tension en volt
+ * 
+ * @param   code l'output code compris entre 0 et 4095
+ * 
+ * @return  la tension en volt convertit a partir de l'output code
+ * 
+ *  **/
+double toVolt(int code){
 
-void sendAdcMqtt(int data){
+	if(code < 0){
 
-	data = data*3.3/4096;
-
-	//publish(top, toString(data));
-}
-/******************************************************************************/
-int main(int argc, char **argv){
-
-	int retVal;
-	//char buffer[10];
-	while(1){
-		usleep(500000);
-		retVal = readAdc(0);
-		//itoa(retVal, buffer, 10);
-		//printf("en string %s\n", buffer);
-		if(retVal < 0){
-			perror("Failed to read ADC");
-		}
+		perror("ne peut pas convertir le code de sortie en volt valeur negative");
+        return code;
 	}
-
-	return EXIT_SUCCESS;               
+	return code*3.3/4095;
 }
-
- 	
-
-

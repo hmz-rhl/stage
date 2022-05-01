@@ -11,6 +11,24 @@
 | Differential	|   0  | 1    | IN-  IN+|     |
 |---------------|-------------|---------|-----|*/
 
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <errno.h>
+#include <time.h>
+
+
+
+#include "expander-i2c.h"
+
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
+
+
 #define	START_BIT	0x01
 
 #define SGL_MODE	(1 << 0x7)		
@@ -33,3 +51,11 @@
 #define ADC_CONFIG_SGL_MODE_LSBF_CN1	(SGL_MODE | CN1 | LSBF)
 #define ADC_CONFIG_DIFF_MODE_LSBF_CN0	(DIFF_MODE | CN0 | LSBF)
 #define ADC_CONFIG_DIFF_MODE_LSBF_CN1	(DIFF_MODE | CN1 | LSBF)
+
+
+
+void waitForSPIReady(expander_t *exp);
+
+int readAdc(int channel, uint8_t cs);
+
+double toVolt(int data);
