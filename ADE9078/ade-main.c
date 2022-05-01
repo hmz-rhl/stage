@@ -36,6 +36,15 @@
 #define WRITE            0xFFF6
 
 
+#define AVrmsGain 	0.00000307
+#define AVrmsOffset 0
+#define AIrmsGain 	0.00000000021
+#define AIrmsOffset 0
+
+#define AAppPowerGain 1
+#define AAppPowerOffset 0
+
+
 
 
 //#define ADE9078_VERBOSE_DEBUG
@@ -58,6 +67,26 @@ typedef struct {
   uint8_t vConsel;
   uint8_t iConsel;
 }InitializationSettings;
+
+
+double decimalize(uint32_t input, double factor, double offset, int absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
+{
+	#ifdef ADE9078_VERBOSE_DEBUG
+	printf(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
+	printf("%d\n", input);
+	#endif
+	#ifdef ADE9078_Calibration
+	printf(" ADE9078::calibration (decimalize) and double type conversion function executed, RAW input: ");
+	printf("%d\n", input);
+	#endif
+	//Warning, you can get overflows due to the printout of returned values in Arduino, See: http://forum.arduino.cc/index.php/topic,46931.0.html
+	if(absolutevalue == 0){
+	return (((double)input*factor)+offset); //standard y=mx+b calibration function applied to return
+	}
+	else{
+		return (abs(((double)input*factor)+offset)); //standard y=mx+b calibration function applied to return
+	}
+}
 
 
 
@@ -589,7 +618,7 @@ uint32_t ADE9078_getPartID(){
 
   uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
-  printf("part ID : 0x%X\n\n", recu); 
+  printf("part ID : 0x%02X\n\n", recu); 
   expander_closeAndFree(exp);
 
   return recu;
@@ -803,15 +832,37 @@ void ADE9078_initialize(InitializationSettings *is){
   #endif
 }
 
+double ADE9078_getAVrms(){
+	uint32_t value=0;
+	value=spiRead32(AVRMS_32);
+	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
+	return decimal;
+}
 
+
+
+double ADE9078_getAIrms(){
+	uint32_t value=0;
+	value=spiRead32(AIRMS_32);
+	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
+	return decimal;
+}
+
+double ADE9078_getInstApparentPowerA(){
+	uint32_t value=0;
+	value=spiRead32(AVA_32);
+	double decimal = decimalize(value, AAppPowerGain, AAppPowerOffset,0); //convert to double with calibration factors specified
+	return (decimal);
+}
 
 int main(){
 
 	expander_t *exp = expander_init(0x26);
+	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
 	InitializationSettings is ={
 		
-		.vAGain=4,
+		.vAGain=1,
 		.vBGain=1,
 		.vCGain=1,
 
@@ -835,7 +886,7 @@ int main(){
 
 	ADE9078_PSM3();
 	sleep(1);
-	ADE9078_PSM0();
+	ADE9078_PSM1();
 	ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
@@ -846,7 +897,11 @@ int main(){
 		{
 			sleep(1);
 		}
-	 	printf("tension : %dV  \t courant : %dA   Puissance : %uW\n", (int)ADE9078_getInstVoltageA() * 230 /48600500, ADE9078_getInstCurrentA(), spiRead32(AVA_32));
+	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
+		usleep(10);
+		printf("courant : %lfA\n", ADE9078_getAIrms() );
+		usleep(10);
+		printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
       	usleep(200000);
     }
     
