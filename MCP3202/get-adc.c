@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 	mosq = init_mqtt();
 	signal(SIGINT, interruption);
 	int i =0;
-	while(i<2){
+	while(i++<2){
 
 		temp = toDegres(readAdc(0,T_CS));
 		pp = toVolt(readAdc(0,PP_CS));
@@ -124,6 +124,7 @@ int main(int argc, char **argv){
 
 	
 	}
+	mqtt_free(mosq);
 	return EXIT_SUCCESS;               
 }
 
