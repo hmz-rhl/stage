@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <time.h>
+#include <string.h>
 
 
 #include "../lib/MCP3202.h"
@@ -48,7 +49,7 @@ int main(int argc, char **argv){
 		printf("temp : %.2f°C\n",	temp);
 		printf("pp adc : %.2fV\n",		pp);
 		printf("cp adc : %.2fV\n\n\n",	cp);
-		
+
 		TEMP = (int)temp;
 		mqtt_publish("up/value/temp_test", itoa(TEMP), mosq);
 		
