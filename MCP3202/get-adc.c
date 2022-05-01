@@ -55,7 +55,7 @@ int main(int argc, char **argv){
 		
         if (cp > 9.5){
 
-            CP = 12
+            CP = 12;
 		}
         else if( cp >= 7.5){
 
@@ -75,13 +75,13 @@ int main(int argc, char **argv){
 		}
         else{
 
-			CP = -12
+			CP = -12;
 		}
 		mqtt_publish("up/value/cp_test", itoa(CP), mosq);
 
 		if (pp > 9.5){
 
-            PP = 80
+            PP = 80;
 		}
         else if( pp >= 7.5){
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv){
 		}
         else{
 			
-			PP = 6
+			PP = 6;
 		}
 		mqtt_publish("up/value/pp_test", itoa(PP), mosq);
 
