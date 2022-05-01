@@ -34,7 +34,9 @@ double toDegres(int tension){
 
 void interruption(int n)
 {
-	printf("interruption on free mosq\n");
+	#ifdef
+		printf("interruption on free mosq\n");
+	#endif
 	mqtt_free(mosq);
 }
 
@@ -54,16 +56,14 @@ int main(int argc, char **argv){
 		cp = toVolt(readAdc(0,CP_CS));
 
 		sleep(2);
-		printf("temp : %.2f°C\n",	temp);
-		printf("pp adc : %.2fV\n",		pp);
-		printf("cp adc : %.2fV\n\n\n",	cp);
-
 		TEMP = (int)temp;
-		printf("temp %d c", TEMP);
-		printf("cp %lf", cp*4);
-		printf("pp %lf", pp);
+		#ifdef DEBUG
+			printf("temp %d c", TEMP);
+			printf("cp %lf", cp*4);
+			printf("pp %lf", pp);
+		#endif
 		sprintf(str_temp, "%d", TEMP);
-		mqtt_publish("up/value/temp_test", str_temp, mosq);
+		mqtt_publish("up/value/temp", str_temp, mosq);
 		
         if (cp*4.0 > 9.5){
 
@@ -91,7 +91,7 @@ int main(int argc, char **argv){
 		}
 
 		sprintf(str_cp, "%d", CP);
-		mqtt_publish("up/value/cp_test", str_cp, mosq);
+		mqtt_publish("up/value/cp", str_cp, mosq);
 
 		if (pp < 0.58){
 
@@ -118,7 +118,7 @@ int main(int argc, char **argv){
             PP = 6;
 		}
 		sprintf(str_pp, "%d", PP);
-		mqtt_publish("up/value/pp_test", str_pp, mosq);
+		mqtt_publish("up/value/pp", str_pp, mosq);
 		mqtt_free(mosq);
 
 		
