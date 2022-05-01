@@ -67,8 +67,8 @@ int readAdc(int channel, uint8_t cs){
 	}
 
 	//waitForSPIReady(exp);
-	int fd = wiringPiSPISetupMode(0, 2000000, 0);
-	if(fd < 0)
+	
+	if(wiringPiSPISetupMode(0, 2000000, 0) < 0)
 	{
 		perror("Erreur de setup de SPI");
 		return reData;
@@ -94,7 +94,7 @@ int readAdc(int channel, uint8_t cs){
 	printf("The analog input value is \n");
 	printf("Value at MCP3202 CH%d is: %d D \n", channel, reData);
 #endif
-	free(wiringPiSPIGetFd(0));
+	
 	return reData;
 }
 

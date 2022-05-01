@@ -46,8 +46,8 @@ int main(int argc, char **argv){
 
 	mosq = init_mqtt();
 	signal(SIGINT, interruption);
-
-	while(1){
+	int i =0;
+	while(i<2){
 
 		temp = toDegres(readAdc(0,T_CS));
 		pp = toVolt(readAdc(0,PP_CS));
