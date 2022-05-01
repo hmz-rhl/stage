@@ -904,7 +904,7 @@ int main(){
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getPartID();
 	while(1){
-		while(!digitalRead(IRQ1)){
+		while(digitalRead(IRQ1)){
 			sleep(1);
 		}
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
