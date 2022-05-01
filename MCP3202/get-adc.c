@@ -37,7 +37,7 @@ double toDegres(int tension){
 int main(int argc, char **argv){
 	double temp, cp, pp;
 	int TEMP, PP, CP;
-	char* str_temp[100], str_cp[100],  str_pp[100];
+	char str_temp[100], str_cp[100],  str_pp[100];
 
 	struct mosquitto* mosq = init_mqtt();
 
