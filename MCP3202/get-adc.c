@@ -118,13 +118,13 @@ int main(int argc, char **argv){
 
 		sprintf(str_pp, "%d", PP);
 		mqtt_publish("up/value/pp_test", str_pp, mosq);
+		mqtt_free(mosq);
 
 		
 
 
 	
 	}
-	mqtt_free(mosq);
 	return EXIT_SUCCESS;               
 }
 
