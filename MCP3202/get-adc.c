@@ -31,6 +31,8 @@ double toDegres(int tension){
 	return (toMillivolt(tension)-500)/10;
 }
 
+char* itoa()
+
 
 /******************************************************************************/
 int main(int argc, char **argv){
@@ -51,7 +53,7 @@ int main(int argc, char **argv){
 		printf("cp adc : %.2fV\n\n\n",	cp);
 
 		TEMP = (int)temp;
-		mqtt_publish("up/value/temp_test", itoa(TEMP), mosq);
+		mqtt_publish("up/value/temp_test", itoa(TEMP, NULL, 10), mosq);
 		
         if (cp > 9.5){
 
@@ -77,7 +79,7 @@ int main(int argc, char **argv){
 
 			CP = -12;
 		}
-		mqtt_publish("up/value/cp_test", itoa(CP), mosq);
+		mqtt_publish("up/value/cp_test", itoa(CP, NULL, 10), mosq);
 
 		if (pp > 9.5){
 
@@ -103,7 +105,7 @@ int main(int argc, char **argv){
 			
 			PP = 6;
 		}
-		mqtt_publish("up/value/pp_test", itoa(PP), mosq);
+		mqtt_publish("up/value/pp_test", itoa(PP, NULL, 10), mosq);
 
 		
 
