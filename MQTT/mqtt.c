@@ -114,12 +114,12 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  **/
 void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq)
 {
-    while(!test_topic(topic))
-    {
-        printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant:\n");
-        scanf("%s", topic);
-        getchar();
-    }
+    // while(!test_topic(topic))
+    // {
+    //     printf("Erreur dans le choix du topic, veuillez choisir un topic satisfaisant:\n");
+    //     scanf("%s", topic);
+    //     getchar();
+    // }
 
     mosquitto_subscribe(mosq, NULL, topic, 0);
     mosquitto_message_callback_set(mosq, traitement);
