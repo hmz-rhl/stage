@@ -143,7 +143,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	
 	waitForSPIReady(exp);
 
- 	while(digitalRead(IRQ1));
+
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
  	setAllCS(exp);
@@ -188,7 +188,7 @@ uint16_t spiRead16(uint16_t addresse){
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
 
-  	while(digitalRead(IRQ1));
+
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -893,10 +893,11 @@ int main(){
 	ADE9078_getPartID();
 	while(1){
 
-		while(!ADE9078_dataReady())
+		while(!)
 		{
 			sleep(1);
 		}
+		while(!digitalRead(IRQ1) && );
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
 		usleep(10);
 		printf("courant : %lfA\n", ADE9078_getAIrms() );
