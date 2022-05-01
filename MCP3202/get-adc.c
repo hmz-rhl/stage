@@ -57,23 +57,23 @@ int main(int argc, char **argv){
 		sprintf(str_temp, "%d", TEMP);
 		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
-        if (cp > 9.5){
+        if (cp*4 > 9.5){
 
             CP = 12;
 		}
-        else if( cp >= 7.5){
+        else if( cp*4 >= 7.5){
 
             CP = 9;
 		}
-        else if( cp >= 4.5){
+        else if( cp*4 >= 4.5){
 
             CP = 6;
 		}
-        else if( cp >= 1.5){
+        else if( cp*4 >= 1.5){
 
             CP = 3;
 		}
-        else if( cp > -1.5){
+        else if( cp*4 > -1.5){
 
             CP = 0;
 		}
