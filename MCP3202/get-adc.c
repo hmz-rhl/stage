@@ -31,7 +31,6 @@ double toDegres(int tension){
 	return (toMillivolt(tension)-500)/10;
 }
 
-char* itoa()
 
 
 /******************************************************************************/
