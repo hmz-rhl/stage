@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <time.h>
 #include <string.h>
+#include <signal>
 
 
 #include "../lib/MCP3202.h"
@@ -19,7 +20,7 @@
 #define DEBUG
 /******************************************************************************/
 
-
+struct mosquitto* mosq;
 
 double toDegres(int tension){
 
@@ -31,7 +32,11 @@ double toDegres(int tension){
 	return (toMillivolt(tension)-500)/10;
 }
 
-
+void interruption(int n)
+{
+	printf("interruption on free mosq\n");
+	mqtt_free(mosq);
+}
 
 /******************************************************************************/
 int main(int argc, char **argv){
@@ -39,7 +44,8 @@ int main(int argc, char **argv){
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-	struct mosquitto* mosq = init_mqtt();
+	mosq = init_mqtt();
+	signal(SIGINT, interruption);
 
 	while(1){
 

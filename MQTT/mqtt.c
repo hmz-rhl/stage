@@ -139,6 +139,11 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
  **/
 void mqtt_free(struct mosquitto* mosq)
 {
+    if(mosq == NULL)
+    {
+        perror("rien a free dans mqtt_free");
+        return;
+    }
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
