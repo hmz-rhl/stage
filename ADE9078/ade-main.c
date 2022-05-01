@@ -14,6 +14,7 @@
 #include <string.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <signal.h>
 
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
@@ -855,11 +856,20 @@ double ADE9078_getInstApparentPowerA(){
 	return (decimal);
 }
 
+
+void interruption(int n)
+{
+	expander_t *exp = expander_init(0x26);
+	// ouverture du relais L1N
+	expander_resetPinGPIO(exp, 0);
+}
 int main(){
 
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
+
+	signal(SIGINT, interruption);
 	InitializationSettings is ={
 		
 		.vAGain=1,
