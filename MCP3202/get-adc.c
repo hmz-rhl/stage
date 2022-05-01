@@ -36,9 +36,9 @@ int main(int argc, char **argv){
 	while(1){
 
 		sleep(1);
-		printf("temp : %f°C\n",	toDegres(readAdc(0,T_CS)));
-		printf("PP : %2fV\n",		toVolt(readAdc(0,PP_CS)));
-		printf("CP : %2fV\n\n\n",		toVolt(readAdc(0,CP_CS)));
+		printf("temp : %.2f°C\n",	toDegres(readAdc(0,T_CS)));
+		printf("PP : %.2fV\n",		toVolt(readAdc(0,PP_CS)));
+		printf("CP : %.22fV\n\n\n",		toVolt(readAdc(0,CP_CS)));
 	}
 	return EXIT_SUCCESS;               
 }
