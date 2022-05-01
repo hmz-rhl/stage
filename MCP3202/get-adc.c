@@ -63,7 +63,7 @@ int main(int argc, char **argv){
 			printf("pp %lf", pp);
 		#endif
 		sprintf(str_temp, "%d", TEMP);
-		mqtt_publish("up/value/temp", str_temp, mosq);
+		if(temp>0)mqtt_publish("up/value/temp", str_temp, mosq);
 		
         if (cp*4.0 > 9.5){
 
