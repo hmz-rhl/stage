@@ -55,7 +55,6 @@ int main(int argc, char **argv){
 		pp = toVolt(readAdc(0,PP_CS));
 		cp = toVolt(readAdc(0,CP_CS));
 
-		sleep(2);
 		TEMP = (int)temp;
 		#ifdef DEBUG
 			printf("temp %d c", TEMP);
@@ -123,6 +122,7 @@ int main(int argc, char **argv){
 
 		
 
+		sleep(4);
 
 	
 	}
