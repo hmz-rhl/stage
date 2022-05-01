@@ -862,6 +862,7 @@ void interruption(int n)
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, 0);
+	exit(EXIT_SUCCESS);
 }
 int main(){
 
@@ -870,6 +871,7 @@ int main(){
 	expander_setPinGPIO(exp, 0);
 
 	signal(SIGABRT, interruption);
+	signal(SIGINT, interruption);
 	InitializationSettings is ={
 		
 		.vAGain=1,
