@@ -869,7 +869,7 @@ int main(){
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
 
-	signal(SIGINT, interruption);
+	signal(SIGABRT, interruption);
 	InitializationSettings is ={
 		
 		.vAGain=1,
