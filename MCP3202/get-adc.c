@@ -37,6 +37,7 @@ double toDegres(int tension){
 int main(int argc, char **argv){
 	double temp, cp, pp;
 	int TEMP, PP, CP;
+	char* str_temp[100], str_cp[100],  str_pp[100];
 
 	struct mosquitto* mosq = init_mqtt();
 
@@ -52,7 +53,9 @@ int main(int argc, char **argv){
 		printf("cp adc : %.2fV\n\n\n",	cp);
 
 		TEMP = (int)temp;
-		mqtt_publish("up/value/temp_test", itoa(TEMP, NULL, 10), mosq);
+
+		sprintf(str_temp, "%d", temp);
+		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
         if (cp > 9.5){
 
@@ -78,7 +81,9 @@ int main(int argc, char **argv){
 
 			CP = -12;
 		}
-		mqtt_publish("up/value/cp_test", itoa(CP, NULL, 10), mosq);
+
+		sprintf(str_cp, "%d", CP);
+		mqtt_publish("up/value/cp_test", str_cp, mosq);
 
 		if (pp > 9.5){
 
@@ -104,7 +109,9 @@ int main(int argc, char **argv){
 			
 			PP = 6;
 		}
-		mqtt_publish("up/value/pp_test", itoa(PP, NULL, 10), mosq);
+
+		sprintf(str_pp, "%d", PP);
+		mqtt_publish("up/value/pp_test", str_pp, mosq);
 
 		
 
