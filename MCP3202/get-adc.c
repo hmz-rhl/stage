@@ -8,10 +8,7 @@
 
 #include "../lib/MCP3202.h"
 
-#include "../lib/expander-i2c.h"
 
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
 
 // L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
 // On a 1C tous les 12 pas en bit en sortie chez l'adc.
