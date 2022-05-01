@@ -35,7 +35,7 @@ double toDegres(int tension){
 
 /******************************************************************************/
 int main(int argc, char **argv){
-	unsigned double temp, cp, pp;
+	double temp, cp, pp;
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 
 		TEMP = (int)temp;
 		printf("%d c", TEMP);
-		sprintf(str_temp, "%d", temp);
+		sprintf(str_temp, "%lf", temp);
 		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
         if (cp > 9.5){
