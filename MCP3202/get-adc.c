@@ -26,7 +26,7 @@ double toDegres(int tension){
 		perror("ne peut pas convertir une tension negative en degres");
 		return tension;
 	}
-	return (toVolt(tension)-0.500)/10;
+	return (toMillivolt(tension)-500)/10;
 }
 
 

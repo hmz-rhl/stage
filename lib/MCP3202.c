@@ -101,3 +101,22 @@ double toVolt(int code){
 	}
 	return code*3.3/4095;
 }
+
+/**
+ * 
+ * @brief  convertie l'output code du mcp3202 en tension en mV
+ * 
+ * @param   code l'output code compris entre 0 et 4095
+ * 
+ * @return  la tension en mV convertit a partir de l'output code
+ * 
+ *  **/
+double toMillivolt(int code){
+
+	if(code < 0){
+
+		perror("ne peut pas convertir le code de sortie en volt valeur negative");
+        return code;
+	}
+	return code*3300/4095;
+}

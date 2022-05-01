@@ -59,3 +59,5 @@ void waitForSPIReady(expander_t *exp);
 int readAdc(int channel, uint8_t cs);
 
 double toVolt(int data);
+
+double toMillivolt(int code);
