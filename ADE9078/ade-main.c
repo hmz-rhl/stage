@@ -859,16 +859,14 @@ double ADE9078_getInstApparentPowerA(){
 
 void interruption(int n)
 {
-	exp = expander_init(0x26);
+	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, 0);
-
 	exit(EXIT_SUCCESS);
 }
-
 int main(){
 
-	exp = expander_init(0x26);
+	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
 
