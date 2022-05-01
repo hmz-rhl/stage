@@ -865,7 +865,7 @@ void interruption(int n)
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp2, 0);
 
-	expander_setPinGPIO(PM_CS);
+	expander_setPinGPIO(exp2, PM_CS);
 	expander_closeAndFree(exp2);
 	
 	expander_closeAndFree(exp);
