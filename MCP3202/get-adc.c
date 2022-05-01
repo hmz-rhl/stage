@@ -40,7 +40,7 @@ void interruption(int n)
 
 /******************************************************************************/
 int main(int argc, char **argv){
-	double temp, cp, pp;
+	float temp, cp, pp;
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
@@ -59,7 +59,9 @@ int main(int argc, char **argv){
 		printf("cp adc : %.2fV\n\n\n",	cp);
 
 		TEMP = (int)temp;
-		printf("%d c", TEMP);
+		printf("temp %d c", TEMP);
+		printf("cp %lf", cp*4);
+		printf("pp %lf", pp*4);
 		sprintf(str_temp, "%d", TEMP);
 		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
