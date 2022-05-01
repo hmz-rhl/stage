@@ -651,7 +651,7 @@ void expander_closeAndFree(expander_t *exp)
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
-        exit(EXIT_FAILURE);
+        return;
     }
     expander_closeI2C(exp);
     free(exp);

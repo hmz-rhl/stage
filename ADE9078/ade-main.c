@@ -91,18 +91,18 @@ double decimalize(uint32_t input, double factor, double offset, int absolutevalu
 
 
 
-void setAllCS(expander_t *exp)
+void setAllCS(expander_t *exp2)
 {
-  expander_setPinGPIO(exp, 2);
-  expander_setPinGPIO(exp, 3);
-  expander_setPinGPIO(exp, 4);
-  expander_setPinGPIO(exp, 5);
+  expander_setPinGPIO(exp2, 2);
+  expander_setPinGPIO(exp2, 3);
+  expander_setPinGPIO(exp2, 4);
+  expander_setPinGPIO(exp2, 5);
 }
 
 
-void waitForSPIReady(expander_t *exp){
+void waitForSPIReady(expander_t *exp2){
 	
-	if((expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000) == 0b11000000)
+	if((expander_getAllPinsGPIO(exp2) & (uint8_t)0b11000000) == 0b11000000)
 	{
 		printf(" l'ADE est en PSM3 (idle mode) : donc pas fonctionnel veuillez le set a PSM/PSM1/PSM2/\n");
 		exit(EXIT_FAILURE);
@@ -110,7 +110,7 @@ void waitForSPIReady(expander_t *exp){
 	time_t start, end;
 	double attente = 0;
 	start = clock();
-	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
+	while(( expander_getAllPinsGPIO(exp2) & (uint8_t)0b00111100 != 0b00111100 ))
 	{
 		end = clock();
 		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
@@ -137,22 +137,22 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 #endif
 // on attend que irq1 passe a 0
 
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
 	
-	waitForSPIReady(exp);
+	waitForSPIReady(exp2);
 
 
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+ 	setAllCS(exp2);
 
 	usleep(1);
 	
 	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
+ 	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
@@ -160,13 +160,13 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
 }
 
@@ -186,19 +186,19 @@ uint16_t spiRead16(uint16_t addresse){
 
 
   
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
+	expander_t *exp2 = expander_init(EXPANDER_2);
+	waitForSPIReady(exp2);
 
 
 
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
@@ -208,9 +208,9 @@ uint16_t spiRead16(uint16_t addresse){
 	wiringPiSPIDataRW(0, data,4);
 
 	usleep(1);
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 
 
@@ -222,7 +222,7 @@ uint16_t spiRead16(uint16_t addresse){
   	printf("recue : %x\n", recu);
 #endif
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
   return recu;
 }
@@ -243,20 +243,20 @@ uint32_t spiRead32(uint16_t addresse){
 
 
   
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
+	expander_t *exp2 = expander_init(EXPANDER_2);
+	waitForSPIReady(exp2);
 
 
   	while(digitalRead(IRQ1));
 
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  	// expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  	// expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
@@ -266,9 +266,9 @@ uint32_t spiRead32(uint16_t addresse){
 	wiringPiSPIDataRW(0, data,6);
 
 	usleep(1);
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 
 
@@ -280,7 +280,7 @@ uint32_t spiRead32(uint16_t addresse){
   	printf("Recu : %x\n", recu);
 #endif
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
   return recu;
 }
@@ -303,22 +303,22 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 #endif
 // on attend que irq1 passe a 0
 
-	expander_t *exp = expander_init(EXPANDER_2);
+	exp2 = expander_init(EXPANDER_2);
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
 	
-	waitForSPIReady(exp);
+	waitForSPIReady(exp2);
 
  	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+ 	setAllCS(exp2);
 
 	usleep(1);
 	
 	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
+ 	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
@@ -326,50 +326,50 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 #endif
 	wiringPiSPIDataRW(0, data,6);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
 }
 
 
 void ADE9078_PSM0(){
 	
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
-	expander_resetPinGPIO(exp, PM0);
-	expander_resetPinGPIO(exp, PM1);
+	expander_resetPinGPIO(exp2, PM0);
+	expander_resetPinGPIO(exp2, PM1);
 
 }
 
 void ADE9078_PSM1(){
 	
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
-	expander_setPinGPIO(exp, PM0);
-	expander_resetPinGPIO(exp, PM1);
+	expander_setPinGPIO(exp2, PM0);
+	expander_resetPinGPIO(exp2, PM1);
 
 }
 
 void ADE9078_PSM2(){
 	
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
-	expander_resetPinGPIO(exp, PM0);
-	expander_setPinGPIO(exp, PM1);
+	expander_resetPinGPIO(exp2, PM0);
+	expander_setPinGPIO(exp2, PM1);
 
 }
 
 void ADE9078_PSM3(){
 	
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
-	expander_setPinGPIO(exp, PM0);
-	expander_setPinGPIO(exp, PM1);
+	expander_setPinGPIO(exp2, PM0);
+	expander_setPinGPIO(exp2, PM1);
 
 }
 
@@ -388,19 +388,19 @@ uint16_t ADE9078_getRun(){
 
 
   
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
+	expander_t *exp2 = expander_init(EXPANDER_2);
+	waitForSPIReady(exp2);
 
   	while(digitalRead(IRQ1));
 
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
@@ -410,9 +410,9 @@ uint16_t ADE9078_getRun(){
 	wiringPiSPIDataRW(0, data,4);
 
 	usleep(1);
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 
 
@@ -424,7 +424,7 @@ uint16_t ADE9078_getRun(){
   	printf("RUN : %d\n", recu);
 #endif
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
   return recu;
 }
@@ -446,22 +446,22 @@ void ADE9078_setRun(){
 #endif
 // on attend que irq1 passe a 0
 
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
 	
-	waitForSPIReady(exp);
+	waitForSPIReady(exp2);
 
  	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+ 	setAllCS(exp2);
 
 	usleep(1);
 	
 	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
+ 	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 #ifdef DEBUG
@@ -469,13 +469,13 @@ void ADE9078_setRun(){
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
 }
 
@@ -496,30 +496,30 @@ void ADE9078_resetRun(){
   	printf("on envoie : 0x%02X %02X %02X %02X\n\n", data[3], data[2], data[1], data[0]);
   
 
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
+	expander_t *exp2 = expander_init(EXPANDER_2);
+	waitForSPIReady(exp2);
 
   	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  	// expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  	// expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
 	wiringPiSPIDataRW(0, data,4);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
-  	expander_closeAndFree(exp);
+  	expander_closeAndFree(exp2);
 
 }
 
@@ -539,27 +539,27 @@ uint16_t ADE9078_getVersion(){
 
   	printf("on envoie: 0x%02X %02X\n", data[1], data[0]);
   
-	expander_t *exp = expander_init(EXPANDER_2);
+	expander_t *exp2 = expander_init(EXPANDER_2);
 
-	waitForSPIReady(exp);
+	waitForSPIReady(exp2);
 
   	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  	// expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  	// expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
 	wiringPiSPIDataRW(0, data,4);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
@@ -570,7 +570,7 @@ uint16_t ADE9078_getVersion(){
   uint16_t recu = data[3] + (data[2] << 8);
 
   printf("VERSION : 0x%02X\n\n", recu); 
-  expander_closeAndFree(exp);
+  expander_closeAndFree(exp2);
 
   return recu;
 }
@@ -591,26 +591,26 @@ uint32_t ADE9078_getPartID(){
 
   
 
-	expander_t *exp = expander_init(EXPANDER_2);
-	waitForSPIReady(exp);
+	expander_t *exp2 = expander_init(EXPANDER_2);
+	waitForSPIReady(exp2);
 
   	while(digitalRead(IRQ1));
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
-  	setAllCS(exp);
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp2);
+  // expander_resetAllPinsGPIO(exp2);
+  	setAllCS(exp2);
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	usleep(1);
 	
-  	expander_resetPinGPIO(exp, PM_CS);
+  	expander_resetPinGPIO(exp2, PM_CS);
 	
 	usleep(1);
 
 	wiringPiSPIDataRW(0, data,6);
 
-  	expander_setPinGPIO(exp, PM_CS);
+  	expander_setPinGPIO(exp2, PM_CS);
 
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	// expander_setAndResetSomePinsGPIO(exp2, ancienne_config);
 
 	usleep(1);
 
@@ -620,7 +620,7 @@ uint32_t ADE9078_getPartID(){
   uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
   printf("part ID : 0x%02X\n\n", recu); 
-  expander_closeAndFree(exp);
+  expander_closeAndFree(exp2);
 
   return recu;
 }
@@ -859,14 +859,22 @@ double ADE9078_getInstApparentPowerA(){
 
 void interruption(int n)
 {
-	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
-	expander_resetPinGPIO(exp, 0);
+	expander_resetPinGPIO(exp2, 0);
+
+	expander_set(PM_CS);
+	expander_closeAndFree(exp2);
+	
+	expander_closeAndFree(exp);
+
 	exit(EXIT_SUCCESS);
 }
+
+expander_t * exp;
+expander_t * exp2;
 int main(){
 
-	expander_t *exp = expander_init(0x26);
+	exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
 
@@ -913,7 +921,7 @@ int main(){
       	usleep(200000);
     }
     
-	expander_closeAndFree(exp);
+	expander_closeAndFree(exp2);
 
   return EXIT_SUCCESS;
 }
