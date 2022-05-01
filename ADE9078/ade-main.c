@@ -17,6 +17,9 @@
 #include <signal.h>
 
 
+expander_t * exp;
+expander_t * exp2;
+
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 #define VERSION_16       0x4FE //Reset: 0x0040 Access: R
@@ -862,7 +865,7 @@ void interruption(int n)
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp2, 0);
 
-	expander_set(PM_CS);
+	expander_setPinGPIO(PM_CS);
 	expander_closeAndFree(exp2);
 	
 	expander_closeAndFree(exp);
@@ -870,8 +873,6 @@ void interruption(int n)
 	exit(EXIT_SUCCESS);
 }
 
-expander_t * exp;
-expander_t * exp2;
 int main(){
 
 	exp = expander_init(0x26);
