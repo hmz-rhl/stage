@@ -46,7 +46,7 @@ int main(int argc, char **argv){
 
 	signal(SIGINT, interruption);
 	int i =0;
-	while(i++<2){
+	while(1){
 
 		mosq = init_mqtt();
 		temp = toDegres(readAdc(0,T_CS));
