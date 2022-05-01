@@ -44,11 +44,11 @@ int main(int argc, char **argv){
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-	mosq = init_mqtt();
 	signal(SIGINT, interruption);
 	int i =0;
 	while(i++<2){
 
+		mosq = init_mqtt();
 		temp = toDegres(readAdc(0,T_CS));
 		pp = toVolt(readAdc(0,PP_CS));
 		cp = toVolt(readAdc(0,CP_CS));
