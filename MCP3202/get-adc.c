@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 
 		TEMP = (int)temp;
 		printf("%d c", TEMP);
-		sprintf(str_temp, "%lf", temp);
+		sprintf(str_temp, "%d", TEMP);
 		mqtt_publish("up/value/temp_test", str_temp, mosq);
 		
         if (cp > 9.5){
