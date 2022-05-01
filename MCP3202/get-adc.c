@@ -34,7 +34,7 @@ double toDegres(int tension){
 
 void interruption(int n)
 {
-	#ifdef
+	#ifdef DEBUG
 		printf("interruption on free mosq\n");
 	#endif
 	mqtt_free(mosq);
