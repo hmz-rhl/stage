@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <time.h>
 #include <string.h>
-#include <signal>
+#include <signal.h>
 
 
 #include "../lib/MCP3202.h"
