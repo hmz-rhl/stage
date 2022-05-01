@@ -50,10 +50,25 @@ int readAdc(int channel, uint8_t cs){
 
 	expander_t *exp = expander_init(0x27);
 
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+	
 
-	waitForSPIReady(exp);
-	if(wiringPiSPISetup(0, 2000000) < 0)
+	time_t start, end;
+	double attente = 0;
+	start = clock();
+	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
+	{
+		end = clock();
+		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
+		if(attente > 5)
+		{
+			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	//waitForSPIReady(exp);
+	int fd = wiringPiSPISetup(0, 2000000);
+	if(fd < 0)
 	{
 		perror("Erreur de setup de SPI");
 		return reData;
@@ -79,6 +94,7 @@ int readAdc(int channel, uint8_t cs){
 	printf("The analog input value is \n");
 	printf("Value at MCP3202 CH%d is: %d D \n", channel, reData);
 #endif
+	free(fd);
 	return reData;
 }
 
