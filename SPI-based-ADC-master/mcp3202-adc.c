@@ -8,7 +8,7 @@
 #include "mcp3202-adc.h"
 
 #include "../lib/expander-i2c.h"
-
+//
 
 /******************************************************************************/
 int readAdc(spiData *data){
