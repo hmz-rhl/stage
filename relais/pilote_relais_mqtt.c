@@ -65,7 +65,7 @@ void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosqu
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
     if(!strcmp(msg->payload, "1")){
         expander_resetPinGPIO(expander, 0);
-        expander_resetPinGPIO(expander, 1);
+        // expander_resetPinGPIO(expander, 1);
         printf("Les relais N et L1 de la prise type 2 sont ouverts\n");
     }
     else if(!strcmp(msg->payload, "3")){
