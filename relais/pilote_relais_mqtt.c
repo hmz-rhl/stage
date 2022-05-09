@@ -9,13 +9,13 @@ void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosqu
 int main()
 {
     struct mosquitto* mosq = init_mqtt();
-    while(1)
-    {
         mqtt_subscribe("down/type_ef/open",traitement_ef, mosq);
         mqtt_subscribe("down/type_ef/close",traitement_ef, mosq);
         mqtt_subscribe("down/type2/open",traitement_type2_open, mosq);
         mqtt_subscribe("down/type2/close",traitement_type2_close, mosq);
-        //mqtt_free(mosq);
+    while(1)
+    {
+        // mqtt_free(mosq);
     }
 }
 

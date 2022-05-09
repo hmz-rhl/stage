@@ -128,7 +128,7 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
 
     mosquitto_loop_start(mosq); // begin of a new thread 
     printf("topic :%s\n", topic);
-	mosquitto_loop_stop(mosq, true); // stop of the thread 
+	// mosquitto_loop_stop(mosq, true); // stop of the thread 
 }
 
 
@@ -146,6 +146,7 @@ void mqtt_free(struct mosquitto* mosq)
         perror("rien a free dans mqtt_free");
         return;
     }
+    mosquitto_loop_stop(mosq, true)
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
