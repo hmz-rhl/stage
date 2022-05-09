@@ -8,7 +8,7 @@ void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosqu
 
 int main()
 {
-    struct moquitto* mosq = init_mqtt();
+    struct mosquitto* mosq = init_mqtt();
     while(1)
     {
         mqtt_subscribe("down/type_ef/open",traitement_ef, mosq);
