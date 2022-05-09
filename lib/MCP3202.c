@@ -67,12 +67,13 @@ int readAdc(int channel, uint8_t cs){
 	}
 
 	//waitForSPIReady(exp);
-	
-	if(wiringPiSPISetupMode(0, 2000000, 0) < 0)
+	int fd = wiringPiSPISetupMode(0, 2000000, 0);
+	if(fd < 0)
 	{
 		perror("Erreur de setup de SPI");
 		return reData;
 	}
+
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
@@ -89,6 +90,7 @@ int readAdc(int channel, uint8_t cs){
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
 
 	expander_closeAndFree(exp);
+	close(fd);
 
 #ifdef DEBUG
 	printf("The analog input value is \n");

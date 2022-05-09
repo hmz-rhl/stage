@@ -48,7 +48,7 @@ expander_t* expander_init(uint8_t addr){
  ** 
  * @brief   definit le champs label qui associera un nom a chaque pin GPIO pour la console
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -92,7 +92,7 @@ void expander_labelize(expander_t* exp){
  ** 
  * @brief   ouvre l'interface i2c de la RP
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -116,7 +116,7 @@ void expander_openI2C(expander_t *exp){
  ** 
  * @brief   ferme l'interface i2c de la RP
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -139,7 +139,7 @@ void expander_closeI2C(expander_t *exp){
  ** 
  * @brief   configure l'interface i2c, et lui fait connaitre l'adresse de l'expander
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -165,7 +165,7 @@ void expander_setI2C(expander_t *exp){
  ** 
  * @brief   Renvoi l'état des pins GPIO (0-7)
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  @return l'état des pins sous forme d'un octet où chaque bit correspond a un pin
  * 
@@ -207,7 +207,7 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
  * 
  * @brief   Renvoi l'état du pin
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  *  @return 0x00 ou 0x01 en fonction de l'état du pin
@@ -237,7 +237,7 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   mets un pin a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -292,7 +292,7 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   mets un pin a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -349,7 +349,7 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   inverse l'état d'un pin
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -383,7 +383,7 @@ void
  ** 
  * @brief   mets tout les pins a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -426,7 +426,7 @@ void expander_setAllPinsGPIO(expander_t *exp){
  * 
  * @brief   mets tout les pin a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -469,7 +469,7 @@ void expander_resetAllPinsGPIO(expander_t *exp){
  * 
  * @brief   mets le pin a 1 et tout les autres a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -515,7 +515,7 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
  * 
  * @brief    mets le pin a 0 et tout les autres a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -591,7 +591,7 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
  * 
  * @brief    Affiche l'etat des pin sur la console
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -642,7 +642,7 @@ void expander_printGPIO(expander_t *exp){
  * 
  * @brief   ferme l'interface i2C et libère la memoire utilisé pour exp
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/

@@ -42,12 +42,14 @@ void interruption(int n)
 
 /******************************************************************************/
 int main(int argc, char **argv){
+	
 	float temp, cp, pp;
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
 	signal(SIGINT, interruption);
 	int i =0;
+
 	while(1){
 
 		mosq = init_mqtt();

@@ -46,6 +46,7 @@ struct mosquitto* init_mqtt()
  * @return 1 si le topic est dans la liste, 0 sinon
  *
  **/
+
 /*int test_topic(char *topic)
 {
     for(int cpt = 0; cpt < 25; cpt++)
@@ -109,6 +110,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
  *
  * @param   topic   choix du topic mqtt
  * @param   mosq    instance de connexion au broker
+ * @param   traitement  fonction de traitement pour interagir avec les données lues sur le topic
  * 
  *
  **/
