@@ -3,8 +3,8 @@
 
 
 void traitement_ef(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
-void traitement_type2_mono(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
-void traitement_type2_tri(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
+void traitement_type2_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
+void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 
 int main()
 {
