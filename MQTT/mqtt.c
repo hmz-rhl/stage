@@ -146,7 +146,7 @@ void mqtt_free(struct mosquitto* mosq)
         perror("rien a free dans mqtt_free");
         return;
     }
-    mosquitto_loop_stop(mosq, true)
+    mosquitto_loop_stop(mosq, true);
     mosquitto_disconnect(mosq);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
