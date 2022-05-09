@@ -33,7 +33,7 @@ void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitt
     expander_closeAndFree(expander);
 }
 
-void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
+void traitement_ef_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
 {
     expander_t* expander = expander_init(0x26); //Pour les relais
 
