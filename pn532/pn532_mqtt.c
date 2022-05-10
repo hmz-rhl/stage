@@ -13,6 +13,7 @@ int main()
 {
     struct mosquitto* mosq = init_mqtt();
     mqtt_subscribe("down/scan/activate",traitement_scan,mosq);
+    mqtt_publish("up/scan","Un scan a été fait", mosq);
 }
 
 
@@ -27,7 +28,9 @@ void traitement_scan(struct mosquitto *mosq, void* obj, const struct mosquitto_m
     PN532_I2C_Init(&pn532);
     if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
         printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
-    } else {
+    } 
+    else 
+    {
         
     }
     PN532_SamConfiguration(&pn532);
@@ -36,10 +39,13 @@ void traitement_scan(struct mosquitto *mosq, void* obj, const struct mosquitto_m
         delay = 
         // Check if a card is available to read
         uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
-        if (uid_len == PN532_STATUS_ERROR) {
+        if (uid_len == PN532_STATUS_ERROR) 
+        {
             printf(".");
             fflush(stdout);
-        } else {
+        } 
+        else 
+        {
             printf("Found card with UID: ");
             for (uint8_t i = 0; i < uid_len; i++) {
                 printf("%02x ", uid[i]);
