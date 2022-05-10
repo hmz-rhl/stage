@@ -867,7 +867,7 @@ void interruption(int n)
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, 0);
-	close(is->fd)
+	close(is.fd)
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
 }
@@ -879,29 +879,29 @@ int main(){
 
 	signal(SIGABRT, interruption);
 	signal(SIGINT, interruption);
-	is ={
+
 		
-		.vAGain=1,
-		.vBGain=1,
-		.vCGain=1,
+		is.vAGain=1,
+		is.vBGain=1,
+		is.vCGain=1,
 
-		.iAGain=1,
-		.iBGain=1,
-		.iCGain=1,
-		.iNGain=1,
+		is.iAGain=1,
+		is.iBGain=1,
+		is.iCGain=1,
+		is.iNGain=1,
 
-		.powerAGain=1,
-		.powerBGain=1,
-		.powerCGain=1,
+		is.powerAGain=1,
+		is.powerBGain=1,
+		is.powerCGain=1,
 
 		//Use these settings to configure wiring configuration at stertup
 		//FYI: B010=2 in DEC
 		//FYI: B100 = 4 in DEC
 
 		//4 Wire Wye configuration - non-Blondel compliant:
-		.vConsel=0,
-		.iConsel=0
-	};
+		is.vConsel=0,
+		is.iConsel=0
+
 
 	ADE9078_PSM3();
 	sleep(1);
