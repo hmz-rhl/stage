@@ -797,7 +797,7 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
-  
+
 // #5 : Write VLevel 0x117514
    uint32_t vLevelData = 0x117514;//0x35A98F;  
 while(digitalRead(IRQ1)){}
@@ -829,7 +829,7 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  //spiWrite16(WFB_CFG_16, 0x1111);
+  spiWrite16(WFB_CFG_16, 0x1111);
 
 
 // 8: Write 1 to Run register
@@ -881,7 +881,7 @@ double ADE9078_getAVrms(){
 
 
 
-double ADE9078_getAIrms(){
+uint32_t ADE9078_getAIrms(){
 	uint32_t value=0;
 	value=spiRead32(AIRMS_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
@@ -953,7 +953,7 @@ int main(){
 		while(digitalRead(IRQ1)){
 			
 		}
-		printf("courant : %dA\n", ADE9078_getAIrms() );
+		printf("courant : %x A\n", ADE9078_getAIrms() );
 		usleep(10);
 		while(digitalRead(IRQ1)){
 			
