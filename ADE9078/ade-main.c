@@ -67,8 +67,11 @@ typedef struct {
 
   uint8_t vConsel;
   uint8_t iConsel;
+  int fd;
 }InitializationSettings;
 
+
+InitializationSettings is;
 
 double decimalize(uint32_t input, double factor, double offset, int absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
 {
@@ -748,7 +751,8 @@ void ADE9078_initialize(InitializationSettings *is){
   #ifdef ADE9078_VERBOSE_DEBUG
    printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
   #endif
-		if(wiringPiSPISetup(0, 2000000) < 0)
+  	is->fd = wiringPiSPISetup(0, 2000000);
+		if(is->fd < 0)
 	{
 		perror("Erreur de setup du SPI");
 		exit(EXIT_FAILURE);
@@ -831,6 +835,7 @@ void ADE9078_initialize(InitializationSettings *is){
    printf(" DICOEFF: ");
    printf("0xFFFFE000\n");
   #endif
+  
 }
 
 double ADE9078_getAVrms(){
@@ -862,6 +867,8 @@ void interruption(int n)
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, 0);
+	close(is->fd)
+	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
 }
 int main(){
@@ -872,7 +879,7 @@ int main(){
 
 	signal(SIGABRT, interruption);
 	signal(SIGINT, interruption);
-	InitializationSettings is ={
+	is ={
 		
 		.vAGain=1,
 		.vBGain=1,
@@ -899,7 +906,7 @@ int main(){
 	ADE9078_PSM3();
 	sleep(1);
 	ADE9078_PSM1();
-	ADE9078_resetRun();
+	//ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getPartID();
