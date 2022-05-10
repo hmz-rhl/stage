@@ -261,15 +261,14 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 /* Ecriture des gpio de l'expander
  **/
 
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 
     exp->buff[1] = nouveauGPIO;
 
@@ -316,8 +315,8 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -325,7 +324,6 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     }
 
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 
     exp->buff[1] = nouveauGPIO;
 
@@ -397,8 +395,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -441,8 +439,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -450,7 +448,6 @@ void expander_resetAllPinsGPIO(expander_t *exp){
     }
 
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 #ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
 #endif
@@ -488,8 +485,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         exit(EXIT_FAILURE);
     }
 
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -533,8 +530,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
