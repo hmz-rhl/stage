@@ -949,17 +949,17 @@ int main(){
 			
 		}
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
-		usleep(10);
+		usleep(20000);
 		while(digitalRead(IRQ1)){
 			
 		}
 		printf("courant : %x A\n", ADE9078_getAIrms() );
-		usleep(10);
-		while(digitalRead(IRQ1)){
+		usleep(20000);
+		// while(digitalRead(IRQ1)){
 			
-		}
-		printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
-      	usleep(200000);
+		// }
+		// printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
+      	// usleep(200000);
     }
     
 	expander_closeAndFree(exp);
