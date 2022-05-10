@@ -12,6 +12,7 @@ void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitt
 void traitement_ef_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_type2_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
+
 void interruption(int n)
 {
 
@@ -33,13 +34,13 @@ int main()
     mosq4 = init_mqtt();
     signal(SIGINT, interruption);
 
+    printf("Abonnement avec succès\n");
+    while(1)
+    {
         mqtt_subscribe("down/type_ef/open",traitement_ef_open, mosq1);
         mqtt_subscribe("down/type_ef/close",traitement_ef_close, mosq2);
         mqtt_subscribe("down/type2/open",traitement_type2_open, mosq3);
         mqtt_subscribe("down/type2/close",traitement_type2_close, mosq4);
-        printf("Abonnement avec succès\n");
-    while(1)
-    {
         // mqtt_free(mosq);
     }
 }
