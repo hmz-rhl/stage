@@ -883,7 +883,7 @@ double ADE9078_getAVrms(){
 
 uint32_t ADE9078_getAIrms(){
 	uint32_t value=0;
-	value=spiRead32(AI_PCF_32);
+	value=spiRead32(AI_SINC_DAT_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }
@@ -949,12 +949,12 @@ int main(){
 			
 		}
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
-		usleep(20000);
+		usleep(20);
 		while(digitalRead(IRQ1)){
 			
 		}
 		printf("courant : %x A\n", ADE9078_getAIrms() );
-		usleep(20000);
+		usleep(46);
 		// while(digitalRead(IRQ1)){
 			
 		// }
