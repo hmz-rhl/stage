@@ -881,26 +881,26 @@ int main(){
 	signal(SIGINT, interruption);
 
 		
-		is.vAGain=1,
-		is.vBGain=1,
-		is.vCGain=1,
+		is.vAGain=1;
+		is.vBGain=1;
+		is.vCGain=1;
 
-		is.iAGain=1,
-		is.iBGain=1,
-		is.iCGain=1,
-		is.iNGain=1,
+		is.iAGain=1;
+		is.iBGain=1;
+		is.iCGain=1;
+		is.iNGain=1;
 
-		is.powerAGain=1,
-		is.powerBGain=1,
-		is.powerCGain=1,
+		is.powerAGain=1;
+		is.powerBGain=1;
+		is.powerCGain=1;
 
 		//Use these settings to configure wiring configuration at stertup
 		//FYI: B010=2 in DEC
 		//FYI: B100 = 4 in DEC
 
 		//4 Wire Wye configuration - non-Blondel compliant:
-		is.vConsel=0,
-		is.iConsel=0
+		is.vConsel=0;
+		is.iConsel=0;
 
 
 	ADE9078_PSM3();
