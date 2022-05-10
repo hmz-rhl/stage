@@ -883,7 +883,7 @@ double ADE9078_getAVrms(){
 
 uint32_t ADE9078_getAIrms(){
 	uint32_t value=0;
-	value=spiRead32(AIRMS_32);
+	value=spiRead32(AIRMS_1_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }
