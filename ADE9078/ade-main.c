@@ -867,7 +867,7 @@ void interruption(int n)
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, 0);
-	close(is.fd)
+	close(is.fd);
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
 }
