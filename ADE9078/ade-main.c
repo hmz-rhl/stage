@@ -829,7 +829,7 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  spiWrite16(WFB_CFG_16, 0x1111);
+  spiWrite16(WFB_CFG_16, 0x0000);
 
 
 // 8: Write 1 to Run register
