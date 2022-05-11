@@ -254,7 +254,7 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
  *
  **/
 
-void mqtt_subscribe_multiple(char *const *const topics, int len, void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq)
+void mqtt_subscribe_multiple(char *const *const topics, int len, void (*traitement)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq)
 {
     int debug = mosquitto_subscribe_multiple(mosq, NULL, len, topics, 0, 0, NULL);
     if(debug == MOSQ_ERR_SUCCESS)
