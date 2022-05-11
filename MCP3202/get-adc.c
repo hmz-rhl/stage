@@ -48,28 +48,30 @@ int main(int argc, char **argv){
 	char str_temp[100], str_cp[100],  str_pp[100];
 
 	signal(SIGINT, interruption);
-	int i =0;
+	int i = 0;
 
 	while(1){
 
-		printf("initialisation d'un client mqtt\n\n");
+		printf("%s: initialisation d'un client mqtt\n\n");
 		mosq = init_mqtt();
-		printf("Lecture de Temperature\n");
+		printf("%s: Lecture de Temperature\n", __func__);
 		temp = toDegres(readAdc(0,T_CS));
-		printf("Lecture de PP\n");
+		printf("%s: Lecture de PP\n", __func__);
 		pp = toVolt(readAdc(0,PP_CS));
-		printf("Lecture de CP\n");
+		printf("%s: Lecture de CP\n", __func__);
 		cp = toVolt(readAdc(0,CP_CS));
 
 		TEMP = (int)temp;
 
-			printf("temp %d c", TEMP);
-			printf("cp %lf", cp*4);
-			printf("pp %lf", pp);
+			printf("temp %d°C\n", TEMP);
+			printf("cp %lfV\n", cp*4);
+			printf("pp %lfV\n\n", pp);
 
 
 		sprintf(str_temp, "%d", TEMP);
-		if(temp>0)mqtt_publish("up/value/temp", str_temp, mosq);
+
+		printf("%s: Publication de Temperature\n",__func__);
+		mqtt_publish("up/value/temp", str_temp, mosq);
 		
         if (cp*4.0 > 9.5){
 
@@ -97,6 +99,8 @@ int main(int argc, char **argv){
 		}
 
 		sprintf(str_cp, "%d", CP);
+
+		printf("%s: Publication de CP\n",__func__);
 		mqtt_publish("up/value/cp", str_cp, mosq);
 
 		if (pp < 0.58){
@@ -124,11 +128,15 @@ int main(int argc, char **argv){
             PP = 6;
 		}
 		sprintf(str_pp, "%d", PP);
+
+		printf("%s: Publication de PP\n",__func__);
 		mqtt_publish("up/value/pp", str_pp, mosq);
+
+		printf("%s: liberation de l'instance mosq\n",__func__);
 		mqtt_free(mosq);
 
 		
-
+		printf("%s: On sleep pour 4s\n",__func__);
 		sleep(4);
 
 	
