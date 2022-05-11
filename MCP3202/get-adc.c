@@ -26,7 +26,7 @@ double toDegres(int tension){
 
 	if(tension < 0){
 
-		perror("ne peut pas convertir une tension negative en degres");
+		printf("%s: ne peut pas convertir une tension negative en degres", __func__);
 		return tension;
 	}
 	return (toMillivolt(tension)-500)/10;
@@ -34,9 +34,9 @@ double toDegres(int tension){
 
 void interruption(int n)
 {
-	#ifdef DEBUG
-		printf("interruption on free mosq\n");
-	#endif
+	
+	printf("%S: interruption on free mosq\n", __func__);
+	
 	mqtt_free(mosq);
 }
 
