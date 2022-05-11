@@ -43,18 +43,6 @@ int main()
     }
 }
 
-void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
-{
-    expander_t* expander = expander_init(0x26); //Pour les relais
-
-    printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
-    
-    expander_resetPinGPIO(expander, 2); 
-    printf("Le relai de la prise E/F est ouvert\n");
-
-    expander_closeAndFree(expander);
-}
-
 void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
 {
     expander_t* expander = expander_init(0x26); //Pour les relais
@@ -110,6 +98,19 @@ void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_messag
     
     expander_closeAndFree(expander);
 }
+
+void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
+{
+    expander_t* expander = expander_init(0x26); //Pour les relais
+
+    printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
+    
+    expander_resetPinGPIO(expander, 2); 
+    printf("Le relai de la prise E/F est ouvert\n");
+
+    expander_closeAndFree(expander);
+}
+
 
 void traitement_ef_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
 {
