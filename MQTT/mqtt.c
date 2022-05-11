@@ -104,35 +104,59 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
     else if(debug == MOSQ_ERR_INVAL)
     {
         printf("%s: dans mosquitto_publish The input parameters were invalid. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_NOMEM)
     {
         printf("%s: dans mosquitto_publish An out of memory condition occurred. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_NO_CONN)
     {
         printf("%s: dans mosquitto_publish the client isn’t connected to a broker. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_PROTOCOL)
     {
         printf("%s: dans mosquitto_publish there is a protocol error communicating with the broker. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_PAYLOAD_SIZE)
     {
         printf("%s: dans mosquitto_publish payloadlen is too large. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_MALFORMED_UTF8)
     {
         printf("%s: dans mosquitto_publish the topic is not valid UTF-8 \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_QOS_NOT_SUPPORTED)
     {
         printf("%s: dans mosquitto_publish the QoS is greater than that supported by the broker. \n", __func__);
+        return;
     }
     else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
     {
         printf("%s: dans mosquitto_publish the resulting packet would be larger than supported by the broker. \n", __func__);
+        return;
     }
+
+    int status = mosquitto_loop_start(mosq);
+    if(status == MOSQ_ERR_SUCCESS){
+        printf("%s: dans mosquitto_loop_start: parametre valide \n", __func__);
+        printf("topic :%s\n", topic);
+    } 
+    else if(status == MOSQ_ERR_INVAL){
+        printf("%s: dans mosquitto_loop_start: parametre invalide \n", __func__);
+        return;
+
+    } 
+    else if(status == MOSQ_ERR_NOT_SUPPORTED){
+        printf("%s: dans mosquitto_loop_start: parametre invalides \n", __func__);
+        return;
+
+    } 
     
 }
 
@@ -260,7 +284,7 @@ void mqtt_free(struct mosquitto* mosq)
          return;
     }
 
-    int status = mosquitto_loop_stop(mosq, false);
+    int status = mosquitto_loop_stop(mosq, true);
      if(status == MOSQ_ERR_SUCCESS){
 
         printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop valide \n", __func__);
