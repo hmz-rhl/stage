@@ -29,11 +29,13 @@ struct mosquitto* init_mqtt()
     } 
     else if(test == MOSQ_ERR_UNKNOWN){
         printf("%s: dans mosquitto_lib_init parametres invalide \n", __func__);
+        return;
     } 
     mosq = mosquitto_new("connect", true, NULL);
     if(mosq == NULL)
     {
         printf("%s: dans mosquitto_new Erreur d'instanciation d'un client mqtt \n", __func__);
+        return;
     }
 
 	rc = mosquitto_connect(mosq, "localhost", 1883, 10);
@@ -45,6 +47,7 @@ struct mosquitto* init_mqtt()
     else if(rc == MOSQ_ERR_INVAL)
     {
         printf("%s: dans mosquitto_connect parametres d'entree invalides \n", __func__);
+        return;
     }
     
     //mosquitto_destroy(mosq);
