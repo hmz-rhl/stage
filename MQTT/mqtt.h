@@ -39,6 +39,7 @@
 struct mosquitto* init_mqtt();
 void mqtt_publish(char *topic, char *message, struct mosquitto* mosq);
 void mqtt_subscribe(char *topic, void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq);
+void mqtt_subscribe_multiple(char *const *const topics, int len, void (*on_message)(struct mosquitto *, void* , const struct mosquitto_message*), struct mosquitto* mosq);
 void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg);
 void mqtt_free(struct mosquitto* mosq);
 
