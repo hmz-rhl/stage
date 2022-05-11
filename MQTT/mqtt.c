@@ -230,7 +230,7 @@ void mqtt_free(struct mosquitto* mosq)
         perror("argument NULL donc rien a free dans mqtt_free");
         return;
     }
-    int status mosquitto_loop_stop(mosq, true);
+    int status = mosquitto_loop_stop(mosq, true);
      if(status == MOSQ_ERR_SUCCESS){
         printf("parametre de mosquitto_loop_stop valide \n");
     } 
