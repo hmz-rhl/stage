@@ -47,7 +47,7 @@ struct mosquitto* init_mqtt()
         printf("%s: dans mosquitto_connect parametres d'entree invalides \n", __func__);
     }
     
-    mosquitto_destroy(mosq);
+    //mosquitto_destroy(mosq);
     return mosq;
 	
 }
