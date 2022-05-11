@@ -101,8 +101,8 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
     int debug = mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     if(debug == MOSQ_ERR_SUCCESS)
     {
-        printf("%s: mosquitto_publish success \n", __func__);
         printf("topic :%s\n", topic);
+        printf("%s: mosquitto_publish success \n", __func__);
     }
     else if(debug == MOSQ_ERR_INVAL)
     {
@@ -226,8 +226,8 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
     // begin of a new thread 
     int status = mosquitto_loop_start(mosq);
     if(status == MOSQ_ERR_SUCCESS){
-        printf("%s: dans mosquitto_loop_start success\n", __func__);
         printf("topic :%s\n", topic);
+        printf("%s: dans mosquitto_loop_start success\n", __func__);
     } 
     else if(status == MOSQ_ERR_INVAL){
         printf("%s: dans mosquitto_loop_start Error parametre invalide \n", __func__);
@@ -295,8 +295,13 @@ void mqtt_subscribe_multiple(char *const *const topics, int len, void (*traiteme
     // begin of a new thread 
     int status = mosquitto_loop_start(mosq);
     if(status == MOSQ_ERR_SUCCESS){
+        for (size_t i = 0; i < len; i++)
+        {
+            printf("topic :%s\n", topics[i]);
+            
+        }
         printf("%s: dans mosquitto_loop_start success\n", __func__);
-        printf("topic :%s\n", topic);
+        
     } 
     else if(status == MOSQ_ERR_INVAL){
         printf("%s: dans mosquitto_loop_start Error parametre invalide \n", __func__);
