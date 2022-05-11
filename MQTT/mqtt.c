@@ -244,6 +244,22 @@ void mqtt_free(struct mosquitto* mosq)
         printf("%s: argument NULL donc rien a free dans mqtt_free\n", __func__);
         return;
     }
+    int rc = mosquitto_disconnect(mosq);
+    if(rc == MOSQ_ERR_SUCCESS)
+    {
+        printf("%s: dans mosquitto_disconnect On est maintenant déconnecté du broker.!\n", __func__);
+    }
+    else if(rc == MOSQ_ERR_INVAL)
+    {
+        printf("%s: dans mosquitto_disconnect parametres d'entree invalides \n", __func__);
+        return;
+    }
+    else if (rc == MOSQ_ERR_NO_CONN	)
+    {
+         printf("%s: dans mosquitto_disconnect the client isn’t connected to a broker.", __func__);
+         return;
+    }
+    
     int status = mosquitto_loop_stop(mosq, true);
      if(status == MOSQ_ERR_SUCCESS){
 
@@ -260,21 +276,6 @@ void mqtt_free(struct mosquitto* mosq)
         printf("%s: dans mosquitto_loop_stop thread support is not available. \n", __func__);
         return;
     } 
-    int rc = mosquitto_disconnect(mosq);
-    if(rc == MOSQ_ERR_SUCCESS)
-    {
-        printf("%s: dans mosquitto_disconnect On est maintenant déconnecté du broker.!\n", __func__);
-    }
-    else if(rc == MOSQ_ERR_INVAL)
-    {
-        printf("%s: dans mosquitto_disconnect parametres d'entree invalides \n", __func__);
-        return;
-    }
-    else if (rc == MOSQ_ERR_NO_CONN	)
-    {
-         printf("%s: dans mosquitto_disconnect the client isn’t connected to a broker.", __func__);
-         return;
-    }
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 }

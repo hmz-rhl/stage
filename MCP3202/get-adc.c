@@ -52,7 +52,7 @@ int main(int argc, char **argv){
 
 	while(1){
 
-		printf("%s: initialisation d'un client mqtt\n\n", __func__);
+		printf("%s: initialisation d'un client mqtt\n", __func__);
 		mosq = init_mqtt();
 		printf("%s: Lecture de Temperature\n", __func__);
 		temp = toDegres(readAdc(0,T_CS));
@@ -136,7 +136,7 @@ int main(int argc, char **argv){
 		mqtt_free(mosq);
 
 		
-		printf("%s: On sleep pour 4s\n",__func__);
+		printf("%s: On sleep pour 4s\n\n",__func__);
 		sleep(4);
 
 	
