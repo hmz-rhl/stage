@@ -259,8 +259,8 @@ void mqtt_free(struct mosquitto* mosq)
          printf("%s: dans mosquitto_disconnect the client isn’t connected to a broker.", __func__);
          return;
     }
-    
-    int status = mosquitto_loop_stop(mosq, true);
+
+    int status = mosquitto_loop_stop(mosq, false);
      if(status == MOSQ_ERR_SUCCESS){
 
         printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop valide \n", __func__);
