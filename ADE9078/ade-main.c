@@ -39,7 +39,7 @@
 
 #define AVrmsGain 	0.00000307
 #define AVrmsOffset 0
-#define AIrmsGain 	0.00000000021
+#define AIrmsGain 	1
 #define AIrmsOffset 0
 
 #define AAppPowerGain 1
@@ -953,7 +953,7 @@ int main(){
 		while(digitalRead(IRQ1)){
 			
 		}
-		printf("courant : %x A\n", ADE9078_getAIrms() );
+		printf("courant : %d A\n", ADE9078_getAIrms() );
 		usleep(46);
 		// while(digitalRead(IRQ1)){
 			

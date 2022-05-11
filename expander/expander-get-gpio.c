@@ -1,18 +1,24 @@
+// inclusion du driver de l'expander
 #include "../lib/expander-i2c.h"
-#include <math.h>
+
 
 
 int main(int argc, char *argv[]){
 
-    if(argc != 2){
+// on affiche une aide si la personne ne met pas d'argument  
+
+    if(argc != 2 || !strcmp(argv[1], "-h") || !strcmp(argv[1],"--help")){
     
         printf("Usage: ./get-expander1-gpio <addresse> \n");
         printf("exemple: ./set_expander1_gpio 26 \n");
         exit(EXIT_FAILURE);
 
     }
-  
+
+// variable qui contiendra l'adresse l'expander en question
      uint8_t addr;
+
+// on cherche quelle adresse il a saisit pour pouvoir la donner a la variable addr
     if(!strcmp(argv[1], "20")){
 
         addr = 0x20;
@@ -61,16 +67,25 @@ int main(int argc, char *argv[]){
         addr = 0x27;
         
     }
+//on renvoit un message si ca ne fait pas parti des adresses possibles de l'expander
     else{
 
         printf("fonction %s : addresse doit etre entre 20 et 27\n", __func__);
+
+        printf("Usage: ./get-expander1-gpio <addresse> \n");
+        printf("exemple: ./set_expander1_gpio 26 \n");
         exit(EXIT_FAILURE);
     }
-    
+
+// on initialise un instance
     expander_t *e = expander_init(addr);
 
+// on affiche les gpio sur la console
     expander_printGPIO(e);
-    expander_closeAndFree(e);
 
-    return 0;
+// on libère l'instance
+    expander_closeAndFree(e);
+    
+// on sort
+    return EXIT_SUCCESS;
 }
