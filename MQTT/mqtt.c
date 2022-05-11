@@ -25,26 +25,26 @@ struct mosquitto* init_mqtt()
 
     int test = mosquitto_lib_init();
     if(test == MOSQ_ERR_SUCCESS){
-        printf("%s: dans parametre de mosquitto_loop_start valide \n");
+        printf("%s: dans mosquitto_lib_init parametres valides \n", __func__);
     } 
     else if(test == MOSQ_ERR_UNKNOWN){
-        printf("%s: dans parametre de mosquitto_loop_start invalide \n");
+        printf("%s: dans mosquitto_lib_init parametres invalide \n", __func__);
     } 
     mosq = mosquitto_new("connect", true, NULL);
     if(mosq == NULL)
     {
-        printf("mosquitto_new: Erreur d'instanciation d'un client mqtt \n");
+        printf("%s: dans mosquitto_new Erreur d'instanciation d'un client mqtt \n", __func__);
     }
 
 	rc = mosquitto_connect(mosq, "localhost", 1883, 10);
 	if(rc == MOSQ_ERR_SUCCESS)
     {
         // printf("Le client n'a pas pu se connecter au broker. Message d'erreur: %d\n", rc);
-        printf("mosquitto_connect: We are now connected to the broker!\n");
+        printf("%s: dans mosquitto_connect We are now connected to the broker!\n", __func__);
     }
     else if(rc == MOSQ_ERR_INVAL)
     {
-        printf("mosquitto_connect: parametres d'entree invalides \n");
+        printf("%s: dans mosquitto_connect parametres d'entree invalides \n", __func__);
     }
     
     mosquitto_destroy(mosq);
