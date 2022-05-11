@@ -290,12 +290,12 @@ void mqtt_free(struct mosquitto* mosq)
     int status = mosquitto_loop_stop(mosq, true);
      if(status == MOSQ_ERR_SUCCESS){
 
-        printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop valide \n", __func__);
+        printf("%s: dans mosquitto_loop_stop parametre  valide \n", __func__);
 
     } 
     else if(status == MOSQ_ERR_INVAL){
 
-        printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop invalide \n", __func__);
+        printf("%s: dans mosquitto_loop_stop parametre invalide \n", __func__);
         return;
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
