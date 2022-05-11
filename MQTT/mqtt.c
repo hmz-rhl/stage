@@ -98,7 +98,7 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
     int debug = mosquitto_publish(mosq, NULL, topic, strlen(message), message, 0, false);
     if(debug == MOSQ_ERR_SUCCESS)
     {
-        printf("Success");
+        printf("%s: mosquitto_publish success \n", __func__);
         printf("topic :%s\n", topic);
     }
     else if(debug == MOSQ_ERR_INVAL)

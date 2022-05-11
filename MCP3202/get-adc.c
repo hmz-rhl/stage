@@ -36,8 +36,8 @@ void interruption(int n)
 {
 	
 	printf("%s: interruption on free mosq\n", __func__);
-	
 	mqtt_free(mosq);
+	exit(EXIT_SUCCESS);
 }
 
 /******************************************************************************/
