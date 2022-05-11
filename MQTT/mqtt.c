@@ -147,16 +147,16 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
 
     int status = mosquitto_loop_start(mosq);
     if(status == MOSQ_ERR_SUCCESS){
-        printf("%s: dans mosquitto_loop_start: parametre valide \n", __func__);
+        printf("%s: dans mosquitto_loop_start, parametre valide \n", __func__);
         printf("topic :%s\n", topic);
     } 
     else if(status == MOSQ_ERR_INVAL){
-        printf("%s: dans mosquitto_loop_start: parametre invalide \n", __func__);
+        printf("%s: dans mosquitto_loop_start, parametre invalide \n", __func__);
         return;
 
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
-        printf("%s: dans mosquitto_loop_start: parametre invalides \n", __func__);
+        printf("%s: dans mosquitto_loop_start, thread support not available \n", __func__);
         return;
 
     } 
