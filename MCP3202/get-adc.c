@@ -35,7 +35,7 @@ double toDegres(int tension){
 void interruption(int n)
 {
 	
-	printf("%S: interruption on free mosq\n", __func__);
+	printf("%s: interruption on free mosq\n", __func__);
 	
 	mqtt_free(mosq);
 }
@@ -52,7 +52,7 @@ int main(int argc, char **argv){
 
 	while(1){
 
-		printf("%s: initialisation d'un client mqtt\n\n");
+		printf("%s: initialisation d'un client mqtt\n\n", __func__);
 		mosq = init_mqtt();
 		printf("%s: Lecture de Temperature\n", __func__);
 		temp = toDegres(readAdc(0,T_CS));

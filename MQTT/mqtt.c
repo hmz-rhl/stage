@@ -25,10 +25,10 @@ struct mosquitto* init_mqtt()
 
     int test = mosquitto_lib_init();
     if(test == MOSQ_ERR_SUCCESS){
-        printf("parametre de mosquitto_loop_start valide \n");
+        printf("%s: dans parametre de mosquitto_loop_start valide \n");
     } 
     else if(test == MOSQ_ERR_UNKNOWN){
-        printf("parametre de mosquitto_loop_start invalide \n");
+        printf("%s: dans parametre de mosquitto_loop_start invalide \n");
     } 
     mosq = mosquitto_new("connect", true, NULL);
     if(mosq == NULL)
@@ -44,7 +44,7 @@ struct mosquitto* init_mqtt()
     }
     else if(rc == MOSQ_ERR_INVAL)
     {
-        printf("mosquitto_connect: parametres d'entree invalides");
+        printf("mosquitto_connect: parametres d'entree invalides \n");
     }
     
     mosquitto_destroy(mosq);
@@ -103,35 +103,35 @@ void mqtt_publish(char *topic, char *message, struct mosquitto* mosq)
     }
     else if(debug == MOSQ_ERR_INVAL)
     {
-        printf("mosquitto_publish: The input parameters were invalid.");
+        printf("%s: dans mosquitto_publish The input parameters were invalid. \n", __func__);
     }
     else if(debug == MOSQ_ERR_NOMEM)
     {
-        printf("mosquitto_publish: An out of memory condition occurred.");
+        printf("%s: dans mosquitto_publish An out of memory condition occurred. \n", __func__);
     }
     else if(debug == MOSQ_ERR_NO_CONN)
     {
-        printf("mosquitto_publish: the client isn’t connected to a broker.");
+        printf("%s: dans mosquitto_publish the client isn’t connected to a broker. \n", __func__);
     }
     else if(debug == MOSQ_ERR_PROTOCOL)
     {
-        printf("mosquitto_publish: there is a protocol error communicating with the broker.");
+        printf("%s: dans mosquitto_publish there is a protocol error communicating with the broker. \n", __func__);
     }
     else if(debug == MOSQ_ERR_PAYLOAD_SIZE)
     {
-        printf("mosquitto_publish: payloadlen is too large.");
+        printf("%s: dans mosquitto_publish payloadlen is too large. \n", __func__);
     }
     else if(debug == MOSQ_ERR_MALFORMED_UTF8)
     {
-        printf("mosquitto_publish: the topic is not valid UTF-8");
+        printf("%s: dans mosquitto_publish the topic is not valid UTF-8 \n", __func__);
     }
     else if(debug == MOSQ_ERR_QOS_NOT_SUPPORTED)
     {
-        printf("mosquitto_publish: the QoS is greater than that supported by the broker.");
+        printf("%s: dans mosquitto_publish the QoS is greater than that supported by the broker. \n", __func__);
     }
     else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
     {
-        printf("mosquitto_publish: the resulting packet would be larger than supported by the broker.");
+        printf("%s: dans mosquitto_publish the resulting packet would be larger than supported by the broker. \n", __func__);
     }
     
 }
@@ -181,36 +181,36 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
     }
     else if(debug == MOSQ_ERR_INVAL)
     {
-        printf("mosquitto_subscribe: The input parameters were invalid.");
+        printf("%s: dans mosquitto_subscribe, The input parameters were invalid.\n", __func__);
     }
     else if(debug == MOSQ_ERR_NOMEM)
     {
-        printf("mosquitto_subscribe: An out of memory condition occurred.");
+        printf("%s: dans mosquitto_subscribe, An out of memory condition occurred.\n", __func__);
     }
     else if(debug == MOSQ_ERR_NO_CONN)
     {
-        printf("mosquitto_subscribe: the client isn’t connected to a broker.");
+        printf("%s: dans mosquitto_subscribe, the client isn’t connected to a broker.\n", __func__);
     }
     else if(debug == MOSQ_ERR_MALFORMED_UTF8)
     {
-        printf("mosquitto_subscribe: the topic is not valid UTF-8");
+        printf("%s: dans mosquitto_subscribe, the topic is not valid UTF-8\n", __func__);
    
     }else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
     {
-        printf("mosquitto_subscribe: the resulting packet would be larger than supported by the broker.");
+        printf("%s: dans mosquitto_subscribe, the resulting packet would be larger than supported by the broker.\n", __func__);
     }
     mosquitto_message_callback_set(mosq, traitement);
     // begin of a new thread 
     int status = mosquitto_loop_start(mosq);
     if(status == MOSQ_ERR_SUCCESS){
-        printf("mosquitto_loop_start: parametre de mosquitto_loop_start valide \n");
+        printf("%s: dans mosquitto_loop_start: parametre valide \n", __func__);
         printf("topic :%s\n", topic);
     } 
     else if(status == MOSQ_ERR_INVAL){
-        printf("mosquitto_loop_start: parametre de mosquitto_loop_start invalide \n");
+        printf("%s: dans mosquitto_loop_start: parametre invalide \n", __func__);
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
-        printf("mosquitto_loop_start: parametre de mosquitto_loop_start invalides \n");
+        printf("%s: dans mosquitto_loop_start: parametre invalides \n", __func__);
     } 
 	// mosquitto_loop_stop(mosq, true); // stop of the thread 
 }
@@ -227,31 +227,31 @@ void mqtt_free(struct mosquitto* mosq)
 {
     if(mosq == NULL)
     {
-        perror("argument NULL donc rien a free dans mqtt_free");
+        printf("%s: argument NULL donc rien a free dans mqtt_free\n", __func__);
         return;
     }
     int status = mosquitto_loop_stop(mosq, true);
      if(status == MOSQ_ERR_SUCCESS){
-        printf("mosquitto_loop_stop: parametre de mosquitto_loop_stop valide \n");
+        printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop valide \n", __func__);
     } 
     else if(status == MOSQ_ERR_INVAL){
-        printf("mosquitto_loop_stop: parametre de mosquitto_loop_stop invalide \n");
+        printf("%s: dans mosquitto_loop_stop parametre de mosquitto_loop_stop invalide \n", __func__);
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
-        printf("mosquitto_loop_stop: thread support is not available. \n");
+        printf("%s: dans mosquitto_loop_stop thread support is not available. \n", __func__);
     } 
     int rc = mosquitto_disconnect(mosq);
     if(rc == MOSQ_ERR_SUCCESS)
     {
-        printf("mosquitto_disconnect: On est maintenant déconnecté du broker.!\n");
+        printf("%s: dans mosquitto_disconnect On est maintenant déconnecté du broker.!\n", __func__);
     }
     else if(rc == MOSQ_ERR_INVAL)
     {
-        printf("mosquitto_disconnect: mosquitto_disconnect: parametres d'entree invalides");
+        printf("%s: dans mosquitto_disconnect parametres d'entree invalides \n", __func__);
     }
     else if (rc == MOSQ_ERR_NO_CONN	)
     {
-         printf("mosquitto_disconnect: the client isn’t connected to a broker.");
+         printf("%s: dans mosquitto_disconnect the client isn’t connected to a broker.", __func__);
     }
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
