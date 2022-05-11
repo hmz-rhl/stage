@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <time.h>
 #include <string.h>
+
 #include <signal.h>
 
 
@@ -18,7 +19,7 @@
 // Range du termometre: -40C -- 150C ; 0,1V a 2V.
 
 
-/******************************************************************************/
+
 
 struct mosquitto* mosq;
 
@@ -40,34 +41,43 @@ void interruption(int n)
 	exit(EXIT_SUCCESS);
 }
 
-/******************************************************************************/
+
 int main(int argc, char **argv){
 	
 	float temp, cp, pp;
 	int TEMP, PP, CP;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
+// on attache une fonction interruption au signal ctrl+c
 	signal(SIGINT, interruption);
 	int i = 0;
 
 	while(1){
 
+// affiche sur la console
 		printf("%s: initialisation d'un client mqtt\n", __func__);
 		mosq = init_mqtt();
-		
+// affiche sur la console
+
 		printf("%s: Lecture de Temperature\n", __func__);
+		//conversion en degres
 		temp = toDegres(readAdc(0,T_CS));
 		usleep(10);
+// affiche sur la console
 
 		printf("%s: Lecture de PP\n", __func__);
+		//conversion en volt
 		pp = toVolt(readAdc(0,PP_CS));
 		usleep(10);
+// affiche sur la console
 
 		printf("%s: Lecture de CP\n", __func__);
+		//conversion en volt
 		cp = toVolt(readAdc(0,CP_CS));
 		usleep(10);
 
 		TEMP = (int)temp;
+// affiche sur la console
 
 			printf("temp %d°C\n", TEMP);
 			printf("cp %lfV\n", cp*4);
@@ -75,12 +85,14 @@ int main(int argc, char **argv){
 
 
 		sprintf(str_temp, "%d", TEMP);
+// affiche sur la console
 
 		printf("%s: Publication de Temperature\n",__func__);
 		mqtt_publish("up/value/temp", str_temp, mosq);
 		usleep(10);
 
-		
+// on donne a CP les vraies valeurs correspondantes 
+
         if (cp*4.0 > 9.5){
 
             CP = 12;
@@ -107,12 +119,13 @@ int main(int argc, char **argv){
 		}
 
 		sprintf(str_cp, "%d", CP);
+// affiche sur la console
 
 		printf("%s: Publication de CP\n",__func__);
 		mqtt_publish("up/value/cp", str_cp, mosq);
 		usleep(10);
 
-
+// on donne a PP les valeurs correspondantes 
 		if (pp < 0.58){
 
             PP = 80;
@@ -137,12 +150,14 @@ int main(int argc, char **argv){
 			
             PP = 6;
 		}
-		sprintf(str_pp, "%d", PP);
 
+		sprintf(str_pp, "%d", PP);
+// affiche sur la console
 		printf("%s: Publication de PP\n",__func__);
 		mqtt_publish("up/value/pp", str_pp, mosq);
 		usleep(10);
 
+// affiche sur la console
 		printf("%s: liberation de l'instance mosq\n",__func__);
 		mqtt_free(mosq);
 
