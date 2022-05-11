@@ -237,22 +237,7 @@ void mqtt_subscribe(char *topic, void (*traitement)(struct mosquitto *, void* , 
 
     }
     mosquitto_message_callback_set(mosq, traitement);
-    // begin of a new thread 
-    int status = mosquitto_loop_start(mosq);
-    if(status == MOSQ_ERR_SUCCESS){
-        printf("%s: dans mosquitto_loop_start: parametre valide \n", __func__);
-        printf("topic :%s\n", topic);
-    } 
-    else if(status == MOSQ_ERR_INVAL){
-        printf("%s: dans mosquitto_loop_start: parametre invalide \n", __func__);
-        return;
 
-    } 
-    else if(status == MOSQ_ERR_NOT_SUPPORTED){
-        printf("%s: dans mosquitto_loop_start: parametre invalides \n", __func__);
-        return;
-
-    } 
 	// mosquitto_loop_stop(mosq, true); // stop of the thread 
 }
 
@@ -296,12 +281,12 @@ void mqtt_free(struct mosquitto* mosq)
     else if(status == MOSQ_ERR_INVAL){
 
         printf("%s: dans mosquitto_loop_stop parametre invalide \n", __func__);
-        return;
+        
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
 
         printf("%s: dans mosquitto_loop_stop thread support is not available. \n", __func__);
-        return;
+        
     } 
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
