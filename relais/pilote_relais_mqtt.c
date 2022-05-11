@@ -34,16 +34,17 @@ int main()
     mosq2 = init_mqtt();
     mosq3 = init_mqtt();
     mosq4 = init_mqtt();
+    mqtt_subscribe("down/type_ef/open",traitement_ef_open, mosq1);
+    mqtt_subscribe("down/type_ef/close",traitement_ef_close, mosq2);
+    mqtt_subscribe("down/type2/open",traitement_type2_open, mosq3);
+    mqtt_subscribe("down/type2/close",traitement_type2_close, mosq4);
     signal(SIGINT, interruption);
 
     printf("Abonnement avec succès\n");
     while(1)
     {
         //On s'abonne aux différents topics qui concernent les relais
-        mqtt_subscribe("down/type_ef/open",traitement_ef_open, mosq1);
-        mqtt_subscribe("down/type_ef/close",traitement_ef_close, mosq2);
-        mqtt_subscribe("down/type2/open",traitement_type2_open, mosq3);
-        mqtt_subscribe("down/type2/close",traitement_type2_close, mosq4);
+        
     }
 }
 
