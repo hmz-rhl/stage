@@ -52,7 +52,7 @@ int main(int argc, char **argv){
 
 	while(1){
 
-		printft("initialisation d'un client mqtt\n\n");
+		printf("initialisation d'un client mqtt\n\n");
 		mosq = init_mqtt();
 		printft("Lecture de Temperature\n");
 		temp = toDegres(readAdc(0,T_CS));

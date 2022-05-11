@@ -46,11 +46,10 @@ struct mosquitto* init_mqtt()
     {
         printf("mosquitto_connect: parametres d'entree invalides");
     }
+    
     mosquitto_destroy(mosq);
     return mosq;
-	}
-
-    return mosq;
+	
 }
 
 /**
