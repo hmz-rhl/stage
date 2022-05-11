@@ -243,7 +243,6 @@ void mqtt_free(struct mosquitto* mosq)
     int rc = mosquitto_disconnect(mosq);
     if(rc == MOSQ_ERR_SUCCESS)
     {
-        // printf("Le client n'a pas pu se connecter au broker. Message d'erreur: %d\n", rc);
         printf("On est maintenant déconnecté du broker.!\n");
     }
     else if(rc == MOSQ_ERR_INVAL)
