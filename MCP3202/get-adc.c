@@ -56,9 +56,9 @@ int main(int argc, char **argv){
 		mosq = init_mqtt();
 		printft("Lecture de Temperature\n");
 		temp = toDegres(readAdc(0,T_CS));
-		printft("Lecture de PP\n");
+		printf("Lecture de PP\n");
 		pp = toVolt(readAdc(0,PP_CS));
-		printft("Lecture de CP\n");
+		printf("Lecture de CP\n");
 		cp = toVolt(readAdc(0,CP_CS));
 
 		TEMP = (int)temp;
