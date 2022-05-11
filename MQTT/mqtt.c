@@ -281,7 +281,7 @@ void mqtt_free(struct mosquitto* mosq)
     } 
     else if(status == MOSQ_ERR_INVAL){
 
-        printf("%s: dans mosquitto_loop_stop parametre invalide \n", __func__);
+        printf("%s: dans mosquitto_loop_stop parametre invalide, peut etre qu'il n'y a pas de thread de lance (quand on veut juste publier) \n", __func__);
         
     } 
     else if(status == MOSQ_ERR_NOT_SUPPORTED){
