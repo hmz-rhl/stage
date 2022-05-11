@@ -29,8 +29,8 @@ void interruption(int n)
 int main()
 {
     mosq = init_mqtt(); 
-
-    mqtt_subscribe_multiple({"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"},4,traitement, mosq);
+    char *topics[4] = {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
+    mqtt_subscribe_multiple(topics,4,traitement, mosq);
 
 
     signal(SIGINT, interruption);
