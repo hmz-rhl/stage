@@ -3,11 +3,13 @@
 
 #include <signal.h>
 
+// Déclaration des instances mosquitto une par topic
 struct mosquitto* mosq1;
 struct mosquitto* mosq2;
 struct mosquitto* mosq3;
 struct mosquitto* mosq4;
 
+//Declaration des fonctions de traitement 
 void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_ef_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_type2_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
@@ -28,7 +30,7 @@ void interruption(int n)
 
 int main()
 {
-    mosq1 = init_mqtt();
+    mosq1 = init_mqtt(); 
     mosq2 = init_mqtt();
     mosq3 = init_mqtt();
     mosq4 = init_mqtt();
@@ -37,11 +39,11 @@ int main()
     printf("Abonnement avec succès\n");
     while(1)
     {
+        //On s'abonne aux différents topics qui concernent les relais
         mqtt_subscribe("down/type_ef/open",traitement_ef_open, mosq1);
         mqtt_subscribe("down/type_ef/close",traitement_ef_close, mosq2);
         mqtt_subscribe("down/type2/open",traitement_type2_open, mosq3);
         mqtt_subscribe("down/type2/close",traitement_type2_close, mosq4);
-        // mqtt_free(mosq);
     }
 }
 
@@ -51,7 +53,7 @@ void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitt
 
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
     
-    expander_resetPinGPIO(expander, 2);
+    expander_resetPinGPIO(expander, 2); 
     printf("Le relai de la prise E/F est ouvert\n");
 
     expander_closeAndFree(expander);
