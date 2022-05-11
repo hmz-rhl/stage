@@ -17,7 +17,7 @@
 // On a 1C tous les 12 pas en bit en sortie chez l'adc.
 // Range du termometre: -40C -- 150C ; 0,1V a 2V.
 
-#define DEBUG
+
 /******************************************************************************/
 
 struct mosquitto* mosq;
@@ -52,17 +52,22 @@ int main(int argc, char **argv){
 
 	while(1){
 
+		printft("initialisation d'un client mqtt\n\n");
 		mosq = init_mqtt();
+		printft("Lecture de Temperature\n");
 		temp = toDegres(readAdc(0,T_CS));
+		printft("Lecture de PP\n");
 		pp = toVolt(readAdc(0,PP_CS));
+		printft("Lecture de CP\n");
 		cp = toVolt(readAdc(0,CP_CS));
 
 		TEMP = (int)temp;
-		#ifdef DEBUG
+
 			printf("temp %d c", TEMP);
 			printf("cp %lf", cp*4);
 			printf("pp %lf", pp);
-		#endif
+
+
 		sprintf(str_temp, "%d", TEMP);
 		if(temp>0)mqtt_publish("up/value/temp", str_temp, mosq);
 		
