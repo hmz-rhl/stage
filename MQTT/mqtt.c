@@ -38,7 +38,7 @@ struct mosquitto* init_mqtt()
         return NULL;
     }
 
-	rc = mosquitto_connect(mosq, "localhost", 1883, 10);
+	rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 	if(rc == MOSQ_ERR_SUCCESS)
     {
         // printf("Le client n'a pas pu se connecter au broker. Message d'erreur: %d\n", rc);
