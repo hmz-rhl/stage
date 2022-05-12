@@ -52,12 +52,12 @@ void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_messag
     if(!strcmp(msg->topic,"down/type_ef/open")){
 
         expander_resetPinGPIO(expander, 2); 
-        printf("Le relai de la prise E/F est ouvert\n");
+        printf("Le relais de la prise E/F est ouvert\n");
     }
     else if(!strcmp(msg->topic,"down/type_ef/close")){
 
         expander_setPinGPIO(expander, 2);
-        printf("Le relai de la prise E/F est ferme\n");
+        printf("Le relais de la prise E/F est ferme\n");
     }
 
     else if(!strcmp(msg->topic,"down/type2/close")){
