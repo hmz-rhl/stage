@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "../lib/expander-i2c.h"
 
 
 /* Callback called when the client receives a CONNACK message from the broker. */
@@ -24,7 +25,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	/* Making subscriptions in the on_connect() callback means that if the
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
-	rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
+	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
+    char *topics[4]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
+    rc = mosquitto_subscribe_multiple(mosq,NULL,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -62,6 +65,58 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 {
 	/* This blindly prints the payload, but the payload can be anything so take care. */
 	printf("%s %d %s\n", msg->topic, msg->qos, (char *)msg->payload);
+    expander_t* expander = expander_init(0x26); //Pour les relais
+
+    printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
+
+    if(!strcmp(msg->topic,"down/type_ef/open")){
+
+        expander_resetPinGPIO(expander, 2); 
+        printf("Le relais de la prise E/F est ouvert\n");
+    }
+    else if(!strcmp(msg->topic,"down/type_ef/close")){
+
+        expander_setPinGPIO(expander, 2);
+        printf("Le relais de la prise E/F est ferme\n");
+    }
+
+    else if(!strcmp(msg->topic,"down/type2/close")){
+
+        if(!strcmp(msg->payload, "1")){
+
+            expander_setPinGPIO(expander, 0);
+            expander_resetPinGPIO(expander, 1);
+
+            printf("Les relais N et L1 de la prise type 2 sont fermes\n");
+        }
+        else if(!strcmp(msg->payload, "3")){
+            
+            expander_setPinGPIO(expander, 0);
+            expander_setPinGPIO(expander, 1);
+
+            printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
+
+        }
+
+    }
+
+    else if(!strcmp(msg->topic,"down/type2/open")){
+
+        if(!strcmp(msg->payload, "1")){
+            expander_resetPinGPIO(expander, 0);
+            // expander_resetPinGPIO(expander, 1);
+            printf("Les relais N et L1 de la prise type 2 sont ouverts\n");
+        }
+        else if(!strcmp(msg->payload, "3")){
+            expander_resetPinGPIO(expander, 0);
+            expander_resetPinGPIO(expander, 1);
+            printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
+
+        }
+    
+    }
+    
+    expander_closeAndFree(expander);
 }
 
 
