@@ -18,7 +18,7 @@ void interruption(int n)
 {
 
     printf("interruption on free les instances\n");
-    mqtt_free(mosq);
+    mqtt_free(m);
     printf("fin de libération de mémoire\n");
     exit(EXIT_SUCCESS);
 
