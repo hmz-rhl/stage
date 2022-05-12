@@ -27,7 +27,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
     char *topics[4]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
-    rc = mosquitto_subscribe_multiple(mosq,NULL,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,4,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
