@@ -32,7 +32,7 @@ int main()
     // mosquitto_subscribe_callback_set(mosq, on_subscribe);
 
 
-    mqtt_subscribe("down/type2/close",traitement, mosq);
+    mqtt_subscribe("down/type2/close",&traitement, mosq);
     //mqtt_subscribe_multiple(topics,4,traitement, mosq);
 
 
