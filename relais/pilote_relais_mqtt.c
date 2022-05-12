@@ -33,17 +33,70 @@ int main()
     // mosquitto_subscribe_callback_set(mosq, on_subscribe);
 
 
-    mqtt_subscribe("down/type2/close",traitement, mosq);
+    //mqtt_subscribe("down/type2/close",traitement, mosq);
     //mqtt_subscribe_multiple(topics,4,traitement, mosq);
 
 
     signal(SIGINT, interruption);
 
+    int debug = mosquitto_subscribe(mosq, NULL, "down/type_ef/open", 0);
+    if(debug == MOSQ_ERR_SUCCESS)
+    {
+        printf("%s: dans mosquitto_subscribe, abonnement Success\n", __func__);
+    }
+    else if(debug == MOSQ_ERR_INVAL)
+    {
+        printf("%s: dans mosquitto_subscribe, Error The input parameters were invalid.\n", __func__);
+        return;
+
+    }
+    else if(debug == MOSQ_ERR_NOMEM)
+    {
+        printf("%s: dans mosquitto_subscribe, Error An out of memory condition occurred.\n", __func__);
+        return;
+
+    }
+    else if(debug == MOSQ_ERR_NO_CONN)
+    {
+        printf("%s: dans mosquitto_subscribe, Error the client isn’t connected to a broker.\n", __func__);
+        return;
+
+    }
+    else if(debug == MOSQ_ERR_MALFORMED_UTF8)
+    {
+        printf("%s: dans mosquitto_subscribe, Error the topic is not valid UTF-8\n", __func__);
+        return;
+
+   
+    }else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
+    {
+        printf("%s: dans mosquitto_subscribe, Error the resulting packet would be larger than supported by the broker.\n", __func__);
+        return;
+
+    }
+    mosquitto_message_callback_set(mosq, traitement);
+    // begin of a new thread 
+    // int status = mosquitto_loop_start(mosq);
+    // if(status == MOSQ_ERR_SUCCESS){
+    //     printf("topic :%s\n", topic);
+    //     printf("%s: dans mosquitto_loop_start success\n", __func__);
+    // } 
+    // else if(status == MOSQ_ERR_INVAL){
+    //     printf("%s: dans mosquitto_loop_start Error parametre invalide \n", __func__);
+    //     return;
+
+    // } 
+    // else if(status == MOSQ_ERR_NOT_SUPPORTED){
+    //     printf("%s: dans mosquitto_loop_start Error parametre invalides \n", __func__);
+    //     return;
+
+    // } 
+
     printf("Abonnement avec succès\n");
     while(1)
     {
         //On s'abonne aux différents topics qui concernent les relais
-        
+        mosquitto_loop(mosq, 0, 1);
     }
 }
 
