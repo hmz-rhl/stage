@@ -26,7 +26,36 @@ void interruption(int n)
 
 int main()
 {
-    struct mosquitto* mosq = init_mqtt();
+    int rc,test,debug;
+	struct mosquitto * mosq;
+
+    test = mosquitto_lib_init();
+    if(test == MOSQ_ERR_SUCCESS){
+        printf("%s: dans mosquitto_lib_init success \n", __func__);
+    } 
+    else if(test == MOSQ_ERR_UNKNOWN){
+        printf("%s: dans mosquitto_lib_init parametres invalide \n", __func__);
+        return EXIT_FAILURE;
+    } 
+    mosq = mosquitto_new("connect", true, NULL);
+    if(mosq == NULL)
+    {
+        printf("%s: dans mosquitto_new Error d'instanciation d'un client mqtt \n", __func__);
+        return EXIT_FAILURE;
+    }
+
+	rc = mosquitto_connect(mosq, "localhost", 1883, 60);
+	if(rc == MOSQ_ERR_SUCCESS)
+    {
+        // printf("Le client n'a pas pu se connecter au broker. Message d'erreur: %d\n", rc);
+        printf("%s: dans mosquitto_connect We are now connected to the broker!\n", __func__);
+    }
+    else if(rc == MOSQ_ERR_INVAL)
+    {
+        printf("%s: dans mosquitto_connect Error parametres d'entree invalides \n", __func__);
+        return EXIT_FAILURE;
+    }
+
     m = mosq;
     char *const topics[4] = {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
     
@@ -39,7 +68,7 @@ int main()
 
     signal(SIGINT, interruption);
 
-    int debug = mosquitto_subscribe(mosq, NULL, "down/type_ef/open", 0);
+    debug = mosquitto_subscribe(mosq, NULL, "down/type_ef/open", 0);
     if(debug == MOSQ_ERR_SUCCESS)
     {
         printf("%s: dans mosquitto_subscribe, abonnement Success\n", __func__);
