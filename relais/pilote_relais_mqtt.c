@@ -5,9 +5,6 @@
 
 // Déclaration des instances mosquitto une par topic
 struct mosquitto* mosq;
-struct mosquitto* mosq2;
-struct mosquitto* mosq3;
-struct mosquitto* mosq4;
 
 //Declaration des fonctions de traitement 
 void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
@@ -15,6 +12,7 @@ void traitement_ef_open(struct mosquitto *mosq, void* obj, const struct mosquitt
 void traitement_ef_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_type2_close(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
 void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg);
+// void on_subscribe(struct mosquitto *mosq, void* obj, , const struct mosquitto_message* msg);
 
 void interruption(int n)
 {
@@ -30,6 +28,9 @@ int main()
 {
     mosq = init_mqtt(); 
     char *const topics[4] = {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
+    
+    mosquitto_subscribe_callback_set(mosq, on_subscribe);
+
     mqtt_subscribe_multiple(topics,4,traitement, mosq);
 
 
@@ -42,6 +43,8 @@ int main()
         
     }
 }
+
+
 
 void traitement(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
 {
@@ -168,5 +171,11 @@ void traitement_type2_open(struct mosquitto *mosq, void* obj, const struct mosqu
 }
 
 
+// void on_subscribe(struct mosquitto *mosq, void* obj, const struct mosquitto_message* msg)
+// {
+
+//     printf("Abonnement du topic %s: %s\n", msg->topic, (char *) msg->payload);
+
+// }
 
 

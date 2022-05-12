@@ -43,3 +43,4 @@ void mqtt_subscribe_multiple(char *const *const topics, int len, void (*traiteme
 void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg);
 void mqtt_free(struct mosquitto* mosq);
 
+
