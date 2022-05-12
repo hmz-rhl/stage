@@ -122,10 +122,11 @@ int main()
     // } 
 
     printf("Abonnement avec succès\n");
+    mosquitto_loop_start(mosq);
     while(1)
     {
         //On s'abonne aux différents topics qui concernent les relais
-        mosquitto_loop(mosq, 0, 1);
+        
     }
 }
 
