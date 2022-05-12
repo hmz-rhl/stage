@@ -47,31 +47,31 @@ int main()
     else if(debug == MOSQ_ERR_INVAL)
     {
         printf("%s: dans mosquitto_subscribe, Error The input parameters were invalid.\n", __func__);
-        return;
+        return EXIT_FAILURE;
 
     }
     else if(debug == MOSQ_ERR_NOMEM)
     {
         printf("%s: dans mosquitto_subscribe, Error An out of memory condition occurred.\n", __func__);
-        return;
+        return EXIT_FAILURE;
 
     }
     else if(debug == MOSQ_ERR_NO_CONN)
     {
         printf("%s: dans mosquitto_subscribe, Error the client isn’t connected to a broker.\n", __func__);
-        return;
+        return EXIT_FAILURE;
 
     }
     else if(debug == MOSQ_ERR_MALFORMED_UTF8)
     {
         printf("%s: dans mosquitto_subscribe, Error the topic is not valid UTF-8\n", __func__);
-        return;
+        return EXIT_FAILURE;
 
    
     }else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
     {
         printf("%s: dans mosquitto_subscribe, Error the resulting packet would be larger than supported by the broker.\n", __func__);
-        return;
+        return EXIT_FAILURE;
 
     }
     mosquitto_message_callback_set(mosq, traitement);
