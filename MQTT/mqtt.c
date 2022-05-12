@@ -259,35 +259,35 @@ void mqtt_subscribe_multiple(char *const *const topics, int len, void (*traiteme
     int debug = mosquitto_subscribe_multiple(mosq, NULL, len, topics, 0, 0, NULL);
     if(debug == MOSQ_ERR_SUCCESS)
     {
-        printf("%s: dans mosquitto_subscribe, abonnement Success\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, abonnement Success\n", __func__);
     }
     else if(debug == MOSQ_ERR_INVAL)
     {
-        printf("%s: dans mosquitto_subscribe, Error The input parameters were invalid.\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, Error The input parameters were invalid.\n", __func__);
         return;
 
     }
     else if(debug == MOSQ_ERR_NOMEM)
     {
-        printf("%s: dans mosquitto_subscribe, Error An out of memory condition occurred.\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, Error An out of memory condition occurred.\n", __func__);
         return;
 
     }
     else if(debug == MOSQ_ERR_NO_CONN)
     {
-        printf("%s: dans mosquitto_subscribe, Error the client isn’t connected to a broker.\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, Error the client isn’t connected to a broker.\n", __func__);
         return;
 
     }
     else if(debug == MOSQ_ERR_MALFORMED_UTF8)
     {
-        printf("%s: dans mosquitto_subscribe, Error the topic is not valid UTF-8\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, Error the topic is not valid UTF-8\n", __func__);
         return;
 
    
     }else if(debug == MOSQ_ERR_OVERSIZE_PACKET)
     {
-        printf("%s: dans mosquitto_subscribe, Error the resulting packet would be larger than supported by the broker.\n", __func__);
+        printf("%s: dans mosquitto_subscribe_multiple, Error the resulting packet would be larger than supported by the broker.\n", __func__);
         return;
 
     }
