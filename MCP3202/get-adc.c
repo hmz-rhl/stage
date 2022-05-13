@@ -394,17 +394,24 @@ int main(int argc, char *argv[])
 		if(rc != MOSQ_ERR_SUCCESS){
 			mosquitto_destroy(mosq);
 			fprintf(stderr, "Error: %s\n", mosquitto_strerror(rc));
-			return 1;
+			//return 1; on ne souhaite pas quitter la boucle
 		}
+		else{
 
-		/* Run the network loop in a background thread, this call returns quickly. */
-		rc = mosquitto_loop_start(mosq);
-		if(rc != MOSQ_ERR_SUCCESS){
-			mosquitto_destroy(mosq);
-			fprintf(stderr, "Error: %s\n", mosquitto_strerror(rc));
-			return 1;
+			rc = mosquitto_loop_start(mosq);
+			if(rc != MOSQ_ERR_SUCCESS){
+
+				mosquitto_destroy(mosq);
+				fprintf(stderr, "Error: %s\n", mosquitto_strerror(rc));
+				//return 1; on ne souhaite pas quitter la boucle
+			}
+			else{
+
+				publish_values(mosq);
+			}
 		}
-		publish_values(mosq);
+		/* Run the network loop in a background thread, this call returns quickly. */
+
 		
 		mosquitto_lib_cleanup();
 		sleep(4);
