@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include <time.h>
 #include "pn532.h"
 #include <time.h>
 #include "PN532_Rpi_I2C.h"
-#include "../lib/mqtt.h"
 
 
 /* Callback called when the client receives a CONNACK message from the broker. */
@@ -102,6 +100,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			// 	str[i]=uid[i];                
             // }
             char *message = "Un scan a été réalisé";
+			// printf("%s %02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x",message,uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7],)
 			
             mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,0,false);
             // mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
