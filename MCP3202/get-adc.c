@@ -338,17 +338,17 @@ void publish_values(struct mosquitto *mosq)
 	 * qos = 2 - publish with QoS 2 for this example
 	 * retain = false - do not use the retained message feature for this message
 	 */
-	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
+	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, true);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
 	
-	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, true);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, true);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
