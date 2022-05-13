@@ -374,14 +374,14 @@ int main(int argc, char *argv[])
 	 * the connect callback.
 	 * In this case we know it is 1 second before we start publishing.
 	 * /* Required before calling other mosquitto functions */
-		rc = mosquitto_lib_init();
-		if(rc != MOSQ_ERR_SUCCESS){
-			
-			fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
-			
-			//return 1; on ne souhaite pas quitter la boucle
-		}
-		else{
+	rc = mosquitto_lib_init();
+	if(rc != MOSQ_ERR_SUCCESS){
+		
+		fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
+		
+		//return 1; on ne souhaite pas quitter la boucle
+	}
+	else{
 
 			/* Create a new client instance.
 			* id = NULL -> ask the broker to generate a client id for us
@@ -419,14 +419,14 @@ int main(int argc, char *argv[])
 				}
 
 			}
-		}
+	}
 	while(1){
 
 
 		rc = mosquitto_loop(mosq,10,256);
 
-		if(rc != MOSQ_ERR_SUCCESS)
-		{
+		if(rc != MOSQ_ERR_SUCCESS){
+
 			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 
 			rc = mosquitto_lib_init();
@@ -475,7 +475,6 @@ int main(int argc, char *argv[])
 
 				}
 			}
-
 			//mosquitto_reconnect(mosq);
 		// // rc = mosquitto_loop_start(mosq);
 		// if(rc != MOSQ_ERR_SUCCESS){
@@ -497,15 +496,15 @@ int main(int argc, char *argv[])
 			
 		// }
 	
+		}
 				
 		publish_values(mosq);
 		sleep(1);
-	}
 
 		/* Run the network loop in a background thread, this call returns quickly. */
 
 		
-	
+	}
 	close(fd);
 	return 0;
 }
