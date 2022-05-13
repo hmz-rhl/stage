@@ -14,7 +14,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * appropriate string for MQTT v3.x clients, the equivalent for MQTT v5.0
 	 * clients is mosquitto_reason_string().
 	 */
-	printf("on_connect: %s\n", mosquitto_connack_string(reason_code));
+	printf("%s: %s\n", ,mosquitto_connack_string(reason_code));
 	if(reason_code != 0){
 		/* If the connection fails for any reason, we don't want to keep on
 		 * retrying in this example, so disconnect. Without this, the client
@@ -27,6 +27,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
     char *topics[4]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close"};
+
     rc = mosquitto_subscribe_multiple(mosq,NULL,4,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
@@ -46,7 +47,7 @@ void on_subscribe(struct mosquitto *mosq, void *obj, int mid, int qos_count, con
 	 * SUBSCRIBE can contain many topics at once, so this is one way to check
 	 * them all. */
 	for(i=0; i<qos_count; i++){
-		printf("on_subscribe: %d:granted qos = %d\n", i, granted_qos[i]);
+		printf("%s: %d:granted qos = %d\n",__func__, i, granted_qos[i]);
 		if(granted_qos[i] <= 2){
 			have_subscription = true;
 		}
