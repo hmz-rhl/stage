@@ -136,7 +136,7 @@ void expander_closeI2C(expander_t *exp){
     }
     if(close(exp->fd) < 0) {
 
-        fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno))
+        fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
