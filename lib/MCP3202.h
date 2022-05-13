@@ -33,8 +33,8 @@
 
 #define SGL_MODE	(1 << 0x7)		
 #define DIFF_MODE	(0 << 0x7)
-#define CN0		(0 << 0x6)
-#define	CN1		(1 << 0x6)
+#define CN0	    	(0 << 0x6)
+#define	CN1		    (1 << 0x6)
 #define MSBF		(1 << 0x5)
 #define LSBF		(0 << 0x5)
 #define DNT_CARE_BYTE	0x00
