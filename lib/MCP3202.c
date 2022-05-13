@@ -67,12 +67,7 @@ int readAdc(int channel, uint8_t cs){
 	}
 
 	//waitForSPIReady(exp);
-	int fd = wiringPiSPISetupMode(0, 2000000, 0);
-	if(fd < 0)
-	{
-		perror("Erreur de setup de SPI");
-		return reData;
-	}
+
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);

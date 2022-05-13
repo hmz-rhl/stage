@@ -316,7 +316,7 @@ void publish_values(struct mosquitto *mosq)
 		
 		PP = 6;
 	}
-	
+
 // affichage sur la console
 	printf("Ce qu'il doit être envoyé:\n");
 	printf("temp %d°C\n", TEMP);
@@ -360,7 +360,12 @@ int main(int argc, char *argv[])
 {
 	struct mosquitto *mosq;
 	int rc;
-
+	int fd = wiringPiSPISetupMode(0, 2000000, 0);
+	if(fd < 0)
+	{
+		perror("Erreur de setup de SPI");
+		return EXIT_FAILURE;
+	}
 
 	/* At this point the client is connected to the network socket, but may not
 	 * have completed CONNECT/CONNACK.
