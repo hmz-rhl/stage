@@ -23,15 +23,15 @@
 
 // struct mosquitto* mosq;
 
-// double toDegres(int tension){
+double toDegres(int tension){
 
-// 	if(tension < 0){
+	if(tension < 0){
 
-// 		printf("%s: ne peut pas convertir une tension negative en degres", __func__);
-// 		return tension;
-// 	}
-// 	return (toMillivolt(tension)-500)/10;
-// }
+		printf("%s: ne peut pas convertir une tension negative en degres", __func__);
+		return tension;
+	}
+	return (toMillivolt(tension)-500)/10;
+}
 
 // void interruption(int n)
 // {
