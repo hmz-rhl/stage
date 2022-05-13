@@ -216,7 +216,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
  * received a PUBCOMP from the broker. */
 void on_publish(struct mosquitto *mosq, void *obj, int mid)
 {
-	printf("Message %s has been published on %s.\n", obj->payload, obj->topic);
+	printf("Message %d has been published.\n", mid);
 }
 
 
@@ -251,7 +251,7 @@ void publish_values(struct mosquitto *mosq)
 
 	TEMP = (int)temp;
 
-	printf("Ce qu'il doit être envoyé:\n")
+	printf("Ce qu'il doit être envoyé:\n");
 	printf("temp %d°C\n", TEMP);
 	printf("cp %lfV\n", cp*4);
 	printf("pp %lfV\n\n", pp);
@@ -412,7 +412,7 @@ int main(int argc, char *argv[])
 		}
 		/* Run the network loop in a background thread, this call returns quickly. */
 
-		mosquitto_disconnect(mosq)
+		
 		mosquitto_lib_cleanup();
 		sleep(4);
 	}
