@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
 					rc = mosquitto_loop_start(mosq);
 					if(rc != MOSQ_ERR_SUCCESS){
 
-						mosquitto_disconnect(mosq,true);
+						mosquitto_disconnect(mosq);
 						mosquitto_destroy(mosq);
 						mosquitto_lib_cleanup();
 						fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
