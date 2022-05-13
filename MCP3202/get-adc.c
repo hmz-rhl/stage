@@ -227,6 +227,7 @@ void publish_values(struct mosquitto *mosq)
 	int pp, cp, PP, CP, TEMP;
 	double temp;
 	int rc;
+	char str_temp[100], str_cp[100],  str_pp[100];
 
 // affiche sur la console
 
