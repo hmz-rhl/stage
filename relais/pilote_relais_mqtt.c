@@ -72,12 +72,12 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     if(!strcmp(msg->topic,"down/type_ef/open")){
 
-        expander_resetPinGPIO(expander, 2); 
+        expander_resetPinGPIO(expander, TYPE_E_F_ON); 
         printf("Le relais de la prise E/F est ouvert\n");
     }
     else if(!strcmp(msg->topic,"down/type_ef/close")){
 
-        expander_setPinGPIO(expander, 2);
+        expander_setPinGPIO(expander, TYPE_E_F_ON);
         printf("Le relais de la prise E/F est ferme\n");
     }
 
@@ -85,15 +85,15 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
         if(!strcmp(msg->payload, "1")){
 
-            expander_setPinGPIO(expander, 0);
-            expander_resetPinGPIO(expander, 1);
+            expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+            expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
 
             printf("Les relais N et L1 de la prise type 2 sont fermes\n");
         }
         else if(!strcmp(msg->payload, "3")){
             
-            expander_setPinGPIO(expander, 0);
-            expander_setPinGPIO(expander, 1);
+            expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+            expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
 
             printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
 
@@ -104,13 +104,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     else if(!strcmp(msg->topic,"down/type2/open")){
 
         if(!strcmp(msg->payload, "1")){
-            expander_resetPinGPIO(expander, 0);
+            expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
             // expander_resetPinGPIO(expander, 1);
             printf("Les relais N et L1 de la prise type 2 sont ouverts\n");
         }
         else if(!strcmp(msg->payload, "3")){
-            expander_resetPinGPIO(expander, 0);
-            expander_resetPinGPIO(expander, 1);
+            expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
+            expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
             printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
 
         }

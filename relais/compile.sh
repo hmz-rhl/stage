@@ -1,1 +1,1 @@
-sudo gcc pilote_relais_mqtt.c ../lib/expander-i2c.c ../MQTT/mqtt.c -o test_relais -lmosquitto
+sudo gcc pilote_relais_mqtt.c ../lib/expander-i2c.c ../MQTT/mqtt.c -o test_relais -lmosquitto -lwiringPi
