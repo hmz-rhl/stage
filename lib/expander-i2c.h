@@ -11,6 +11,8 @@
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
 #include <stdarg.h>
+#include <wiringPi.h>
+#include <wiringPiSI2C.h>
 
 #define VERSION         "0.9"
 
