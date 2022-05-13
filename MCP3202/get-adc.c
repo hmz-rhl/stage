@@ -429,8 +429,8 @@ int main(int argc, char *argv[])
 
 			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 
-			printf("On attend durant 15s\n");
-			sleep(15);
+			printf("On attend durant 30s pour réessayer de se connecter au broker\n");
+			sleep(30);
 
 			rc = mosquitto_lib_init();
 			if(rc != MOSQ_ERR_SUCCESS){
