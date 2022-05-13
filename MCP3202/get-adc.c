@@ -391,7 +391,7 @@ int main(int argc, char *argv[])
 			* clean session = true -> the broker should remove old sessions when we connect
 			* obj = NULL -> we aren't passing any of our private data for callbacks
 			*/
-			mosq = mosquitto_new(NULL, true, NULL);
+			mosq = mosquitto_new("adc", true, NULL);
 			if(mosq == NULL){
 
 				mosquitto_lib_cleanup();
@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
 				* This call makes the socket connection only, it does not complete the MQTT
 				* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
 				* mosquitto_loop_forever() for processing net traffic. */
-				rc = mosquitto_connect(mosq, "localhost", 1883, 5);
+				rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
 				if(rc != MOSQ_ERR_SUCCESS){
 
 					mosquitto_destroy(mosq);
@@ -451,7 +451,6 @@ int main(int argc, char *argv[])
      
 				}
 
-				
 			}
 
 		}
