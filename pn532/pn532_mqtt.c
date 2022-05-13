@@ -4,6 +4,7 @@
 #include "pn532.h"
 #include <time.h>
 #include "PN532_Rpi_I2C.h"
+#include <mosquitto.h>
 
 
 /* Callback called when the client receives a CONNACK message from the broker. */
