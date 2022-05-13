@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <time.h>
 #include "pn532.h"
 #include <time.h>
@@ -96,6 +97,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             for (uint8_t i = 0; i < uid_len; i++) {
                 printf("%02x ", uid[i]);
             }
+            char *message = "Un scan a été réalisé";
+            mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,0,false);
             mosquitto_publish(mosq,NULL,"up/scan",uid_len,uid,0,false);
             printf("\r\n");
             break;
