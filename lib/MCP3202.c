@@ -85,7 +85,7 @@ int readAdc(int channel, uint8_t cs){
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
 
 	expander_closeAndFree(exp);
-	close(fd);
+	
 
 #ifdef DEBUG
 	printf("The analog input value is \n");
