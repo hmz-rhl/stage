@@ -380,7 +380,7 @@ int main(int argc, char *argv[])
 		rc = mosquitto_lib_init();
 		if(rc != MOSQ_ERR_SUCCESS){
 			
-			fprintf(stderr, "Error lib_init: %s\n", mosquitto_strerror(rc));
+			fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
 			
 			//return 1; on ne souhaite pas quitter la boucle
 		}
@@ -393,7 +393,7 @@ int main(int argc, char *argv[])
 			*/
 			mosq = mosquitto_new(NULL, true, NULL);
 			if(mosq == NULL){
-				fprintf(stderr, "Error new: Out of memory.\n");
+				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
 				//return 1; on ne souhaite pas quitter la boucle
 			}
 			else{
@@ -408,8 +408,8 @@ int main(int argc, char *argv[])
 				* mosquitto_loop_forever() for processing net traffic. */
 				rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 				if(rc != MOSQ_ERR_SUCCESS){
-					mosquitto_destroy(mosq);
-					fprintf(stderr, "Error connect: %s\n", mosquitto_strerror(rc));
+					
+					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
 					//return 1; on ne souhaite pas quitter la boucle
 				}
 				else{
@@ -417,24 +417,28 @@ int main(int argc, char *argv[])
 					rc = mosquitto_loop_start(mosq);
 					if(rc != MOSQ_ERR_SUCCESS){
 
-						mosquitto_destroy(mosq);
-						fprintf(stderr, "Error loop_start: %s\n", mosquitto_strerror(rc));
+						
+						fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
 						//return 1; on ne souhaite pas quitter la boucle
 					}
 					else{
 
 						publish_values(mosq);
 					}
+
+					mosquitto_disconnect(mosq);
+
 				}
 
+				mosquitto_destroy(mosq);
 			}
 
+			mosquitto_lib_cleanup();
 		}
 
 		/* Run the network loop in a background thread, this call returns quickly. */
 
 		
-		mosquitto_lib_cleanup();
 		sleep(1);
 	}
 	close(fd);
