@@ -424,7 +424,7 @@ int main(int argc, char *argv[])
 		mosquitto_lib_cleanup();
 		sleep(4);
 	}
-
+	close(fd);
 	return 0;
 }
 
