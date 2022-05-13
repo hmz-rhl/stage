@@ -434,7 +434,8 @@ int main(int argc, char *argv[])
 				mosquitto_reconnect(mosq);
 			}
 			else{
-
+				
+				fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
 				mosquitto_disconnect(mosq);
 				mosquitto_destroy(mosq);
 				mosquitto_lib_cleanup();
