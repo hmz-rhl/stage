@@ -251,10 +251,7 @@ void publish_values(struct mosquitto *mosq)
 
 	TEMP = (int)temp;
 
-	printf("Ce qu'il doit être envoyé:\n");
-	printf("temp %d°C\n", TEMP);
-	printf("cp %lfV\n", cp*4);
-	printf("pp %lfV\n\n", pp);
+
 
 
 	sprintf(str_temp, "%d", TEMP);
@@ -319,6 +316,12 @@ void publish_values(struct mosquitto *mosq)
 		
 		PP = 6;
 	}
+	
+// affichage sur la console
+	printf("Ce qu'il doit être envoyé:\n");
+	printf("temp %d°C\n", TEMP);
+	printf("cp %d\n", CP);
+	printf("pp %d\n\n", PP);
 
 // on stringify ce qu'il faut publier
 	sprintf(str_pp, "%d", PP);
