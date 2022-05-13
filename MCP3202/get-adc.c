@@ -359,7 +359,9 @@ void publish_values(struct mosquitto *mosq)
 int main(int argc, char *argv[])
 {
 	struct mosquitto *mosq;
-	int rc;
+	int rc, tentatives = 0;
+
+	/* Setup du SPI pour l'adc */ 
 	int fd = wiringPiSPISetupMode(0, 2000000, 0);
 	if(fd < 0)
 	{
@@ -367,14 +369,9 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	/* At this point the client is connected to the network socket, but may not
-	 * have completed CONNECT/CONNACK.
-	 * It is fairly safe to start queuing messages at this point, but if you
-	 * want to be really sure you should wait until after a successful call to
-	 * the connect callback.
-	 * In this case we know it is 1 second before we start publishing.
-	 * /* Required before calling other mosquitto functions */
+	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
+
 	if(rc != MOSQ_ERR_SUCCESS){
 		
 		fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
@@ -383,11 +380,7 @@ int main(int argc, char *argv[])
 	}
 	else{
 
-			/* Create a new client instance.
-			* id = NULL -> ask the broker to generate a client id for us
-			* clean session = true -> the broker should remove old sessions when we connect
-			* obj = NULL -> we aren't passing any of our private data for callbacks
-			*/
+
 			mosq = mosquitto_new("adc", true, NULL);
 			if(mosq == NULL){
 
@@ -398,14 +391,10 @@ int main(int argc, char *argv[])
 			}
 			else{
 
-				/* Configure callbacks. This should be done before connecting ideally. */
+
 				mosquitto_connect_callback_set(mosq, on_connect);
 				mosquitto_publish_callback_set(mosq, on_publish);
 
-				/* Connect to test.mosquitto.org on port 1883, with a keepalive of 60 seconds.
-				* This call makes the socket connection only, it does not complete the MQTT
-				* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
-				* mosquitto_loop_forever() for processing net traffic. */
 				rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
 				if(rc != MOSQ_ERR_SUCCESS){
 
@@ -420,96 +409,94 @@ int main(int argc, char *argv[])
 
 			}
 	}
+
+	// debut de la boucle infini
 	while(1){
 
-
+		/* on garde la connexion active avec le broker */
 		rc = mosquitto_loop(mosq,10,256);
 
+		// si jamais erreur : exemple deconnexion du broker, reload du service mosquitto etc...
+		// on relance la batterie d'initialisation après 30s d'attente et ceux durant 5 tentatives
 		if(rc != MOSQ_ERR_SUCCESS){
+
+			if(tentatives > 5){
+
+				printf("Arret du programme, impossible de fonctionner après 5 tentatives verifier le service mosquitto\n");
+				return EXIT_FAILURE;
+			}
 
 			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 
 			printf("On attend durant 30s pour réessayer de se connecter au broker\n");
 			sleep(30);
+			tentatives++;
 
 			rc = mosquitto_lib_init();
 			if(rc != MOSQ_ERR_SUCCESS){
 				
 				fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
-				
-				//return 1; on ne souhaite pas quitter la boucle
 			}
 			else{
 
-				/* Create a new client instance.
-				* id = NULL -> ask the broker to generate a client id for us
-				* clean session = true -> the broker should remove old sessions when we connect
-				* obj = NULL -> we aren't passing any of our private data for callbacks
-				*/
+				/* Creation d'une instance cliente mosquitto */
 				mosq = mosquitto_new("adc", true, NULL);
 				if(mosq == NULL){
 
-					mosquitto_lib_cleanup();
+					/* On affiche le message d'erreur*/
 					fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
+					/* On libere les fonctions utilisé*/
+					mosquitto_lib_cleanup();
+
+					/* On ferme le descripteur du SPI*/
 					close(fd);
-					return 1;
 				}
 				else{
 
-					/* Configure callbacks. This should be done before connecting ideally. */
+					/* Configure les callbacks */
 					mosquitto_connect_callback_set(mosq, on_connect);
 					mosquitto_publish_callback_set(mosq, on_publish);
 
-					/* Connect to test.mosquitto.org on port 1883, with a keepalive of 60 seconds.
-					* This call makes the socket connection only, it does not complete the MQTT
-					* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
-					* mosquitto_loop_forever() for processing net traffic. */
+					/**
+					 * connexion au broker
+					 */
 					rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
 					if(rc != MOSQ_ERR_SUCCESS){
 
 						mosquitto_destroy(mosq);
+						
 						mosquitto_lib_cleanup();
+
+					/* On affiche le message d'erreur*/
 						fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
 
 						close(fd);
-						return 1;
 					
 					}
 
 				}
 			}
-			//mosquitto_reconnect(mosq);
-		// // rc = mosquitto_loop_start(mosq);
-		// if(rc != MOSQ_ERR_SUCCESS){
 
-		// 	if(rc == MOSQ_ERR_NO_CONN || rc == MOSQ_ERR_CONN_LOST){
 
-		// 		fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
-				
-		// 	}
-		// 	else{
-
-		// 		fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
-		// 		mosquitto_disconnect(mosq);
-		// 		mosquitto_destroy(mosq);
-		// 		mosquitto_lib_cleanup();
-		// 		close(fd);
-		// 		return 1;
-		// 	}
-			
-		// }
-	
 		}
-				
-		publish_values(mosq);
-		sleep(1);
+			/* Si tout va bien on publie */
+		else{
+
+			tentatives = 0;
+
+			publish_values(mosq);
+			/* on temporise */
+			sleep(1);
+
+		}		
 
 		/* Run the network loop in a background thread, this call returns quickly. */
 
 		
 	}
+
 	close(fd);
-	return 0;
+	return EXIT_SUCCESS;
 }
 
  	
