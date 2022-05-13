@@ -391,7 +391,7 @@ int main(int argc, char *argv[])
 			* clean session = true -> the broker should remove old sessions when we connect
 			* obj = NULL -> we aren't passing any of our private data for callbacks
 			*/
-			mosq = mosquitto_new(NULL, true, NULL);
+			mosq = mosquitto_new("adc", true, NULL);
 			if(mosq == NULL){
 				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
 				//return 1; on ne souhaite pas quitter la boucle
