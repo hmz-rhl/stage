@@ -422,15 +422,14 @@ int main(int argc, char *argv[])
 
 			if(tentatives > 5){
 
-				printf("Arret du programme, impossible de fonctionner après 5 tentatives verifier le service mosquitto\n");
+				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
 				return EXIT_FAILURE;
 			}
 
 			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 
-			printf("On attend durant 30s pour réessayer de se connecter au broker\n");
+			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
 			sleep(30);
-			tentatives++;
 
 			rc = mosquitto_lib_init();
 			if(rc != MOSQ_ERR_SUCCESS){
