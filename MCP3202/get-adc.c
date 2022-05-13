@@ -417,7 +417,7 @@ int main(int argc, char *argv[])
 		rc = mosquitto_loop(mosq,10,256);
 
 		// si jamais erreur : exemple deconnexion du broker, reload du service mosquitto etc...
-		// on relance la batterie d'initialisation après 30s d'attente et ceux durant 5 tentatives
+		// on relance la batterie d'initialisation après 30s d'attente et ce durant 5 tentatives
 		if(rc != MOSQ_ERR_SUCCESS){
 
 			if(tentatives > 5){
@@ -456,9 +456,7 @@ int main(int argc, char *argv[])
 					mosquitto_connect_callback_set(mosq, on_connect);
 					mosquitto_publish_callback_set(mosq, on_publish);
 
-					/**
-					 * connexion au broker
-					 */
+					/* connexion au broker */
 					rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
 					if(rc != MOSQ_ERR_SUCCESS){
 
@@ -468,7 +466,8 @@ int main(int argc, char *argv[])
 
 					/* On affiche le message d'erreur*/
 						fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
-
+					
+					/* On ferme le descripteur du SPI*/
 						close(fd);
 					
 					}
@@ -482,15 +481,11 @@ int main(int argc, char *argv[])
 		else{
 
 			tentatives = 0;
-
 			publish_values(mosq);
 			/* on temporise */
-			sleep(1);
+			sleep(4);
 
-		}		
-
-		/* Run the network loop in a background thread, this call returns quickly. */
-
+		}	
 		
 	}
 

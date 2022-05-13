@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
 	 * mosquitto_loop_forever() for processing net traffic. */
 	rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 	if(rc != MOSQ_ERR_SUCCESS){
+        
 		mosquitto_destroy(mosq);
 		fprintf(stderr, "Error: %s\n", mosquitto_strerror(rc));
 		return 1;
