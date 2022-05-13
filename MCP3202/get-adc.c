@@ -391,10 +391,11 @@ int main(int argc, char *argv[])
 			* clean session = true -> the broker should remove old sessions when we connect
 			* obj = NULL -> we aren't passing any of our private data for callbacks
 			*/
-			mosq = mosquitto_new("adc", true, NULL);
+			mosq = mosquitto_new(NULL, true, NULL);
 			if(mosq == NULL){
 				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
-				//return 1; on ne souhaite pas quitter la boucle
+				close(fd);
+				return 1;
 			}
 			else{
 
@@ -408,29 +409,30 @@ int main(int argc, char *argv[])
 				* mosquitto_loop_forever() for processing net traffic. */
 				rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 				if(rc != MOSQ_ERR_SUCCESS){
-					
+					mosquitto_destroy(mosq);
 					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
-					//return 1; on ne souhaite pas quitter la boucle
+
+					close(fd);
+					return 1;
+				
 				}
 				else{
 
 					rc = mosquitto_loop_start(mosq);
 					if(rc != MOSQ_ERR_SUCCESS){
 
-						
+						mosquitto_destroy(mosq);
 						fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
-						//return 1; on ne souhaite pas quitter la boucle
+						close(fd);
+						return 1;
 					}
 					else{
 
 						publish_values(mosq);
 					}
-
-					mosquitto_disconnect(mosq);
-
 				}
 
-				//mosquitto_destroy(mosq);
+				
 			}
 
 			mosquitto_lib_cleanup();
