@@ -426,11 +426,11 @@ int main(int argc, char *argv[])
 						publish_values(mosq);
 					}
 
-					//mosquitto_disconnect(mosq);
+					mosquitto_disconnect(mosq);
 
 				}
 
-				mosquitto_destroy(mosq);
+				//mosquitto_destroy(mosq);
 			}
 
 			mosquitto_lib_cleanup();
