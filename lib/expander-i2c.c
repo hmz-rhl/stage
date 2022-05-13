@@ -105,8 +105,15 @@ void expander_openI2C(expander_t *exp){
     }
     exp->fd = open(I2C_DEVICE, O_RDWR);
     if(exp->fd < 0) {
-        printf("ERREUR d'ouverture l'interface I2C de la RPZ...\n");
-        exit(EXIT_FAILURE);
+
+        sleep(1);
+        exp->fd = open(I2C_DEVICE, O_RDWR);
+        if(exp->fd < 0) {
+        
+            printf("ERREUR d'ouverture l'interface I2C de la RPZ...\n");
+            exit(EXIT_FAILURE);
+        }
+        
     }
 }
 
@@ -152,7 +159,7 @@ void expander_setI2C(expander_t *exp){
     }
 
     if(ioctl(exp->fd,I2C_SLAVE,exp->addr) < 0) {
-        printf("ERREUR de setting du l'address l'interface I2C de la RPZ ...\n");
+        printf("ERREUR de setting de l'address l'interface I2C de la RPZ ...\n");
         close(exp->fd);
         exit(EXIT_FAILURE);
     }
