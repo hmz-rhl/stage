@@ -216,7 +216,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
  * received a PUBCOMP from the broker. */
 void on_publish(struct mosquitto *mosq, void *obj, int mid)
 {
-	printf("Message with mid %d has been published.\n", mid);
+	printf("Message %s has been published on %s.\n", obj->payload, obj->topic);
 }
 
 
@@ -235,6 +235,7 @@ void publish_values(struct mosquitto *mosq)
 	//conversion en degres
 	temp = toDegres(readAdc(0,T_CS));
 	usleep(10);
+
 // affiche sur la console
 
 	printf("%s: Lecture de PP\n", __func__);
@@ -250,7 +251,7 @@ void publish_values(struct mosquitto *mosq)
 
 	TEMP = (int)temp;
 
-
+	printf("Ce qu'il doit être envoyé:\n")
 	printf("temp %d°C\n", TEMP);
 	printf("cp %lfV\n", cp*4);
 	printf("pp %lfV\n\n", pp);
@@ -258,7 +259,6 @@ void publish_values(struct mosquitto *mosq)
 
 	sprintf(str_temp, "%d", TEMP);
 
-	printf("%s: Publication de Temperature\n",__func__);
 
 	usleep(10);
 
@@ -289,6 +289,7 @@ void publish_values(struct mosquitto *mosq)
 		CP = -12;
 	}
 
+// on stringify ce qu'il faut publier
 	sprintf(str_cp, "%d", CP);
 // affiche sur la console
 	usleep(10);
@@ -319,15 +320,11 @@ void publish_values(struct mosquitto *mosq)
 		PP = 6;
 	}
 
+// on stringify ce qu'il faut publier
 	sprintf(str_pp, "%d", PP);
 // affiche sur la console
 	usleep(10);
 
-// affiche sur la console
-
-
-		
-		
 
 	/* Publish the message
 	 * mosq - our client instance
@@ -341,10 +338,13 @@ void publish_values(struct mosquitto *mosq)
 	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
-	}	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+	}
+	
+	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
 	}
+
 	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
