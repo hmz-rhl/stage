@@ -424,8 +424,8 @@ int main(int argc, char *argv[])
 
 			
 
-		mosquitto_reconnect(mosq);
 		rc = mosquitto_loop(mosq,10,256);
+		mosquitto_reconnect(mosq);
 		// // rc = mosquitto_loop_start(mosq);
 		// if(rc != MOSQ_ERR_SUCCESS){
 
