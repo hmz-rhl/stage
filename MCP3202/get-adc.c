@@ -10,7 +10,7 @@
 
 
 #include "../lib/MCP3202.h"
-#include "../MQTT/mqtt.h"
+
 
 
 
@@ -422,7 +422,7 @@ int main(int argc, char *argv[])
 
 		
 		mosquitto_lib_cleanup();
-		sleep(4);
+		sleep(1);
 	}
 	close(fd);
 	return 0;

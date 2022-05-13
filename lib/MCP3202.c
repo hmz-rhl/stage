@@ -38,7 +38,10 @@ int readAdc(int channel, uint8_t cs){
 	uint8_t data[3] = {0};
 
 	
-
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+	}
 	data[0] = START_BIT;
 	if(channel == 0){
 		data[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;

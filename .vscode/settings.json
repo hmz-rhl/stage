@@ -7,6 +7,7 @@
         "xutility": "c",
         "mcp3202-adc.h": "c",
         "pn532_rpi_i2c.h": "c",
-        "expander-i2c.h": "c"
+        "expander-i2c.h": "c",
+        "mcp3202.h": "c"
     }
 }
