@@ -110,7 +110,7 @@ void expander_openI2C(expander_t *exp){
         exp->fd = open(I2C_DEVICE, O_RDWR);
         if(exp->fd < 0) {
         
-            printf("ERREUR d'ouverture l'interface I2C de la RPZ...\n");
+            fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
             exit(EXIT_FAILURE);
         }
         
@@ -135,7 +135,8 @@ void expander_closeI2C(expander_t *exp){
         exit(EXIT_FAILURE);
     }
     if(close(exp->fd) < 0) {
-        printf("ERREUR de fermeture l'interface I2C de la RPZ...\n");
+
+        fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno))
         exit(EXIT_FAILURE);
     }
 }
