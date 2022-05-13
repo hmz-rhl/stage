@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include <signal.h>
-
+#include <mosquitto.h>
 
 #include "../lib/MCP3202.h"
 
