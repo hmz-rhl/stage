@@ -96,11 +96,14 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             printf("Found card with UID: ");
             for (uint8_t i = 0; i < uid_len; i++) {
                 printf("%02x ", uid[i]);
+				
+                
             }
             char *message = "Un scan a été réalisé";
             char *str[MIFARE_UID_MAX_LENGTH];
+			
             mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,0,false);
-            mosquitto_publish(mosq,NULL,"up/scan",uid_len,sprintf(str,%d,uid),0,false);
+            mosquitto_publish(mosq,NULL,"up/scan",MIFARE_UID_MAX_LENGTH,sprintf(str,"ID: %d",uid),0,false);
             printf("\r\n");
             break;
         }
