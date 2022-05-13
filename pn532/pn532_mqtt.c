@@ -102,7 +102,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			// 	str[i]=uid[i];                
             // }
             char message[256];
-			printf("%s %02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",message,uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+			printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 			
 			sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
             mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
