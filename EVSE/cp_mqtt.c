@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
 {
 	struct mosquitto *mosq;
 	int rc;
+    dutycycle = 100;
 
     pinMode(23, OUTPUT);
 
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
 	 * mosquitto_loop_forever() for processing net traffic. */
 	rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 	if(rc != MOSQ_ERR_SUCCESS){
-        
+
 		mosquitto_destroy(mosq);
 		fprintf(stderr, "Error: %s\n", mosquitto_strerror(rc));
 		return 1;
@@ -119,7 +120,7 @@ int main(int argc, char *argv[])
 	 * This call will continue forever, carrying automatic reconnections if
 	 * necessary, until the user calls mosquitto_disconnect().
 	 */
-	mosquitto_loop_forever(mosq, -1, 1);
+	//mosquitto_loop_forever(mosq, -1, 1);
 
     while(1){
 
