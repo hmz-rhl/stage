@@ -393,6 +393,8 @@ int main(int argc, char *argv[])
 			*/
 			mosq = mosquitto_new(NULL, true, NULL);
 			if(mosq == NULL){
+
+				mosquitto_lib_cleanup();
 				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
 				close(fd);
 				return 1;
@@ -407,9 +409,11 @@ int main(int argc, char *argv[])
 				* This call makes the socket connection only, it does not complete the MQTT
 				* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
 				* mosquitto_loop_forever() for processing net traffic. */
-				rc = mosquitto_connect(mosq, "localhost", 1883, 60);
+				rc = mosquitto_connect(mosq, "localhost", 1883, 5);
 				if(rc != MOSQ_ERR_SUCCESS){
+
 					mosquitto_destroy(mosq);
+					mosquitto_lib_cleanup();
 					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
 
 					close(fd);
@@ -421,7 +425,9 @@ int main(int argc, char *argv[])
 					rc = mosquitto_loop_start(mosq);
 					if(rc != MOSQ_ERR_SUCCESS){
 
+						mosquitto_disconnect(mosq,true);
 						mosquitto_destroy(mosq);
+						mosquitto_lib_cleanup();
 						fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
 						close(fd);
 						return 1;
@@ -429,13 +435,25 @@ int main(int argc, char *argv[])
 					else{
 
 						publish_values(mosq);
+						rc = mosquitto_loop_stop(mosq, true);
+						if(rc != MOSQ_ERR_SUCCESS){
+							
+							mosquitto_disconnect(mosq,true);
+							mosquitto_destroy(mosq);
+							mosquitto_lib_cleanup();
+							fprintf(stderr, "Error mosquitto_loop_stop: %s\n", mosquitto_strerror(rc));
+							close(fd);
+							return 1;
+
+						}
+
 					}
+     
 				}
 
 				
 			}
 
-			mosquitto_lib_cleanup();
 		}
 
 		/* Run the network loop in a background thread, this call returns quickly. */
