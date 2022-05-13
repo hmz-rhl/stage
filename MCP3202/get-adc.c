@@ -224,7 +224,7 @@ void on_publish(struct mosquitto *mosq, void *obj, int mid)
 void publish_values(struct mosquitto *mosq)
 {
 	char payload[20];
-	int, pp, cp, PP, CP, TEMP;
+	int pp, cp, PP, CP, TEMP;
 	double temp;
 	int rc;
 
