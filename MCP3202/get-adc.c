@@ -435,17 +435,11 @@ int main(int argc, char *argv[])
 					else{
 
 						publish_values(mosq);
-						rc = mosquitto_loop_stop(mosq, true);
-						if(rc != MOSQ_ERR_SUCCESS){
-							
-							mosquitto_disconnect(mosq);
-							mosquitto_destroy(mosq);
-							mosquitto_lib_cleanup();
-							fprintf(stderr, "Error mosquitto_loop_stop: %s\n", mosquitto_strerror(rc));
-							close(fd);
-							return 1;
-
-						}
+						mosquitto_disconnect(mosq);
+						mosquitto_loop_stop(mosq, true);
+						mosquitto_destroy(mosq);
+						mosquitto_lib_cleanup();
+						close(fd);
 
 					}
      
