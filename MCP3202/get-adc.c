@@ -412,7 +412,7 @@ int main(int argc, char *argv[])
 		}
 		/* Run the network loop in a background thread, this call returns quickly. */
 
-		
+		mosquitto_disconnect(mosq)
 		mosquitto_lib_cleanup();
 		sleep(4);
 	}
