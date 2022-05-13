@@ -424,29 +424,29 @@ int main(int argc, char *argv[])
 
 			
 
+		mosquitto_reconnect(mosq);
 		rc = mosquitto_loop(mosq,10,256);
-		// rc = mosquitto_loop_start(mosq);
-		if(rc != MOSQ_ERR_SUCCESS){
+		// // rc = mosquitto_loop_start(mosq);
+		// if(rc != MOSQ_ERR_SUCCESS){
 
-			if(rc == MOSQ_ERR_NO_CONN || rc == MOSQ_ERR_CONN_LOST){
+		// 	if(rc == MOSQ_ERR_NO_CONN || rc == MOSQ_ERR_CONN_LOST){
 
-				fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
-				mosquitto_reconnect(mosq);
-			}
-			else{
+		// 		fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 				
-				fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
-				mosquitto_disconnect(mosq);
-				mosquitto_destroy(mosq);
-				mosquitto_lib_cleanup();
-				close(fd);
-				return 1;
-			}
+		// 	}
+		// 	else{
+
+		// 		fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
+		// 		mosquitto_disconnect(mosq);
+		// 		mosquitto_destroy(mosq);
+		// 		mosquitto_lib_cleanup();
+		// 		close(fd);
+		// 		return 1;
+		// 	}
 			
-		}
+		// }
 	
 				
-
 		publish_values(mosq);
 		sleep(1);
 	}
