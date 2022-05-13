@@ -101,10 +101,11 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             //     printf("%02x ", uid[i]);
 			// 	str[i]=uid[i];                
             // }
-            char *message = "Un scan a été réalisé";
+            char message[256];
 			printf("%s %02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x",message,uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 			
-            mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,0,false);
+			sprintf(message, "%s %02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+            mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
             // mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
             printf("\r\n");
             break;
