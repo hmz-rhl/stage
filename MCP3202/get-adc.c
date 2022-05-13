@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
 				* This call makes the socket connection only, it does not complete the MQTT
 				* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
 				* mosquitto_loop_forever() for processing net traffic. */
-				rc = mosquitto_reconnect(mosq, "localhost", 1883, 60);
+				rc = mosquitto_connect(mosq, "localhost", 1883, 60);
 				if(rc != MOSQ_ERR_SUCCESS){
 					
 					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
