@@ -338,17 +338,17 @@ void publish_values(struct mosquitto *mosq)
 	 * qos = 2 - publish with QoS 2 for this example
 	 * retain = false - do not use the retained message feature for this message
 	 */
-	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, true);
+	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
 	
-	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, true);
+	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, true);
+	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
 	}
@@ -373,10 +373,7 @@ int main(int argc, char *argv[])
 	 * want to be really sure you should wait until after a successful call to
 	 * the connect callback.
 	 * In this case we know it is 1 second before we start publishing.
-	 */
-	while(1){
-
-		/* Required before calling other mosquitto functions */
+	 * /* Required before calling other mosquitto functions */
 		rc = mosquitto_lib_init();
 		if(rc != MOSQ_ERR_SUCCESS){
 			
@@ -420,40 +417,44 @@ int main(int argc, char *argv[])
 					return 1;
 				
 				}
-				else{
-
-					rc = mosquitto_loop_start(mosq);
-					if(rc != MOSQ_ERR_SUCCESS){
-
-						mosquitto_disconnect(mosq);
-						mosquitto_destroy(mosq);
-						mosquitto_lib_cleanup();
-						fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
-						close(fd);
-						return 1;
-					}
-					else{
-
-						publish_values(mosq);
-						mosquitto_disconnect(mosq);
-						mosquitto_loop_stop(mosq, true);
-						mosquitto_destroy(mosq);
-						mosquitto_lib_cleanup();
-						close(fd);
-
-					}
-     
-				}
 
 			}
-
 		}
+	while(1){
+
+			
+
+		mosquitto_loop(mosq,10,256);
+		// rc = mosquitto_loop_start(mosq);
+		// if(rc != MOSQ_ERR_SUCCESS){
+
+		// 	mosquitto_disconnect(mosq);
+		// 	mosquitto_destroy(mosq);
+		// 	mosquitto_lib_cleanup();
+		// 	fprintf(stderr, "Error mosquitto_loop_start: %s\n", mosquitto_strerror(rc));
+		// 	close(fd);
+		// 	return 1;
+		// }
+		// else{
+
+		// 	mosquitto_disconnect(mosq);
+		// 	mosquitto_loop_stop(mosq, true);
+		// 	mosquitto_destroy(mosq);
+		// 	mosquitto_lib_cleanup();
+		// 	close(fd);
+
+		// }
+     
+				
+
+		publish_values(mosq);
+		sleep(1);
+	}
 
 		/* Run the network loop in a background thread, this call returns quickly. */
 
 		
-		sleep(1);
-	}
+	
 	close(fd);
 	return 0;
 }
