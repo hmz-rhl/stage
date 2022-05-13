@@ -422,10 +422,61 @@ int main(int argc, char *argv[])
 		}
 	while(1){
 
-			
 
 		rc = mosquitto_loop(mosq,10,256);
-		mosquitto_reconnect(mosq);
+
+		if(rc != MOSQ_ERR_SUCCESS)
+		{
+			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
+
+			rc = mosquitto_lib_init();
+			if(rc != MOSQ_ERR_SUCCESS){
+				
+				fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
+				
+				//return 1; on ne souhaite pas quitter la boucle
+			}
+			else{
+
+				/* Create a new client instance.
+				* id = NULL -> ask the broker to generate a client id for us
+				* clean session = true -> the broker should remove old sessions when we connect
+				* obj = NULL -> we aren't passing any of our private data for callbacks
+				*/
+				mosq = mosquitto_new("adc", true, NULL);
+				if(mosq == NULL){
+
+					mosquitto_lib_cleanup();
+					fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
+					close(fd);
+					return 1;
+				}
+				else{
+
+					/* Configure callbacks. This should be done before connecting ideally. */
+					mosquitto_connect_callback_set(mosq, on_connect);
+					mosquitto_publish_callback_set(mosq, on_publish);
+
+					/* Connect to test.mosquitto.org on port 1883, with a keepalive of 60 seconds.
+					* This call makes the socket connection only, it does not complete the MQTT
+					* CONNECT/CONNACK flow, you should use mosquitto_loop_start() or
+					* mosquitto_loop_forever() for processing net traffic. */
+					rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
+					if(rc != MOSQ_ERR_SUCCESS){
+
+						mosquitto_destroy(mosq);
+						mosquitto_lib_cleanup();
+						fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
+
+						close(fd);
+						return 1;
+					
+					}
+
+				}
+			}
+
+			//mosquitto_reconnect(mosq);
 		// // rc = mosquitto_loop_start(mosq);
 		// if(rc != MOSQ_ERR_SUCCESS){
 
