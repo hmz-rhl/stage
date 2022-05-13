@@ -96,7 +96,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             for (uint8_t i = 0; i < uid_len; i++) {
                 printf("%02x ", uid[i]);
             }
-            mosquitto_publish(mosq,NLL)
+            mosquitto_publish(mosq,NULL)
             printf("\r\n");
             break;
         }
