@@ -1,6 +1,11 @@
 #include "MCP3202.h"
 
 
+// L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
+// On a 1C tous les 12 pas en bit en sortie chez l'adc.
+// Range du termometre: -40C -- 150C ; 0,1V a 2V.
+
+
 
 
 void waitForSPIReady(expander_t *exp){
