@@ -37,7 +37,7 @@
 #define WRITE            0xFFF6
 
 
-#define AVrmsGain 	0.00000307
+#define AVrmsGain 	1
 #define AVrmsOffset 0
 #define AIrmsGain 	1
 #define AIrmsOffset 0
