@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <wiringPi.h>
 
 
 int dutycycle,t;
@@ -15,7 +16,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * appropriate string for MQTT v3.x clients, the equivalent for MQTT v5.0
 	 * clients is mosquitto_reason_string().
 	 */
-	printf("%s: %s\n", ,mosquitto_connack_string(reason_code));
+	printf("%s: %s\n", __func__,mosquitto_connack_string(reason_code));
 	if(reason_code != 0){
 		/* If the connection fails for any reason, we don't want to keep on
 		 * retrying in this example, so disconnect. Without this, the client
@@ -29,7 +30,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
     char topic[]= "down/charger/pwm";
 
-    rc = mosquitto_subscribe(mosq,NULL,topic,2,);
+    rc = mosquitto_subscribe(mosq,NULL,topic,2);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
