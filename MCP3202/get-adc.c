@@ -13,9 +13,11 @@
 
 
 
+//variable globale
 
 struct mosquitto* mosq;
 
+// declaration et definitions des fonctions
 double toDegres(int tension){
 
 	if(tension < 0){
@@ -187,17 +189,17 @@ void publish_values(struct mosquitto *mosq)
 	 */
 	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
 	
 	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
 
 	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "Error mosquitto_publish: %s\n", mosquitto_strerror(rc));
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
 
 }
@@ -212,21 +214,12 @@ int main(int argc, char *argv[])
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, interruption);
 
-	// /* Setup du SPI pour l'adc */ 
-	// int fd = wiringPiSPISetupMode(0, 2000000, 0);
-	// if(fd < 0)
-	// {
-	// 	perror("Erreur de setup de SPI");
-	// 	return EXIT_FAILURE;
-	// }
-
-
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
 
 	if(rc != MOSQ_ERR_SUCCESS){
 		
-		fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
+		fprintf(stderr, "fonction %s: Error mosquitto_lib_init: %s\n",__func__,  mosquitto_strerror(rc));
 		// close(fd);
 		
 		//return 1; on ne souhaite pas quitter la boucle
@@ -240,7 +233,7 @@ int main(int argc, char *argv[])
 			if(mosq == NULL){
 
 				mosquitto_lib_cleanup();
-				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
+				fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
 				// close(fd);
 				
 				return 1;
@@ -261,7 +254,7 @@ int main(int argc, char *argv[])
 
 					mosquitto_destroy(mosq);
 					mosquitto_lib_cleanup();
-					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
+					fprintf(stderr, "fonction %s: Error mosquitto_connect: %s\n", __func__, mosquitto_strerror(rc));
 					// close(fd);
 
 					
@@ -284,15 +277,15 @@ int main(int argc, char *argv[])
 			
 			// on detruit l'ancienne instance
 			mosquitto_destroy(mosq);
-			if(tentatives > 5){
+			if(tentatives >= 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
 				// close(fd);
 				return EXIT_FAILURE;
 			}
 
-			// affichage de l'erruer pour le debug
-			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
+			// affichage de l'erreur pour le debug
+			fprintf(stderr, "fonction %s: Error mosquitto_loop: %s\n", mos__func__, quitto_strerror(rc));
 
 			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
 			sleep(30);
@@ -301,7 +294,7 @@ int main(int argc, char *argv[])
 			rc = mosquitto_lib_init();
 			if(rc != MOSQ_ERR_SUCCESS){
 				
-				fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
+				fprintf(stderr, "fonction %s: Error mosquitto_lib_init: %s\n",__func__,  mosquitto_strerror(rc));
 			}
 			else{
 
@@ -310,7 +303,7 @@ int main(int argc, char *argv[])
 				if(mosq == NULL){
 
 					/* On affiche le message d'erreur*/
-					fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
+					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
 					/* On libere les fonctions utilisé*/
 					mosquitto_lib_cleanup();
 
@@ -325,6 +318,8 @@ int main(int argc, char *argv[])
 
 					/* connexion au broker */
 					rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
+
+					/* si erreur */
 					if(rc != MOSQ_ERR_SUCCESS){
 
 						mosquitto_destroy(mosq);
@@ -332,11 +327,7 @@ int main(int argc, char *argv[])
 						mosquitto_lib_cleanup();
 
 					/* On affiche le message d'erreur*/
-						fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
-					
-					/* On ferme le descripteur du SPI*/
-						
-					
+						fprintf(stderr, "fonction %s: Error mosquitto_connect: %s\n", __func__, mosquitto_strerror(rc));
 					}
 
 				}
