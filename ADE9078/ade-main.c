@@ -134,6 +134,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	data[2] = 0x00FF & (value >> 8) ;
 	data[3] = ((value & 0x00FF)) ;
   	
+	printf("on envoit %X%X %X%Xsur SPI \n", data[0], data[1], data[2], data[3]);
 
 
 #ifdef DEBUG
@@ -185,6 +186,8 @@ uint16_t spiRead16(uint16_t addresse){
 	data[1] = ((addresse & 0x00F) << 4) | READ;
   // data[2] = 0x00;
   // data[3] = 0x01;
+	printf("on envoit %X %X sur SPI \n", data[0], data[1]);
+
 
 
 
@@ -239,9 +242,9 @@ uint32_t spiRead32(uint16_t addresse){
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) | READ;
-	uint16_t envoi = data[0] << 8 + data[1];
-//0x6078
-	printf("on envoit %X %X\n", data[0], data[1]);
+	//uint16_t envoi = data[0] << 8 + data[1];
+
+	printf("on envoit %X %X sur SPI \n", data[0], data[1]);
   // data[2] = 0x00;
   // data[3] = 0x01;
 
@@ -301,6 +304,9 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	data[3] = 0x00FF & (value >> 16);
   	data[4] = 0x00FF & (value >> 8) ;
 	data[5] = ((value & 0x00FF)) ;
+
+	printf("on envoit %X%X %X%X%X%Xsur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
+
   	
 
 
@@ -945,7 +951,7 @@ int main(){
 	//ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
-	ADE9078_getPartID();
+	ADE9078_getVersion();
 	while(1){
 		while(digitalRead(IRQ1)){
 			
