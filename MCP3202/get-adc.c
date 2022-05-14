@@ -36,7 +36,7 @@ double toDegres(int tension){
 void interruption(int n)
 {
 	
-	printf("%s: interruption on free mosq\n", __func__);
+	printf("%s: interruption on detruit l'instance mosq\n", __func__);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 	exit(EXIT_SUCCESS);
@@ -217,7 +217,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
  * received a PUBCOMP from the broker. */
 void on_publish(struct mosquitto *mosq, void *obj, int mid)
 {
-	printf("Message %d has been published.\n", mid);
+	printf("%s: Message %d has been published.\n",__func__, mid);
 }
 
 
@@ -319,7 +319,7 @@ void publish_values(struct mosquitto *mosq)
 	}
 
 // affichage sur la console
-	printf("Ce qu'il doit être envoyé:\n");
+	printf("Ce qu'il doit être envoyé par MQTT:\n");
 	printf("temp %d°C\n", TEMP);
 	printf("cp %d\n", CP);
 	printf("pp %d\n\n", PP);
