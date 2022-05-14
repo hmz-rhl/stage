@@ -241,7 +241,7 @@ uint32_t spiRead32(uint16_t addresse){
 	data[1] = ((addresse & 0x00F) << 4) | READ;
 	uint16_t envoi = data[0] << 8 + data[1];
 
-	printf("on envoit %d \n", envoi);
+	printf("on envoit %X \n", envoi);
   // data[2] = 0x00;
   // data[3] = 0x01;
 
@@ -878,7 +878,7 @@ double ADE9078_getAVrms(){
 	uint32_t value=0;
 	value=spiRead32(AVRMS_1_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
-	return decimal;
+	return value;
 }
 
 
