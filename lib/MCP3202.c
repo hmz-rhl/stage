@@ -37,7 +37,14 @@ int readAdc(int channel, uint8_t cs){
 	
 	uint8_t data[3] = {0};
 
-	
+		/* Setup du SPI pour l'adc */ 
+	int fd = wiringPiSPISetupMode(0, 2000000, 0);
+	if(fd < 0)
+	{
+		perror("Erreur de setup de SPI");
+		return EXIT_FAILURE;
+	}
+
 	if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
@@ -69,7 +76,7 @@ int readAdc(int channel, uint8_t cs){
 		}
 	}
 
-	//waitForSPIReady(exp);
+	waitForSPIReady(exp);
 
 
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
@@ -89,7 +96,7 @@ int readAdc(int channel, uint8_t cs){
 
 	expander_closeAndFree(exp);
 	
-
+	close(fd);
 #ifdef DEBUG
 	printf("The analog input value is \n");
 	printf("Value at MCP3202 CH%d is: %d D \n", channel, reData);

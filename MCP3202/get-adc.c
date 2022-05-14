@@ -366,21 +366,22 @@ int main(int argc, char *argv[])
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, interruption);
 
-	/* Setup du SPI pour l'adc */ 
-	int fd = wiringPiSPISetupMode(0, 2000000, 0);
-	if(fd < 0)
-	{
-		perror("Erreur de setup de SPI");
-		return EXIT_FAILURE;
-	}
+	// /* Setup du SPI pour l'adc */ 
+	// int fd = wiringPiSPISetupMode(0, 2000000, 0);
+	// if(fd < 0)
+	// {
+	// 	perror("Erreur de setup de SPI");
+	// 	return EXIT_FAILURE;
+	// }
 
-	close(fd);
+
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
 
 	if(rc != MOSQ_ERR_SUCCESS){
 		
 		fprintf(stderr, "Error mosquitto_lib_init: %s\n", mosquitto_strerror(rc));
+		// close(fd);
 		
 		//return 1; on ne souhaite pas quitter la boucle
 	}
@@ -394,6 +395,7 @@ int main(int argc, char *argv[])
 
 				mosquitto_lib_cleanup();
 				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
+				// close(fd);
 				
 				return 1;
 			}
@@ -414,6 +416,7 @@ int main(int argc, char *argv[])
 					mosquitto_destroy(mosq);
 					mosquitto_lib_cleanup();
 					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
+					// close(fd);
 
 					
 					return 1;
@@ -438,6 +441,7 @@ int main(int argc, char *argv[])
 			if(tentatives > 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
+				// close(fd);
 				return EXIT_FAILURE;
 			}
 
