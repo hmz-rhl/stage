@@ -219,7 +219,7 @@ uint16_t spiRead16(uint16_t addresse){
 
 
 
-  	uint16_t recu = data[3] + (data[2] << 8);
+  	uint16_t recu = data[1] + (data[0] << 8);
 
 #ifdef DEBUG
   	printf("recue : %x\n", recu);
