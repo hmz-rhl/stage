@@ -11,6 +11,8 @@
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
 #include <stdarg.h>
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
 
 #define VERSION         "0.9"
 
@@ -64,8 +66,8 @@ typedef struct expander
 {
     /* data */
     int fd;                     // descripeur du fichier /dev/i2c-dev
-    uint8_t buff[4];            //buffer contenant la derniere valeur ecrite ou lue
-    char label[8][MAX_STRING];  //label des port GPIO pour l'affichage dans console
+    uint8_t buff[4];            // buffer contenant la derniere valeur ecrite ou lue
+    char label[8][MAX_STRING];  // label des port GPIO pour l'affichage dans console
     uint8_t addr;
 
 }expander_t;

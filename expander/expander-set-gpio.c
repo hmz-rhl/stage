@@ -54,12 +54,14 @@ int main(int argc, char* argv[]) {
 
 
     if(argc != 10){
+
         printf("Usage:   ./expander-get-gpio <addr> <GPIO 7> ... <GPIO 0> \n");
         printf("exemple: ./expander-get-gpio 26 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
     if(argc == 2 && (!strcmp(argv[1],"-h") || !strcmp(argv[1],"--help"))){
+
         printf("Usage: ./expander-get-gpio -h, --help affiche ce message d'aide \n");
         printf("       ./expander-get-gpio <GPIO 7> ... <GPIO 0> \n");
 
@@ -74,11 +76,13 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
 
     }
+
     if(!strcmp(argv[1], "26")){
+
         expander_t *expp = expander_init(0x26);
         for (size_t i = 0; i < 8; i++)
         {
-        buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
         expander_setAndResetSomePinsGPIO(expp, buff);
         printf("%02x\n",buff);
@@ -87,11 +91,24 @@ int main(int argc, char* argv[]) {
         expander_closeAndFree(expp);
 
     }
-    else{
+    else if(!strcmp(argv[1], "27")){
+
         expander_t *expp = expander_init(0x27);
         for (size_t i = 0; i < 8; i++)
         {
-        buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(expp, buff);
+        expander_printGPIO(expp);
+        expander_closeAndFree(expp);
+
+    }
+        else if(!strcmp(argv[1], "25")){
+
+        expander_t *expp = expander_init(0x25);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
         expander_setAndResetSomePinsGPIO(expp, buff);
         expander_printGPIO(expp);

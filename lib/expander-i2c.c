@@ -48,7 +48,7 @@ expander_t* expander_init(uint8_t addr){
  ** 
  * @brief   definit le champs label qui associera un nom a chaque pin GPIO pour la console
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -92,7 +92,7 @@ void expander_labelize(expander_t* exp){
  ** 
  * @brief   ouvre l'interface i2c de la RP
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -105,8 +105,15 @@ void expander_openI2C(expander_t *exp){
     }
     exp->fd = open(I2C_DEVICE, O_RDWR);
     if(exp->fd < 0) {
-        printf("ERREUR d'ouverture l'interface I2C de la RPZ...\n");
-        exit(EXIT_FAILURE);
+
+        sleep(1);
+        exp->fd = open(I2C_DEVICE, O_RDWR);
+        if(exp->fd < 0) {
+        
+            fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
+        
     }
 }
 
@@ -116,7 +123,7 @@ void expander_openI2C(expander_t *exp){
  ** 
  * @brief   ferme l'interface i2c de la RP
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -128,7 +135,8 @@ void expander_closeI2C(expander_t *exp){
         exit(EXIT_FAILURE);
     }
     if(close(exp->fd) < 0) {
-        printf("ERREUR de fermeture l'interface I2C de la RPZ...\n");
+
+        fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
@@ -139,7 +147,7 @@ void expander_closeI2C(expander_t *exp){
  ** 
  * @brief   configure l'interface i2c, et lui fait connaitre l'adresse de l'expander
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  
  **/
@@ -152,7 +160,7 @@ void expander_setI2C(expander_t *exp){
     }
 
     if(ioctl(exp->fd,I2C_SLAVE,exp->addr) < 0) {
-        printf("ERREUR de setting du l'address l'interface I2C de la RPZ ...\n");
+        printf("ERREUR de setting de l'address l'interface I2C de la RPZ ...\n");
         close(exp->fd);
         exit(EXIT_FAILURE);
     }
@@ -165,7 +173,7 @@ void expander_setI2C(expander_t *exp){
  ** 
  * @brief   Renvoi l'état des pins GPIO (0-7)
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  *  @return l'état des pins sous forme d'un octet où chaque bit correspond a un pin
  * 
@@ -207,7 +215,7 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
  * 
  * @brief   Renvoi l'état du pin
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  *  @return 0x00 ou 0x01 en fonction de l'état du pin
@@ -237,7 +245,7 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   mets un pin a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -261,15 +269,14 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 /* Ecriture des gpio de l'expander
  **/
 
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 
     exp->buff[1] = nouveauGPIO;
 
@@ -292,7 +299,7 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   mets un pin a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -316,8 +323,8 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -325,7 +332,6 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     }
 
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 
     exp->buff[1] = nouveauGPIO;
 
@@ -349,7 +355,7 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
  * 
  * @brief   inverse l'état d'un pin
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -383,7 +389,7 @@ void
  ** 
  * @brief   mets tout les pins a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -397,8 +403,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -426,7 +432,7 @@ void expander_setAllPinsGPIO(expander_t *exp){
  * 
  * @brief   mets tout les pin a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -441,8 +447,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
 
 /* Ecriture des gpio de l'expander
  **/
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -450,7 +456,6 @@ void expander_resetAllPinsGPIO(expander_t *exp){
     }
 
     exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x00;
 #ifdef DEBUG
     printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
 #endif
@@ -469,7 +474,7 @@ void expander_resetAllPinsGPIO(expander_t *exp){
  * 
  * @brief   mets le pin a 1 et tout les autres a 0
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -488,8 +493,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         exit(EXIT_FAILURE);
     }
 
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -515,7 +520,7 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
  * 
  * @brief    mets le pin a 0 et tout les autres a 1
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * @param   pin le pin en question (entre 0 et 7)
  * 
  * 
@@ -533,8 +538,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
-    exp->buff[0] = 0x00;
-    exp->buff[1] = 0;
+    exp->buff[0] = MCP23008_IODIR;
+    exp->buff[1] = 0x00;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur IODIR\r\n");
@@ -591,7 +596,7 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
  * 
  * @brief    Affiche l'etat des pin sur la console
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -642,7 +647,7 @@ void expander_printGPIO(expander_t *exp){
  * 
  * @brief   ferme l'interface i2C et libère la memoire utilisé pour exp
  * 
- * @param   exp pointeur sur variable structuré de l'expander a labeliser
+ * @param   exp pointeur sur variable structuré de l'expander
  * 
  * 
  *  **/
@@ -651,7 +656,7 @@ void expander_closeAndFree(expander_t *exp)
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
-        exit(EXIT_FAILURE);
+        return;
     }
     expander_closeI2C(exp);
     free(exp);

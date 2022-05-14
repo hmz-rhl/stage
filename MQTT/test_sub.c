@@ -17,5 +17,6 @@ int main(int argc, char const *argv[])
     /* code */
     struct mosquitto* mosq = init_mqtt();
     mqtt_subscribe(argv[1], traitement, mosq);
+    while(1){}
     return 0;
 }

@@ -1,6 +1,11 @@
 #include "MCP3202.h"
 
 
+// L'ADC quantifie sur 12Bits, il y a donc 4096 valeurs possible de conversion.
+// On a 1C tous les 12 pas en bit en sortie chez l'adc.
+// Range du termometre: -40C -- 150C ; 0,1V a 2V.
+
+
 
 
 void waitForSPIReady(expander_t *exp){
@@ -37,8 +42,18 @@ int readAdc(int channel, uint8_t cs){
 	
 	uint8_t data[3] = {0};
 
-	
+		/* Setup du SPI pour l'adc */ 
+	int fd = wiringPiSPISetupMode(0, 2000000, 0);
+	if(fd < 0)
+	{
+		perror("Erreur de setup de SPI");
+		return EXIT_FAILURE;
+	}
 
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+	}
 	data[0] = START_BIT;
 	if(channel == 0){
 		data[1] = ADC_CONFIG_SGL_MODE_MSBF_CN0;
@@ -66,13 +81,9 @@ int readAdc(int channel, uint8_t cs){
 		}
 	}
 
-	//waitForSPIReady(exp);
-	
-	if(wiringPiSPISetupMode(0, 2000000, 0) < 0)
-	{
-		perror("Erreur de setup de SPI");
-		return reData;
-	}
+	waitForSPIReady(exp);
+
+
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
@@ -89,7 +100,8 @@ int readAdc(int channel, uint8_t cs){
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
 
 	expander_closeAndFree(exp);
-
+	
+	close(fd);
 #ifdef DEBUG
 	printf("The analog input value is \n");
 	printf("Value at MCP3202 CH%d is: %d D \n", channel, reData);

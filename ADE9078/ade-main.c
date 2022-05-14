@@ -14,6 +14,7 @@
 #include <string.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <signal.h>
 
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
@@ -38,7 +39,7 @@
 
 #define AVrmsGain 	0.00000307
 #define AVrmsOffset 0
-#define AIrmsGain 	0.00000000021
+#define AIrmsGain 	1
 #define AIrmsOffset 0
 
 #define AAppPowerGain 1
@@ -66,8 +67,11 @@ typedef struct {
 
   uint8_t vConsel;
   uint8_t iConsel;
+  int fd;
 }InitializationSettings;
 
+
+InitializationSettings is;
 
 double decimalize(uint32_t input, double factor, double offset, int absolutevalue) //This function converts to floating point with an optional linear calibration (y=mx+b) by providing input in the following way as arguments (rawinput, gain, offset)
 {
@@ -749,7 +753,8 @@ void ADE9078_initialize(InitializationSettings *is){
   #ifdef ADE9078_VERBOSE_DEBUG
    printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
   #endif
-		if(wiringPiSPISetup(0, 2000000) < 0)
+  	is->fd = wiringPiSPISetup(0, 2000000);
+		if(is->fd < 0)
 	{
 		perror("Erreur de setup du SPI");
 		exit(EXIT_FAILURE);
@@ -759,36 +764,54 @@ void ADE9078_initialize(InitializationSettings *is){
 		printf("Erreur %s : argument NULL", __func__);
 		exit(EXIT_FAILURE);
 	}
+  spiWrite16(CONFIG1_16, 0x0001); // software reset
+
   // Page 56 of datasheet quick start
   // #1: Ensure power sequence completed
   
   
   	sleep(30);
 
-
+while(digitalRead(IRQ1)){}
+  spiWrite16(CONFIG0_32, 0x00000000);
+while(digitalRead(IRQ1)){}
+  spiWrite16(CONFIG2_16, 0x0000);
+while(digitalRead(IRQ1)){}
+  spiWrite16(CONFIG3_16, 0x0000);
   // Is always printing right now. Might be an issue?
   // if (!checkBit((int)read32BitAndScale(STATUS1_32), 16)) {
   //   printf("WARNING, POWER UP MAY NOT BE FINISHED\n");
   // }
-   // #2: Configure Gains
+
+
+// #2: Configure Gains
+while(digitalRead(IRQ1)){}
    spiWrite32(APGAIN_32, is->powerAGain);
+while(digitalRead(IRQ1)){}
    spiWrite32(BPGAIN_32, is->powerBGain);
+while(digitalRead(IRQ1)){}
    spiWrite32(CPGAIN_32, is->powerCGain);
 
    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
+while(digitalRead(IRQ1)){}
    spiWrite16(PGA_GAIN_16, pgaGain);
-   uint32_t vLevelData = 0x35A98F;  // #5 : Write VLevel 0x117514
+
+while(digitalRead(IRQ1)){}
+  spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
+
+// #5 : Write VLevel 0x117514
+   uint32_t vLevelData = 0x117514;//0x35A98F;  
+while(digitalRead(IRQ1)){}
    spiWrite32(VLEVEL_32, vLevelData); // #5
 
-  spiWrite16(CONFIG0_32, 0x00000000);  // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
+// #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
   // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
+
   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
+while(digitalRead(IRQ1)){}
   spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
-
-  spiWrite16(RUN_16, 1);  // 8: Write 1 to Run register
-  spiWrite16(EP_CFG_16, 1);  // 9: Write 1 to EP_CFG register
 
   /*
   Potentially useful registers to configure:
@@ -797,18 +820,34 @@ void ADE9078_initialize(InitializationSettings *is){
     0x41F PHNOLOAD : To say if something is "no load".
     Phase calibrations, such as APHCAL1_32
   */
-  spiWrite16(CONFIG1_16, 0x0000);
-  spiWrite16(CONFIG2_16, 0x0000);
-  spiWrite16(CONFIG3_16, 0x0000);
+
+/* #6: If a Rogowski coil sensor is used, write the INTEN bit in
+	the CONFIG0 register to enable the digital integrator on
+	the IA, IB, and IC channels. To enable the digital integrator on
+	the neutral current, IN, channel, set the ININTEN bit.
+	Additionally, write DICOEF = 0xFFFFE000 to configure
+	the digital integrator. If current transformers are used,
+	INTEN and ININTEN in the CONFIG0 register must = 0.*/
+
+while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  //spiWrite16(WFB_CFG_16, 0x1111);
- 
+  spiWrite16(WFB_CFG_16, 0x0000);
+
+
+// 8: Write 1 to Run register
+while(digitalRead(IRQ1)){}
+	spiWrite16(RUN_16, 1);  
+
+// 9: Write 1 to EP_CFG register
+while(digitalRead(IRQ1)){}
+  	spiWrite16(EP_CFG_16, 1);  // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
+  
   /* Registers configured in ADE9000 code */
   // zx_lp_sel
   // mask0, mask1, event_mask,
   // wfb_cfg,
-  spiWrite16(EGY_TIME_16, 0x0001);
-  spiWrite16(EP_CFG_16, 1); // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
+
+
 
   #ifdef ADE9078_VERBOSE_DEBUG
    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
@@ -832,6 +871,7 @@ void ADE9078_initialize(InitializationSettings *is){
    printf(" DICOEFF: ");
    printf("0xFFFFE000\n");
   #endif
+  
 }
 
 double ADE9078_getAVrms(){
@@ -843,11 +883,11 @@ double ADE9078_getAVrms(){
 
 
 
-double ADE9078_getAIrms(){
+uint32_t ADE9078_getAIrms(){
 	uint32_t value=0;
-	value=spiRead32(AIRMS_32);
+	value=spiRead32(AI_SINC_DAT_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
-	return decimal;
+	return value;
 }
 
 double ADE9078_getInstApparentPowerA(){
@@ -857,55 +897,71 @@ double ADE9078_getInstApparentPowerA(){
 	return (decimal);
 }
 
+
+void interruption(int n)
+{
+	expander_t *exp = expander_init(0x26);
+	// ouverture du relais L1N
+	expander_resetPinGPIO(exp, 0);
+	close(is.fd);
+	expander_closeAndFree(exp);
+	exit(EXIT_SUCCESS);
+}
 int main(){
 
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, 0);
-	InitializationSettings is ={
+
+	signal(SIGABRT, interruption);
+	signal(SIGINT, interruption);
+
 		
-		.vAGain=1,
-		.vBGain=1,
-		.vCGain=1,
+		is.vAGain=1;
+		is.vBGain=1;
+		is.vCGain=1;
 
-		.iAGain=1,
-		.iBGain=1,
-		.iCGain=1,
-		.iNGain=1,
+		is.iAGain=1;
+		is.iBGain=1;
+		is.iCGain=1;
+		is.iNGain=1;
 
-		.powerAGain=1,
-		.powerBGain=1,
-		.powerCGain=1,
+		is.powerAGain=1;
+		is.powerBGain=1;
+		is.powerCGain=1;
 
 		//Use these settings to configure wiring configuration at stertup
 		//FYI: B010=2 in DEC
 		//FYI: B100 = 4 in DEC
 
 		//4 Wire Wye configuration - non-Blondel compliant:
-		.vConsel=0,
-		.iConsel=0
-	};
+		is.vConsel=0;
+		is.iConsel=0;
+
 
 	ADE9078_PSM3();
 	sleep(1);
 	ADE9078_PSM1();
-	ADE9078_resetRun();
+	//ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getPartID();
 	while(1){
-
-		while(!)
-		{
-			sleep(1);
+		while(digitalRead(IRQ1)){
+			
 		}
-		while(!digitalRead(IRQ1) && );
 	 	printf("tension : %lfV\n", ADE9078_getAVrms() );
-		usleep(10);
-		printf("courant : %lfA\n", ADE9078_getAIrms() );
-		usleep(10);
-		printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
-      	usleep(200000);
+		usleep(20);
+		while(digitalRead(IRQ1)){
+			
+		}
+		printf("courant : %d A\n", ADE9078_getAIrms() );
+		usleep(46);
+		// while(digitalRead(IRQ1)){
+			
+		// }
+		// printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
+      	// usleep(200000);
     }
     
 	expander_closeAndFree(exp);
