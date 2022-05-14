@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
 	if(wiringPiSetup() < 0)
 	{
-		fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
 
     pinMode(23, OUTPUT);
