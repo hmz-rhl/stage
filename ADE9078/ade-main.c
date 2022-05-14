@@ -241,7 +241,7 @@ uint32_t spiRead32(uint16_t addresse){
 	data[1] = ((addresse & 0x00F) << 4) | READ;
 	uint16_t envoi = data[0] << 8 + data[1];
 //0x6078
-	printf("on envoit %X \n", data);
+	printf("on envoit %X %X\n", data[0], data[1]);
   // data[2] = 0x00;
   // data[3] = 0x01;
 
