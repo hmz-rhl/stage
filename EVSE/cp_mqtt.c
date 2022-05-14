@@ -82,6 +82,11 @@ int main(int argc, char *argv[])
 	int rc;
     dutycycle = 100;
 
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+	}
+
     pinMode(23, OUTPUT);
 
 	/* Required before calling other mosquitto functions */
