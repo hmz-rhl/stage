@@ -374,6 +374,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	close(fd);
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
 
@@ -393,7 +394,7 @@ int main(int argc, char *argv[])
 
 				mosquitto_lib_cleanup();
 				fprintf(stderr, "Error mosquitto_new: Out of memory.\n");
-				close(fd);
+				
 				return 1;
 			}
 			else{
@@ -414,7 +415,7 @@ int main(int argc, char *argv[])
 					mosquitto_lib_cleanup();
 					fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
 
-					close(fd);
+					
 					return 1;
 				
 				}
@@ -464,7 +465,7 @@ int main(int argc, char *argv[])
 					mosquitto_lib_cleanup();
 
 					/* On ferme le descripteur du SPI*/
-					close(fd);
+					
 				}
 				else{
 
@@ -484,7 +485,7 @@ int main(int argc, char *argv[])
 						fprintf(stderr, "Error mosquitto_connect: %s\n", mosquitto_strerror(rc));
 					
 					/* On ferme le descripteur du SPI*/
-						close(fd);
+						
 					
 					}
 
@@ -505,7 +506,7 @@ int main(int argc, char *argv[])
 		
 	}
 
-	close(fd);
+	
 	return EXIT_SUCCESS;
 }
 
