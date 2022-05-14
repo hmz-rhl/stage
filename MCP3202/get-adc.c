@@ -30,6 +30,8 @@
 struct mosquitto* mosq;
 
 // declaration et definitions des fonctions
+
+// fonction qui passe de volt a degre pour le composant TMP36
 double toDegres(int tension){
 
 	if(tension < 0){
@@ -40,6 +42,8 @@ double toDegres(int tension){
 	return (toMillivolt(tension)-500)/10;
 }
 
+
+// fonction a executer l'ors d'une interruption par ctrl+C
 void interruption(int n)
 {
 	
@@ -81,7 +85,7 @@ void on_publish(struct mosquitto *mosq, void *obj, int mid)
 }
 
 
-/* This function pretends to read some data from a sensor and publish it.*/
+// fonction qui lit et publie les valeurs en mqtt
 void publish_values(struct mosquitto *mosq)
 {
 	char payload[20];
