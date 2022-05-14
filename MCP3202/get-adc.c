@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
 			}
 
 			// affichage de l'erreur pour le debug
-			fprintf(stderr, "fonction %s: Error mosquitto_loop: %s\n", mos__func__, quitto_strerror(rc));
+			fprintf(stderr, "fonction %s: Error mosquitto_loop: %s\n", __func__, mosquitto_strerror(rc));
 
 			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
 			sleep(30);
