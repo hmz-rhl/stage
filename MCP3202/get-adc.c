@@ -1,3 +1,15 @@
+/**
+ * @file get-adc.c
+ * @author Hamza RAHAL, Hicham GHANEM, Raphaël GANDUS, Thibault FLORES(you@domain.com)
+ * @brief lecture et publication des valeurs des adc
+ * @version 0.1
+ * @date 2022-05-14
+ * 
+ * @copyright Saemload (c) 2022
+ * 
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
