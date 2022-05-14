@@ -279,7 +279,7 @@ uint32_t spiRead32(uint16_t addresse){
 
 
 
-	uint32_t recu = data[3] + (data[2] << 8) + (data[1] << 16) + (data[0] << 24);
+	uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
 #ifdef DEBUG
   	printf("Recu : %x\n", recu);
@@ -876,7 +876,7 @@ while(digitalRead(IRQ1)){}
 
 double ADE9078_getAVrms(){
 	uint32_t value=0;
-	value=spiRead32(AVRMS_32);
+	value=spiRead32(AVRMS_1_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return decimal;
 }
@@ -885,7 +885,7 @@ double ADE9078_getAVrms(){
 
 uint32_t ADE9078_getAIrms(){
 	uint32_t value=0;
-	value=spiRead32(AI_SINC_DAT_32);
+	value=spiRead32(AIRMS_1_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }

@@ -1,11 +1,13 @@
 /**
+ * @file expander-i2c.c
+ * @author Hamza RAHAL
+ * @brief 
+ * @version 0.1
+ * @date 2022-05-14
  * 
- * @authors Hamza Rahal
+ * @copyright Saemload (c) 2022
  * 
- * @date 24/04/2022
- * 
- * 
- **/
+ */
 
 
 #include "expander-i2c.h"
