@@ -21,7 +21,7 @@
 
 
 
-// struct mosquitto* mosq;
+struct mosquitto* mosq;
 
 double toDegres(int tension){
 
@@ -33,13 +33,14 @@ double toDegres(int tension){
 	return (toMillivolt(tension)-500)/10;
 }
 
-// void interruption(int n)
-// {
+void interruption(int n)
+{
 	
-// 	printf("%s: interruption on free mosq\n", __func__);
-// 	mqtt_free(mosq);
-// 	exit(EXIT_SUCCESS);
-// }
+	printf("%s: interruption on free mosq\n", __func__);
+	mosquitto_destroy(mosq);
+	mosquitto_lib_cleanup();
+	exit(EXIT_SUCCESS);
+}
 
 
 // int main(int argc, char **argv){
@@ -358,8 +359,12 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
-	struct mosquitto *mosq;
+	// declartion des variables
+	
 	int rc, tentatives = 0;
+
+// on configure l'execution de la fonction interruption si ctrl+C
+	signal(SIGINT, interruption);
 
 	/* Setup du SPI pour l'adc */ 
 	int fd = wiringPiSPISetupMode(0, 2000000, 0);
@@ -380,8 +385,10 @@ int main(int argc, char *argv[])
 	}
 	else{
 
-
+			// on cree une instance mqtt en mode clean session
 			mosq = mosquitto_new("adc", true, NULL);
+
+			// si pas cree on quitte pour cause d'erreur
 			if(mosq == NULL){
 
 				mosquitto_lib_cleanup();
@@ -391,11 +398,16 @@ int main(int argc, char *argv[])
 			}
 			else{
 
-
+			// si tout va bien on configure les callback pour le debug 
+			// a la connexion au broker on lance la fonction on_connect
 				mosquitto_connect_callback_set(mosq, on_connect);
+			// a la publication on lance la fonction on_publish
 				mosquitto_publish_callback_set(mosq, on_publish);
 
+			// on se connecte au broker
 				rc = mosquitto_connect(mosq, "127.0.0.1", 1883, 5);
+
+			// si probleme on quitte le programme avec un message d'erreur
 				if(rc != MOSQ_ERR_SUCCESS){
 
 					mosquitto_destroy(mosq);
@@ -419,18 +431,22 @@ int main(int argc, char *argv[])
 		// si jamais erreur : exemple deconnexion du broker, reload du service mosquitto etc...
 		// on relance la batterie d'initialisation après 30s d'attente et ce durant 5 tentatives
 		if(rc != MOSQ_ERR_SUCCESS){
-
+			
+			// on detruit l'ancienne instance
+			mosquitto_destroy(mosq);
 			if(tentatives > 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
 				return EXIT_FAILURE;
 			}
 
+			// affichage de l'erruer pour le debug
 			fprintf(stderr, "Error mosquitto_loop: %s\n", mosquitto_strerror(rc));
 
 			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
 			sleep(30);
 
+			// initialisation mosquitto
 			rc = mosquitto_lib_init();
 			if(rc != MOSQ_ERR_SUCCESS){
 				
