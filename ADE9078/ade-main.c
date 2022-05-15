@@ -926,7 +926,7 @@ int main(){
 
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
-	expander_setPinGPIO(exp, 0);
+	expander_setPinGPIO(exp, TYPE_2_NL1_ON);
 
 	signal(SIGABRT, interruption);
 	signal(SIGINT, interruption);
@@ -964,7 +964,17 @@ int main(){
 	while(digitalRead(IRQ1)){
 		
 	}
+
+	// affichage des gains actuelles
+	printf("phase calib A : %d\n", ADE9078_getPhaseCalibA());
 	printf("AIGAIN : %d\n", spiRead32(AIGAIN_32));
+	printf("BIGAIN : %d\n", spiRead32(BIGAIN_32));
+	printf("CIGAIN : %d\n", spiRead32(CIGAIN_32));
+	printf("NIGAIN : %d\n", spiRead32(NIGAIN_32));
+	printf("AVGAIN : %d\n", spiRead32(AVGAIN_32));
+	printf("BVGAIN : %d\n", spiRead32(BVGAIN_32));
+	printf("CVGAIN : %d\n", spiRead32(CVGAIN_32));
+
 
 	while(1){
 
@@ -982,10 +992,9 @@ int main(){
 		while(digitalRead(IRQ1)){
 			
 		}
-		printf("phase calib A : %d\n", ADE9078_getPhaseCalibA());
       	sleep(10);
     }
-    
+    expander_resetPinGPIO(exp,TYPE_2_NL1_ON);
 	expander_closeAndFree(exp);
 
   return EXIT_SUCCESS;
