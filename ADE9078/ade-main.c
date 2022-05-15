@@ -287,7 +287,7 @@ uint32_t spiRead32(uint16_t addresse){
 #ifdef DEBUG
   	printf("Recu : %x\n", recu);
 #endif
-	printf("on recoit %d", data && 0xFFFF);
+	printf("on recoit %d\n", data && 0xFFFF);
   	expander_closeAndFree(exp);
 
   return recu;
