@@ -966,24 +966,24 @@ int main(){
 	}
 	printf("AIGAIN : %d\n", spiRead32(AIGAIN_32));
 
-	// while(1){
+	while(1){
 
-	// 	while(digitalRead(IRQ1)){
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-	//  	printf("tension : %02lfV\n", ADE9078_getAVrms() );
-	// 	usleep(20);
-	// 	while(digitalRead(IRQ1)){
+		}
+	 	printf("tension : %02lfV\n", ADE9078_getAVrms() );
+		usleep(20);
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-	// 	printf("courant : %lf A\n", ADE9078_getAIrms() );
-	// 	usleep(46);
-	// 	while(digitalRead(IRQ1)){
+		}
+		printf("courant : %lf A\n", ADE9078_getAIrms() );
+		usleep(46);
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-	// 	printf("phase calib A : %d\n", ADE9078_getPhaseCalibA());
-    //   	sleep(10);
-    // }
+		}
+		printf("phase calib A : %d\n", ADE9078_getPhaseCalibA());
+      	sleep(10);
+    }
     
 	expander_closeAndFree(exp);
 
