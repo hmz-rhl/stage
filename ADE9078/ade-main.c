@@ -971,6 +971,7 @@ int main(){
 		while(digitalRead(IRQ1)){
 			
 		}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 	 	printf("tension : %02lfV\n", ADE9078_getAVrms() );
 		usleep(20);
 		while(digitalRead(IRQ1)){
