@@ -881,6 +881,7 @@ while(digitalRead(IRQ1)){}
 }
 
 double ADE9078_getAVrms(){
+
 	uint32_t value=0;
 	value=spiRead32(AVRMS_1_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
@@ -890,6 +891,7 @@ double ADE9078_getAVrms(){
 
 
 uint32_t ADE9078_getAIrms(){
+
 	uint32_t value=0;
 	value=spiRead32(AIRMS_1_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
@@ -953,6 +955,7 @@ int main(){
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getVersion();
 	while(1){
+
 		while(digitalRead(IRQ1)){
 			
 		}
@@ -967,7 +970,7 @@ int main(){
 			
 		// }
 		// printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
-      	// usleep(200000);
+      	sleep(10);
     }
     
 	expander_closeAndFree(exp);
