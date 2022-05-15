@@ -780,8 +780,8 @@ void ADE9078_initialize(InitializationSettings *is){
 
 while(digitalRead(IRQ1)){}
   spiWrite16(CONFIG0_32, 0x00000000);
-  while(digitalRead(IRQ1)){}
-  spiWrite32(AIGAIN_32, 0x00000001);
+//   while(digitalRead(IRQ1)){}
+//   spiWrite32(AIGAIN_32, 0x00000001);
 while(digitalRead(IRQ1)){}
   spiWrite16(CONFIG2_16, 0x0000);
 while(digitalRead(IRQ1)){}
