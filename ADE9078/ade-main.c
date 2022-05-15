@@ -971,10 +971,10 @@ int main(){
 		}
 		printf("courant : %lf A\n", ADE9078_getAIrms() );
 		usleep(46);
-		// while(digitalRead(IRQ1)){
+		while(digitalRead(IRQ1)){
 			
-		// }
-		// printf("Puissance : %lfW\n", ADE9078_getInstApparentPowerA());
+		}
+		printf("phase calib A : %d\n", ADE9078_getPhaseCalibA());
       	sleep(10);
     }
     
