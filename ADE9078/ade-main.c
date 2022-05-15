@@ -905,6 +905,11 @@ double ADE9078_getInstApparentPowerA(){
 	return (decimal);
 }
 
+uint32_t ADE9078_getPhaseCalibA(){
+	uint32_t value=0;
+	value=spiRead32(APHCAL0_32);
+	return value;
+}
 
 void interruption(int n)
 {
