@@ -976,24 +976,24 @@ int main(){
 	printf("CVGAIN : %d\n", spiRead32(CVGAIN_32));
 
 
-	while(1){
+	// while(1){
 
-		while(digitalRead(IRQ1)){
+	// 	while(digitalRead(IRQ1)){
 			
-		}
-		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-	 	printf("tension : %02lfV\n", ADE9078_getAVrms() );
-		usleep(20);
-		while(digitalRead(IRQ1)){
+	// 	}
+	// 	printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+	//  	printf("tension : %02lfV\n", ADE9078_getAVrms() );
+	// 	usleep(20);
+	// 	while(digitalRead(IRQ1)){
 			
-		}
-		printf("courant : %lf A\n", ADE9078_getAIrms() );
-		usleep(46);
-		while(digitalRead(IRQ1)){
+	// 	}
+	// 	printf("courant : %lf A\n", ADE9078_getAIrms() );
+	// 	usleep(46);
+	// 	while(digitalRead(IRQ1)){
 			
-		}
-      	sleep(10);
-    }
+	// 	}
+    //   	sleep(10);
+    // }
     expander_resetPinGPIO(exp,TYPE_2_NL1_ON);
 	expander_closeAndFree(exp);
 
