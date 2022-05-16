@@ -75,6 +75,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     PN532 pn532;
     PN532_I2C_Init(&pn532);
     if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
+		
         printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
     } 
     else 
@@ -84,7 +85,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     PN532_SamConfiguration(&pn532);
     printf("Waiting for RFID/NFC card...\r\n");
 
-    while (1) {
+    while (1){
         
         // Check if a card is available to read
         uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
