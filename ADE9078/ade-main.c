@@ -1051,25 +1051,35 @@ int main(){
 		print32bits(spiRead32(EVENT_STATUS32));
 		printf("EVENT_MASK :\t ");
 		print32bits(spiRead32(EVENT_MASK_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+		
 		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+		
 		printf("BVRMS : %d\n", spiRead32(BVRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("CVRMS : %d\n", spiRead32(CVRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("AIRMS : %d\n", spiRead32(AIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("BIRMS : %d\n", spiRead32(BIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("CIRMS : %d\n", spiRead32(CIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
+		ADE9078_waitForDataReady();
+
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 
 		usleep(46);
