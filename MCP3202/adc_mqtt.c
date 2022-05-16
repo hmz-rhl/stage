@@ -105,16 +105,17 @@ void publish_values(struct mosquitto *mosq)
 
 // affiche sur la console
 
-	printf("%s: Lecture de PP\n", __func__);
-	//conversion en volt
-	pp = toVolt(readAdc(0,PP_CS));
-	usleep(10);
-// affiche sur la console
-
 	printf("%s: Lecture de CP\n", __func__);
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4*cp;
+	usleep(10);
+	
+// affiche sur la console
+
+	printf("%s: Lecture de PP\n", __func__);
+	//conversion en volt
+	pp = toVolt(readAdc(0,PP_CS));
 	usleep(10);
 
 	sprintf(str_temp, "%lf", temp);
