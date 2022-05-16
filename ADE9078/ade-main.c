@@ -1009,7 +1009,7 @@ int main(){
 
 	ADE9078_PSM3();
 	sleep(1);
-	ADE9078_PSM1();
+	ADE9078_PSM2();
 	//ADE9078_resetRun();
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
