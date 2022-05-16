@@ -115,16 +115,20 @@ void publish_values(struct mosquitto *mosq)
 	cp_reel = 4*cp;
 	usleep(10);
 
-	TEMP = (int)temp;
+	TEMP = temp;
 
 	
 
 
-	sprintf(str_temp, "%d", TEMP);
+	sprintf(str_temp, "%lf", TEMP);
 
 
 	usleep(10);
+	printf("____çCe qui est lu chez l'adc___\n", cp_reel);
 
+	printf("temperature: %lf\n", temp);
+	printf("pp: %lf\n", pp);
+	printf("cp_reel: %lf\n", cp_reel);
 // on donne a CP les vraies valeurs correspondantes 
 	CP = -12;
 	if (cp_reel > 9.5){
