@@ -546,6 +546,12 @@ void ADE9078_resetRun(){
 
 }
 
+void ADE9078_waitForResetDone(){
+
+	while(spiRead32(STATUS1_32) & 0b00000000000000010000000000000000 != 0b00000000000000010000000000000000){}
+	printf("Reset done !\n");
+}
+
 uint16_t ADE9078_getVersion(){
        
 
@@ -784,6 +790,9 @@ void ADE9078_initialize(InitializationSettings *is){
 	}
 	while(digitalRead(IRQ1)){}
   spiWrite16(CONFIG1_16, 0x0001); // software reset
+
+  // on attend le reset
+  ADE9078_waitForResetDone();
 
   // Page 56 of datasheet quick start
   // #1: Ensure power sequence completed
