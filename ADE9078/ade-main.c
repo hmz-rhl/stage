@@ -868,13 +868,19 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
-  while(digitalRead(IRQ1)){}
-  spiWrite16(WFB_CFG_16, 0x000F);
 
 
 // 8: Write 1 to Run register
 while(digitalRead(IRQ1)){}
 	spiWrite16(RUN_16, 1);  
+
+
+  while(digitalRead(IRQ1)){}
+  spiWrite16(WFB_CFG_16, 0x000F);
+
+// on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
+    while(digitalRead(IRQ1)){}
+  spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
 
 // 9: Write 1 to EP_CFG register
 while(digitalRead(IRQ1)){}
