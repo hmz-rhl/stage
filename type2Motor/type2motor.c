@@ -73,7 +73,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
-	
+
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 
     if(!strcmp(msg->topic,"down/lockType2/open")){
@@ -82,6 +82,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
        	pinMode(5,PWM_OUTPUT);
 		pwmWrite (5, 512);
 		delay(1);
+		digitalWrite(5,0);
 		pwmWrite (5, 0);
 
         printf("Le moteur est ouvert\n");
@@ -93,6 +94,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		pwmWrite (5, 512);
 		delay(1);
 		pwmWrite (5, 0);
+		digitalWrite(5,0);
 		
         printf("Le moteur est ferme\n");
     }
