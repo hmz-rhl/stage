@@ -925,7 +925,7 @@ void interruption(int n)
 {
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
-	expander_resetPinGPIO(exp, 0);
+	expander_resetPinGPIO(exp, TYPE_E_F_ON);
 	close(is.fd);
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
@@ -934,7 +934,7 @@ int main(){
 
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
-	expander_setPinGPIO(exp, TYPE_2_NL1_ON);
+	expander_setPinGPIO(exp, TYPE_E_F_ON);
 
 	signal(SIGABRT, interruption);
 	signal(SIGINT, interruption);
@@ -1002,7 +1002,7 @@ int main(){
 	// 	}
     //   	sleep(10);
     // }
-    expander_resetPinGPIO(exp,TYPE_2_NL1_ON);
+    expander_resetPinGPIO(exp,TYPE_E_F_ON);
 	expander_closeAndFree(exp);
 
   return EXIT_SUCCESS;
