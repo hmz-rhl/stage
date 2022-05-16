@@ -89,8 +89,9 @@ void on_publish(struct mosquitto *mosq, void *obj, int mid)
 void publish_values(struct mosquitto *mosq)
 {
 	char payload[20];
-	double pp, cp, PP, CP, TEMP;
-	double temp, cp_reel,;
+	double pp, cp, PP, CP, temp, cp_reel;
+
+	// variable pour debug mqtt
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
@@ -115,13 +116,7 @@ void publish_values(struct mosquitto *mosq)
 	cp_reel = 4*cp;
 	usleep(10);
 
-	TEMP = temp;
-
-	
-
-
-	sprintf(str_temp, "%lf", TEMP);
-
+	sprintf(str_temp, "%lf", temp);
 
 	usleep(10);
 	printf("___Ce qui est lu chez l'adc___\n\n", cp_reel);
@@ -129,6 +124,7 @@ void publish_values(struct mosquitto *mosq)
 	printf("temperature: %lf\n", temp);
 	printf("pp: %lf\n", pp);
 	printf("cp_reel: %lf\n\n", cp_reel);
+
 // on donne a CP les vraies valeurs correspondantes 
 	CP = -12;
 	if (cp_reel > 9.5){
@@ -189,7 +185,7 @@ void publish_values(struct mosquitto *mosq)
 
 // affichage sur la console
 	printf("Ce qu'il doit être envoyé par MQTT:\n");
-	printf("temp %d°C\n", TEMP);
+	printf("temp %d°C\n", temp);
 	printf("cp %d\n", CP);
 	printf("pp %d\n", PP);
 
