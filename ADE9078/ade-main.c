@@ -1048,12 +1048,12 @@ int main(){
 		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
-		printf("MASK0 :\t ");
+		printf("MASK0 :  \t ");
 		print32bits(spiRead32(MASK0_32));
 
 		printf("STATUS1 :\t ");
 		print32bits(spiRead32(STATUS1_32));
-		printf("MASK1 :\t ");
+		printf("MASK1 :  \t ");
 		print32bits(spiRead32(MASK1_32));
 
 		printf("EVENT_STATUS :\t ");
