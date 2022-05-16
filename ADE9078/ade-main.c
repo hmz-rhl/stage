@@ -1035,7 +1035,7 @@ int main(){
 
 	while(1){
 
-		while(digitalRead(IRQ1)){}
+		while(digitalRead(IRQ1) && !digitalRead(25)){}
 		usleep(20);
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
@@ -1053,7 +1053,7 @@ int main(){
 		print32bits(spiRead32(EVENT_MASK_32));
 		ADE9078_waitForDataReady();
 		
-		printf("AVRMS : %d\n", spiRead32(AVRMSOS_32));
+		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
 		ADE9078_waitForDataReady();
 		
 		printf("BVRMS : %d\n", spiRead32(BVRMS_32));
