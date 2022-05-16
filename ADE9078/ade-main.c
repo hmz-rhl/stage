@@ -782,7 +782,7 @@ void ADE9078_initialize(InitializationSettings *is){
 		exit(EXIT_FAILURE);
 	}
 	while(digitalRead(IRQ1)){}
-  spiWrite16(CONFIG1_16, 0x0001); // software reset
+  //spiWrite16(CONFIG1_16, 0x0001); // software reset
 
   // on attend le reset
   ADE9078_waitForResetDone();
@@ -879,7 +879,7 @@ while(digitalRead(IRQ1)){}
   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
 while(digitalRead(IRQ1)){}
-  spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
+  spiWrite16(ACCMODE_16, 0b00000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
