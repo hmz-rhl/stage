@@ -930,6 +930,11 @@ void interruption(int n)
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
 }
+void print32bits(int v) {
+  int i; // for C89 compatability
+  for(i = 31; i >= 0; i--) putchar('0' + ((v >> i) & 1));
+  putchar('\n');
+}
 int main(){
 
 	expander_t *exp = expander_init(0x26);
@@ -988,11 +993,7 @@ int main(){
 
 	while(1){
 
-		while(digitalRead(IRQ1)){
-			
-		}
-		printf("test : %d\n", 0xFB8B19B0 );//spiRead32(NIRMS_32));
-	 	printf("tension : %dV\n", ADE9078_getAVrms() );
+		while(digitalRead(IRQ1)){}
 		usleep(20);
 		while(digitalRead(IRQ1)){}
 		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
@@ -1009,7 +1010,17 @@ int main(){
 		while(digitalRead(IRQ1)){}
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		while(digitalRead(IRQ1)){}
-		printf("courant : %d A\n", ADE9078_getAIrms() );
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("STATUS0 : ");
+		print32bits(spiRead32(STATUS0_32));
+		while(digitalRead(IRQ1)){}
+		printf("STATUS1 : ");
+		print32bits(spiRead32(STATUS1_32));
 		usleep(46);
 		while(digitalRead(IRQ1)){}
       	sleep(10);
