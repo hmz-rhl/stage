@@ -108,7 +108,7 @@ void publish_values(struct mosquitto *mosq)
 	printf("%s: Lecture de CP\n", __func__);
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
-	cp_reel = 4*cp;
+	cp_reel = 4.0*cp;
 	usleep(10);
 
 // affiche sur la console
@@ -121,9 +121,9 @@ void publish_values(struct mosquitto *mosq)
 	sprintf(str_temp, "%lf", temp);
 
 	usleep(10);
-	printf("___les tensions et temperature reels recu chez l'adc___\n\n", cp_reel);
+	printf("___les tensions et temperature reeles recues chez l'adc___\n\n", cp_reel);
 
-	printf("temperature: %lf\n", temp);
+	printf("temperature: %lf°C\n", temp);
 	printf("pp: %lfV\n", pp);
 	printf("cp_reel: %lfV\n\n", cp_reel);
 
@@ -192,7 +192,7 @@ void publish_values(struct mosquitto *mosq)
 	usleep(10);
 
 // affichage sur la console
-	printf("l'interpretation qui doit être envoyé par MQTT:\n");
+	printf("___l'interpretation qui doit être envoyé par MQTT___\n");
 	printf("temp %s°C\n", str_temp);
 	printf("cp %s\n", str_cp);
 	printf("pp %s\n", str_pp);
