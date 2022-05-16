@@ -164,6 +164,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 #ifdef DEBUG
  	printf("|write %x on run register %x|\n", value, addresse);
 #endif
+while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,4);
 
   	expander_setPinGPIO(exp, PM_CS);
@@ -215,6 +216,7 @@ uint16_t spiRead16(uint16_t addresse){
 #ifdef DEBUG
   	printf("|read register %x|\n", addresse);
 #endif
+while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,4);
 
 	usleep(1);
@@ -261,7 +263,7 @@ uint32_t spiRead32(uint16_t addresse){
 	waitForSPIReady(exp);
 
 
-  	while(digitalRead(IRQ1));
+
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
@@ -277,6 +279,7 @@ uint32_t spiRead32(uint16_t addresse){
 #ifdef DEBUG
   	printf("|read register %x|\n", addresse);
 #endif
+while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,6);
 
 	usleep(1);
@@ -329,7 +332,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	
 	waitForSPIReady(exp);
 
- 	while(digitalRead(IRQ1));
+
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
  	setAllCS(exp);
@@ -343,6 +346,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 #ifdef DEBUG
  	printf("|write %x on run register %x|\n", value, addresse);
 #endif
+while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,6);
 
   	expander_setPinGPIO(exp, PM_CS);
@@ -778,6 +782,7 @@ void ADE9078_initialize(InitializationSettings *is){
 		printf("Erreur %s : argument NULL", __func__);
 		exit(EXIT_FAILURE);
 	}
+	while(digitalRead(IRQ1)){}
   spiWrite16(CONFIG1_16, 0x0001); // software reset
 
   // Page 56 of datasheet quick start
@@ -809,11 +814,17 @@ while(digitalRead(IRQ1)){}
    spiWrite32(CPGAIN_32, is->powerCGain);
 
    	spiWrite32(AIGAIN_32, 2);
+	   while(digitalRead(IRQ1)){}
 	spiWrite32(BIGAIN_32, 2);
+	while(digitalRead(IRQ1)){}
 	spiWrite32(CIGAIN_32, 2);
+	while(digitalRead(IRQ1)){}
 	spiWrite32(NIGAIN_32, 2);
+	while(digitalRead(IRQ1)){}
 	spiWrite32(AVGAIN_32, 2);
+while(digitalRead(IRQ1)){}
 	spiWrite32(BVGAIN_32, 2);
+	while(digitalRead(IRQ1)){}
 	spiWrite32(CVGAIN_32, 2);
 
    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
@@ -855,6 +866,7 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
+  while(digitalRead(IRQ1)){}
   spiWrite16(WFB_CFG_16, 0x000F);
 
 
