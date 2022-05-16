@@ -89,7 +89,8 @@ void on_publish(struct mosquitto *mosq, void *obj, int mid)
 void publish_values(struct mosquitto *mosq)
 {
 	char payload[20];
-	double pp, cp, PP, CP, temp, cp_reel;
+	double pp, cp, temp, cp_reel;
+	int PP, CP;
 
 	// variable pour debug mqtt
 	int rc;
@@ -183,17 +184,17 @@ void publish_values(struct mosquitto *mosq)
 		PP = 6;
 	}
 
-// affichage sur la console
-	printf("Ce qu'il doit être envoyé par MQTT:\n");
-	printf("temp %d°C\n", temp);
-	printf("cp %d\n", CP);
-	printf("pp %d\n", PP);
 
 // on stringify ce qu'il faut publier
 	sprintf(str_pp, "%d", PP);
 // affiche sur la console
 	usleep(10);
 
+// affichage sur la console
+	printf("Ce qu'il doit être envoyé par MQTT:\n");
+	printf("temp %s°C\n", str_temp);
+	printf("cp %s\n", str_cp);
+	printf("pp %s\n", str_pp);
 
 	/* Publish the message
 	 * mosq - our client instance
