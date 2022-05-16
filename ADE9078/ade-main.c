@@ -305,7 +305,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
   	data[4] = 0x00FF & (value >> 8) ;
 	data[5] = ((value & 0x00FF)) ;
 
-	printf("on envoit %02X%02X %02X%02X%02X%02Xsur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
+	printf("on envoit %02X%02X %02X%02X%02X%02X sur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
 
   	
 
@@ -969,6 +969,7 @@ int main(){
     ADE9078_initialize(&is);
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getVersion();
+	ADE9078_getPartID();
 	while(digitalRead(IRQ1)){
 		
 	}
@@ -984,24 +985,24 @@ int main(){
 	printf("CVGAIN : %d\n", spiRead32(CVGAIN_32));
 
 
-	// while(1){
+	while(1){
 
-	// 	while(digitalRead(IRQ1)){
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-	// 	printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-	//  	printf("tension : %02lfV\n", ADE9078_getAVrms() );
-	// 	usleep(20);
-	// 	while(digitalRead(IRQ1)){
+		}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+	 	printf("tension : %02lfV\n", ADE9078_getAVrms() );
+		usleep(20);
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-	// 	printf("courant : %lf A\n", ADE9078_getAIrms() );
-	// 	usleep(46);
-	// 	while(digitalRead(IRQ1)){
+		}
+		printf("courant : %lf A\n", ADE9078_getAIrms() );
+		usleep(46);
+		while(digitalRead(IRQ1)){
 			
-	// 	}
-    //   	sleep(10);
-    // }
+		}
+      	sleep(10);
+    }
     expander_resetPinGPIO(exp,TYPE_E_F_ON);
 	expander_closeAndFree(exp);
 
