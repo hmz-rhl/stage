@@ -1050,6 +1050,9 @@ int main(){
 		while(digitalRead(IRQ1)){}
 		printf("STATUS1 : ");
 		print32bits(spiRead32(STATUS1_32));
+		while(digitalRead(IRQ1)){}
+		printf("EVENT_STATUS : ");
+		print32bits(spiRead32(EVENT_STATUS32));
 		usleep(46);
 		while(digitalRead(IRQ1)){}
       	sleep(5);
