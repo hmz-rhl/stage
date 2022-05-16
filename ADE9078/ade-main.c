@@ -842,7 +842,7 @@ while(digitalRead(IRQ1)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
 
   while(digitalRead(IRQ1)){}
-  spiWrite16(WFB_CFG_16, 0x000F);
+  spiWrite16(WFB_CFG_16, 0b0001000011011111);
 
 // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
     while(digitalRead(IRQ1)){}
@@ -853,13 +853,6 @@ while(digitalRead(IRQ1)){}
 while(digitalRead(IRQ1)){}
    spiWrite32(VLEVEL_32, vLevelData); // #5
 
-// #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
-  // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
-
-  uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
-
-while(digitalRead(IRQ1)){}
-  spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
   /*
   Potentially useful registers to configure:
@@ -879,6 +872,14 @@ while(digitalRead(IRQ1)){}
 
 while(digitalRead(IRQ1)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
+
+// #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
+  // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
+
+  uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
+
+while(digitalRead(IRQ1)){}
+  spiWrite16(ACCMODE_16, settingsACCMODE); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
@@ -1036,26 +1037,6 @@ int main(){
 
 		while(digitalRead(IRQ1)){}
 		usleep(20);
-		// while(digitalRead(IRQ1)){}
-		// printf("AVRMS : %d\n", spiRead32(AVRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("BVRMS : %d\n", spiRead32(BVRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("CVRMS : %d\n", spiRead32(CVRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("AIRMS : %d\n", spiRead32(AIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("BIRMS : %d\n", spiRead32(BIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("CIRMS : %d\n", spiRead32(CIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		// while(digitalRead(IRQ1)){}
-		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
 		printf("MASK0 :  \t ");
@@ -1070,6 +1051,27 @@ int main(){
 		print32bits(spiRead32(EVENT_STATUS32));
 		printf("EVENT_MASK :\t ");
 		print32bits(spiRead32(EVENT_MASK_32));
+		while(digitalRead(IRQ1)){}
+		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("BVRMS : %d\n", spiRead32(BVRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("CVRMS : %d\n", spiRead32(CVRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("AIRMS : %d\n", spiRead32(AIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("BIRMS : %d\n", spiRead32(BIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("CIRMS : %d\n", spiRead32(CIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		while(digitalRead(IRQ1)){}
+		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+
 		usleep(46);
       	sleep(5);
     }
