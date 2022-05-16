@@ -759,16 +759,9 @@ void ADE9078_startFillingBuffer(){
   //printf("wfb fill start\n");
 }
 
-int ADE9078_dataReady(){
+void ADE9078_waitForDataReady(){
 
-	int check = 0;
-	uint32_t status = spiRead32(STATUS0_32);
-	//printf(status,BIN);
-	// 23th bit tells you that the buffer is full
-	status = (status >> 15);
-	check = (status & 0b1);
-	//printf(check);
-	return check;
+	while(spiRead32(STATUS0_32) & 0b00000000000000001000000000000000 != 0b00000000000000001000000000000000);
 }
 
 void ADE9078_initialize(InitializationSettings *is){
