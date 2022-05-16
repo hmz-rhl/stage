@@ -1046,19 +1046,19 @@ int main(){
 		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		// while(digitalRead(IRQ1)){}
 		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		printf("STATUS0 : ");
+		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
-		printf("MASK0 : ");
+		printf("MASK0 :\t ");
 		print32bits(spiRead32(MASK0_32));
 
-		printf("STATUS1 : ");
+		printf("STATUS1 :\t ");
 		print32bits(spiRead32(STATUS1_32));
-		printf("MASK1 : ");
+		printf("MASK1 :\t ");
 		print32bits(spiRead32(MASK1_32));
 
-		printf("EVENT_STATUS : ");
+		printf("EVENT_STATUS :\t ");
 		print32bits(spiRead32(EVENT_STATUS32));
-		printf("EVENT_MASK : ");
+		printf("EVENT_MASK :\t ");
 		print32bits(spiRead32(EVENT_MASK_32));
 		usleep(46);
       	sleep(5);
