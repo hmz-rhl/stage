@@ -89,8 +89,8 @@ void on_publish(struct mosquitto *mosq, void *obj, int mid)
 void publish_values(struct mosquitto *mosq)
 {
 	char payload[20];
-	int pp, cp, PP, CP, TEMP;
-	double temp;
+	double pp, cp, PP, CP, TEMP;
+	double temp, cp_reel,;
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
@@ -112,11 +112,12 @@ void publish_values(struct mosquitto *mosq)
 	printf("%s: Lecture de CP\n", __func__);
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
+	cp_reel = 4*cp;
 	usleep(10);
 
 	TEMP = (int)temp;
 
-
+	
 
 
 	sprintf(str_temp, "%d", TEMP);
@@ -125,24 +126,24 @@ void publish_values(struct mosquitto *mosq)
 	usleep(10);
 
 // on donne a CP les vraies valeurs correspondantes 
-
-	if (cp*4.0 > 9.5){
+	CP = -12;
+	if (cp_reel > 9.5){
 
 		CP = 12;
 	}
-	else if( cp*4.0 >= 7.5){
+	else if( cp_reel >= 7.5){
 
 		CP = 9;
 	}
-	else if( cp*4.0 >= 4.5){
+	else if( cp_reel >= 4.5){
 
 		CP = 6;
 	}
-	else if( cp*4.0 >= 1.5){
+	else if( cp_reel >= 1.5){
 
 		CP = 3;
 	}
-	else if( cp*4.0 > -1.5){
+	else if( cp_reel > -1.5){
 
 		CP = 0;
 	}
