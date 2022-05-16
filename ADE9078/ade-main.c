@@ -1053,7 +1053,7 @@ int main(){
 		print32bits(spiRead32(EVENT_MASK_32));
 		ADE9078_waitForDataReady();
 		
-		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
+		printf("AVRMS : %d\n", spiRead32(AVRMSOS_32));
 		ADE9078_waitForDataReady();
 		
 		printf("BVRMS : %d\n", spiRead32(BVRMS_32));
