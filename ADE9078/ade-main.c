@@ -789,7 +789,7 @@ void ADE9078_initialize(InitializationSettings *is){
   // #1: Ensure power sequence completed
   
   
-  	sleep(30);
+  	sleep(150);
 
 while(digitalRead(IRQ1)){}
   spiWrite16(CONFIG0_32, 0x00000010);
@@ -955,6 +955,13 @@ void print32bits(int v) {
   for(i = 31; i >= 0; i--) putchar('0' + ((v >> i) & 1));
   putchar('\n');
 }
+
+void print16bits(int v) {
+  int i; // for C89 compatability
+  for(i = 15; i >= 0; i--) putchar('0' + ((v >> i) & 1));
+  putchar('\n');
+}
+
 int main(){
 
 	expander_t *exp = expander_init(0x26);
