@@ -1,0 +1,1 @@
+sudo gcc type2motor.c ../lib/expander-i2c.c -o type2motor -lmosquitto -lwiringPi
