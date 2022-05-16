@@ -78,23 +78,25 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     if(!strcmp(msg->topic,"down/lockType2/open")){
 
-		expander_resetPinGPIO(exp, LOCK_D);
-       	pinMode(5,PWM_OUTPUT);
-		pwmWrite (5, 512);
+		expander_setPinGPIO(exp, LOCK_D);
+       	pinMode(5,OUTPUT);
+		digitalWrite(5,1);
+		//pwmWrite (5, 512);
 		delay(1);
 		digitalWrite(5,0);
-		pwmWrite (5, 0);
+		//pwmWrite (5, 0);
 
         printf("Le moteur est ouvert\n");
     }
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 		
-		expander_setPinGPIO(exp, LOCK_D);
-		pinMode(5,PWM_OUTPUT);
-		pwmWrite (5, 512);
+		expander_resetPinGPIO(exp, LOCK_D);
+		pinMode(5,OUTPUT);
+		digitalWrite(5,1);
+		//pwmWrite (5, 512);
 		delay(1);
-		pwmWrite (5, 0);
 		digitalWrite(5,0);
+		//pwmWrite (5, 0);
 		
         printf("Le moteur est ferme\n");
     }
