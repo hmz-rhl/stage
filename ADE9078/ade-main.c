@@ -1044,17 +1044,21 @@ int main(){
 		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		// while(digitalRead(IRQ1)){}
 		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
 		printf("STATUS0 : ");
 		print32bits(spiRead32(STATUS0_32));
-		while(digitalRead(IRQ1)){}
+		printf("MASK0 : ");
+		print32bits(spiRead32(MASK0_32));
+
 		printf("STATUS1 : ");
 		print32bits(spiRead32(STATUS1_32));
-		while(digitalRead(IRQ1)){}
+		printf("MASK1 : ");
+		print32bits(spiRead32(MASK1_32));
+
 		printf("EVENT_STATUS : ");
 		print32bits(spiRead32(EVENT_STATUS32));
+		printf("EVENT_MASK : ");
+		print32bits(spiRead32(EVENT_MASK_32));
 		usleep(46);
-		while(digitalRead(IRQ1)){}
       	sleep(5);
     }
     expander_resetPinGPIO(exp,TYPE_E_F_ON);
