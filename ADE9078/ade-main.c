@@ -1017,6 +1017,8 @@ int main(){
 	printf("AVGAIN : %d\n", spiRead32(AVGAIN_32));
 	printf("BVGAIN : %d\n", spiRead32(BVGAIN_32));
 	printf("CVGAIN : %d\n", spiRead32(CVGAIN_32));
+	printf("ADC_REDIRECT : ");
+	print32bits(spiRead32(ADC_REDIRECT_32));
 
 
 
