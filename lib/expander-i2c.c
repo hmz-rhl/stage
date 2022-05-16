@@ -17,7 +17,7 @@
  ** 
  * @brief   ouvre et configure l'interface i2c de la RP, instancie une variable de type expander_t et initialise ses champs dont l'adresse esclave du MCP
  * 
- * @param   addr adresse du MCP23008
+ * @param   addr adresse en HEXA du MCP23008 (0x__)
  * 
  * 
  * @return  renvoi un pointeur sur la variable instanciée
