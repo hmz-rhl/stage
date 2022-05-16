@@ -837,6 +837,13 @@ while(digitalRead(IRQ1)){}
 while(digitalRead(IRQ1)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
 
+  while(digitalRead(IRQ1)){}
+  spiWrite16(WFB_CFG_16, 0x000F);
+
+// on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
+    while(digitalRead(IRQ1)){}
+  spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
+
 // #5 : Write VLevel 0x117514
    uint32_t vLevelData = 0x117514;//0x35A98F;  
 while(digitalRead(IRQ1)){}
@@ -874,13 +881,6 @@ while(digitalRead(IRQ1)){}
 while(digitalRead(IRQ1)){}
 	spiWrite16(RUN_16, 1);  
 
-
-  while(digitalRead(IRQ1)){}
-  spiWrite16(WFB_CFG_16, 0x000F);
-
-// on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
-    while(digitalRead(IRQ1)){}
-  spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
 
 // 9: Write 1 to EP_CFG register
 while(digitalRead(IRQ1)){}
