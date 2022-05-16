@@ -890,22 +890,22 @@ while(digitalRead(IRQ1)){}
   
 }
 
-double ADE9078_getAVrms(){
+int ADE9078_getAVrms(){
 
-	uint32_t value=0;
+	int value=0;
 	value=spiRead32(AVRMS_1_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
-	return decimal;
+	return value;
 }
 
 
 
-uint32_t ADE9078_getAIrms(){
+int ADE9078_getAIrms(){
 
-	uint32_t value=0;
+	int value=0;
 	value=spiRead32(AIRMS_1_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
-	return decimal;
+	return value;
 }
 
 double ADE9078_getInstApparentPowerA(){
@@ -991,12 +991,12 @@ int main(){
 			
 		}
 		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-	 	printf("tension : %02lfV\n", ADE9078_getAVrms() );
+	 	printf("tension : %dV\n", ADE9078_getAVrms() );
 		usleep(20);
 		while(digitalRead(IRQ1)){
 			
 		}
-		printf("courant : %lf A\n", ADE9078_getAIrms() );
+		printf("courant : %d A\n", ADE9078_getAIrms() );
 		usleep(46);
 		while(digitalRead(IRQ1)){
 			
