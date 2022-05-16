@@ -995,26 +995,26 @@ int main(){
 
 		while(digitalRead(IRQ1)){}
 		usleep(20);
-		while(digitalRead(IRQ1)){}
-		printf("AVRMS : %d\n", spiRead32(AVRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("BVRMS : %d\n", spiRead32(BVRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("CVRMS : %d\n", spiRead32(CVRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("AIRMS : %d\n", spiRead32(AIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("BIRMS : %d\n", spiRead32(BIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("CIRMS : %d\n", spiRead32(CIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
-		while(digitalRead(IRQ1)){}
-		printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("AVRMS : %d\n", spiRead32(AVRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("BVRMS : %d\n", spiRead32(BVRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("CVRMS : %d\n", spiRead32(CVRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("AIRMS : %d\n", spiRead32(AIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("BIRMS : %d\n", spiRead32(BIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("CIRMS : %d\n", spiRead32(CIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
+		// while(digitalRead(IRQ1)){}
+		// printf("NIRMS : %d\n", spiRead32(NIRMS_32));
 		while(digitalRead(IRQ1)){}
 		printf("STATUS0 : ");
 		print32bits(spiRead32(STATUS0_32));
@@ -1023,7 +1023,7 @@ int main(){
 		print32bits(spiRead32(STATUS1_32));
 		usleep(46);
 		while(digitalRead(IRQ1)){}
-      	sleep(10);
+      	sleep(5);
     }
     expander_resetPinGPIO(exp,TYPE_E_F_ON);
 	expander_closeAndFree(exp);
