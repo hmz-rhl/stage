@@ -146,5 +146,5 @@ double toMillivolt(int code){
 		perror("ne peut pas convertir le code de sortie en volt valeur negative");
         return code;
 	}
-	return code*3300/4096;
+	return code*3300.0/4096;
 }
