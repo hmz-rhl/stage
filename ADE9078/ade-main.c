@@ -961,6 +961,8 @@ void interruption(int n)
 	expander_t *exp = expander_init(0x26);
 	// ouverture du relais L1N
 	expander_resetPinGPIO(exp, TYPE_E_F_ON);
+	expander_resetPinGPIO(exp, TYPE_2_NL1_ON);
+	expander_resetPinGPIO(exp, TYPE_2_L2L3_ON);
 	close(is.fd);
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
@@ -1046,26 +1048,32 @@ int main(){
 		usleep(20);
 		printf("PHNOLOAD :\t ");
 		print32bits(spiRead32(PHNOLOAD_32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
 		printf("MASK0 :  \t ");
 		print32bits(spiRead32(MASK0_32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
 		printf("STATUS1 :\t ");
 		print32bits(spiRead32(STATUS1_32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 		
 		printf("MASK1 :  \t ");
 		print32bits(spiRead32(MASK1_32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
 		printf("EVENT_STATUS :\t ");
 		print32bits(spiRead32(EVENT_STATUS32));
+		printf("LAST_DATA: %04X\n", spiRead16(LAST_DATA_32_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
 		printf("EVENT_MASK :\t ");
