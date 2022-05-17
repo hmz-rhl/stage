@@ -1089,6 +1089,8 @@ int main(){
 		usleep(46);
       	sleep(5);
     }
+
+	close(is->fd);
     expander_resetPinGPIO(exp,TYPE_E_F_ON);
 	expander_closeAndFree(exp);
 
