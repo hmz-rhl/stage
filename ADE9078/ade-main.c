@@ -247,8 +247,8 @@ uint32_t spiRead32(uint16_t addresse){
 	uint8_t data[10] = {0};
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[1] = 0x00FF & (addresse >> 4) ;
-	data[0] = ((addresse & 0x00F) << 4) | READ;
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) | READ;
 	//uint16_t envoi = data[0] << 8 + data[1];
 
 #ifdef DEBUG
