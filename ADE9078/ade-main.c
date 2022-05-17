@@ -928,7 +928,7 @@ while(digitalRead(IRQ1)){}
 int ADE9078_getAVrms(){
 
 	int value=0;
-	value=spiRead32(AVRMS_1_32);
+	value=spiRead32(AVRMS_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }
@@ -982,6 +982,10 @@ int main(){
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, TYPE_E_F_ON);
+	expander_setPinGPIO(exp, TYPE_2_L2L3_ON);
+	expander_setPinGPIO(exp, TYPE_2_NL1_ON);
+	expander_closeAndFree(exp);
+
 
 	signal(SIGABRT, interruption);
 	signal(SIGINT, interruption);
@@ -1092,7 +1096,6 @@ int main(){
 
 	close(is.fd);
     expander_resetPinGPIO(exp,TYPE_E_F_ON);
-	expander_closeAndFree(exp);
 
   return EXIT_SUCCESS;
 }
