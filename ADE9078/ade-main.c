@@ -1044,6 +1044,10 @@ int main(){
 
 		while(digitalRead(IRQ1) && !digitalRead(25)){}
 		usleep(20);
+		printf("PHNOLOAD :\t ");
+		print32bits(spiRead32(PHNOLOAD_32));
+		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
