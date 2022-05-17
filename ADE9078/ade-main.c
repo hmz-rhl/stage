@@ -16,6 +16,7 @@
 #include <wiringPiSPI.h>
 #include <signal.h>
 
+#define DEBUG
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -129,10 +130,10 @@ void waitForSPIReady(expander_t *exp){
 void spiWrite16(uint16_t addresse, uint16_t value){
 
 	uint8_t data[6] ={0};
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 8) ;
-	data[3] = ((value & 0x00FF)) ;
+	data[3] = 0x00FF & (addresse >> 4) ;
+	data[2] = ((addresse & 0x00F) << 4) & WRITE;
+	data[1] = 0x00FF & (value >> 8) ;
+	data[0] = ((value & 0x00FF)) ;
   	
 #ifdef DEBUG
 	printf("on envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
@@ -231,7 +232,7 @@ while(digitalRead(IRQ1)){}
   	uint16_t recu = data[1] + (data[0] << 8);
 
 #ifdef DEBUG
-  	printf("recue : %x\n", recu);
+  	printf("recue : %04x\n", recu);
 #endif
 
   	expander_closeAndFree(exp);
@@ -246,8 +247,8 @@ uint32_t spiRead32(uint16_t addresse){
 	uint8_t data[10] = {0};
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) | READ;
+	data[1] = 0x00FF & (addresse >> 4) ;
+	data[0] = ((addresse & 0x00F) << 4) | READ;
 	//uint16_t envoi = data[0] << 8 + data[1];
 
 #ifdef DEBUG
@@ -294,7 +295,7 @@ while(digitalRead(IRQ1)){}
 	uint32_t recu = data[5] + (data[4] << 8) + (data[3] << 16) + (data[2] << 24);
 
 #ifdef DEBUG
-  	printf("Recu : %x\n", recu);
+  	printf("Recu : %08X\n", recu);
 #endif
 	// printf("on recoit %d\n", data && 0xFFFF);
   	expander_closeAndFree(exp);
@@ -307,12 +308,12 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 
 
 	uint8_t data[10] = {0};
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 24) ;
-	data[3] = 0x00FF & (value >> 16);
-  	data[4] = 0x00FF & (value >> 8) ;
-	data[5] = ((value & 0x00FF)) ;
+	data[5] = 0x00FF & (addresse >> 4) ;
+	data[4] = ((addresse & 0x00F) << 4) & WRITE;
+	data[3] = 0x00FF & (value >> 24) ;
+	data[2] = 0x00FF & (value >> 16);
+  	data[1] = 0x00FF & (value >> 8) ;
+	data[0] = ((value & 0x00FF)) ;
 
 #ifdef DEBUG
 	printf("on envoit %02X%02X %02X%02X%02X%02X sur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);

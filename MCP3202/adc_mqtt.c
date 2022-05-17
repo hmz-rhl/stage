@@ -1,6 +1,6 @@
 /**
  * @file get-adc.c
- * @author Hamza RAHAL, Hicham GHANEM, Raphaël GANDUS, Thibault FLORES(you@domain.com)
+ * @author Hamza RAHAL, Hicham GHANEM, Raphaël GANDUS, Thibault FLORES
  * @brief lecture et publication des valeurs des adc
  * @version 0.1
  * @date 2022-05-14
