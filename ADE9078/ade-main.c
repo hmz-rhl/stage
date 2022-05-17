@@ -771,18 +771,20 @@ void ADE9078_initialize(InitializationSettings *is){
    printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
   #endif
   	is->fd = wiringPiSPISetup(0, 2000000);
-		if(is->fd < 0)
+	
+	if(is->fd < 0)
 	{
 		perror("Erreur de setup du SPI");
 		exit(EXIT_FAILURE);
 	}
+
 	if(is == NULL)
 	{
 		printf("Erreur %s : argument NULL", __func__);
 		exit(EXIT_FAILURE);
 	}
 	while(digitalRead(IRQ1)){}
-  //spiWrite16(CONFIG1_16, 0x0001); // software reset
+  	spiWrite16(CONFIG1_16, 0x0001); // software reset
 
   // on attend le reset
   ADE9078_waitForResetDone();
