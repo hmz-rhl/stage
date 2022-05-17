@@ -229,7 +229,7 @@ while(digitalRead(IRQ1)){}
 
 
 
-  	uint32_t recu = data[3] + (data[2] << 8)
+  	uint32_t recu = data[3] + (data[2] << 8);
 
 #ifdef DEBUG
   	printf("recue : %04x\n", recu);
