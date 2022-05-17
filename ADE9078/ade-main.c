@@ -1039,16 +1039,24 @@ int main(){
 		usleep(20);
 		printf("STATUS0 :\t ");
 		print32bits(spiRead32(STATUS0_32));
+		printf("LAST_CMD: %02X\n", spiRead16(LAST_CMD_16));
+
 		printf("MASK0 :  \t ");
 		print32bits(spiRead32(MASK0_32));
+		printf("LAST_CMD: %02X\n", spiRead16(LAST_CMD_16));
 
 		printf("STATUS1 :\t ");
 		print32bits(spiRead32(STATUS1_32));
+		printf("LAST_CMD: %02X\n", spiRead16(LAST_CMD_16));
+		
 		printf("MASK1 :  \t ");
 		print32bits(spiRead32(MASK1_32));
+		printf("LAST_CMD: %02X\n", spiRead16(LAST_CMD_16));
 
 		printf("EVENT_STATUS :\t ");
 		print32bits(spiRead32(EVENT_STATUS32));
+		printf("LAST_CMD: %02X\n", spiRead16(LAST_CMD_16));
+
 		printf("EVENT_MASK :\t ");
 		print32bits(spiRead32(EVENT_MASK_32));
 		ADE9078_waitForDataReady();
