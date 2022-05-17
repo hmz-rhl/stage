@@ -35,7 +35,7 @@
 #define RUN             0x480
 
 #define READ            0x0008
-#define WRITE            ~READ
+#define WRITE            0xFFF7
 
 
 #define AVrmsGain 	1
@@ -549,7 +549,7 @@ void ADE9078_resetRun(){
 
 void ADE9078_waitForResetDone(){
 
-	while(spiRead32(STATUS1_32) & 0b00000000000000010000000000000000 != 0b00000000000000010000000000000000){sleep(1)}
+	while(spiRead32(STATUS1_32) & 0b00000000000000010000000000000000 != 0b00000000000000010000000000000000){sleep(1);}
 	printf("Reset done !\n");
 }
 
