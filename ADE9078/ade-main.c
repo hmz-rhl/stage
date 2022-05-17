@@ -933,8 +933,6 @@ int ADE9078_getAVrms(){
 	return value;
 }
 
-
-
 int ADE9078_getAIrms(){
 
 	int value=0;

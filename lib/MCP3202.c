@@ -83,7 +83,10 @@ int readAdc(int channel, uint8_t cs){
 
 	waitForSPIReady(exp);
 
-
+	expander_setPinGPIO(exp, 2);
+	expander_setPinGPIO(exp, 3);
+	expander_setPinGPIO(exp, 4);
+	expander_setPinGPIO(exp, 5);
 	// cs de Temperature adc a 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
