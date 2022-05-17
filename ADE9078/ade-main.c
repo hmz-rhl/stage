@@ -985,14 +985,14 @@ int main(){
 	signal(SIGINT, interruption);
 
 		
-		is.vAGain=1;
-		is.vBGain=1;
-		is.vCGain=1;
+		is.vAGain=2;
+		is.vBGain=2;
+		is.vCGain=2;
 
-		is.iAGain=1;
-		is.iBGain=1;
-		is.iCGain=1;
-		is.iNGain=1;
+		is.iAGain=2;
+		is.iBGain=2;
+		is.iCGain=2;
+		is.iNGain=2;
 
 		is.powerAGain=1;
 		is.powerBGain=1;
