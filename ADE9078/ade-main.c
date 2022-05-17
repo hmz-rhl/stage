@@ -770,7 +770,7 @@ void ADE9078_initialize(InitializationSettings *is){
   #ifdef ADE9078_VERBOSE_DEBUG
    printf("initialize function started\n"); //wiring configuration defined in VCONSEL and ICONSEL registers init. in this function
   #endif
-  	is->fd = wiringPiSPISetup(0, 2000000);
+  	is->fd = wiringPiSPISetup(0, 5000000);
 	
 	if(is->fd < 0)
 	{
