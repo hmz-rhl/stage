@@ -35,7 +35,7 @@
 #define RUN             0x480
 
 #define READ            0x0008
-#define WRITE            0xFFF6
+#define WRITE            ~READ
 
 
 #define AVrmsGain 	1
@@ -130,10 +130,10 @@ void waitForSPIReady(expander_t *exp){
 void spiWrite16(uint16_t addresse, uint16_t value){
 
 	uint8_t data[6] ={0};
-	data[3] = 0x00FF & (addresse >> 4) ;
-	data[2] = ((addresse & 0x00F) << 4) & WRITE;
-	data[1] = 0x00FF & (value >> 8) ;
-	data[0] = ((value & 0x00FF)) ;
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (value >> 8) ;
+	data[3] = ((value & 0x00FF)) ;
   	
 #ifdef DEBUG
 	printf("on envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
@@ -308,12 +308,12 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 
 
 	uint8_t data[10] = {0};
-	data[5] = 0x00FF & (addresse >> 4) ;
-	data[4] = ((addresse & 0x00F) << 4) & WRITE;
-	data[3] = 0x00FF & (value >> 24) ;
-	data[2] = 0x00FF & (value >> 16);
-  	data[1] = 0x00FF & (value >> 8) ;
-	data[0] = ((value & 0x00FF)) ;
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (value >> 24) ;
+	data[3] = 0x00FF & (value >> 16);
+  	data[4] = 0x00FF & (value >> 8) ;
+	data[5] = ((value & 0x00FF)) ;
 
 #ifdef DEBUG
 	printf("on envoit %02X%02X %02X%02X%02X%02X sur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
@@ -345,7 +345,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	
 	usleep(1);
 #ifdef DEBUG
- 	printf("|write %x on run register %x|\n", value, addresse);
+ 	printf("|write %08X on run register %04x|\n", value, addresse);
 #endif
 while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,10);
