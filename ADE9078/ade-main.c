@@ -1073,6 +1073,34 @@ int main(){
 		print32bits(spiRead32(EVENT_MASK_32));
 //		ADE9078_waitForDataReady();
 		
+		printf("\n\nAV_PCF : %d\n", spiRead32(AV_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+		
+		printf("\nBV_PCF : %d\n", spiRead32(BV_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
+		printf("\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
+		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
+		printf("\nBI_PCF : %d\n", spiRead32(BI_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
+		printf("\nCI_PCF : %d\n", spiRead32(CI_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
+		printf("\nNI_PCF : %d\n", spiRead32(NI_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+//		ADE9078_waitForDataReady();
+
 		printf("\n\nAVRMS : %d\n", spiRead32(AVRMS_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 //		ADE9078_waitForDataReady();
