@@ -108,7 +108,7 @@ void waitForSPIReady(expander_t *exp){
 	
 	if((expander_getAllPinsGPIO(exp) & (uint8_t)0b11000000) == 0b11000000)
 	{
-		printf(" l'ADE est en PSM3 (idle mode) : donc pas fonctionnel veuillez le set a PSM/PSM1/PSM2/\n");
+		printf(" l'ADE est en PSM3 (idle mode) : donc pas fonctionnel veuillez le set a PSM0/PSM1/PSM2/\n");
 		exit(EXIT_FAILURE);
 	}
 	time_t start, end;
@@ -1071,35 +1071,35 @@ int main(){
 
 		printf("\nEVENT_MASK :\t ");
 		print32bits(spiRead32(EVENT_MASK_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 		
-		printf("\nAVRMS : %d\n", spiRead32(AVRMS_2_32));
+		printf("\n\nAVRMS : %d\n", spiRead32(AVRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 		
 		printf("\nBVRMS : %d\n", spiRead32(BVRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 		printf("\nCVRMS : %d\n", spiRead32(CVRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 		printf("\nAIRMS : %d\n", spiRead32(AIRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 		printf("\nBIRMS : %d\n", spiRead32(BIRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 		printf("\nCIRMS : %d\n", spiRead32(CIRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 		printf("\nNIRMS : %d\n", spiRead32(NIRMS_2_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-		ADE9078_waitForDataReady();
+//		ADE9078_waitForDataReady();
 
 
 		usleep(46);
