@@ -983,7 +983,7 @@ int main(){
 	expander_t *exp = expander_init(0x26);
 	// fermeture du relais L1N
 	expander_setPinGPIO(exp, TYPE_E_F_ON);
-	expander_setPinGPIO(exp, TYPE_2_L2L3_ON);
+	//expander_setPinGPIO(exp, TYPE_2_L2L3_ON);
 	expander_setPinGPIO(exp, TYPE_2_NL1_ON);
 	expander_closeAndFree(exp);
 
