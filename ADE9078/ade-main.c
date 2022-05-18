@@ -136,7 +136,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	data[3] = ((value & 0x00FF)) ;
   	
 #ifdef DEBUG
-	printf("on envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
+	printf("\n\non envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
 #endif	
 
 
@@ -191,7 +191,7 @@ uint16_t spiRead16(uint16_t addresse){
   // data[2] = 0x00;
   // data[3] = 0x01;
 #ifdef DEBUG
-	printf("on envoit %02X%02X sur SPI \n", data[0], data[1]);
+	printf("\n\non envoit %02X%02X sur SPI \n", data[0], data[1]);
 #endif	
 
 
@@ -252,7 +252,7 @@ uint32_t spiRead32(uint16_t addresse){
 	//uint16_t envoi = data[0] << 8 + data[1];
 
 #ifdef DEBUG
-	printf("on envoit %02X%02X sur SPI \n", data[0], data[1]);
+	printf("\n\non envoit %02X%02X sur SPI \n", data[0], data[1]);
 #endif	
   // data[2] = 0x00;
   // data[3] = 0x01;
@@ -316,7 +316,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	data[5] = ((value & 0x00FF)) ;
 
 #ifdef DEBUG
-	printf("on envoit %02X%02X %02X%02X%02X%02X sur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
+	printf("\n\non envoit %02X%02X %02X%02X%02X%02X sur SPI \n", data[0], data[1], data[2], data[3], data[4], data[5]);
 #endif	
 
   	
