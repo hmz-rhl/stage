@@ -163,7 +163,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 	
 	usleep(1);
 #ifdef DEBUG
- 	printf("|write %x on run register %x|\n", value, addresse);
+ 	printf("|write %x on register %x|\n", value, addresse);
 #endif
 while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,6);
@@ -345,7 +345,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 	
 	usleep(1);
 #ifdef DEBUG
- 	printf("|write %08X on run register %04x|\n", value, addresse);
+ 	printf("|write %08X on register %04x|\n", value, addresse);
 #endif
 while(digitalRead(IRQ1)){}
 	wiringPiSPIDataRW(0, data,10);

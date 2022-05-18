@@ -226,6 +226,11 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
+	expander_t* exp = expander_init(27);
+
+	// cp disable a 1 pour activer le cp
+	expander_setPinGPIO(exp,CP_DIS);
+
 	// declartion des variables
 	
 	int rc, tentatives = 0;
@@ -233,6 +238,8 @@ int main(int argc, char *argv[])
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, interruption);
 
+
+// phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
 
