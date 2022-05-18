@@ -1073,7 +1073,7 @@ int main(){
 // 		print32bits(spiRead32(EVENT_MASK_32));
 // //		ADE9078_waitForDataReady();
 		
-		printf("\n\nBV_PCF : %d\n", spiRead32(BV_PCF_32));
+		printf("\n\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 //		ADE9078_waitForDataReady();
 		
