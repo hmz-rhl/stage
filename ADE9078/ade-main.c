@@ -117,7 +117,7 @@ void waitForSPIReady(expander_t *exp){
 	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
 	{
 		end = clock();
-		attente = 10 *(double)(end - start) / (double)(CLOCKS_PER_SEC);
+		attente = 100 *(double)(end - start) / (double)(CLOCKS_PER_SEC);
 		if(attente > 20)
 		{
 			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
