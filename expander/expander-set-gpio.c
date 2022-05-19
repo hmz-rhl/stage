@@ -140,6 +140,42 @@ int main(int argc, char* argv[]) {
         expander_closeAndFree(exp);
 
     }
+            else if(!strcmp(argv[1], "22")){
+
+        expander_t *exp = expander_init(0x22);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
+
+    }
+            else if(!strcmp(argv[1], "21")){
+
+        expander_t *exp = expander_init(0x21);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
+
+    }
+            else if(!strcmp(argv[1], "20")){
+
+        expander_t *exp = expander_init(0x20);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
+
+    }
 
 
 
