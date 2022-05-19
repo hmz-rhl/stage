@@ -10,6 +10,11 @@
 int main(int argc, char const *argv[])
 {
     /* code */
+
+    if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+	}
     pinMode(LED_Pin, OUTPUT);
     while(1){
 
