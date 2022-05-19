@@ -10,7 +10,7 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-
+    pinMode(LED_Pin, OUTPUT);
     while(1){
 
         write(LED_Pin, 1);
