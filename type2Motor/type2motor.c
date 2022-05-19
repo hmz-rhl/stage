@@ -110,6 +110,9 @@ int main(int argc, char *argv[])
 	struct mosquitto *mosq;
 	int rc;
 
+	// on eteint le moteur type 2
+	pinMode(5,OUTPUT);
+	digitalWrite(5,0);
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
 
