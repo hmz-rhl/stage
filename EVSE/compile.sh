@@ -1,0 +1,1 @@
+sudo gcc cp_mqtt.c -o cp_mqtt -lmosquitto -lwiringPi

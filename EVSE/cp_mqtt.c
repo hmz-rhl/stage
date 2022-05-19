@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <wiringPi.h>
 
+#define CP_PWM 23
 
 int dutycycle,t;
 
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
 
-    pinMode(23, OUTPUT);
+    pinMode(CP_PWM, OUTPUT);
 
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
@@ -133,9 +134,9 @@ int main(int argc, char *argv[])
 
         mosquitto_loop(mosq,10,256);
 
-        digitalWrite(23,1);
+        digitalWrite(CP_PWM,1);
         usleep(1000*dutycycle/100);
-        digitalWrite(23,0);
+        digitalWrite(CP_PWM,0);
         usleep(1000*(100 - dutycycle)/100);
         
     }
