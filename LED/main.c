@@ -18,8 +18,8 @@ int main(int argc, char const *argv[])
     pinMode(LED_Pin, OUTPUT);
     while(1){
 
-        digitalWrite(LED_Pin, 1);
-        usleep(80);
+        // digitalWrite(LED_Pin, 1);
+        // usleep(80);
         digitalWrite(LED_Pin, 0);
         usleep(45);
     
