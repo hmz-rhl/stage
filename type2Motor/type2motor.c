@@ -69,10 +69,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	/* This blindly prints the payload, but the payload can be anything so take care. */
 	printf("%s %d %s\n", msg->topic, msg->qos, (char *)msg->payload);
 	expander_t* exp = expander_init(0x26);
-		if(wiringPiSetup() < 0)
-	{
-		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
-	}
+
 
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 
@@ -111,6 +108,10 @@ int main(int argc, char *argv[])
 	int rc;
 
 	// on eteint le moteur type 2
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+	}
 	pinMode(5,OUTPUT);
 	digitalWrite(5,0);
 	/* Required before calling other mosquitto functions */
