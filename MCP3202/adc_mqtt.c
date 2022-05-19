@@ -101,7 +101,7 @@ void publish_values(struct mosquitto *mosq)
 	printf("%s: Lecture de Temperature\n", __func__);
 	//conversion en degres
 	temp = toDegres(readAdc(0,T_CS));
-	usleep(10);
+	usleep(50000);
 
 // affiche sur la console
 
@@ -109,18 +109,18 @@ void publish_values(struct mosquitto *mosq)
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
-	usleep(10);
+	usleep(50000);
 
 // affiche sur la console
 
 	printf("%s: Lecture de PP\n", __func__);
 	//conversion en volt
 	pp = toVolt(readAdc(0,PP_CS));
-	usleep(10);
+	usleep(50000);
 
 	sprintf(str_temp, "%lf", temp);
 
-	usleep(10);
+	
 	printf("___les tensions et temperature reeles recues chez l'adc___\n\n", cp_reel);
 
 	printf("temperature: %lf°C\n", temp);
@@ -157,7 +157,6 @@ void publish_values(struct mosquitto *mosq)
 // on stringify ce qu'il faut publier
 	sprintf(str_cp, "%d", CP);
 // affiche sur la console
-	usleep(10);
 
 // on donne a PP les valeurs correspondantes 
 	if (pp < 0.58){
@@ -189,7 +188,6 @@ void publish_values(struct mosquitto *mosq)
 // on stringify ce qu'il faut publier
 	sprintf(str_pp, "%d", PP);
 // affiche sur la console
-	usleep(10);
 
 // affichage sur la console
 	printf("___l'interpretation qui doit être envoyé par MQTT___\n");
