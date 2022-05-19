@@ -77,7 +77,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 
     dutycycle = atoi(msg->payload);
-	softPwmWrite(CP_PWM, dutycycle);
+	pwmWrite(CP_PWM, dutycycle*1023/100);
 
 }
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
     // pinMode(CP_PWM, OUTPUTPWM);
 
-	softPwmCreate (CP_PWM, 0, 100);
+	//softPwmCreate (CP_PWM, 0, 100);
 
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
