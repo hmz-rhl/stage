@@ -44,7 +44,7 @@ expander_t* expander_init(uint8_t addr){
 
     // pull up activé
     exp->buff[0] = REG_GPPU;
-    exp->buff[1] = 0b11111101;
+    exp->buff[1] = 0xFF;
 
     if(write(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR d'ecriture sur GPPU\r\n");

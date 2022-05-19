@@ -16,7 +16,7 @@ void waitForSPIReady(expander_t *exp){
 	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
 	{
 		end = clock();
-		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
+		attente = 100*(double)(end - start) / (double)(CLOCKS_PER_SEC);
 		if(attente > 5)
 		{
 			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
@@ -73,7 +73,7 @@ int readAdc(int channel, uint8_t cs){
 	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
 	{
 		end = clock();
-		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
+		attente = 100*(double)(end - start) / (double)(CLOCKS_PER_SEC);
 		if(attente > 5)
 		{
 			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
@@ -83,11 +83,12 @@ int readAdc(int channel, uint8_t cs){
 
 	waitForSPIReady(exp);
 
-	expander_setPinGPIO(exp, 2);
-	expander_setPinGPIO(exp, 3);
-	expander_setPinGPIO(exp, 4);
-	expander_setPinGPIO(exp, 5);
-	// cs de Temperature adc a 0 uniquement lui les autres 1 
+	expander_setPinGPIO(exp,CP_DIS);
+	expander_setPinGPIO(exp, CP_CS);
+	expander_setPinGPIO(exp, PM_CS);
+	expander_setPinGPIO(exp, T_CS);
+	expander_setPinGPIO(exp, PP_CS);
+	// cs concerné 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
 	usleep(1);
