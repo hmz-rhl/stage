@@ -112,8 +112,8 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
-	pinMode(5,OUTPUT);
-	digitalWrite(5,0);
+	pinMode(21,OUTPUT);
+	digitalWrite(21,0);
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
 
