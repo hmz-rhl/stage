@@ -1,1 +1,1 @@
-sudo gcc cp_mqtt.c -o cp_mqtt -lmosquitto -lwiringPi
+sudo gcc cp_mqtt.c -o cp_mqtt -lmosquitto -lpthread -lwiringPi

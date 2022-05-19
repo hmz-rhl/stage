@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPi.h>
+#include <softPwm.h>
 
 #define CP_PWM 23
 
