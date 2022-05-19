@@ -73,7 +73,7 @@ void expander_labelize(expander_t* exp){
         strcpy(exp->label[7],"------------------>");
 
     }
-    else{
+    else if(exp->addr == 0x27){
 
         strcpy(exp->label[0],"LED_DIS#*--------->");
         strcpy(exp->label[1],"CP_DIS#*---------->");
@@ -83,6 +83,16 @@ void expander_labelize(expander_t* exp){
         strcpy(exp->label[5],"PM_CS*------------>");
         strcpy(exp->label[6],"PM1*-------------->");
         strcpy(exp->label[7],"PM0*-------------->");
+    }
+    else{
+                strcpy(exp->label[0],"LED_DIS#*--------->");
+        strcpy(exp->label[1],"");
+        strcpy(exp->label[2],"");
+        strcpy(exp->label[3],"");
+        strcpy(exp->label[4],"");
+        strcpy(exp->label[5],"");
+        strcpy(exp->label[6],"");
+        strcpy(exp->label[7],"");
     }
 
 
