@@ -88,7 +88,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		time_t start, end;
 	double attente = 0;
 	start = clock();
-	while(attente < 15)
+	while(attente < 30)
 	{
 		end = clock();
 		attente = 100 * (double)(end - start) / (double)(CLOCKS_PER_SEC);
