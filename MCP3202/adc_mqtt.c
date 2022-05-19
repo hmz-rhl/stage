@@ -226,6 +226,9 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
+
+	// on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
+	sleep(10);
 	expander_t* exp = expander_init(0x27);
 
 	// cp disable a 1 pour activer le cp
