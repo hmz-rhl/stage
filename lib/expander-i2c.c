@@ -2,8 +2,8 @@
  * @file expander-i2c.c
  * @author Hamza RAHAL
  * @brief 
- * @version 0.1
- * @date 2022-05-14
+ * @version 0.2
+ * @date 2022-05-19
  * 
  * @copyright Saemload (c) 2022
  * 
@@ -85,7 +85,8 @@ void expander_labelize(expander_t* exp){
         strcpy(exp->label[7],"PM0*-------------->");
     }
     else{
-                strcpy(exp->label[0],"LED_DIS#*--------->");
+
+        strcpy(exp->label[0],"LED_DIS#*--------->");
         strcpy(exp->label[1],"");
         strcpy(exp->label[2],"");
         strcpy(exp->label[3],"");

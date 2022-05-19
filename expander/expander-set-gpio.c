@@ -42,7 +42,7 @@
 #define REG_GPIO    0x09   //!< Port register
 #define REG_OLAT    0x0A   //!< Output latch register
 
-#define VERSION "1.1"
+
 
 int fd;
 int ret;
@@ -77,42 +77,67 @@ int main(int argc, char* argv[]) {
 
     }
 
-    if(!strcmp(argv[1], "26")){
-
-        expander_t *expp = expander_init(0x26);
-        for (size_t i = 0; i < 8; i++)
-        {
-            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
-        }
-        expander_setAndResetSomePinsGPIO(expp, buff);
-        printf("%02x\n",buff);
-        expander_printGPIO(expp);
-
-        expander_closeAndFree(expp);
-
-    }
     else if(!strcmp(argv[1], "27")){
 
-        expander_t *expp = expander_init(0x27);
+        expander_t *exp = expander_init(0x27);
         for (size_t i = 0; i < 8; i++)
         {
             buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
-        expander_setAndResetSomePinsGPIO(expp, buff);
-        expander_printGPIO(expp);
-        expander_closeAndFree(expp);
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
 
     }
-        else if(!strcmp(argv[1], "25")){
+    if(!strcmp(argv[1], "26")){
 
-        expander_t *expp = expander_init(0x25);
+        expander_t *exp = expander_init(0x26);
         for (size_t i = 0; i < 8; i++)
         {
             buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
         }
-        expander_setAndResetSomePinsGPIO(expp, buff);
-        expander_printGPIO(expp);
-        expander_closeAndFree(expp);
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        printf("%02x\n",buff);
+        expander_printGPIO(exp);
+
+        expander_closeAndFree(exp);
+
+    }
+    
+        else if(!strcmp(argv[1], "25")){
+
+        expander_t *exp = expander_init(0x25);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
+
+    }
+    else if(!strcmp(argv[1], "24")){
+
+        expander_t *exp = expander_init(0x24);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
+
+    }
+        else if(!strcmp(argv[1], "23")){
+
+        expander_t *exp = expander_init(0x23);
+        for (size_t i = 0; i < 8; i++)
+        {
+            buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
+        }
+        expander_setAndResetSomePinsGPIO(exp, buff);
+        expander_printGPIO(exp);
+        expander_closeAndFree(exp);
 
     }
 
