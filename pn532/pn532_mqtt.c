@@ -91,7 +91,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	while(attente < 15)
 	{
 		end = clock();
-		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
+		attente = 10 * (double)(end - start) / (double)(CLOCKS_PER_SEC);
 		printf("attente : %f", attente);
         // Check if a card is available to read
         uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
