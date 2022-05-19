@@ -86,7 +86,7 @@ void expander_labelize(expander_t* exp){
     }
     else{
 
-        strcpy(exp->label[0],"LED_DIS#*--------->");
+        strcpy(exp->label[0],"");
         strcpy(exp->label[1],"");
         strcpy(exp->label[2],"");
         strcpy(exp->label[3],"");
