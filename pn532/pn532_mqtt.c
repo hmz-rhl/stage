@@ -85,8 +85,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     PN532_SamConfiguration(&pn532);
     printf("Waiting for RFID/NFC card...\r\n");
 
-    while (1){
-        
+		time_t start, end;
+	double attente = 0;
+	start = clock();
+	while(attente < 15)
+	{
+		end = clock();
+		attente = (double)(end - start) / (double)(CLOCKS_PER_SEC);
         // Check if a card is available to read
         uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
         if (uid_len == PN532_STATUS_ERROR) 
@@ -111,7 +116,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             printf("\r\n");
             break;
         }
-    }
+
+	}
+	if(attente > 15)	printf("Pas de carte detecté !\n");
+
+
+        
+    
 }
 
 
