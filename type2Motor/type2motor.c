@@ -7,6 +7,7 @@
 
 #include "../lib/expander-i2c.h"
 
+#define LOCK_P 21
 
 /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
@@ -76,24 +77,24 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     if(!strcmp(msg->topic,"down/lockType2/open")){
 
 		expander_setPinGPIO(exp, LOCK_D);
-       	pinMode(5,OUTPUT);
-		digitalWrite(5,1);
-		//pwmWrite (5, 512);
+       	pinMode(LOCK_P,OUTPUT);
+		digitalWrite(LOCK_P,1);
+		//pwmWrite (LOCK_P, LOCK_P12);
 		delay(1);
-		digitalWrite(5,0);
-		//pwmWrite (5, 0);
+		digitalWrite(LOCK_P,0);
+		//pwmWrite (LOCK_P, 0);
 
         printf("Le moteur est ouvert\n");
     }
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 		
 		expander_resetPinGPIO(exp, LOCK_D);
-		pinMode(5,OUTPUT);
-		digitalWrite(5,1);
-		//pwmWrite (5, 512);
+		pinMode(LOCK_P,OUTPUT);
+		digitalWrite(LOCK_P,1);
+		//pwmWrite (LOCK_P, LOCK_P12);
 		delay(1);
-		digitalWrite(5,0);
-		//pwmWrite (5, 0);
+		digitalWrite(LOCK_P,0);
+		//pwmWrite (LOCK_P, 0);
 		
         printf("Le moteur est ferme\n");
     }
@@ -112,8 +113,8 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
-	pinMode(21,OUTPUT);
-	digitalWrite(21,0);
+	pinMode(LOCK_P,OUTPUT);
+	digitalWrite(LOCK_P,0);
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
 
