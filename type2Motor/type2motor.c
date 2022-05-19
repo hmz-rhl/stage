@@ -78,11 +78,11 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		expander_setPinGPIO(exp, LOCK_D);
        	pinMode(LOCK_P,OUTPUT);
-		digitalWrite(LOCK_P,1);
-		//pwmWrite (LOCK_P, LOCK_P12);
+		digitalWrite(5,1);
+		//pwmWrite (5, 512);
 		delay(1);
-		digitalWrite(LOCK_P,0);
-		//pwmWrite (LOCK_P, 0);
+		digitalWrite(5,0);
+		//pwmWrite (5, 0);
 
         printf("Le moteur est ouvert\n");
     }
@@ -90,10 +90,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		
 		expander_resetPinGPIO(exp, LOCK_D);
 		pinMode(LOCK_P,OUTPUT);
-		digitalWrite(LOCK_P,1);
+		digitalWrite(5,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		delay(1);
-		digitalWrite(LOCK_P,0);
+		digitalWrite(5,0);
 		//pwmWrite (LOCK_P, 0);
 		
         printf("Le moteur est ferme\n");
