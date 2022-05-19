@@ -121,7 +121,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	}
 	if(attente > 30)	printf("Pas de carte detecté !\n");
 
-	printf("ZZzzzz..\n")
+	printf("ZZzzzz..\n");
         
     
 }
