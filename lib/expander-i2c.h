@@ -1,3 +1,14 @@
+/**
+ * @file expander-i2c.h
+ * @author Hamza RAHAL
+ * @brief 
+ * @version 0.2
+ * @date 2022-05-19
+ * 
+ * @copyright Saemload (c) 2022
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,12 +25,12 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
-#define VERSION         "0.9"
+
 
 
 
 #define I2C_DEVICE          "/dev/i2c-1"
-//#define EXP2_ADDR       (0x27)
+
 #define MAX_STRING          255
 
 
