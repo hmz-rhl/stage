@@ -19,9 +19,11 @@ int main(int argc, char const *argv[])
     while(1){
 
         digitalWrite(LED_Pin, 1);
-        usleep(80);
+        // usleep(80);
+        for(i=0;i<65;i++);
         digitalWrite(LED_Pin, 0);
-        usleep(75);
+        // usleep(75);
+        for(i=0;i<65;i++);
     
     }
 
