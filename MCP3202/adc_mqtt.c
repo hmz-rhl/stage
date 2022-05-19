@@ -226,7 +226,7 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
-	expander_t* exp = expander_init(27);
+	expander_t* exp = expander_init(0x27);
 
 	// cp disable a 1 pour activer le cp
 	expander_setPinGPIO(exp,CP_DIS);
