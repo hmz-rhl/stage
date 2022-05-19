@@ -626,7 +626,7 @@ void expander_printGPIO(expander_t *exp){
  **/
     exp->buff[0] = MCP23008_IPOL;
     exp->buff[1] = 0x00;
-    if(write(exp->fd,exp->buff,2) != 1){
+    if(write(exp->fd,exp->buff,2) != 2){
         
         printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
         close(exp->fd);
