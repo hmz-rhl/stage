@@ -69,13 +69,13 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
 
     }
-    if(argc == 2 && (!strcmp(argv[1],"-v") || !strcmp(argv[1],"--version"))){
+    // if(argc == 2 && (!strcmp(argv[1],"-v") || !strcmp(argv[1],"--version"))){
         
-        printf("version : %s\n", VERSION);
-        putchar('\n');
-        exit(EXIT_FAILURE);
+    //     printf("version : %s\n", VERSION);
+    //     putchar('\n');
+    //     exit(EXIT_FAILURE);
 
-    }
+    // }
 
     else if(!strcmp(argv[1], "27")){
 
