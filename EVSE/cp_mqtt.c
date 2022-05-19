@@ -73,7 +73,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     printf("Nouveau message du topic %s: %s\n", msg->topic, (char *) msg->payload);
 
+
+
     dutycycle = atoi(msg->payload);
+	softPwmWrite(CP_PWM, dutycycle);
 
 }
 
@@ -89,7 +92,9 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
 
-    pinMode(CP_PWM, OUTPUT);
+    // pinMode(CP_PWM, OUTPUTPWM);
+
+	softPwmCreate (CP_PWM, 0, 100);
 
 	/* Required before calling other mosquitto functions */
 	mosquitto_lib_init();
@@ -134,10 +139,10 @@ int main(int argc, char *argv[])
 
         mosquitto_loop(mosq,10,256);
 
-        digitalWrite(CP_PWM,1);
-        usleep(1000*dutycycle/100);
-        digitalWrite(CP_PWM,0);
-        usleep(1000*(100 - dutycycle)/100);
+        // digitalWrite(CP_PWM,1);
+        // usleep(1000*dutycycle/100);
+        // digitalWrite(CP_PWM,0);
+        // usleep(1000*(100 - dutycycle)/100);
         
     }
 
