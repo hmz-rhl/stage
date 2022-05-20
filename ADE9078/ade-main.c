@@ -16,7 +16,7 @@
 #include <wiringPiSPI.h>
 #include <signal.h>
 
-#define DEBUG
+//#define DEBUG
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
