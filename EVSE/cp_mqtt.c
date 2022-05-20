@@ -11,6 +11,10 @@
 
 int dutycycle,t;
 
+void wait_microSec(int delay)
+{
+	for(int i = 0; i< 1000*delay; i++) asm("nop;");
+}
 /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 {
@@ -142,9 +146,9 @@ int main(int argc, char *argv[])
         mosquitto_loop(mosq,10,256);
 
         digitalWrite(CP_PWM,1);
-        usleep(1000*dutycycle/100);
+        wait_microSec(1000*dutycycle/100);
         digitalWrite(CP_PWM,0);
-        usleep(1000*(100 - dutycycle)/100);
+        wait_microSec(1000*(100 - dutycycle)/100);
         
     }
 
