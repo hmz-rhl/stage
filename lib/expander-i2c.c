@@ -2,7 +2,7 @@
  * @file expander-i2c.c
  * @author Hamza RAHAL
  * @brief 
- * @version 0.2
+ * @version 0.3
  * @date 2022-05-19
  * 
  * @copyright Saemload (c) 2022
@@ -302,32 +302,35 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
     uint8_t ancienGPIO = expander_getAllPinsGPIO(exp);
     uint8_t nouveauGPIO = ancienGPIO | (0x01 << pin);
 
-/* Ecriture des gpio de l'expander
- **/
 
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != nouveauGPIO){
+    /* Ecriture des gpio de l'expander
+    **/
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
-    }
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
+
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
 
 
-    exp->buff[0] = REG_OLAT;
-    exp->buff[1] = nouveauGPIO;
+        exp->buff[0] = REG_OLAT;
+        exp->buff[1] = nouveauGPIO;
 
-#ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
-
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
     #ifdef DEBUG
-    printf("mise a 1 de GPIO[%d] %s\n", pin, exp->label[pin]);
-#endif
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    #endif
+
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+        #ifdef DEBUG
+        printf("mise a 1 de GPIO[%d] %s\n", pin, exp->label[pin]);
+    #endif
+    }
 }
 
 
@@ -358,31 +361,34 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     uint8_t ancienGPIO = expander_getAllPinsGPIO(exp);
     uint8_t nouveauGPIO = ancienGPIO & ~(0x01 << pin);
 
-/* Ecriture des gpio de l'expander
- **/
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != nouveauGPIO){
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
-    }
+    /* Ecriture des gpio de l'expander
+    **/
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
 
-    exp->buff[0] = REG_OLAT;
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
 
-    exp->buff[1] = nouveauGPIO;
+        exp->buff[0] = REG_OLAT;
 
-#ifdef DEBUG
-    printf("__Ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
+        exp->buff[1] = nouveauGPIO;
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
     #ifdef DEBUG
-    printf("mise a 0 de GPIO[%d] %s\n", pin , exp->label[pin]);
-#endif
+        printf("__Ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    #endif
+
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+        #ifdef DEBUG
+        printf("mise a 0 de GPIO[%d] %s\n", pin , exp->label[pin]);
+    #endif
+    }
 
 }
 
@@ -438,29 +444,31 @@ void expander_setAllPinsGPIO(expander_t *exp){
         exit(EXIT_FAILURE);
     }
 
-/* Ecriture des gpio de l'expander
- **/
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != 0xFF){
+    /* Ecriture des gpio de l'expander
+    **/
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
+
+        exp->buff[0] = REG_OLAT;
+        exp->buff[1] = 0xFF;
+    #ifdef DEBUG
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    #endif
+
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+    #ifdef DEBUG
+        printf("mise a 1 de tous les GPIO\n");
+    #endif
     }
-
-    exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0xFF;
-#ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
-
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
-#ifdef DEBUG
-    printf("mise a 1 de tous les GPIO\n");
-#endif
 }
 
 
@@ -482,27 +490,29 @@ void expander_resetAllPinsGPIO(expander_t *exp){
         exit(EXIT_FAILURE);
     }
 
-/* Ecriture des gpio de l'expander
- **/
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != 0x00){
+    /* Ecriture des gpio de l'expander
+    **/
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
-    }
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
 
-    exp->buff[0] = REG_OLAT;
-#ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
-#ifdef DEBUG
-    printf("mise a 0 de tous les GPIO\n");
+        exp->buff[0] = REG_OLAT;
+    #ifdef DEBUG
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
     #endif
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+    #ifdef DEBUG
+        printf("mise a 0 de tous les GPIO\n");
+    #endif
+    }
 }
 
 
@@ -530,25 +540,27 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         exit(EXIT_FAILURE);
     }
 
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != (0x01 << pin)){
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
+        exp->buff[0] = REG_OLAT;
+        exp->buff[1] = 0x01 << pin;
+        #ifdef DEBUG
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+        #endif
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+        #ifdef DEBUG
+        printf("mise a 1 du seul GPIO[%d] %s\n", pin, exp->label[pin]);
+        #endif
     }
-    exp->buff[0] = REG_OLAT;
-    exp->buff[1] = 0x01 << pin;
-    #ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-    #endif
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
-    #ifdef DEBUG
-    printf("mise a 1 du seul GPIO[%d] %s\n", pin, exp->label[pin]);
-    #endif
 }
 
 
@@ -575,26 +587,28 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
-    exp->buff[0] = MCP23008_IODIR;
-    exp->buff[1] = 0x00;
+    while(expander_getAllPinsGPIO(exp) != (0x01 << pin)){
+        exp->buff[0] = MCP23008_IODIR;
+        exp->buff[1] = 0x00;
 
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur IODIR\r\n");
-        exit(EXIT_FAILURE);
-    }
-    
-    exp->buff[0] = REG_OLAT;
-    exp->buff[1] = ~(0x01 << pin);
-#ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur IODIR\r\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        exp->buff[0] = REG_OLAT;
+        exp->buff[1] = ~(0x01 << pin);
     #ifdef DEBUG
-    printf("mise a 1 du seul GPIO[%d]\n", pin);
-#endif
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    #endif
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+        #ifdef DEBUG
+        printf("mise a 1 du seul GPIO[%d]\n", pin);
+    #endif
+    }
 }
 
 
@@ -606,7 +620,7 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-        exp->buff[0] = 0x00;
+        exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0;
 
     if(write(exp->fd,exp->buff,2) != 2) {
@@ -614,19 +628,21 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         exit(EXIT_FAILURE);
     }
 
-    exp->buff[0] = REG_OLAT;
-    exp->buff[1] = config;
-#ifdef DEBUG
-    printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
-#endif
-
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur OLAT\r\n");
-        exit(EXIT_FAILURE);
-    }
+    while(expander_getAllPinsGPIO(exp) != config){
+        exp->buff[0] = REG_OLAT;
+        exp->buff[1] = config;
     #ifdef DEBUG
-    printf("mise a %02x du GPIO\n", config);
-#endif
+        printf("ecriture sur OLAT de 0x%02x...\n",exp->buff[1]);
+    #endif
+
+        if(write(exp->fd,exp->buff,2) != 2) {
+            printf("ERREUR d'ecriture sur OLAT\r\n");
+            exit(EXIT_FAILURE);
+        }
+        #ifdef DEBUG
+        printf("mise a %02x du GPIO\n", config);
+    #endif
+    }
 }
 
 /**
