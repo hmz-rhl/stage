@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <wiringPi.h>
 #include "../lib/bcm2835/src/bcm2835.h"
+#include <signal.h>
 
 #include <time.h>
 #define CP_PWM 23
@@ -90,9 +91,18 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 }
 
+void interruption(int n)
+{
+	bcm2835_close();
+	mosquitto_lib_cleanup();
+	exit(EXIT_SUCCESS);
+}
 
 int main(int argc, char *argv[])
 {
+
+	signal(SIGINT, interruption);
+
 	struct mosquitto *mosq;
 	int rc;
     dutycycle = 100;
