@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error: %s\n", errno);
 	}
 	ns_prec = now.tv_nsec;
-	t = 1000000000;
+	t = 1000000;
 
     while(1){
 
