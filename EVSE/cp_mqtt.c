@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 	}
 	bcm2835_init();
 
-    pinMode(CP_PWM, OUTPUTPWM);
+    pinMode(CP_PWM, PWM_OUTPUT);
 	bcm2835_pwm_set_clock(1920);
 	bcm2835_pwm_set_range(1,100);
 	bcm2835_pwm_set_mode(1,0,0);
