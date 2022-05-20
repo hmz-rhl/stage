@@ -18,10 +18,10 @@ int main(int argc, char const *argv[])
     pinMode(LED_Pin, OUTPUT);
     while(1){
 
-        t.tv_nsec = 900;
+        t.tv_nsec = 1000;
         digitalWrite(LED_Pin, 1);
         nanosleep(&t,&t);
-        t.tv_nsec = 1800;
+        t.tv_nsec = 300;
         digitalWrite(LED_Pin, 0);
         nanosleep(&t,&t);    
     }
