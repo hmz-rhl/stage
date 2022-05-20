@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 // on selectionne la fonction alternative pwm du pin en question
 	bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT0);
 // on setup la clock en divisant la clk principale 19.2MHz
-	bcm2835_pwm_set_clock(BCM2835_PWM_CLOCK_DIVIDER_1024);
+	bcm2835_pwm_set_clock(14);
 	bcm2835_pwm_set_range(1,100);
 	bcm2835_pwm_set_mode(1,0,1);
 	bcm2835_pwm_set_data(1,0);
