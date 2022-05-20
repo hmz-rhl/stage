@@ -81,7 +81,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 
     dutycycle = atoi(msg->payload);
-	printf("dutycycle %d %%",dutycycle);
+	printf("dutycycle %d \n",dutycycle);
 	// pwmWrite(CP_PWM, dutycycle*1023/100);
 	
 
