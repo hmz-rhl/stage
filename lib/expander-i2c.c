@@ -660,7 +660,7 @@ void expander_printGPIO(expander_t *exp){
  * Lecture du registre GPIO de l'expander
  **/
     exp->buff[0] = REG_GPIO; 
-    if(read(exp->fd,exp->buff,2) != 2 {
+    if(read(exp->fd,exp->buff,2) != 2) {
         printf("ERREUR de de lecture sur GPIO\n");
         close(exp->fd);
         exit(EXIT_FAILURE);
