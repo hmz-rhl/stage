@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 		}
 		if(now.tv_nsec - ns_prec > t )
 		{
-			printf("ni\n");
+			
 			val = !val;
 			ns_prec = now.tv_nsec;
 			t = t==Htime ? Ltime:Htime;
