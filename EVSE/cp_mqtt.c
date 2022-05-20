@@ -77,7 +77,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 
     dutycycle = atoi(msg->payload);
-	pwmWrite(CP_PWM, dutycycle*1023/100);
+	// pwmWrite(CP_PWM, dutycycle*1023/100);
+	
 
 }
 
@@ -140,10 +141,10 @@ int main(int argc, char *argv[])
 
         mosquitto_loop(mosq,10,256);
 
-        // digitalWrite(CP_PWM,1);
-        // usleep(1000*dutycycle/100);
-        // digitalWrite(CP_PWM,0);
-        // usleep(1000*(100 - dutycycle)/100);
+        digitalWrite(CP_PWM,1);
+        usleep(1000*dutycycle/100);
+        digitalWrite(CP_PWM,0);
+        usleep(1000*(100 - dutycycle)/100);
         
     }
 
