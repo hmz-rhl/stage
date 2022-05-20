@@ -225,15 +225,16 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
  * Selection du registre GPIO de l'expoander
  **/
     exp->buff[0] = REG_GPIO; 
-    // if(write(exp->fd,exp->buff,1) != 1){
+    if(write(exp->fd,exp->buff,1) != 1){
         
-    //     printf("ERREUR d'écriture du registre GPIO (branché sur i2c?)\n");
-    //     close(exp->fd);
-    //     exit(EXIT_FAILURE);
-    // }
+        printf("ERREUR d'écriture du registre GPIO (branché sur i2c?)\n");
+        close(exp->fd);
+        exit(EXIT_FAILURE);
+    }
 /**
  * Lecture du registre GPIO de l'expander
  **/
+    exp->buff[0] = REG_GPIO;
     if(read(exp->fd,exp->buff,1) != 1) {
         printf("ERREUR de de lecture sur GPIO\n");
         close(exp->fd);
@@ -311,8 +312,9 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
-    exp->buff[0] = REG_OLAT;
 
+
+    exp->buff[0] = REG_OLAT;
     exp->buff[1] = nouveauGPIO;
 
 #ifdef DEBUG
@@ -659,12 +661,21 @@ void expander_printGPIO(expander_t *exp){
 /**
  * Lecture du registre GPIO de l'expander
  **/
-    exp->buff[0] = REG_GPIO; 
-    if(read(exp->fd,exp->buff,2) != 2) {
+    exp->buff[0] = REG_GPIO;
+    if(write(exp->fd,exp->buff,1) != 1) {
+        printf("ERREUR de selection du registre GPIO pour lecture\n");
+        close(exp->fd);
+        exit(EXIT_FAILURE);
+    }
+
+    exp->buff[0] = REG_GPIO;
+    if(read(exp->fd,exp->buff,1) != 1) {
         printf("ERREUR de de lecture sur GPIO\n");
         close(exp->fd);
         exit(EXIT_FAILURE);
     }
+
+    usleep(1);
 /**
  * Affichage des ports GPIO de l'expander
  **/
