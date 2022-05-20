@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT5);
+	bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT0);
 	bcm2835_pwm_set_clock(1920);
 	bcm2835_pwm_set_range(1,100);
 	bcm2835_pwm_set_mode(1,0,1);
