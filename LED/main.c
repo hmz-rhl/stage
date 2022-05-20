@@ -21,10 +21,10 @@ int main(int argc, char const *argv[])
 
 
         digitalWrite(LED_Pin, 0);
-        while(i++<500) asm("nop");
+        while(i++<1000) asm("nop");
         i=0;
         digitalWrite(LED_Pin, 1);
-        while(i++<1000) asm("nop");
+        while(i++<500) asm("nop");
        
             
     }
