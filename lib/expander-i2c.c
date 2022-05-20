@@ -209,16 +209,28 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
         exit(EXIT_FAILURE);
     }
 
+    /**
+ * polarité du registre POL de l'expoander
+ **/
+    exp->buff[0] = MCP23008_IPOL;
+    exp->buff[1] = 0x00;
+    if(write(exp->fd,exp->buff,2) != 2){
+        
+        printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
+        close(exp->fd);
+        exit(EXIT_FAILURE);
+    }
+
 /**
  * Selection du registre GPIO de l'expoander
  **/
     exp->buff[0] = REG_GPIO; 
-    if(write(exp->fd,exp->buff,1) != 1){
+    // if(write(exp->fd,exp->buff,1) != 1){
         
-        printf("ERREUR d'écriture du registre GPIO (branché sur i2c?)\n");
-        close(exp->fd);
-        exit(EXIT_FAILURE);
-    }
+    //     printf("ERREUR d'écriture du registre GPIO (branché sur i2c?)\n");
+    //     close(exp->fd);
+    //     exit(EXIT_FAILURE);
+    // }
 /**
  * Lecture du registre GPIO de l'expander
  **/
@@ -399,7 +411,7 @@ void
         exit(EXIT_FAILURE);
     }
 
-     if(expander_getPinGPIO(exp, pin)){
+    if(expander_getPinGPIO(exp, pin)){
 
         expander_resetPinGPIO(exp,pin);
     }
