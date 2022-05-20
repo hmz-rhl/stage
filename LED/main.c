@@ -5,12 +5,12 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPi.h>
-
+#include <time.h>
 #define LED_Pin 29
 int main(int argc, char const *argv[])
 {
     /* code */
-
+    timespec t = {0,0};
     if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
@@ -18,13 +18,12 @@ int main(int argc, char const *argv[])
     pinMode(LED_Pin, OUTPUT);
     while(1){
 
+        t.tv_nsec = 900;
         digitalWrite(LED_Pin, 1);
-        // usleep(80);
-        for(i=0;i<65;i++);
+        nanosleep(t);
+        t.tv_nsec = 1800;
         digitalWrite(LED_Pin, 0);
-        // usleep(75);
-        for(i=0;i<65;i++);
-    
+        nanosleep(t);    
     }
 
     return 0;
