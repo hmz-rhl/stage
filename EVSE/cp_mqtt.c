@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <wiringPi.h>
 #include "../lib/bcm2835/src/bcm2835.h"
 #include <signal.h>
 
@@ -13,6 +13,10 @@
 
 int dutycycle;
 
+void wait_microSec(int delay)
+{
+	for(int i = 0; i< 1000*delay; i++) asm("nop;");
+}
 /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 {
@@ -103,6 +107,10 @@ int main(int argc, char *argv[])
 	int rc;
     dutycycle = 100;
 
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+	}
 	if(!bcm2835_init()){
 
 		exit(EXIT_FAILURE);
@@ -111,7 +119,7 @@ int main(int argc, char *argv[])
 // on selectionne la fonction alternative pwm du pin en question
 	bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT0);
 // on setup la clock en divisant la clk principale 19.2MHz
-	bcm2835_pwm_set_clock(19200);
+	bcm2835_pwm_set_clock(1920);
 	bcm2835_pwm_set_range(1,100);
 	bcm2835_pwm_set_mode(1,0,1);
 	bcm2835_pwm_set_data(1,0);
