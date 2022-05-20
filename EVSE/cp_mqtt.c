@@ -10,7 +10,7 @@
 #include <time.h>
 #define CP_PWM 23
 
-int dutycycle,t,Ltime,Htime;
+int dutycycle;
 
 void wait_microSec(int delay)
 {
@@ -84,7 +84,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     dutycycle = atoi(msg->payload);
 	printf("dutycycle %d \n",dutycycle);
 
-	bcm2835_pwm_set_data(0,dutycyle);
+	bcm2835_pwm_set_data(0,dutycycle);
 	// pwmWrite(CP_PWM, dutycycle*1023/100);
 	
 
