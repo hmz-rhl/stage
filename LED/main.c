@@ -20,10 +20,10 @@ int main(int argc, char const *argv[])
 
         t.tv_nsec = 900;
         digitalWrite(LED_Pin, 1);
-        nanosleep(t);
+        nanosleep(&t,&t);
         t.tv_nsec = 1800;
         digitalWrite(LED_Pin, 0);
-        nanosleep(t);    
+        nanosleep(&t,&t);    
     }
 
     return 0;
