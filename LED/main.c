@@ -10,7 +10,7 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    timespec t = {0,0};
+    struct timespec t = {0,0};
     if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
