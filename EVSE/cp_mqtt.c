@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 
         mosquitto_loop(mosq,10,256);
 
-        digitalWrite(CP_PWM,val);
+        
         
 		
     	res = clock_gettime(CLOCK_REALTIME, &now);
@@ -172,6 +172,7 @@ int main(int argc, char *argv[])
 			val = !val;
 			ns_prec = now.tv_nsec;
 			t = t==Htime ? Ltime:Htime;
+			digitalWrite(CP_PWM,val);
 		} 
 			
 
