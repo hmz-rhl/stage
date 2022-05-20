@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPi.h>
-#include <bcm2835.h>
+#include <../lib/bcm2835/src/bcm2835.h>
 
 #include <time.h>
 #define CP_PWM 23
