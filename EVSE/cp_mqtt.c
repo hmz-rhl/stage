@@ -111,12 +111,15 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
-	bcm2835_init();
+	if(!bcm2835_init()){
 
-    pinMode(CP_PWM, PWM_OUTPUT);
+		exit(EXIT_FAILURE);
+	}
+
+	bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT5);
 	bcm2835_pwm_set_clock(1920);
 	bcm2835_pwm_set_range(1,100);
-	bcm2835_pwm_set_mode(1,0,0);
+	bcm2835_pwm_set_mode(1,0,1);
 	bcm2835_pwm_set_data(1,0);
 
 	
