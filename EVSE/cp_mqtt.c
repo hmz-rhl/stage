@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
         mosquitto_loop(mosq,10,256);
 
         digitalWrite(CP_PWM,val);
-        nanosleep();
+        
 		
     	res = clock_gettime(CLOCK_REALTIME, &now);
 		if(res != 0)
