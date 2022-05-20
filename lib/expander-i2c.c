@@ -41,7 +41,7 @@ expander_t* expander_init(uint8_t addr){
     expander_openI2C(exp);
     expander_setI2C(exp);
 
-    nsleep(1);
+    usleep(1);
     // pull up activé
     exp->buff[0] = REG_GPPU;
     exp->buff[1] = 0xFF;
