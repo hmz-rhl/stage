@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
 
-    // pinMode(CP_PWM, OUTPUTPWM);
+    pinMode(CP_PWM, OUTPUT);
 
 	//softPwmCreate (CP_PWM, 0, 100);
 
