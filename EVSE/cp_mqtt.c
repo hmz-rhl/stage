@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <wiringPi.h>
+
 #include "../lib/bcm2835/src/bcm2835.h"
 
 #include <time.h>
