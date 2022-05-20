@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
     while(1){
 
         // t.tv_nsec = 300;
-        digitalWrite(LED_Pin, 1);
+        digitalWrite(LED_Pin, 0);
         asm("nop");
         asm("nop");
         asm("nop");
@@ -422,7 +422,7 @@ int main(int argc, char const *argv[])
         asm("nop");
         
         // t.tv_nsec = 1000;
-        digitalWrite(LED_Pin, 0);
+        digitalWrite(LED_Pin, 1);
         asm("nop");
         asm("nop");
         asm("nop");
