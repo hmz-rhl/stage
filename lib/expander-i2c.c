@@ -657,18 +657,9 @@ void expander_printGPIO(expander_t *exp){
 
 
 /**
- * Selection du registre GPIO de l'expoander
- **/
-    exp->buff[0] = REG_GPIO; 
-    if(write(exp->fd,exp->buff,1) != 1){
-        
-        printf("ERREUR d'écriture du registre GPIO (branché sur i2c?)\n");
-        close(exp->fd);
-        exit(EXIT_FAILURE);
-    }
-/**
  * Lecture du registre GPIO de l'expander
  **/
+    exp->buff[0] = REG_GPIO; 
     if(read(exp->fd,exp->buff,1) != 1) {
         printf("ERREUR de de lecture sur GPIO\n");
         close(exp->fd);
