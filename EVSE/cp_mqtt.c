@@ -6,10 +6,10 @@
 #include <errno.h>
 #include <wiringPi.h>
 
-
+#include <time.h>
 #define CP_PWM 23
 
-int dutycycle,t;
+int dutycycle,t,Ltime,Htime;
 
 void wait_microSec(int delay)
 {
@@ -82,6 +82,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     dutycycle = atoi(msg->payload);
 	printf("dutycycle %d \n",dutycycle);
+	Htime = dutycycle*1000000000/100;
+	Ltime = (100-dutycycle)*1000000000/100;
 	// pwmWrite(CP_PWM, dutycycle*1023/100);
 	
 
@@ -141,15 +143,37 @@ int main(int argc, char *argv[])
 	 * necessary, until the user calls mosquitto_disconnect().
 	 */
 	//mosquitto_loop_forever(mosq, -1, 1);
+	int res,val = 1;
+	struct timespec now;
+	long ns_prec;
+	res = clock_gettime(CLOCK_REALTIME, &now);
+	if(res != 0)
+	{
+		fprintf(stderr, "Error: %s\n", errno);
+	}
+	ns_prec = now.tv_nsec;
+	t = 1000000000;
 
     while(1){
 
         mosquitto_loop(mosq,10,256);
 
-        digitalWrite(CP_PWM,1);
-        wait_microSec(1000*dutycycle/100);
-        digitalWrite(CP_PWM,0);
-        wait_microSec(1000*(100 - dutycycle)/100);
+        digitalWrite(CP_PWM,val);
+        nanosleep();
+		
+    	res = clock_gettime(CLOCK_REALTIME, &now);
+		if(res != 0)
+		{
+			fprintf(stderr, "Error: %s\n", errno);
+		}
+		if(now.tv_nsec - ns_prec > t )
+		{
+			val = !val;
+			ns_prec = now.tv_nsec;
+			t = t==Htime ? Ltime:Htime;
+		} 
+			
+
         
     }
 
