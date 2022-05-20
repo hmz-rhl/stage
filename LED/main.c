@@ -20,12 +20,12 @@ int main(int argc, char const *argv[])
     while(1){
 
 
-        digitalWrite(LED_Pin, 0);
+        digitalWrite(LED_Pin, 1);
         while(i++<500/4)
         {
             asm("nop");
         }
-        digitalWrite(LED_Pin, 1);
+        digitalWrite(LED_Pin, 0);
         i=0;
         while(i++<1000/4) 
         {
