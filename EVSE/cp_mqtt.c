@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <wiringPi.h>
 #include "../lib/bcm2835/src/bcm2835.h"
 
 #include <time.h>
@@ -101,6 +101,7 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 	}
+	bcm2835_init();
 
     pinMode(CP_PWM, OUTPUT);
 	bcm2835_pwm_set_clock(1920);
@@ -158,7 +159,7 @@ int main(int argc, char *argv[])
 
         
     }
-
+	bcm2835_close();
 	mosquitto_lib_cleanup();
 	return 0;
 }
