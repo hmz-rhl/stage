@@ -21,16 +21,26 @@ int main(int argc, char const *argv[])
 
 
         digitalWrite(LED_Pin, 1);
-        while(i++<500/4)
-        {
-            asm("nop");
-        }
+            asm(
+                "movlw d'1000';"
+                "movwl delay;"
+                "loop:"
+                "decfsz delay,F;"
+                "goto loop;"
+                "return;"
+            
+            );
         digitalWrite(LED_Pin, 0);
-        i=0;
-        while(i++<1000/4) 
-        {
-            asm("nop");
-        }
+        // i=0;
+            asm(
+                "movlw d'500';"
+                "movwl delay;"
+                "loop:"
+                "decfsz delay,F;"
+                "goto loop;"
+                "return;"
+            
+            );
             
     }
 
