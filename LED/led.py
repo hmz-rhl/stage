@@ -8,8 +8,8 @@ GPIO.setmode(GPIO.BOARD)  # Set Pi to use pin number when referencing GPIO pins.
                           # Can use GPIO.setmode(GPIO.BCM) instead to use 
                           # Broadcom SOC channel names.
 
-GPIO.setup(12, GPIO.OUT)  # Set GPIO pin 12 to output mode.
-pwm = GPIO.PWM(12, 1000)   # Initialize PWM on pwmPin 100Hz frequency
+GPIO.setup(29, GPIO.OUT)  # Set GPIO pin 29 to output mode.
+pwm = GPIO.PWM(29, 1000)   # Initialize PWM on pwmPin 100Hz frequency
 
 # main loop of program
 print("\nPress Ctl C to quit \n")  # Print blank line before and after message.
