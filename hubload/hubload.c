@@ -498,7 +498,7 @@ int main(int argc, char *argv[])
 
 
 //création du thread du scan rfid
-	//pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
