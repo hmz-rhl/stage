@@ -9,6 +9,7 @@
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 
+#include "../lib/MCP3202.h"
 #include "../lib/expander-i2c.h"
 
 struct mosquitto *mosq;
@@ -479,6 +480,6 @@ int main(int argc, char *argv[])
 		
 	}
 
-	nettoyage();
+	nettoyage(0);
 	return 0;
 }
