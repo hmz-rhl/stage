@@ -8,8 +8,6 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
-#include "../pn532/pn532.h"
-#include "../pn532/PN532_Rpi_I2C.h"
 
 
 #include "../lib/MCP3202.h"
@@ -24,70 +22,14 @@ int scan_activated = 0;
 void *thread_rfid(void *ptr)
 {
 
-	uint8_t buff[255];
-    uint8_t uid[MIFARE_UID_MAX_LENGTH];
-	char *str[MIFARE_UID_MAX_LENGTH];
-
-    uint32_t pn532_error = PN532_ERROR_NONE;
-    int32_t uid_len = 0;
-    printf("Hello!\r\n");
-    PN532 pn532;
-    PN532_I2C_Init(&pn532);
-    if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
-		
-        printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
-    } 
-    else 
-    {
-        
-    }
-    PN532_SamConfiguration(&pn532);
-
-        
-
 	while(1){
-
 		if(scan_activated){
-			
-			printf("Waiting for RFID/NFC card...\r\n");
-
-			while(scan_activated)
-			{
-			
-				// printf("attente : %f", attente);
-				// Check if a card is available to read
-				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
-				if (uid_len == PN532_STATUS_ERROR) 
-				{
-					printf("nothing detected\n");
-					fflush(stdout);
-				} 
-				else 
-				{
-
-					printf("\n Found card with UID: ");
-					// for (uint8_t i = 0; i < uid_len; i++) {
-					//     printf("%02x ", uid[i]);
-					// 	str[i]=uid[i];                
-					// }
-					char message[256];
-					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
-					
-					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
-					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
-					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
-					printf("\r\n");
-					
-					break;
-					scan_activated = 0;				}
-
-			}
-		
+			printf("_aaaa_a_a__a_a_a_a_a_a_a_____a_aaaa\n\n\n");
 		}
 		else{
-			sleep(1);
-		}
 
+
+		}
 
 	}
 }
@@ -263,15 +205,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_setPinGPIO(expander, LOCK_D);
-
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
+       	pinMode(LOCK_P,OUTPUT);
 		digitalWrite(LOCK_P,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
-		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
 		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
 		expander_closeAndFree(expander);
@@ -280,14 +217,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
+		pinMode(LOCK_P,OUTPUT);
 		digitalWrite(LOCK_P,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
-		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
 		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
 		expander_closeAndFree(expander);
@@ -447,37 +380,19 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
-
-
+	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 	sleep(30);
+	expander_t* exp = expander_init(0x27);
 
-	pthread_t thread_obj;
-
-// on configure l'execution de la fonction interruption si ctrl+C
-	signal(SIGINT, nettoyage);
-
-
-//création du thread du scan rfid
-	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
-// TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
     if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
+
+// TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
-	pinMode(LOCK_P, OUTPUT);
-	digitalWrite(LOCK_P, 1);
-	pinMode(3, INPUT);
-	pinMode(25, INPUT);
-	pinMode(5, INPUT);
-	pinMode(6, INPUT);
-	expander_t* exp1 = expander_init(0x27);
-	expander_t* exp2 = expander_init(0x26);
-	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
-	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
-	expander_closeAndFree(exp1);
-	expander_closeAndFree(exp2);
+
 
 	if(softPwmCreate (CP_PWM,10 ,10)<0){
 
@@ -486,7 +401,12 @@ int main(int argc, char *argv[])
 
 	}
 
-	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
+
+
+	// // cp disable a 1 pour activer le cp
+	expander_setPinGPIO(exp,CP_DIS);
+
+	expander_closeAndFree(exp);
 
 	// declartion des variables
 	
@@ -494,7 +414,15 @@ int main(int argc, char *argv[])
 	struct timeval te; 
     time_t start, end;
 	double delay = 0;
-	start = 0;
+	start = clock();
+	pthread_t thread_obj;
+
+// on configure l'execution de la fonction interruption si ctrl+C
+	signal(SIGINT, nettoyage);
+
+
+//création du thread du scan rfid
+	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
@@ -626,7 +554,6 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			sleep(1);
             tentatives = 0;
 
     		
