@@ -24,6 +24,18 @@ void nettoyage(int n)
 	exit(EXIT_SUCCESS);
 }
 
+// fonction qui passe de volt a degre pour le composant TMP36
+double toDegres(int tension){
+
+	if(tension < 0){
+
+		printf("%s: ne peut pas convertir une tension negative en degres", __func__);
+		return tension;
+	}
+	return (toMillivolt(tension)-500)/10;
+}
+
+
 /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 {
