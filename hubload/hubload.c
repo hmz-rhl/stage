@@ -449,13 +449,22 @@ int main(int argc, char *argv[])
 {
 
 
+	sleep(30);
+
+	pthread_t thread_obj;
+
+// on configure l'execution de la fonction interruption si ctrl+C
+	signal(SIGINT, nettoyage);
+
+
+//création du thread du scan rfid
+	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+// TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
     if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-
-// TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
 	pinMode(LOCK_P, OUTPUT);
 	digitalWrite(LOCK_P, 1);
@@ -478,7 +487,6 @@ int main(int argc, char *argv[])
 	}
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	sleep(30);
 
 	// declartion des variables
 	
@@ -487,14 +495,6 @@ int main(int argc, char *argv[])
     time_t start, end;
 	double delay = 0;
 	start = 0;
-	pthread_t thread_obj;
-
-// on configure l'execution de la fonction interruption si ctrl+C
-	signal(SIGINT, nettoyage);
-
-
-//création du thread du scan rfid
-	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
