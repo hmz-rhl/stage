@@ -8,6 +8,7 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
+#include <timer.h>
 
 int i = 0;
 void alarmWakeup(int sig_num);
@@ -17,28 +18,26 @@ int main(int argc, char *argv[])
 {
     unsigned int j;
 
-    wiringPiSetup();//use the physical pin numbers on the P1 connector
+    wiringPiSetup();
     pinMode(23,OUTPUT);
-
-    signal(SIGALRM, alarmWakeup);   
-    alarm(1);
-
-
+    struct repeating_timer t;
+    add_repeating_timer_ms(500, alarmWakeup, NULL, &t);
     while(1)
     {
+        tight_loop_contents();
     }
 
     return 0;
 
 }
 
-void alarmWakeup(int sig_num)
+void alarmWakeup(struct repetaing_timer *t)
 {
-    if(sig_num == SIGALRM)
-    {   i = !i;
-        printf("alarm!\n");
-        digitalWrite(23, i);
-    }
-    return;
+
+      
+    digitalWrite(23, i);
+    i = 1-i;
+    printf("alarm!\n");
+    return true;
 
 }
