@@ -84,6 +84,10 @@ void *thread_rfid(void *ptr)
 			}
 		
 		}
+		else{
+
+			sleep(2);
+		}
 
 
 	}
@@ -609,6 +613,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
+			sleep(3);
             tentatives = 0;
 
     		
