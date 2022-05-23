@@ -18,29 +18,7 @@ int main(int argc, char const *argv[])
 	}
     pinMode(LED_Pin, OUTPUT);
     while(1){
-
-
-        digitalWrite(LED_Pin, 1);
-            asm(
-                "movlw d'1000';"
-                "movwl delay;"
-                "loop:"
-                "decfsz delay,F;"
-                "goto loop;"
-                "return;"
-            
-            );
-        digitalWrite(LED_Pin, 0);
-        // i=0;
-            asm(
-                "movlw d'500';"
-                "movwl delay;"
-                "loop:"
-                "decfsz delay,F;"
-                "goto loop;"
-                "return;"
-            
-            );
+        
             
     }
 
