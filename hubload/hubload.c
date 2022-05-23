@@ -10,7 +10,7 @@
 #include <softPwm.h>
 
 #include "../lib/MCP3202.h"
-#include "../lib/expander-i2c.h"
+
 
 struct mosquitto *mosq;
 int dutycycle;
