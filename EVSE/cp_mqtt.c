@@ -9,7 +9,7 @@
 #include <signal.h>
 
 #include <time.h>
-#define CP_PWM 23
+#define CP_PWM 13
 
 int dutycycle;
 
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	}
 
 // on selectionne la fonction alternative pwm du pin en question
-	bcm2835_gpio_fsel(23, BCM2835_GPIO_FSEL_ALT0);
+	bcm2835_gpio_fsel(CP_PWM, BCM2835_GPIO_FSEL_ALT0);
 // on setup la clock en divisant la clk principale 9.6MHz
 	bcm2835_pwm_set_clock(1920);
 	bcm2835_pwm_set_range(1,100);
