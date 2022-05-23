@@ -9,9 +9,11 @@
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 
+
 #include "../lib/MCP3202.h"
 
 #define LOCK_P 21
+#define CP_PWM 23
 
 struct mosquitto *mosq;
 int dutycycle;
@@ -351,8 +353,24 @@ int main(int argc, char *argv[])
 	sleep(30);
 	expander_t* exp = expander_init(0x27);
 
+    if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
+	pinMode(CP_PWM,PWM_OUTPUT);
+
+
+	if(softPwmCreate (CP_PWM,100 ,100)<0){
+
+		fprintf(stderr, "fonction %s: Unable to set up PWM: %s\n", __func__, strerror(errno));
+		exit(EXIT_FAILURE);
+
+	}
+
+	
 
 	// // cp disable a 1 pour activer le cp
 	expander_setPinGPIO(exp,CP_DIS);
@@ -369,10 +387,6 @@ int main(int argc, char *argv[])
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
 
-    if(wiringPiSetup() < 0)
-	{
-		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
-	}
 
 
 // phase d'initialisation
