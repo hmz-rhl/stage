@@ -20,7 +20,7 @@
 #include <softPwm.h>
 #include "../pn532/pn532.h"
 #include "../pn532/PN532_Rpi_I2C.h"
-#include "../lib/bcm2835/src/bcm2835.h"
+
 
 
 #include "../lib/MCP3202.h"
@@ -679,7 +679,7 @@ int main(int argc, char *argv[])
 					
 					scan_activated = 0;
 				}
-				
+
 			}
 			sleep(1);
             tentatives = 0;
