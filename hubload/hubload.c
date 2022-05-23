@@ -448,7 +448,7 @@ int main(int argc, char *argv[])
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
 	pinMode(LOCK_P, OUTPUT);
-	digitalWrite(LOCK_P, 0);
+	digitalWrite(LOCK_P, 1);
 	pinMode(3, INPUT);
 	pinMode(25, INPUT);
 	pinMode(5, INPUT);
