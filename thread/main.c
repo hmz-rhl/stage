@@ -27,14 +27,3 @@ int main(int argc, char *argv[])
     return 0;
 
 }
-
-void alarmWakeup(struct repetaing_timer *t)
-{
-
-      
-    digitalWrite(23, i);
-    i = 1-i;
-    printf("alarm!\n");
-    return true;
-
-}
