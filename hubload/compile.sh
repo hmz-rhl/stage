@@ -1,1 +1,1 @@
-sudo gcc hubload.c ../lib/expander-i2c.c ../lib/MCP3202.h -o hubload -lmosquitto -lpthread -lwiringPi
+sudo gcc hubload.c ../lib/expander-i2c.c ../lib/MCP3202.c -o hubload -lmosquitto -lpthread -lwiringPi
