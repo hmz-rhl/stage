@@ -1,3 +1,13 @@
+/**
+ * @file hubload.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 1
+ * @date 2022-05-23
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <mosquitto.h>
 #include <stdio.h>
 #include <stdlib.h>
