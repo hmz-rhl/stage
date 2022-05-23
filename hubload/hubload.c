@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
-#include <lpthread.h> // compilation ajouter -lptrhread
+#include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 
 #include "../lib/expander-i2c.h"
