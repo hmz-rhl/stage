@@ -8,6 +8,8 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
+#include "../pn532/pn532.h"
+#include "../pn532/PN532_Rpi_I2C.h"
 
 
 #include "../lib/MCP3202.h"
@@ -22,14 +24,67 @@ int scan_activated = 0;
 void *thread_rfid(void *ptr)
 {
 
+	uint8_t buff[255];
+    uint8_t uid[MIFARE_UID_MAX_LENGTH];
+	char *str[MIFARE_UID_MAX_LENGTH];
+
+    uint32_t pn532_error = PN532_ERROR_NONE;
+    int32_t uid_len = 0;
+    printf("Hello!\r\n");
+    PN532 pn532;
+    PN532_I2C_Init(&pn532);
+    if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
+		
+        printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
+    } 
+    else 
+    {
+        
+    }
+    PN532_SamConfiguration(&pn532);
+
+        
+
 	while(1){
+
 		if(scan_activated){
-			printf("_aaaa_a_a__a_a_a_a_a_a_a_____a_aaaa\n\n\n");
-		}
-		else{
+			
+			printf("Waiting for RFID/NFC card...\r\n");
 
+			while(scan_activated)
+			{
+			
+				// printf("attente : %f", attente);
+				// Check if a card is available to read
+				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
+				if (uid_len == PN532_STATUS_ERROR) 
+				{
+					printf("nothing detected\n");
+					fflush(stdout);
+				} 
+				else 
+				{
 
+					printf("\n Found card with UID: ");
+					// for (uint8_t i = 0; i < uid_len; i++) {
+					//     printf("%02x ", uid[i]);
+					// 	str[i]=uid[i];                
+					// }
+					char message[256];
+					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+					
+					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
+					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
+					printf("\r\n");
+					
+					break;
+					scan_activated = 0;				}
+
+			}
+		
 		}
+
 
 	}
 }
@@ -554,6 +609,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
+			sleep(3);
             tentatives = 0;
 
     		
