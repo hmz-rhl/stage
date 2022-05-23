@@ -268,6 +268,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
 		digitalWrite(LOCK_P,0);
+		digitalWrite(LOCK_P,0);
+		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
 		expander_closeAndFree(expander);
         printf("Le moteur est ouvert\n");
@@ -278,6 +280,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		digitalWrite(LOCK_P,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
+		digitalWrite(LOCK_P,0);
+		digitalWrite(LOCK_P,0);
 		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
 		expander_closeAndFree(expander);
