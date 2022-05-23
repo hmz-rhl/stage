@@ -468,7 +468,7 @@ int main(int argc, char *argv[])
     int32_t uid_len = 0;
     PN532 pn532;
     PN532_I2C_Init(&pn532);
-   	if (PN532_GetFirmwareVersion(&pn532, buff) = PN532_STATUS_OK) {
+   	if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
 		
         printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
     }
