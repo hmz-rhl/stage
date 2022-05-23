@@ -458,7 +458,7 @@ int main(int argc, char *argv[])
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 	expander_closeAndFree(exp1);
-
+	expander_closeAndFree(exp2);
 
 	if(softPwmCreate (CP_PWM,10 ,10)<0){
 
