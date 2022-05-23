@@ -59,7 +59,7 @@ void *thread_rfid(void *ptr)
 				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
 				if (uid_len == PN532_STATUS_ERROR) 
 				{
-					printf(".");
+					printf("nothing detected\n");
 					fflush(stdout);
 				} 
 				else 
