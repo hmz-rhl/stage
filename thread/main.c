@@ -39,5 +39,6 @@ void alarmWakeup(int sig_num)
         printf("alarm!\n");
         digitalWrite(23, i);
     }
+    return;
 
 }
