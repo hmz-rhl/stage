@@ -440,7 +440,6 @@ int main(int argc, char *argv[])
 {
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 	sleep(30);
-	expander_t* exp = expander_init(0x27);
 
     if(wiringPiSetup() < 0)
 	{
@@ -450,6 +449,16 @@ int main(int argc, char *argv[])
 
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
+	pinMode(LOCK_P, OUTPUT);
+	pinMode(3, INPUT);
+	pinMode(25, INPUT);
+	pinMode(5, INPUT);
+	pinMode(6, INPUT);
+	digitalWrite(LOCK_P, 0);
+	expander_t* exp1 = expander_init(0x27);
+	expander_t* exp2 = expander_init(0x26);
+	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
+	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 
 
 	if(softPwmCreate (CP_PWM,10 ,10)<0){
@@ -460,11 +469,7 @@ int main(int argc, char *argv[])
 	}
 
 
-
-	// // cp disable a 1 pour activer le cp
-	expander_setPinGPIO(exp,CP_DIS);
-
-	expander_closeAndFree(exp);
+	expander_closeAndFree(exp1);
 
 	// declartion des variables
 	
@@ -472,7 +477,7 @@ int main(int argc, char *argv[])
 	struct timeval te; 
     time_t start, end;
 	double delay = 0;
-	start = clock();
+	start = 0;
 	pthread_t thread_obj;
 
 // on configure l'execution de la fonction interruption si ctrl+C
