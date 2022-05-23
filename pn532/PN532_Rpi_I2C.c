@@ -25,12 +25,12 @@ static int fd = 0;
 
 
 int PN532_Reset(void) {
-    digitalWrite(_RESET_PIN, HIGH);
-    delay(100);
-    digitalWrite(_RESET_PIN, LOW);
-    delay(500);
-    digitalWrite(_RESET_PIN, HIGH);
-    delay(100);
+    // digitalWrite(_RESET_PIN, HIGH);
+    // delay(100);
+    // digitalWrite(_RESET_PIN, LOW);
+    // delay(500);
+    // digitalWrite(_RESET_PIN, HIGH);
+    // delay(100);
     return PN532_STATUS_OK;
 }
 
@@ -86,12 +86,12 @@ bool PN532_I2C_WaitReady(uint32_t timeout) {
 }
 
 int PN532_I2C_Wakeup(void) {
-    digitalWrite(_REQ_PIN, HIGH);
-    delay(100);
-    digitalWrite(_REQ_PIN, LOW);
-    delay(100);
-    digitalWrite(_REQ_PIN, HIGH);
-    delay(500);
+    // digitalWrite(_REQ_PIN, HIGH);
+    // delay(100);
+    // digitalWrite(_REQ_PIN, LOW);
+    // delay(100);
+    // digitalWrite(_REQ_PIN, HIGH);
+    // delay(500);
     return PN532_STATUS_OK;
 }
 
@@ -114,11 +114,11 @@ void PN532_I2C_Init(PN532* pn532) {
         fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
         return;
     }
-    if (wiringPiSetupGpio() < 0) {  // using Broadcom GPIO pin mapping
-        return;
-    }
-    pinMode(_REQ_PIN, OUTPUT);
-    pinMode(_RESET_PIN, OUTPUT);
+    // if (wiringPiSetupGpio() < 0) {  // using Broadcom GPIO pin mapping
+    //     return;
+    // }
+    // pinMode(_REQ_PIN, OUTPUT);
+    // pinMode(_RESET_PIN, OUTPUT);
     // hardware reset
     pn532->reset();
     // hardware wakeup
