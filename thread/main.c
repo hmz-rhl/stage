@@ -9,6 +9,7 @@
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 
+int i = 0;
 void alarmWakeup(int sig_num);
 
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
 void alarmWakeup(int sig_num)
 {
     if(sig_num == SIGALRM)
-    {
+    {   i != i; 
         digitalWrite(23, digitalRead(23));
     }
 
