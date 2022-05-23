@@ -56,9 +56,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[5]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm"};
+    char *topics[7]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,5,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,7,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -180,7 +180,32 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     }
     
-    
+    else if(!strcmp(msg->topic,"down/lockType2/open")){
+
+		expander_t* expander = expander_init(0x26); //Pour les relais
+		expander_setPinGPIO(expander, LOCK_D);
+       	pinMode(LOCK_P,OUTPUT);
+		digitalWrite(LOCK_P,1);
+		//pwmWrite (LOCK_P, LOCK_P12);
+		sleep(1);
+		digitalWrite(LOCK_P,0);
+		//pwmWrite (LOCK_P, 0);
+		expander_closeAndFree(exp);
+        printf("Le moteur est ouvert\n");
+    }
+    else if(!strcmp(msg->topic,"down/lockType2/close")){
+		expander_t* expander = expander_init(0x26); //Pour les relais
+		expander_resetPinGPIO(expander, LOCK_D);
+		pinMode(LOCK_P,OUTPUT);
+		digitalWrite(LOCK_P,1);
+		//pwmWrite (LOCK_P, LOCK_P12);
+		sleep(1);
+		digitalWrite(LOCK_P,0);
+		//pwmWrite (LOCK_P, 0);
+		expander_closeAndFree(exp);
+		
+        printf("Le moteur est ferme\n");
+    }
 }
 
 // fonction qui lit et publie les valeurs en mqtt
@@ -324,6 +349,9 @@ int main(int argc, char *argv[])
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 	sleep(30);
 	expander_t* exp = expander_init(0x27);
+
+
+// TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 
 	// // cp disable a 1 pour activer le cp
 	expander_setPinGPIO(exp,CP_DIS);
