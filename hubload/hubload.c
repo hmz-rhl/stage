@@ -180,7 +180,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             
             printf("dutycycle %d \n",dutycycle);
         }
-		softPwmWrite(CP_PWM, dutycycle);
+		softPwmWrite(CP_PWM, dutycycle/10);
 
     }
     
@@ -364,7 +364,7 @@ int main(int argc, char *argv[])
 	pinMode(CP_PWM,PWM_OUTPUT);
 
 
-	if(softPwmCreate (CP_PWM,100 ,100)<0){
+	if(softPwmCreate (CP_PWM,10 ,10)<0){
 
 		fprintf(stderr, "fonction %s: Unable to set up PWM: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
