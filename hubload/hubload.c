@@ -453,7 +453,6 @@ int main(int argc, char *argv[])
 {
 
 
-	sleep(30);
     if(wiringPiSetup() < 0)
 	{
 		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
@@ -468,6 +467,8 @@ int main(int argc, char *argv[])
 	pinMode(25, INPUT);
 	pinMode(5, INPUT);
 	pinMode(6, INPUT);
+	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
+	sleep(30);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
@@ -482,7 +483,6 @@ int main(int argc, char *argv[])
 
 	}
 
-	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 
 	// declartion des variables
 	
