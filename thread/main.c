@@ -8,7 +8,7 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
-#include <timer.h>
+#include <hardware/timer.h>
 
 int i = 0;
 void alarmWakeup(int sig_num);
