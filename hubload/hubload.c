@@ -450,11 +450,11 @@ int main(int argc, char *argv[])
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
 	pinMode(LOCK_P, OUTPUT);
+	digitalWrite(LOCK_P, 0);
 	pinMode(3, INPUT);
 	pinMode(25, INPUT);
 	pinMode(5, INPUT);
 	pinMode(6, INPUT);
-	digitalWrite(LOCK_P, 0);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
