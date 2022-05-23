@@ -85,8 +85,7 @@ void *thread_rfid(void *ptr)
 		
 		}
 		else{
-
-			sleep(2);
+			sleep(1);
 		}
 
 
@@ -613,19 +612,19 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			sleep(4);
+			sleep(1);
             tentatives = 0;
 
     		
             end = te.tv_sec;
 		    delay = end-start;
 
-            
+            if(delay > 4){
 
                 start = end;
 			    publish_values(mosq);
 
-            
+            }
 
 		}	
 		
