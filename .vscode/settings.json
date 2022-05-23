@@ -10,6 +10,7 @@
         "expander-i2c.h": "c",
         "mcp3202.h": "c",
         "bcm2835.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "time.h": "c"
     }
 }

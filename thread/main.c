@@ -36,7 +36,7 @@ void alarmWakeup(int sig_num)
 {
     if(sig_num == SIGALRM)
     {   i != i; 
-        digitalWrite(23, digitalRead(23));
+        digitalWrite(23, i);
     }
 
 }
