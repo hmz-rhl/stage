@@ -17,6 +17,23 @@
 
 struct mosquitto *mosq;
 int dutycycle;
+int scan_activated = 0;
+
+void *thread_rfid(void *ptr)
+{
+
+	while(1){
+		if(scan_activated){
+			putchar('.');
+		}
+		else{
+
+			
+		}
+
+	}
+}
+
 // fonction a executer lors d'une interruption par ctrl+C
 void nettoyage(int n)
 {
@@ -210,6 +227,19 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		
         printf("Le moteur est ferme\n");
     }
+
+	else if( !strcmp(msg->topic, "down/scan/activate"))
+	{
+		scan_activated = 1;
+	}
+
+	else if( !strcmp(msg->topic, "down/scan/shutdown"))
+	{
+		scan_activated = 0;
+	}
+
+
+
 }
 
 // fonction qui lit et publie les valeurs en mqtt
@@ -384,11 +414,14 @@ int main(int argc, char *argv[])
     time_t start, end;
 	double delay = 0;
 	start = clock();
+	pthread_t thread_obj;
 
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
 
 
+//création du thread du scan rfid
+	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
