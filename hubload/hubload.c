@@ -23,7 +23,11 @@ int scan_activated = 0;
 
 void *thread_rfid(void *ptr)
 {
-
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 	uint8_t buff[255];
     uint8_t uid[MIFARE_UID_MAX_LENGTH];
 	char *str[MIFARE_UID_MAX_LENGTH];
@@ -484,7 +488,7 @@ int main(int argc, char *argv[])
 
 
 //création du thread du scan rfid
-	//pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
