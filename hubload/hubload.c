@@ -20,6 +20,7 @@
 #include <softPwm.h>
 #include "../pn532/pn532.h"
 #include "../pn532/PN532_Rpi_I2C.h"
+#include "../lib/bcm2835/src/bcm2835.h"
 
 
 #include "../lib/MCP3202.h"
@@ -286,6 +287,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		expander_closeAndFree(expander);
         printf("Le moteur est ouvert\n");
     }
+   
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
@@ -498,7 +500,12 @@ int main(int argc, char *argv[])
 
 
 //création du thread du scan rfid
-	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+// if(pthread_create(&thread_obj, NULL, *thread_rfid, NULL) < 0){
+	
+// 	fprintf(stderr, "fonction %s: thread not created: %s\n", __func__, strerror(errno));
+// 	exit(EXIT_FAILURE);
+
+// }
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
