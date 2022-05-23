@@ -411,6 +411,7 @@ int main(int argc, char *argv[])
 	// declartion des variables
 	
 	int rc, tentatives = 0;
+	struct timeval te; 
     time_t start, end;
 	double delay = 0;
 	start = clock();
@@ -481,7 +482,7 @@ int main(int argc, char *argv[])
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
-
+		gettimeofday(&te, NULL); // get current time
 		/* on garde la connexion active avec le broker */
 		rc = mosquitto_loop(mosq,10,256);
 
@@ -555,10 +556,11 @@ int main(int argc, char *argv[])
 
             tentatives = 0;
 
-            end = clock();
-		    delay = 100 * (double)(end - start) / (double)(CLOCKS_PER_SEC);
+    		
+            end = te.tv_sec;
+		    delay = end-start;
 
-            if(delay > 6){
+            if(delay > 4){
 
                 start = end;
 			    publish_values(mosq);
