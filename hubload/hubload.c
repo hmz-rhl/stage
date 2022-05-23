@@ -263,7 +263,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_setPinGPIO(expander, LOCK_D);
-       	pinMode(LOCK_P,OUTPUT);
+
 		digitalWrite(LOCK_P,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
@@ -275,7 +275,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
-		pinMode(LOCK_P,OUTPUT);
 		digitalWrite(LOCK_P,1);
 		//pwmWrite (LOCK_P, LOCK_P12);
 		sleep(1);
