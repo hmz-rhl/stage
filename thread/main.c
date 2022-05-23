@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     pinMode(23,OUTPUT);
 
     signal(SIGALRM, alarmWakeup);   
-    ualarm(5000, 2000000);
+    alarm(1);
 
 
     while(1)
