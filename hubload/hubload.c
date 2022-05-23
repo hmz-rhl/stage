@@ -180,6 +180,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             
             printf("dutycycle %d \n",dutycycle);
         }
+		softPwmWrite(CP_PWM, dutycycle);
 
     }
     
@@ -370,7 +371,7 @@ int main(int argc, char *argv[])
 
 	}
 
-	
+
 
 	// // cp disable a 1 pour activer le cp
 	expander_setPinGPIO(exp,CP_DIS);
@@ -524,7 +525,7 @@ int main(int argc, char *argv[])
             end = clock();
 		    delay = 100 * (double)(end - start) / (double)(CLOCKS_PER_SEC);
 
-            if(delay > 4){
+            if(delay > 6){
 
                 start = end;
 			    publish_values(mosq);
