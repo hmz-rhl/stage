@@ -79,7 +79,7 @@ void *thread_rfid(void *ptr)
 					printf("\r\n");
 					
 					break;
-				}
+					scan_activated = 0;				}
 
 			}
 		
