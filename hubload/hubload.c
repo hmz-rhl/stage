@@ -438,8 +438,7 @@ void publish_values(struct mosquitto *mosq)
 
 int main(int argc, char *argv[])
 {
-	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	sleep(30);
+
 
     if(wiringPiSetup() < 0)
 	{
@@ -459,6 +458,7 @@ int main(int argc, char *argv[])
 	expander_t* exp2 = expander_init(0x26);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
+	expander_closeAndFree(exp1);
 
 
 	if(softPwmCreate (CP_PWM,10 ,10)<0){
@@ -468,8 +468,8 @@ int main(int argc, char *argv[])
 
 	}
 
-
-	expander_closeAndFree(exp1);
+	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
+	sleep(30);
 
 	// declartion des variables
 	
