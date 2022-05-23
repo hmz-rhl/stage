@@ -1,0 +1,1 @@
+sudo gcc hubload.c ../lib/expander-i2c.c -o hubload -lmosquitto -lpthread -lwiringPi
