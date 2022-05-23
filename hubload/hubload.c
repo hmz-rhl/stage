@@ -190,7 +190,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
-		expander_closeAndFree(exp);
+		expander_closeAndFree(expander);
         printf("Le moteur est ouvert\n");
     }
     else if(!strcmp(msg->topic,"down/lockType2/close")){
@@ -202,7 +202,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 		//pwmWrite (LOCK_P, 0);
-		expander_closeAndFree(exp);
+		expander_closeAndFree(expander);
 		
         printf("Le moteur est ferme\n");
     }
