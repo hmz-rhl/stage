@@ -8,23 +8,20 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
-#include <hardware/timer.h>
+
 
 int i = 0;
-void alarmWakeup(int sig_num);
+
 
 
 int main(int argc, char *argv[])
 {
-    unsigned int j;
 
-    wiringPiSetup();
-    pinMode(23,OUTPUT);
-    struct repeating_timer t;
-    add_repeating_timer_ms(500, alarmWakeup, NULL, &t);
+
     while(1)
     {
-        tight_loop_contents();
+        printf("%d\n", clock());
+        sleep(1);
     }
 
     return 0;
