@@ -11,6 +11,7 @@
 
 #include "../lib/MCP3202.h"
 
+#define LOCK_P 21
 
 struct mosquitto *mosq;
 int dutycycle;
