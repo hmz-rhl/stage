@@ -265,15 +265,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		expander_setPinGPIO(expander, LOCK_D);
 
 		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		//pwmWrite (LOCK_P, LOCK_P12);
+
 		sleep(1);
 		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
-		//pwmWrite (LOCK_P, 0);
+
 		expander_closeAndFree(expander);
         printf("Le moteur est ouvert\n");
     }
@@ -281,15 +276,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
 		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		digitalWrite(LOCK_P,1);
-		//pwmWrite (LOCK_P, LOCK_P12);
+
 		sleep(1);
 		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
-		digitalWrite(LOCK_P,0);
-		//pwmWrite (LOCK_P, 0);
+
 		expander_closeAndFree(expander);
 		
         printf("Le moteur est ferme\n");
@@ -459,7 +449,7 @@ int main(int argc, char *argv[])
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
 	pinMode(CP_PWM,PWM_OUTPUT);
 	pinMode(LOCK_P, OUTPUT);
-	digitalWrite(LOCK_P, 1);
+	digitalWrite(LOCK_P, 0);
 	pinMode(3, INPUT);
 	pinMode(25, INPUT);
 	pinMode(5, INPUT);
