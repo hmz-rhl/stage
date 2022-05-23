@@ -9,7 +9,7 @@
 #include <signal.h>
 
 #include <time.h>
-#define CP_PWM 13
+#define CP_PWM 23
 
 int dutycycle;
 
