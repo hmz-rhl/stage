@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 void alarmWakeup(int sig_num)
 {
     if(sig_num == SIGALRM)
-    {   i != i; 
+    {   i = !i;
+        printf("alarm!\n");
         digitalWrite(23, i);
     }
 
