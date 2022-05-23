@@ -8,6 +8,8 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
+#include "pn532.h"
+#include "PN532_Rpi_I2C.h"
 
 
 #include "../lib/MCP3202.h"
