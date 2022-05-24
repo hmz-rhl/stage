@@ -11,6 +11,7 @@
 
 
 int i = 0;
+#define LED_DATA 29
 
 void wait(){
         asm("nop;");
@@ -2308,17 +2309,17 @@ void wait2(){
 
 void write1(){
 
-    digitalWrite(21,1);
+    digitalWrite(LED_DATA,1);
     wait2();
-    digitalWrite(21,0);
+    digitalWrite(LED_DATA,0);
     wait();
 
 }
 void write0(){
 
-    digitalWrite(21,1);
+    digitalWrite(LED_DATA,1);
     wait();
-    digitalWrite(21,0);
+    digitalWrite(LED_DATA,0);
     wait2();
 
 }
@@ -2440,7 +2441,7 @@ void led_red(){
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
-    pinMode(21,OUTPUT);
+    pinMode(LED_DATA,OUTPUT);
 
     while(1)
     {
