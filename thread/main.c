@@ -26,11 +26,45 @@ int main(int argc, char *argv[])
         asm("nop;");
         asm("nop;");
         asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        
         digitalWrite(21,1);
         asm("nop;");
         asm("nop;");
         asm("nop;");
         asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        
         // asm("nop;");
     }
 
