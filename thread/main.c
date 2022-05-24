@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        asm("nop;");
         digitalWrite(21,1);
         asm("nop;");
         digitalWrite(21,0);
+        asm("nop;");
     }
 
     return 0;
