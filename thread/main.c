@@ -22,8 +22,15 @@ int main(int argc, char *argv[])
     while(1)
     {
         digitalWrite(21,0);
-        // asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
         digitalWrite(21,1);
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
+        asm("nop;");
         // asm("nop;");
     }
 
