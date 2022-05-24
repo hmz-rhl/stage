@@ -16,12 +16,15 @@ int i = 0;
 
 int main(int argc, char *argv[])
 {
-
+    wiringPiSetup();
+    pinMode(21,OUTPUT);
 
     while(1)
     {
-        printf("%d\n", clock());
-        sleep(1);
+        asm("nop;");
+        digitalWrite(21,1);
+        asm("nop;");
+        digitalWrite(21,0);
     }
 
     return 0;
