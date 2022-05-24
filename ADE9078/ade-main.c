@@ -839,7 +839,7 @@ while(digitalRead(IRQ1)){}
    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
 while(digitalRead(IRQ1)){}
-   spiWrite16(PGA_GAIN_16, pgaGain);
+   spiWrite16(PGA_GAIN_16, 0b0001010101010101);
 
 while(digitalRead(IRQ1)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
