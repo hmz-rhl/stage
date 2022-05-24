@@ -2322,6 +2322,121 @@ void write0(){
     wait2();
 
 }
+void led_reset(){
+
+    usleep(2);
+}
+
+void led_red(){
+
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    //led2
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+//led3
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+//led4
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+    write0();
+}
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
@@ -2330,8 +2445,8 @@ int main(int argc, char *argv[])
     while(1)
     {
         
-        write1();
-        write0();
+        led_red();
+        led_reset();
         
         // asm("nop;");
     }
