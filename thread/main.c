@@ -2305,6 +2305,23 @@ void wait2(){
         asm("nop;");
         asm("nop;");
 }
+
+void write1(){
+
+    digitalWrite(21,1);
+    wait2();
+    digitalWrite(21,0);
+    wait();
+
+}
+void write0(){
+
+    digitalWrite(21,1);
+    wait();
+    digitalWrite(21,0);
+    wait2();
+
+}
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
@@ -2313,10 +2330,8 @@ int main(int argc, char *argv[])
     while(1)
     {
         
-        digitalWrite(21,1);
-        wait();
-        digitalWrite(21,0);
-        wait2();
+        write1();
+        write0();
         
         // asm("nop;");
     }
