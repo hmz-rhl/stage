@@ -478,6 +478,10 @@ int main(int argc, char *argv[])
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 	expander_closeAndFree(exp1);
 	expander_closeAndFree(exp2);
+// on ouvre la prise on sait jamais
+	digitalWrite(LOCK_P, 1);
+	sleep(1);
+	digitalWrite(LOCK_P, 0);
 
 	if(softPwmCreate (CP_PWM,10 ,10)<0){
 
