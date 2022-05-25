@@ -2446,12 +2446,12 @@ int main(int argc, char *argv[])
     while(1)
     {
         
-        // led_red();
-        // led_reset();
-        digitalWrite(LED_DATA,1);
-        usleep(10);
-        digitalWrite(LED_DATA,0);
-        usleep(10);
+        led_red();
+        led_reset();
+        // digitalWrite(LED_DATA,1);
+        // usleep(10);
+        // digitalWrite(LED_DATA,0);
+        // usleep(10);
         
         // asm("nop;");
     }
