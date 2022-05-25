@@ -2330,14 +2330,6 @@ void led_reset(){
 
 void led_red(){
 
-    write1();
-    write1();
-    write1();
-    write1();
-    write1();
-    write1();
-    write1();
-    write1();
 
     write0();
     write0();
@@ -2347,6 +2339,15 @@ void led_red(){
     write0();
     write0();
     write0();
+    
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
+    write1();
     
     write0();
     write0();
