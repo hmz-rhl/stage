@@ -464,6 +464,8 @@ int main(int argc, char *argv[])
 	pinMode(LOCK_P, OUTPUT);
 	digitalWrite(LOCK_P, 0);
 	pinMode(3, INPUT);
+	pinMode(1, INPUT);
+	pinMode(3, INPUT);
 	pinMode(25, INPUT);
 	pinMode(5, INPUT);
 	pinMode(6, INPUT);
