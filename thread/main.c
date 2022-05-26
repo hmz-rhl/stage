@@ -3695,7 +3695,7 @@ void write0(){
 
     digitalWrite(LED_DATA,1);
     // wait500();
-    nanosleep(300,300);
+    nanosleep(&request,&remaining);
 
     digitalWrite(LED_DATA,0);
     remaining = {0,1000};
