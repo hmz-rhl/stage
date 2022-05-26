@@ -3682,8 +3682,8 @@ void write1(){
     nanosleep(&request,&remaining);
 
     digitalWrite(LED_DATA,0);
-    remaining = {0,300};
-    request = {0,300};
+    remaining.tv_nsec = 300;
+    request.tv_nsec = 300;
     // wait500();
     nanosleep(&request,&remaining);
     
@@ -3698,8 +3698,8 @@ void write0(){
     nanosleep(&request,&remaining);
 
     digitalWrite(LED_DATA,0);
-    remaining = {0,1000};
-    request = {0,1000};
+    remaining.tv_nsec = 1000;
+    request.tv_nsec = 1000;
     // wait1000();
     nanosleep(&request,&remaining);
 
