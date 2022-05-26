@@ -15,43 +15,7 @@ int i = 0;
 
 void wait500(){
         
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
+        
         asm("nop;");
         asm("nop;");
         asm("nop;");
