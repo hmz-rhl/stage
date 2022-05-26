@@ -1006,6 +1006,10 @@ void wait500(){
 
 }
 
+
+
+
+
 void wait1000(){
         
         asm("nop;");
