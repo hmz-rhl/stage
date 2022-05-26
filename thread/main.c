@@ -13,36 +13,8 @@
 int i = 0;
 #define LED_DATA 29
 
-void wait(){
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
-        asm("nop;");
+void wait500(){
+        
         asm("nop;");
         asm("nop;");
         asm("nop;");
@@ -1070,7 +1042,7 @@ void wait(){
 
 }
 
-void wait2(){
+void wait1000(){
         
         asm("nop;");
         asm("nop;");
@@ -3795,17 +3767,17 @@ void wait2(){
 void write1(){
 
     digitalWrite(LED_DATA,1);
-    wait2();
+    wait1000();
     digitalWrite(LED_DATA,0);
-    wait();
+    wait500();
 
 }
 void write0(){
 
     digitalWrite(LED_DATA,1);
-    wait();
+    wait500();
     digitalWrite(LED_DATA,0);
-    wait2();
+    wait1000();
 
 }
 void led_reset(){
