@@ -3675,22 +3675,33 @@ void wait1000(){
 
 void write1(){
 
+    
+    struct timespec remaining, request = {0, 1000};
     digitalWrite(LED_DATA,1);
     // wait1000();
-    nanosleep(1000,1000);
+    nanosleep(&request,&remaining);
+
     digitalWrite(LED_DATA,0);
+    remaining = {0,300};
+    request = {0,300};
     // wait500();
-    nanosleep(300,300);
+    nanosleep(&request,&remaining);
+    
 
 }
 void write0(){
 
+    struct timespec remaining, request = {0, 3000};
+
     digitalWrite(LED_DATA,1);
     // wait500();
     nanosleep(300,300);
+
     digitalWrite(LED_DATA,0);
+    remaining = {0,1000};
+    request = {0,1000};
     // wait1000();
-    nanosleep(1000,1000);
+    nanosleep(&request,&remaining);
 
 }
 void led_reset(){
