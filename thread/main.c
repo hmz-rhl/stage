@@ -3676,17 +3676,21 @@ void wait1000(){
 void write1(){
 
     digitalWrite(LED_DATA,1);
-    wait1000();
+    // wait1000();
+    nanosleep(1000);
     digitalWrite(LED_DATA,0);
-    wait500();
+    // wait500();
+    nanosleep(300);
 
 }
 void write0(){
 
     digitalWrite(LED_DATA,1);
-    wait500();
+    // wait500();
+    nanosleep(300);
     digitalWrite(LED_DATA,0);
-    wait1000();
+    // wait1000();
+    nanosleep(1000);
 
 }
 void led_reset(){
