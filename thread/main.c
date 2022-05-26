@@ -3676,7 +3676,7 @@ void wait1000(){
 void write1(){
 
     
-    struct timespec remaining, request = {0, 1000};
+    struct timespec remaining, request = {1, 1000};
     digitalWrite(LED_DATA,1);
     // wait1000();
     nanosleep(&request,&remaining);
@@ -3691,7 +3691,7 @@ void write1(){
 }
 void write0(){
 
-    struct timespec remaining, request = {0, 3000};
+    struct timespec remaining, request = {1, 3000};
 
     digitalWrite(LED_DATA,1);
     // wait500();
