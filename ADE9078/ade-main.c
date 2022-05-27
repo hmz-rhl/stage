@@ -903,28 +903,28 @@ while(digitalRead(IRQ1)){}
 
 
 
-  #ifdef ADE9078_VERBOSE_DEBUG
-   printf(" ADE9078:initialize function completed. Showing values and registers written \n");
-   printf(" APGAIN: ");
-   printf("%d \n",is->powerAGain);
-   printf(" BPGAIN: ");
-   printf("%d \n",is->powerBGain);
-   printf(" CPGAIN: ");
-   printf("%d \n",is->powerCGain);
-   printf(" PGA_GAIN: ");
-   printf("%d \n",pgaGain);
-   printf(" VLEVEL: ");
-   printf("%d \n",vLevelData);
-   printf(" CONFIG0-3, ALL 0'Sn \n");
-   printf(" ACCMODE: ");
-   printf("%d \n",settingsACCMODE);
-   printf(" RUN: ");
-   printf("1\n");
-   printf(" EP_CFG: ");
-   printf("1\n");
-   printf(" DICOEFF: ");
-   printf("0xFFFFE000\n");
-  #endif
+//   #ifdef ADE9078_VERBOSE_DEBUG
+//    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
+//    printf(" APGAIN: ");
+//    printf("%d \n",is->powerAGain);
+//    printf(" BPGAIN: ");
+//    printf("%d \n",is->powerBGain);
+//    printf(" CPGAIN: ");
+//    printf("%d \n",is->powerCGain);
+//    printf(" PGA_GAIN: ");
+//    printf("%d \n",pgaGain);
+//    printf(" VLEVEL: ");
+//    printf("%d \n",vLevelData);
+//    printf(" CONFIG0-3, ALL 0'Sn \n");
+//    printf(" ACCMODE: ");
+//    printf("%d \n",settingsACCMODE);
+//    printf(" RUN: ");
+//    printf("1\n");
+//    printf(" EP_CFG: ");
+//    printf("1\n");
+//    printf(" DICOEFF: ");
+//    printf("0xFFFFE000\n");
+//   #endif
   
 }
 
