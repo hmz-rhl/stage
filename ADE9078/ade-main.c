@@ -165,7 +165,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 #ifdef DEBUG
  	printf("|write %x on register %x|\n", value, addresse);
 #endif
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,6);
 
   	expander_setPinGPIO(exp, PM_CS);
@@ -217,7 +217,7 @@ uint16_t spiRead16(uint16_t addresse){
 #ifdef DEBUG
   	printf("|read register %x|\n", addresse);
 #endif
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,6);
 
 	usleep(1);
@@ -280,7 +280,7 @@ uint32_t spiRead32(uint16_t addresse){
 #ifdef DEBUG
   	printf("|read register %x|\n", addresse);
 #endif
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,10);
 
 	usleep(1);
@@ -347,7 +347,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 #ifdef DEBUG
  	printf("|write %08X on register %04x|\n", value, addresse);
 #endif
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,10);
 
   	expander_setPinGPIO(exp, PM_CS);
@@ -785,7 +785,7 @@ void ADE9078_initialize(InitializationSettings *is){
 		printf("Erreur %s : argument NULL", __func__);
 		exit(EXIT_FAILURE);
 	}
-	while(digitalRead(IRQ1)){}
+	while(digitalRead(IRQ0)){}
   	spiWrite16(CONFIG1_16, 0x0001); // software reset
 
 	usleep(100000);

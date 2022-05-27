@@ -2,7 +2,7 @@
  * @file hubload.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.1
+ * @version 0.2
  * @date 2022-05-23
  * 
  * @copyright Copyright (c) 2022
@@ -29,7 +29,7 @@
 
 struct mosquitto *mosq;
 int dutycycle;
-int scan_activated = 0;
+uint8_t scan_activated = 0;
 
 void *thread_rfid(void *ptr)
 {
