@@ -1,8 +1,13 @@
-/*
-
-    __________Fonctionnel !___________
-    
-*/
+/**
+ * @file expander-set-gpio.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-05-27
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include <math.h>
 #include <stdio.h>
