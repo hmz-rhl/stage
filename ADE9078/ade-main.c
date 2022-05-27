@@ -549,7 +549,7 @@ void ADE9078_resetRun(){
 
 void ADE9078_waitForResetDone(){
 
-	printf("waiting.")
+	printf("waiting.");
 	while(spiRead32(STATUS1_32) & 0b00000000000000010000000000000000 != 0b00000000000000010000000000000000){usleep(100000);putchar('.');}
 	printf("Reset done !\n");
 }
