@@ -434,7 +434,9 @@ void *thread_rfid(void *ptr)
 					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 					
 					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+					pthread_mutex_lock(&mutex);
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
+					pthread_mutex_unlock(&mutex);
 					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
 					printf("\r\n");
 					
