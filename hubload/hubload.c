@@ -392,16 +392,8 @@ void *thread_rfid(void *ptr)
     int32_t uid_len = 0;
     printf("Hello!\r\n");
     PN532 pn532;
-    PN532_I2C_Init(&pn532);
-    if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
-		
-        printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
-    } 
-    else 
-    {
-        
-    }
-    PN532_SamConfiguration(&pn532);
+
+
 
         
 
@@ -409,6 +401,23 @@ void *thread_rfid(void *ptr)
 
 		if(scan_activated){
 			
+			printf("Initialisation de l'i2c.");
+			while(PN532_I2C_Init(&pn532) != 0){
+				sleep(1);
+				putchar('.');
+			}
+			printf("initialised !\n");
+
+			printf("Obtention du firmware du PN532.");
+
+			while (PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
+				sleep(1);
+				putchar('.');
+				
+			} 
+
+			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
+			PN532_SamConfiguration(&pn532);
 			printf("Waiting for RFID/NFC card...\r\n");
 
 			while(scan_activated)
@@ -517,6 +526,7 @@ int main(int argc, char *argv[])
 	double delay = 0;
 	start = 0;
 	pthread_t thread_obj;
+	pthread_t thread_obj2;
 
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
@@ -526,7 +536,7 @@ int main(int argc, char *argv[])
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 //création du thread du scan publication
-	pthread_create(&thread_obj, NULL, *thread_publish, NULL);
+	pthread_create(&thread_obj2, NULL, *thread_publish, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
