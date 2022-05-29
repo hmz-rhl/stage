@@ -30,6 +30,9 @@
 struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
+uint8_t can_publish = 0;
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread_rfid(void *ptr)
 {
@@ -92,8 +95,9 @@ void *thread_rfid(void *ptr)
 					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
 					printf("\r\n");
 					
+					scan_activated = 0;
 					break;
-					scan_activated = 0;				}
+					}
 
 			}
 		
@@ -106,6 +110,17 @@ void *thread_rfid(void *ptr)
 	}
 }
 
+
+void *thread_publish(void *ptr){
+
+	sleep(4);
+	if(can_publish){
+		
+		publish_values(mosq);
+	
+	}
+
+}
 // fonction a executer lors d'une interruption par ctrl+C
 void nettoyage(int n)
 {
@@ -507,6 +522,9 @@ int main(int argc, char *argv[])
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
+//création du thread du scan publication
+	pthread_create(&thread_obj, NULL, *thread_publish, NULL);
+
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
 	rc = mosquitto_lib_init();
@@ -565,13 +583,19 @@ int main(int argc, char *argv[])
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
-		gettimeofday(&te, NULL); // get current time
+
+		// gettimeofday(&te, NULL); // get current time
 		/* on garde la connexion active avec le broker */
 		rc = mosquitto_loop(mosq,10,256);
 
 		// si jamais erreur : exemple deconnexion du broker, reload du service mosquitto etc...
 		// on relance la batterie d'initialisation après 30s d'attente et ce durant 5 tentatives
 		if(rc != MOSQ_ERR_SUCCESS){
+
+			pthread_mutex_lock(&mutex);
+			can_publish = 0;
+			pthread_mutex_unlock(&mutex);
+
 			
 			// on detruit l'ancienne instance
 			mosquitto_destroy(mosq);
@@ -637,19 +661,22 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			sleep(1);
-            tentatives = 0;
+			usleep(1000);
+			pthread_mutex_lock(&mutex);
+			can_publish = 1;
+			pthread_mutex_unlock(&mutex);
+            // tentatives = 0;
 
     		
-            end = te.tv_sec;
-		    delay = end-start;
+            // end = te.tv_sec;
+		    // delay = end-start;
 
-            if(delay > 4){
+            // if(delay > 4){
 
-                start = end;
-			    publish_values(mosq);
+            //     start = end;
+			//     publish_values(mosq);
 
-            }
+            // }
 
 		}	
 		
