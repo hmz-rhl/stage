@@ -625,7 +625,7 @@ int main(int argc, char *argv[])
 				if(mosq == NULL){
 
 					/* On affiche le message d'erreur*/
-					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
+					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memory\n",__func__);
 					/* On libere les fonctions utilisé*/
 					mosquitto_lib_cleanup();
 
