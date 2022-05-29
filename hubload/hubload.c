@@ -30,9 +30,81 @@
 struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
-uint8_t can_publish = 0;
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+void *thread_rfid(void *ptr)
+{
+	if(wiringPiSetup() < 0)
+	{
+		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+	uint8_t buff[255];
+    uint8_t uid[MIFARE_UID_MAX_LENGTH];
+	char *str[MIFARE_UID_MAX_LENGTH];
+
+    uint32_t pn532_error = PN532_ERROR_NONE;
+    int32_t uid_len = 0;
+    printf("Hello!\r\n");
+    PN532 pn532;
+    PN532_I2C_Init(&pn532);
+    if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
+		
+        printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
+    } 
+    else 
+    {
+        
+    }
+    PN532_SamConfiguration(&pn532);
+
+        
+
+	while(1){
+
+		if(scan_activated){
+			
+			printf("Waiting for RFID/NFC card...\r\n");
+
+			while(scan_activated)
+			{
+			
+				// printf("attente : %f", attente);
+				// Check if a card is available to read
+				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
+				if (uid_len == PN532_STATUS_ERROR) 
+				{
+					printf("no RFID detected\n");
+					fflush(stdout);
+				} 
+				else 
+				{
+
+					printf("\n Found card with UID: ");
+					// for (uint8_t i = 0; i < uid_len; i++) {
+					//     printf("%02x ", uid[i]);
+					// 	str[i]=uid[i];                
+					// }
+					char message[256];
+					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+					
+					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
+					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
+					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
+					printf("\r\n");
+					
+					break;
+					scan_activated = 0;				}
+
+			}
+		
+		}
+		else{
+			sleep(1);
+		}
+
+
+	}
+}
 
 // fonction a executer lors d'une interruption par ctrl+C
 void nettoyage(int n)
@@ -377,105 +449,6 @@ void publish_values(struct mosquitto *mosq)
 
 }
 
-void *thread_rfid(void *ptr)
-{
-	if(wiringPiSetup() < 0)
-	{
-		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	uint8_t buff[255];
-    uint8_t uid[MIFARE_UID_MAX_LENGTH];
-	char *str[MIFARE_UID_MAX_LENGTH];
-
-    uint32_t pn532_error = PN532_ERROR_NONE;
-    int32_t uid_len = 0;
-    printf("Hello!\r\n");
-    PN532 pn532;
-
-
-
-        
-
-	while(1){
-
-		if(scan_activated){
-			
-			printf("Initialisation de l'i2c.");
-			while(PN532_I2C_Init(&pn532) != 0){
-				sleep(1);
-				putchar('.');
-			}
-			printf("initialised !\n");
-
-			printf("Obtention du firmware du PN532.");
-
-			while (PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
-				sleep(1);
-				putchar('.');
-				
-			} 
-
-			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
-			PN532_SamConfiguration(&pn532);
-			printf("Waiting for RFID/NFC card...\r\n");
-
-			while(scan_activated)
-			{
-			
-				// printf("attente : %f", attente);
-				// Check if a card is available to read
-				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
-				if (uid_len == PN532_STATUS_ERROR) 
-				{
-					printf("no RFID detected\n");
-					fflush(stdout);
-				} 
-				else 
-				{
-
-					printf("\n Found card with UID: ");
-					// for (uint8_t i = 0; i < uid_len; i++) {
-					//     printf("%02x ", uid[i]);
-					// 	str[i]=uid[i];                
-					// }
-					char message[256];
-					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
-					
-					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
-					pthread_mutex_lock(&mutex);
-					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
-					pthread_mutex_unlock(&mutex);
-					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
-					printf("\r\n");
-					
-					scan_activated = 0;
-					break;
-					}
-
-			}
-		
-		}
-		else{
-			sleep(1);
-		}
-
-
-	}
-}
-
-
-void *thread_publish(void *ptr){
-
-	sleep(4);
-	if(can_publish){
-		
-		publish_values(mosq);
-	
-	}
-
-}
-
 int main(int argc, char *argv[])
 {
 
@@ -526,7 +499,6 @@ int main(int argc, char *argv[])
 	double delay = 0;
 	start = 0;
 	pthread_t thread_obj;
-	pthread_t thread_obj2;
 
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
@@ -534,9 +506,6 @@ int main(int argc, char *argv[])
 
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
-
-//création du thread du scan publication
-	pthread_create(&thread_obj2, NULL, *thread_publish, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
@@ -596,19 +565,13 @@ int main(int argc, char *argv[])
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
-
-		// gettimeofday(&te, NULL); // get current time
+		gettimeofday(&te, NULL); // get current time
 		/* on garde la connexion active avec le broker */
 		rc = mosquitto_loop(mosq,10,256);
 
 		// si jamais erreur : exemple deconnexion du broker, reload du service mosquitto etc...
 		// on relance la batterie d'initialisation après 30s d'attente et ce durant 5 tentatives
 		if(rc != MOSQ_ERR_SUCCESS){
-
-			pthread_mutex_lock(&mutex);
-			can_publish = 0;
-			pthread_mutex_unlock(&mutex);
-
 			
 			// on detruit l'ancienne instance
 			mosquitto_destroy(mosq);
@@ -638,7 +601,7 @@ int main(int argc, char *argv[])
 				if(mosq == NULL){
 
 					/* On affiche le message d'erreur*/
-					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memory\n",__func__);
+					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
 					/* On libere les fonctions utilisé*/
 					mosquitto_lib_cleanup();
 
@@ -674,22 +637,19 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(1000);
-			// pthread_mutex_lock(&mutex);
-			can_publish = 1;
-			// pthread_mutex_unlock(&mutex);
-            // tentatives = 0;
+			sleep(1);
+            tentatives = 0;
 
     		
-            // end = te.tv_sec;
-		    // delay = end-start;
+            end = te.tv_sec;
+		    delay = end-start;
 
-            // if(delay > 4){
+            if(delay > 4){
 
-            //     start = end;
-			//     publish_values(mosq);
+                start = end;
+			    publish_values(mosq);
 
-            // }
+            }
 
 		}	
 		
