@@ -675,9 +675,9 @@ int main(int argc, char *argv[])
 		else{
 
 			usleep(1000);
-			pthread_mutex_lock(&mutex);
+			// pthread_mutex_lock(&mutex);
 			can_publish = 1;
-			pthread_mutex_unlock(&mutex);
+			// pthread_mutex_unlock(&mutex);
             // tentatives = 0;
 
     		
