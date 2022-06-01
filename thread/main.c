@@ -3429,8 +3429,10 @@ int main(int argc, char *argv[])
         
         // led_red();
         // led_reset();
-       write0();
-        
+       digitalWrite(LED_DATA,1);
+       wait1000();
+        digitalWrite(LED_DATA,0);
+       wait1000();
         
     }
 
