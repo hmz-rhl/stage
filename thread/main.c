@@ -11,7 +11,7 @@
 
 
 int i = 0;
-#define LED_DATA 29
+#define LED_DATA 21
 
 void wait500(){
         
