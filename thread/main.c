@@ -3421,6 +3421,8 @@ int main(int argc, char *argv[])
 {
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
+    pinMode(21, OUTPUT);
+    digitalWrite(21, 1);
 
     while(1)
     {
