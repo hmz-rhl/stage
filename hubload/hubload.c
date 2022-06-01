@@ -470,8 +470,10 @@ int main(int argc, char *argv[])
 	pinMode(5, INPUT);
 	pinMode(6, INPUT);
 	pinMode(10, INPUT);
+	pinMode(30, INPUT);
 	pinMode(24, OUTPUT);
 	digitalWrite(24, 1);
+
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 	sleep(30);
 	expander_t* exp1 = expander_init(0x27);
