@@ -479,6 +479,7 @@ int main(int argc, char *argv[])
 	pullUpDnControl(10, PUD_OFF);
 	pinMode(30, INPUT);
 	pinMode(24, OUTPUT);
+	pinMode(29, OUTPUT);
 	digitalWrite(24, 1);
 
 
