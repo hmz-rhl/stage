@@ -3417,12 +3417,18 @@ void led_red(){
     write0();
     write0();
 }
+
+void interruption(int sig){
+    digitalWrite(21, 0);
+
+}
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
     pinMode(21, OUTPUT);
     digitalWrite(21, 1);
+    signal(SIGINT, interruption);
 
     while(1)
     {
@@ -3430,11 +3436,11 @@ int main(int argc, char *argv[])
         // led_red();
         // led_reset();
        digitalWrite(LED_DATA,1);
-    //    wait500();
-    usleep(1);
+       wait500();
+    
         digitalWrite(LED_DATA,0);
-    //    wait500();
-    usleep(1);
+       wait500();
+    
         
     }
 
