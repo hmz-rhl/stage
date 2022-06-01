@@ -1046,90 +1046,90 @@ int main(){
 	while(1){
 
 		while(digitalRead(IRQ0) && !digitalRead(25)){}
-		usleep(20);
-		printf("\nPHNOLOAD :\t ");
-		print32bits(spiRead32(PHNOLOAD_32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		usleep(20);
+// 		printf("\nPHNOLOAD :\t ");
+// 		print32bits(spiRead32(PHNOLOAD_32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nSTATUS0 :\t ");
-		print32bits(spiRead32(STATUS0_32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		printf("\nSTATUS0 :\t ");
+// 		print32bits(spiRead32(STATUS0_32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nMASK0 :  \t ");
-		print32bits(spiRead32(MASK0_32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		printf("\nMASK0 :  \t ");
+// 		print32bits(spiRead32(MASK0_32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nSTATUS1 :\t ");
-		print32bits(spiRead32(STATUS1_32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		printf("\nSTATUS1 :\t ");
+// 		print32bits(spiRead32(STATUS1_32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 		
-		printf("\nMASK1 :  \t ");
-		print32bits(spiRead32(MASK1_32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		printf("\nMASK1 :  \t ");
+// 		print32bits(spiRead32(MASK1_32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nEVENT_STATUS :\t ");
-		print32bits(spiRead32(EVENT_STATUS32));
-		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
+// 		printf("\nEVENT_STATUS :\t ");
+// 		print32bits(spiRead32(EVENT_STATUS32));
+// 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nEVENT_MASK :\t ");
-		print32bits(spiRead32(EVENT_MASK_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nEVENT_MASK :\t ");
+// 		print32bits(spiRead32(EVENT_MASK_32));
+// //		ADE9078_waitForDataReady();
 		
-		printf("\n\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// 		printf("\n\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// 		ADE9078_waitForDataReady();
+		
+// 		printf("\nBV_PCF : %d\n", spiRead32(BV_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
+// 		printf("\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
+// 		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
+// 		printf("\nBI_PCF : %d\n", spiRead32(BI_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
+// 		printf("\nCI_PCF : %d\n", spiRead32(CI_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
+// 		printf("\nNI_PCF : %d\n", spiRead32(NI_PCF_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
+
 		ADE9078_waitForDataReady();
-		
-		printf("\nBV_PCF : %d\n", spiRead32(BV_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
-		printf("\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
-		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
-		printf("\nBI_PCF : %d\n", spiRead32(BI_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
-		printf("\nCI_PCF : %d\n", spiRead32(CI_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
-		printf("\nNI_PCF : %d\n", spiRead32(NI_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
-
 		printf("\n\nAVRMS : %d\n", spiRead32(AVRMS_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
 		
-		printf("\nBVRMS : %d\n", spiRead32(BVRMS_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nBVRMS : %d\n", spiRead32(BVRMS_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
 
-		printf("\nCVRMS : %d\n", spiRead32(CVRMS_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nCVRMS : %d\n", spiRead32(CVRMS_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 
+		ADE9078_waitForDataReady();
 		printf("\nAIRMS : %d\n", spiRead32(AIRMS_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 //		ADE9078_waitForDataReady();
 
-		printf("\nBIRMS : %d\n", spiRead32(BIRMS_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nBIRMS : %d\n", spiRead32(BIRMS_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
 
-		printf("\nCIRMS : %d\n", spiRead32(CIRMS_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nCIRMS : %d\n", spiRead32(CIRMS_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
 
-		printf("\nNIRMS : %d\n", spiRead32(NIRMS_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-//		ADE9078_waitForDataReady();
+// 		printf("\nNIRMS : %d\n", spiRead32(NIRMS_32));
+// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+// //		ADE9078_waitForDataReady();
 
 
 		
