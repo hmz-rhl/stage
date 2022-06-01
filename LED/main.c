@@ -7,7 +7,7 @@
 #include <time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
-
+#include <softPwm.h>
 
 
 int i = 0;
@@ -3420,7 +3420,7 @@ void led_red(){
 
 void interruption(int sig){
     digitalWrite(21, 0);
-
+    exit(EXIT_SUCCESS);
 }
 int main(int argc, char *argv[])
 {
