@@ -415,7 +415,7 @@ uint16_t ADE9078_getRun(){
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
 
-  	while(digitalRead(IRQ1));
+  	while(digitalRead(IRQ0));
 
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
@@ -477,7 +477,7 @@ void ADE9078_setRun(){
 	
 	waitForSPIReady(exp);
 
- 	while(digitalRead(IRQ1));
+ 	while(digitalRead(IRQ0));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
  	setAllCS(exp);
@@ -523,7 +523,7 @@ void ADE9078_resetRun(){
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
 
-  	while(digitalRead(IRQ1));
+  	while(digitalRead(IRQ0));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -574,7 +574,7 @@ uint16_t ADE9078_getVersion(){
 
 	waitForSPIReady(exp);
 
-  	while(digitalRead(IRQ1));
+  	while(digitalRead(IRQ0));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   	// expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -625,7 +625,7 @@ uint32_t ADE9078_getPartID(){
 	expander_t *exp = expander_init(EXPANDER_2);
 	waitForSPIReady(exp);
 
-  	while(digitalRead(IRQ1));
+  	while(digitalRead(IRQ0));
 	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
   // expander_resetAllPinsGPIO(exp);
   	setAllCS(exp);
@@ -798,17 +798,17 @@ void ADE9078_initialize(InitializationSettings *is){
   
   	sleep(150);
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG0_32, 0x00000010);
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG1_16, 0b0000100000001100);
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite32(AIGAIN_32, 0x00000001);
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG2_16, 0x0000);
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG3_16, 0x0000);
 //   // Is always printing right now. Might be an issue?
 //   // if (!checkBit((int)read32BitAndScale(STATUS1_32), 16)) {
@@ -817,45 +817,45 @@ while(digitalRead(IRQ1)){}
 
 
 // // #2: Configure Gains
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
    spiWrite32(APGAIN_32, is->powerAGain);
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
    spiWrite32(BPGAIN_32, is->powerBGain);
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
    spiWrite32(CPGAIN_32, is->powerCGain);
 
    	spiWrite32(AIGAIN_32, 2);
-	   while(digitalRead(IRQ1)){}
+	   while(digitalRead(IRQ0)){}
 	spiWrite32(BIGAIN_32, 2);
-	while(digitalRead(IRQ1)){}
+	while(digitalRead(IRQ0)){}
 	spiWrite32(CIGAIN_32, 2);
-	while(digitalRead(IRQ1)){}
+	while(digitalRead(IRQ0)){}
 	spiWrite32(NIGAIN_32, 2);
-	while(digitalRead(IRQ1)){}
+	while(digitalRead(IRQ0)){}
 	spiWrite32(AVGAIN_32, 2);
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	spiWrite32(BVGAIN_32, 2);
-	while(digitalRead(IRQ1)){}
+	while(digitalRead(IRQ0)){}
 	spiWrite32(CVGAIN_32, 2);
 
 //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
 //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
    spiWrite16(PGA_GAIN_16, 0b0001010101010101);
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
 
-  while(digitalRead(IRQ1)){}
+  while(digitalRead(IRQ0)){}
   spiWrite16(WFB_CFG_16, 0b0001000011011111);
 
 // // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
-    while(digitalRead(IRQ1)){}
+    while(digitalRead(IRQ0)){}
   spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
 
 // // #5 : Write VLevel 0x117514
    uint32_t vLevelData = 0x117514;//0x35A98F;  
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
    spiWrite32(VLEVEL_32, vLevelData); // #5
 
 
@@ -875,7 +875,7 @@ while(digitalRead(IRQ1)){}
 // 	the digital integrator. If current transformers are used,
 // 	INTEN and ININTEN in the CONFIG0 register must = 0.*/
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
 
 // // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
@@ -883,17 +883,17 @@ while(digitalRead(IRQ1)){}
 
   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   spiWrite16(ACCMODE_16, 0b00000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
 	spiWrite16(RUN_16, 1);  
 
 
 // 9: Write 1 to EP_CFG register
-while(digitalRead(IRQ1)){}
+while(digitalRead(IRQ0)){}
   	spiWrite16(EP_CFG_16, 1);  // RD_EST_EN=1, EGY_LD_ACCUM=0, EGY_TMR_MODE=0, EGY_PWR_EN=1
   
   /* Registers configured in ADE9000 code */
@@ -1025,7 +1025,7 @@ int main(){
 	printf("Burst : %x\n",spiRead16(WFB_CFG_16));
 	ADE9078_getVersion();
 	ADE9078_getPartID();
-	while(digitalRead(IRQ1)){
+	while(digitalRead(IRQ0)){
 		
 	}
 
@@ -1045,7 +1045,7 @@ int main(){
 
 	while(1){
 
-		while(digitalRead(IRQ1) && !digitalRead(25)){}
+		while(digitalRead(IRQ0) && !digitalRead(25)){}
 		usleep(20);
 		printf("\nPHNOLOAD :\t ");
 		print32bits(spiRead32(PHNOLOAD_32));
