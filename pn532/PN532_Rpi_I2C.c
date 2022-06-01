@@ -95,7 +95,7 @@ int PN532_I2C_Wakeup(void) {
     return PN532_STATUS_OK;
 }
 
-void PN532_I2C_Init(PN532* pn532) {
+int PN532_I2C_Init(PN532* pn532) {
     // init the pn532 functions
     pn532->reset = PN532_Reset;
     pn532->read_data = PN532_I2C_ReadData;
@@ -108,11 +108,11 @@ void PN532_I2C_Init(PN532* pn532) {
     fd = open(devname, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
-        return;
+        return -1;
     }
     if (ioctl(fd, I2C_SLAVE, _I2C_ADDRESS) < 0) {
         fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
-        return;
+        return -1;
     }
     // if (wiringPiSetupGpio() < 0) {  // using Broadcom GPIO pin mapping
     //     return;
@@ -123,6 +123,7 @@ void PN532_I2C_Init(PN532* pn532) {
     pn532->reset();
     // hardware wakeup
     pn532->wakeup();
+    return 0;
 }
 /**************************************************************************
  * End: I2C
