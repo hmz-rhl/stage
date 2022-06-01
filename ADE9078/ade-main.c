@@ -28,8 +28,8 @@
 
 #define EXPANDER_2      0x27  // Adresse de l'expander 2 d'Output
 
-#define IRQ1              24
-#define IRQ0              25
+#define IRQ1              5
+#define IRQ0              6
 
 
 #define RUN             0x480
