@@ -611,7 +611,15 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
     }
 }
 
-
+/**
+ * 
+ * @brief    mets une config precise des pins
+ * 
+ * @param   exp pointeur sur variable structuré de l'expander
+ * @param   config la config sur un octet
+ * 
+ * 
+ *  **/
 void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
 
         
