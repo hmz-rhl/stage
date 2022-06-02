@@ -30,6 +30,25 @@
 struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
+int user_key_clicked = 0;
+
+void user_key_pressed_interrupt(void){
+	int rc;
+	char str[] = "0";
+	rc = mosquitto_publish(mosq, NULL, "up/btn/pressed", strlen(str), str, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+}
+
+void user_key_released_interrupt(void){
+	int rc;
+	char str[] = "1";
+	rc = mosquitto_publish(mosq, NULL, "up/btn/released", strlen(str), str, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+}
 
 void *thread_rfid(void *ptr)
 {
@@ -468,6 +487,8 @@ int main(int argc, char *argv[])
 	
 	pinMode(3, INPUT);
 	pullUpDnControl(3, PUD_OFF);
+	wiringPiISR (3, INT_EDGE_FALLING,  user_key_pressed_interrupt) ;
+	wiringPiISR (3, INT_EDGE_RISING,  user_key_released_interrupt) ;
 
 	pinMode(25, INPUT);
 	pinMode(2, INPUT);
