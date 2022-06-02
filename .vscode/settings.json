@@ -11,6 +11,8 @@
         "mcp3202.h": "c",
         "bcm2835.h": "c",
         "cmath": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "initializer_list": "cpp",
+        "xstring": "cpp"
     }
 }
