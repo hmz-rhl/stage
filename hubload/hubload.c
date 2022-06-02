@@ -26,6 +26,23 @@
 
 #define LOCK_P 21
 #define CP_PWM 23
+#define I2C_D 8
+#define I2C_C 9
+#define SM_TIC_D 2
+#define USER_KEY 3
+#define MOSI 12
+#define MISO 13
+#define SCLK 14
+#define PP_IN 22
+#define WD_TRIP 24
+#define CF4 25
+#define RCD_TRIP_DC 1
+#define RCD_TRIP_AC 4
+#define IRQ1 5
+#define IRQ0 6
+#define LOCK_FB 10
+#define LED_STRIP_D 29
+
 
 struct mosquitto *mosq;
 int dutycycle;
@@ -496,12 +513,13 @@ int main(int argc, char *argv[])
 
 	pinMode(5, INPUT);
 	pinMode(6, INPUT);
+	// lock_fb
 	pinMode(10, INPUT);
 	pullUpDnControl(10, PUD_OFF);
 	pinMode(30, INPUT);
 	pinMode(24, OUTPUT);
+	digitalWrite(24, 0);
 	pinMode(29, OUTPUT);
-	digitalWrite(24, 1);
 
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
