@@ -487,8 +487,8 @@ int main(int argc, char *argv[])
 	
 	pinMode(3, INPUT);
 	pullUpDnControl(3, PUD_OFF);
-	wiringPiISR (3, INT_EDGE_FALLING,  user_key_pressed_interrupt) ;
-	wiringPiISR (3, INT_EDGE_RISING,  user_key_released_interrupt) ;
+	wiringPiISR (3, INT_EDGE_FALLING,  &user_key_pressed_interrupt) ;
+	wiringPiISR (3, INT_EDGE_RISING,  &user_key_released_interrupt) ;
 
 	pinMode(25, INPUT);
 	pinMode(2, INPUT);
