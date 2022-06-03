@@ -26,48 +26,10 @@
 
 #define LOCK_P 21
 #define CP_PWM 23
-#define I2C_D 8
-#define I2C_C 9
-#define SM_TIC_D 2
-#define USER_KEY 3
-#define MOSI 12
-#define MISO 13
-#define SCLK 14
-#define PP_IN 22
-#define WD_TRIP 24
-#define CF4 25
-#define RCD_TRIP_DC 1
-#define RCD_TRIP_AC 4
-#define IRQ1 5
-#define IRQ0 6
-#define LOCK_FB 10
-#define LED_STRIP_D 29
-
 
 struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
-int user_key_clicked = 0;
-
-
-void user_key_interrupt(void){
-	int rc;
-	char str[] = "1";
-	if(digitalRead(USER_KEY) == 1){
-
-		rc = mosquitto_publish(mosq, NULL, "up/btn/released", strlen(str), str, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		}
-	}
-	else{
-
-		rc = mosquitto_publish(mosq, NULL, "up/btn/pressed", strlen(str), str, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		}
-	}
-}
 
 void *thread_rfid(void *ptr)
 {
@@ -498,49 +460,28 @@ int main(int argc, char *argv[])
 	}
 
 // TODO : ecrire le code qui initialise les gpio de la rp et des expander etc
+	pinMode(CP_PWM,PWM_OUTPUT);
 	pinMode(LOCK_P, OUTPUT);
 	digitalWrite(LOCK_P, 0);
-
-
-	pinMode(RCD_TRIP_DC, INPUT);
-	pullUpDnControl(RCD_TRIP_DC, PUD_OFF);
-
-	pinMode(RCD_TRIP_AC, INPUT);
-	pullUpDnControl(RCD_TRIP_AC, PUD_OFF);
-
+	pinMode(3, INPUT);
+	pinMode(1, INPUT);
 	
-	pinMode(USER_KEY, INPUT);
-	pullUpDnControl(USER_KEY, PUD_OFF);
-	// peut etre le mettre dans un autre thread car pas fonctionnel pour le moment
-	// wiringPiISR (USER_KEY, INT_EDGE_FALLING,  &user_key_pressed_interrupt) ;
-	// wiringPiISR (USER_KEY, INT_EDGE_RISING,  &user_key_released_interrupt) ;
-	wiringPiISR (USER_KEY, INT_EDGE_BOTH,  &user_key_interrupt) ;
+	pinMode(3, INPUT);
+	pullUpDnControl(3, PUD_OFF);
 
-	pinMode(SM_TIC_D, INPUT);
-	pullUpDnControl(SM_TIC_D, PUD_OFF);
+	pinMode(25, INPUT);
+	pinMode(2, INPUT);
+	pullUpDnControl(2, PUD_OFF);
 
-	pinMode(CF4, INPUT);
-	pullUpDnControl(CF4, PUD_DOWN);
-	pinMode(IRQ1, INPUT);
-	pullUpDnControl(IRQ1, PUD_DOWN);
-	pinMode(IRQ0, INPUT);
-	pullUpDnControl(IRQ0, PUD_DOWN);
+	pinMode(5, INPUT);
+	pinMode(6, INPUT);
+	pinMode(10, INPUT);
+	pullUpDnControl(10, PUD_OFF);
+	pinMode(30, INPUT);
+	pinMode(24, OUTPUT);
+	pinMode(29, OUTPUT);
+	digitalWrite(24, 1);
 
-
-
-	// lock_fb
-	pinMode(LOCK_FB, INPUT);
-	pullUpDnControl(LOCK_FB, PUD_OFF);
-
-	pinMode(WD_TRIP, OUTPUT);
-	digitalWrite(WD_TRIP, 0);
-
-	pinMode(PP_IN, INPUT);
-	pullUpDnControl(PP_IN, PUD_OFF);
-
-	pinMode(CP_PWM,PWM_OUTPUT);
-
-	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
 	sleep(30);
@@ -635,11 +576,6 @@ int main(int argc, char *argv[])
 
 			}
 	}
-
-	rc = mosquitto_publish(mosq, NULL, "up/wakeup", strlen("1"), "1", 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
@@ -706,13 +642,6 @@ int main(int argc, char *argv[])
 					/* On affiche le message d'erreur*/
 						fprintf(stderr, "fonction %s: Error mosquitto_connect: %s\n", __func__, mosquitto_strerror(rc));
 					}
-					else{
-
-						rc = mosquitto_publish(mosq, NULL, "up/wakeup", strlen("1"), "1", 2, false);
-						if(rc != MOSQ_ERR_SUCCESS){
-							fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-						}
-					}
 
 				}
 			}
@@ -723,7 +652,6 @@ int main(int argc, char *argv[])
 		else{
 
 			sleep(1);
-			
             tentatives = 0;
 
     		
