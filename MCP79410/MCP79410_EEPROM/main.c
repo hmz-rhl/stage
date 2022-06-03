@@ -91,7 +91,13 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("%s\n", buf);
+    for (size_t i = 0; i < 8; i++)
+    {
+        /* code */
+        printf("%X ", buf[i]);
+    }
+    putchar('\n');
+
 
     
     
