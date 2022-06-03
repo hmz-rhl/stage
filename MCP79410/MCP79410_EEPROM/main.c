@@ -69,15 +69,9 @@ int main(int argc, char const *argv[])
 
     buf[0] = 0xF0;
     buf[1] = 'a';
-    buf[2] = 'A';
-    buf[3] = 'b';
-    buf[4] = 'B';
-    buf[5] = 'c';
-    buf[6] = 'C';
-    buf[7] = 'd';
-    buf[8] = 'D';
 
-    if(write(fd,buf,9) != 9){
+
+    if(write(fd,buf,2) != 2){
 
         printf("erreur d'écriture de aAbBcCdD dans F0\n");
         //exit(EXIT_FAILURE);
