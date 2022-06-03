@@ -94,7 +94,7 @@ int main(int argc, char const *argv[])
 //         //exit(EXIT_FAILURE);
 //     }
     
-    if(read(fd,buf,1) != 1){
+    if(read(fd,buf,2) != 2){
 
         printf("erreur de lecture de 00\n");
         exit(EXIT_FAILURE);
