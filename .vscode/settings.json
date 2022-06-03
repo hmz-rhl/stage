@@ -13,6 +13,8 @@
         "cmath": "c",
         "time.h": "c",
         "initializer_list": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "eeprom.h": "c",
+        "utilities.h": "c"
     }
 }
