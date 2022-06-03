@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
         
     }
 
-    if(ioctl(fd,I2C_SLAVE,EEPROM_ADDRESS) < 0) {
+    if(ioctl(fd,I2C_MASTER,EEPROM_ADDRESS) < 0) {
         printf("ERREUR de setting de la communication avec 0x57 sur i2c\n");
         close(fd);
         exit(EXIT_FAILURE);
@@ -69,9 +69,15 @@ int main(int argc, char const *argv[])
 
     buf[0] = 0xF0;
     buf[1] = 'a';
+    buf[2] = 'A';
+    buf[3] = 'b';
+    buf[4] = 'B';
+    buf[5] = 'c';
+    buf[6] = 'C';
+    buf[7] = 'd';
+    buf[8] = 'D';
 
-
-    if(write(fd,buf,2) != 1){
+    if(write(fd,buf,9) != 9){
 
         printf("erreur d'écriture de aAbBcCdD dans F0\n");
         //exit(EXIT_FAILURE);
