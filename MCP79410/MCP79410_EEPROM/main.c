@@ -3,6 +3,9 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <stdint.h>
+#include <linux/ioctl.h>
+#include <linux/types.h>
+#include <linux/i2c-dev.h>
 
 #define I2C_DEVICE "/dev/i2c-1"
 #define EEUNLOCK 0x09
