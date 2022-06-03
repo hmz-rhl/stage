@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
     buf[0] = 0xF0;
     if(read(fd,buf,1) != 8){
 
-        printf("erreur de lecture de aAbBcCdD dans F0\n");
+        printf("erreur de lecture de F0\n");
         exit(EXIT_FAILURE);
     }
 
