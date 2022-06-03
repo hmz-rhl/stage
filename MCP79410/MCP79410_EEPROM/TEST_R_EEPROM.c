@@ -14,11 +14,12 @@ void  main()
 
 
  	// Lecture du buffer actuel dans l'eeprom privé
-	 for (size_t i = 0; i < 8; i++)
-	 {
-		 /* code */
+	for (size_t i = 0; i < 8; i++)
+	{
+		/* code */
 		printf("EE%d 0x%2x. ",i, EEPROM_Read(EEPROM_PROTECTED_START + i));
-	 }
+	}
+	printf("\n");
 	 
 
 
@@ -31,18 +32,20 @@ void  main()
 		/* code */
 		EEPROM_WriteProtected(EEPROM_PROTECTED_START + i,test[i]);
 	}
+	printf("données écrites \n");
 
 
 
 
 	// Lecture du nouveau buffer dans l'eeprom privé
-	 for (size_t i = 0; i < 8; i++)
-	 {
-		 /* code */
+	for (size_t i = 0; i < 8; i++)
+	{
+		/* code */
 		printf("EE%d 0x%2x. ",i, EEPROM_Read(EEPROM_PROTECTED_START + i));
-	 }
-
+	}
+	printf("\n");
 
 	I2C_Close();
+	
 return;
 }
