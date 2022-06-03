@@ -115,12 +115,12 @@ int main(int argc, char const *argv[])
         printf("erreur de selection du registre 00\n");
         //exit(EXIT_FAILURE);
     }
-    else if(read(fd,buf,1) != 1){
+    if(read(fd,buf,1) != 1){
 
         printf("erreur de selection du registre 00\n");
         //exit(EXIT_FAILURE);
     }
-    else if(read(fd,buf,1) != 1){
+    if(read(fd,buf,1) != 1){
 
         printf("erreur de selection du registre 00\n");
         //exit(EXIT_FAILURE);
