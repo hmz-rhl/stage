@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 
 
 
-// lecture
+// ___________________lecture
     buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
@@ -59,8 +59,9 @@ int main(int argc, char const *argv[])
     }
 
     printf("0x00 : %c\n", buf[0]);
+    usleep(5000);
 
-// ecriture
+//___________________ ecriture
     // buf[0] = EEUNLOCK;
     // buf[1] = 0x55;
 
@@ -88,10 +89,10 @@ int main(int argc, char const *argv[])
         close(fd);
         exit(EXIT_FAILURE);
     }
-
-// lecture
 //il faut attendre au moins 5ms
     usleep(5000);
+
+//___________________ lecture
     buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
