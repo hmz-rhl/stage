@@ -39,6 +39,9 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
     uint8_t buf[10];
+
+
+
 // lecture
     buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
@@ -53,7 +56,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("%s\n", buf);
+    printf("0x00 : %c\n", buf[0]);
 
 // ecriture
     // buf[0] = EEUNLOCK;
@@ -97,7 +100,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("%s\n", buf);
+    printf("0x00 : %c\n", buf[0]);
 
 
     
