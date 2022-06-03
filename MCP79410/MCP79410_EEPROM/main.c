@@ -4,6 +4,7 @@
 #include <wiringPiI2C.h>
 #include <stdint.h>
 #include <linux/ioctl.h>
+#include <sys/ioctl.h>
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
