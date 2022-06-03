@@ -76,8 +76,8 @@ int main(int argc, char const *argv[])
     //     exit(EXIT_FAILURE);
     // }
 
-    buf[0] = 0x00;
     buf[1] = buf[0] + 1;
+    buf[0] = 0x00;
  
 
     if(write(fd,buf,2) != 2){
