@@ -3422,6 +3422,7 @@ void led_red(){
 
 void interruption(int sig){
     digitalWrite(21, 0);
+    expander_closeAndFree(exp);
     exit(EXIT_SUCCESS);
 }
 int main(int argc, char *argv[])
