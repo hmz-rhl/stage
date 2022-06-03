@@ -549,7 +549,7 @@ void ADE9078_resetRun(){
 
 void ADE9078_waitForResetDone(){
 
-	printf("waiting.");
+	printf("waiting reset...");
 	while(spiRead32(STATUS1_32) & 0b00000000000000010000000000000000 != 0b00000000000000010000000000000000){usleep(100000);putchar('.');}
 	printf("Reset done !\n");
 }
@@ -792,99 +792,99 @@ void ADE9078_initialize(InitializationSettings *is){
   // on attend le reset
   ADE9078_waitForResetDone();
 
-  // Page 56 of datasheet quick start
-  // #1: Ensure power sequence completed
+//   // Page 56 of datasheet quick start
+//   // #1: Ensure power sequence completed
   
   
-  	sleep(150);
+//   	sleep(150);
 
-while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG0_32, 0x00000010);
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(CONFIG0_32, 0x00000010);
 
-while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG1_16, 0b0000100000001100);
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(CONFIG1_16, 0b0000100000001100);
 
-while(digitalRead(IRQ0)){}
-  spiWrite32(AIGAIN_32, 0x00000001);
-while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG2_16, 0x0000);
-while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG3_16, 0x0000);
-//   // Is always printing right now. Might be an issue?
-//   // if (!checkBit((int)read32BitAndScale(STATUS1_32), 16)) {
-//   //   printf("WARNING, POWER UP MAY NOT BE FINISHED\n");
-//   // }
-
-
-// // #2: Configure Gains
-while(digitalRead(IRQ0)){}
-   spiWrite32(APGAIN_32, is->powerAGain);
-while(digitalRead(IRQ0)){}
-   spiWrite32(BPGAIN_32, is->powerBGain);
-while(digitalRead(IRQ0)){}
-   spiWrite32(CPGAIN_32, is->powerCGain);
-
-   	spiWrite32(AIGAIN_32, 2);
-	   while(digitalRead(IRQ0)){}
-	spiWrite32(BIGAIN_32, 2);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(CIGAIN_32, 2);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(NIGAIN_32, 2);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(AVGAIN_32, 2);
-while(digitalRead(IRQ0)){}
-	spiWrite32(BVGAIN_32, 2);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(CVGAIN_32, 2);
-
-//    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
-//                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
-while(digitalRead(IRQ0)){}
-   spiWrite16(PGA_GAIN_16, 0b0001010101010101);
-
-while(digitalRead(IRQ0)){}
-  spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
-
-  while(digitalRead(IRQ0)){}
-  spiWrite16(WFB_CFG_16, 0b0001000011011111);
-
-// // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
-    while(digitalRead(IRQ0)){}
-  spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
-
-// // #5 : Write VLevel 0x117514
-   uint32_t vLevelData = 0x117514;//0x35A98F;  
-while(digitalRead(IRQ0)){}
-   spiWrite32(VLEVEL_32, vLevelData); // #5
+// while(digitalRead(IRQ0)){}
+//   spiWrite32(AIGAIN_32, 0x00000001);
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(CONFIG2_16, 0x0000);
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(CONFIG3_16, 0x0000);
+// //   // Is always printing right now. Might be an issue?
+// //   // if (!checkBit((int)read32BitAndScale(STATUS1_32), 16)) {
+// //   //   printf("WARNING, POWER UP MAY NOT BE FINISHED\n");
+// //   // }
 
 
-//   /*
-//   Potentially useful registers to configure:
-//   The following were in the 9078:
-//     0x49A ZX_LP_SEL : to configure "zero crossing signal"
-//     0x41F PHNOLOAD : To say if something is "no load".
-//     Phase calibrations, such as APHCAL1_32
-//   */
+// // // #2: Configure Gains
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(APGAIN_32, is->powerAGain);
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(BPGAIN_32, is->powerBGain);
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(CPGAIN_32, is->powerCGain);
 
-// /* #6: If a Rogowski coil sensor is used, write the INTEN bit in
-// 	the CONFIG0 register to enable the digital integrator on
-// 	the IA, IB, and IC channels. To enable the digital integrator on
-// 	the neutral current, IN, channel, set the ININTEN bit.
-// 	Additionally, write DICOEF = 0xFFFFE000 to configure
-// 	the digital integrator. If current transformers are used,
-// 	INTEN and ININTEN in the CONFIG0 register must = 0.*/
+//    	spiWrite32(AIGAIN_32, 2);
+// 	   while(digitalRead(IRQ0)){}
+// 	spiWrite32(BIGAIN_32, 2);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(CIGAIN_32, 2);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(NIGAIN_32, 2);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(AVGAIN_32, 2);
+// while(digitalRead(IRQ0)){}
+// 	spiWrite32(BVGAIN_32, 2);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(CVGAIN_32, 2);
 
-while(digitalRead(IRQ0)){}
-  spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
+// //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
+// //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
+// while(digitalRead(IRQ0)){}
+//    spiWrite16(PGA_GAIN_16, 0b0001010101010101);
 
-// // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
-//   // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
 
-  uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
+//   while(digitalRead(IRQ0)){}
+//   spiWrite16(WFB_CFG_16, 0b0001000011011111);
 
-while(digitalRead(IRQ0)){}
-  spiWrite16(ACCMODE_16, 0b00000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
+// // // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
+//     while(digitalRead(IRQ0)){}
+//   spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
+
+// // // #5 : Write VLevel 0x117514
+//    uint32_t vLevelData = 0x117514;//0x35A98F;  
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(VLEVEL_32, vLevelData); // #5
+
+
+// //   /*
+// //   Potentially useful registers to configure:
+// //   The following were in the 9078:
+// //     0x49A ZX_LP_SEL : to configure "zero crossing signal"
+// //     0x41F PHNOLOAD : To say if something is "no load".
+// //     Phase calibrations, such as APHCAL1_32
+// //   */
+
+// // /* #6: If a Rogowski coil sensor is used, write the INTEN bit in
+// // 	the CONFIG0 register to enable the digital integrator on
+// // 	the IA, IB, and IC channels. To enable the digital integrator on
+// // 	the neutral current, IN, channel, set the ININTEN bit.
+// // 	Additionally, write DICOEF = 0xFFFFE000 to configure
+// // 	the digital integrator. If current transformers are used,
+// // 	INTEN and ININTEN in the CONFIG0 register must = 0.*/
+
+// while(digitalRead(IRQ0)){}
+//   spiWrite32(DICOEFF_32, 0xFFFFE000); // Recommended by datasheet
+
+// // // #7:  If current transformers are used, INTEN and ININTEN in the CONFIG0 register must = 0
+// //   // Table 24 to determine how to configure ICONSEL and VCONSEL in the ACCMODE register
+
+//   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
+
+// while(digitalRead(IRQ0)){}
+//   spiWrite16(ACCMODE_16, 0b00000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
