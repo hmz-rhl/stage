@@ -635,6 +635,8 @@ int main(int argc, char *argv[])
 
 			}
 	}
+
+	mosquitto_publish()
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
@@ -711,6 +713,7 @@ int main(int argc, char *argv[])
 		else{
 
 			sleep(1);
+			
             tentatives = 0;
 
     		

@@ -26,10 +26,6 @@ void setup() {
 	
 	
 	rtc.eepromProtectedBlockWrite("aabbccdd");
-
-	// Turn on the blue D7 LED so you know the data has been set
-	//pinMode(D7, OUTPUT);
-	//digitalWrite(D7, HIGH);
 }
 
 void loop() {
