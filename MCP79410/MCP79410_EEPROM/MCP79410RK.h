@@ -1,7 +1,7 @@
 #ifndef __MCP79410RK_H
 #define __MCP79410RK_H
 
-#include "Particle.h"
+// #include "Particle.h"
 
 class MCP79410; // Forward declaration
 
