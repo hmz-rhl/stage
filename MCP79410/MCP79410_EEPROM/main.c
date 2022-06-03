@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
         close(fd);
         exit(EXIT_FAILURE);
     }
-    uint8_t buf[8];
+    uint8_t buf[9];
 // lecture
     buf[0] = 0xF0;
     if(read(fd,buf,1) != 1){
