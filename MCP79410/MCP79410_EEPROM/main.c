@@ -40,40 +40,40 @@ int main(int argc, char const *argv[])
     }
     uint8_t buf[10];
 // lecture
-    buf[0] = 0xF0;
+    buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
-        printf("erreur de selectioj du registre F0\n");
+        printf("erreur de selection du registre 00\n");
         exit(EXIT_FAILURE);
     }
     
     if(read(fd,buf,1) != 1){
 
-        printf("erreur de lecture de F0\n");
+        printf("erreur de lecture de 00\n");
         exit(EXIT_FAILURE);
     }
 
     printf("%s\n", buf);
 
 // ecriture
-    buf[0] = EEUNLOCK;
-    buf[1] = 0x55;
+    // buf[0] = EEUNLOCK;
+    // buf[1] = 0x55;
 
-    if(write(fd,buf,2) != 2){
+    // if(write(fd,buf,2) != 2){
 
-        printf("erreur d'écriture de 0x55 dans EEUNLOCK\n");
-        exit(EXIT_FAILURE);
-    }
+    //     printf("erreur d'écriture de 0x55 dans EEUNLOCK\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
-    buf[0] = EEUNLOCK;
-    buf[1] = 0xAA;
-    if(write(fd,buf,2) != 2){
+    // buf[0] = EEUNLOCK;
+    // buf[1] = 0xAA;
+    // if(write(fd,buf,2) != 2){
 
-        printf("erreur d'écriture de 0xAA dans EEUNLOCK\n");
-        exit(EXIT_FAILURE);
-    }
+    //     printf("erreur d'écriture de 0xAA dans EEUNLOCK\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
-    buf[0] = 0xF0;
+    buf[0] = 0x00;
     buf[1] = 'a';
  
 
@@ -84,16 +84,16 @@ int main(int argc, char const *argv[])
     }
 
 // lecture
-    buf[0] = 0xF0;
+    buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
-        printf("erreur de selectioj du registre F0\n");
+        printf("erreur de selectioj du registre 00\n");
         exit(EXIT_FAILURE);
     }
     
     if(read(fd,buf,1) != 1){
 
-        printf("erreur de lecture de F0\n");
+        printf("erreur de lecture de 00\n");
         exit(EXIT_FAILURE);
     }
 
