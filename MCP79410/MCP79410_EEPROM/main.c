@@ -88,7 +88,8 @@ int main(int argc, char const *argv[])
 
 // lecture
     buf[0] = 0x00;
-    if(write(fd,buf,1) != 1){
+    buf[1] = 0x00;
+    if(write(fd,buf,2) != 2){
 
         printf("erreur de selection du registre 00\n");
         //exit(EXIT_FAILURE);
