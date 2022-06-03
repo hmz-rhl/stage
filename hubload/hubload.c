@@ -706,6 +706,13 @@ int main(int argc, char *argv[])
 					/* On affiche le message d'erreur*/
 						fprintf(stderr, "fonction %s: Error mosquitto_connect: %s\n", __func__, mosquitto_strerror(rc));
 					}
+					else{
+
+						rc = mosquitto_publish(mosq, NULL, "up/wakeup", strlen("1"), "1", 2, false);
+						if(rc != MOSQ_ERR_SUCCESS){
+							fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+						}
+					}
 
 				}
 			}
