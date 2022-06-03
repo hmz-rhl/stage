@@ -636,7 +636,10 @@ int main(int argc, char *argv[])
 			}
 	}
 
-	mosquitto_publish()
+	rc = mosquitto_publish(mosq, NULL, "up/wakeup", strlen("1"), "1", 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
 // fin de l'initialisation
 	// debut de la boucle infini
 	while(1){
