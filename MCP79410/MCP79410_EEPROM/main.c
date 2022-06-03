@@ -7,6 +7,8 @@
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
+#include <string.h>
+#include <unistd.h>
 
 #define I2C_DEVICE "/dev/i2c-1"
 #define EEUNLOCK 0x09
