@@ -1,1 +1,1 @@
-sudo gcc main.c -o test -lwiringPi
+sudo gcc main.c ../lib/expander-i2c.c -o test -lwiringPi
