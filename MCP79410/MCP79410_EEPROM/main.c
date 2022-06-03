@@ -77,7 +77,7 @@ int main(int argc, char const *argv[])
     // }
 
     buf[0] = 0x00;
-    buf[1] = 'a';
+    buf[1] = 'b';
  
 
     if(write(fd,buf,2) != 2){
@@ -86,21 +86,21 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-// // lecture
-//     buf[0] = 0x00;
-//     if(write(fd,buf,2) != 1){
+// lecture
+    buf[0] = 0x00;
+    if(write(fd,buf,2) != 1){
 
-//         printf("erreur de selection du registre 00\n");
-//         //exit(EXIT_FAILURE);
-//     }
-    
-    if(read(fd,buf,2) != 2){
-
-        printf("erreur de lecture de 00\n");
-        exit(EXIT_FAILURE);
+        printf("erreur de selection du registre 00\n");
+        //exit(EXIT_FAILURE);
     }
+    
+    // if(read(fd,buf,2) != 2){
 
-    printf("0x00 : %c\n", buf[0]);
+    //     printf("erreur de lecture de 00\n");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // printf("0x00 : %c\n", buf[0]);
 
 
     
