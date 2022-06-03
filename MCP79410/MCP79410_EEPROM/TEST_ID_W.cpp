@@ -18,25 +18,14 @@ SYSTEM_THREAD(ENABLED);
 SerialLogHandler logHandler;
 MCP79410 rtc;
 
-typedef union {
-	struct {
-		uint16_t boardType;
-		uint16_t boardVersion;
-		uint32_t featureFlags;
-	} data;
-	uint8_t bytes[MCP79410::EEPROM_PROTECTED_BLOCK_SIZE]; // 8 bytes
-} BoardId;
+
 
 
 void setup() {
 	rtc.setup();
-
-	BoardId boardId;
-	boardId.data.boardType = 0x0002;
-	boardId.data.boardVersion = 0x0001;
-	boardId.data.featureFlags = 0x00000007;
-
-	rtc.eepromProtectedBlockWrite(boardId.bytes);
+	
+	
+	rtc.eepromProtectedBlockWrite("aabbccdd");
 
 	// Turn on the blue D7 LED so you know the data has been set
 	//pinMode(D7, OUTPUT);
