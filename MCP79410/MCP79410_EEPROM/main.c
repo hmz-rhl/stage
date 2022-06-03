@@ -76,15 +76,15 @@ int main(int argc, char const *argv[])
     //     exit(EXIT_FAILURE);
     // }
 
-//     buf[0] = 0x00;
-//     buf[1] = 'a';
+    buf[0] = 0x00;
+    buf[1] = 'a';
  
 
-//     if(write(fd,buf,2) != 2){
+    if(write(fd,buf,2) != 2){
 
-//         printf("erreur d'écriture de a dans 00\n");
-//         exit(EXIT_FAILURE);
-//     }
+        printf("erreur d'écriture de a dans 00\n");
+        exit(EXIT_FAILURE);
+    }
 
 // // lecture
 //     buf[0] = 0x00;
