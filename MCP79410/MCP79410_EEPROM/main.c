@@ -79,7 +79,7 @@ int main(int argc, char const *argv[])
 
     if(write(fd,buf,2) != 2){
 
-        printf("erreur d'écriture de aAbBcCdD dans F0\n");
+        printf("erreur d'écriture de a dans 00\n");
         exit(EXIT_FAILURE);
     }
 
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
     buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
-        printf("erreur de selectioj du registre 00\n");
+        printf("erreur de selection du registre 00\n");
         exit(EXIT_FAILURE);
     }
     
