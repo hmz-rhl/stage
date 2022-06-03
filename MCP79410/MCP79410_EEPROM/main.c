@@ -80,7 +80,7 @@ int main(int argc, char const *argv[])
     if(write(fd,buf,9) != 9){
 
         printf("erreur d'écriture de aAbBcCdD dans F0\n");
-        exit(EXIT_FAILURE);
+        //exit(EXIT_FAILURE);
     }
 
 // lecture
