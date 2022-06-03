@@ -20,76 +20,61 @@ int main(int argc, char const *argv[])
 {
     /* code */
 
-    int fd = wiringPiI2CSetup (0x57);
-    if(fd == -1 ){
+    int fd = open(I2C_DEVICE, O_RDWR);
+    if(fd < 0) {
 
-        fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+        sleep(1);
+        fd = open(I2C_DEVICE, O_RDWR);
+        if(fd < 0) {
+        
+            fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
+        
     }
 
-    if(wiringPiI2CWriteReg8 (fd, 0x00, 0xAB) ==  -1){
-
-        fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
-
+    if(ioctl(fd,I2C_SLAVE,EEPROM_ADDRESS) < 0) {
+        printf("ERREUR de setting de la communication avec 0x57 sur i2c\n");
+        close(fd);
+        exit(EXIT_FAILURE);
     }
-
-    int buf = wiringPiI2CReadReg8 (fd, 0x00);
-    printf("lu : %X\n", buf);
-
-//     int fd = open(I2C_DEVICE, O_RDWR);
-//     if(fd < 0) {
-
-//         sleep(1);
-//         fd = open(I2C_DEVICE, O_RDWR);
-//         if(fd < 0) {
-        
-//             fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
-//             exit(EXIT_FAILURE);
-//         }
-        
-//     }
-
-//     if(ioctl(fd,I2C_SLAVE,EEPROM_ADDRESS) < 0) {
-//         printf("ERREUR de setting de la communication avec 0x57 sur i2c\n");
-//         close(fd);
-//         exit(EXIT_FAILURE);
-//     }
-//     uint8_t buf[10];
+    uint8_t buf[10];
 
 
 
-// // lecture
-//     buf[0] = 0x00;
-//     if(write(fd,buf,1) != 1){
+// lecture
+    buf[0] = 0x00;
+    if(write(fd,buf,1) != 1){
 
-//         printf("erreur de selection du registre 00\n");
-//         exit(EXIT_FAILURE);
-//     }
+        printf("erreur de selection du registre 00\n");
+        exit(EXIT_FAILURE);
+    }
     
-//     if(read(fd,buf,1) != 1){
+    if(read(fd,buf,1) != 1){
 
-//         printf("erreur de lecture de 00\n");
-//         exit(EXIT_FAILURE);
-//     }
+        printf("erreur de lecture de 00\n");
+        exit(EXIT_FAILURE);
+    }
 
-//     printf("0x00 : %c\n", buf[0]);
+    printf("0x00 : %c\n", buf[0]);
 
-// // ecriture
-//     // buf[0] = EEUNLOCK;
-//     // buf[1] = 0x55;
+// ecriture
+    // buf[0] = EEUNLOCK;
+    // buf[1] = 0x55;
 
-//     // if(write(fd,buf,2) != 2){
+    // if(write(fd,buf,2) != 2){
 
-//     //     printf("erreur d'écriture de 0x55 dans EEUNLOCK\n");
-//     //     exit(EXIT_FAILURE);
-//     // }
+    //     printf("erreur d'écriture de 0x55 dans EEUNLOCK\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
-//     // buf[0] = EEUNLOCK;
-//     // buf[1] = 0xAA;
-//     // if(write(fd,buf,2) != 2){
+    // buf[0] = EEUNLOCK;
+    // buf[1] = 0xAA;
+    // if(write(fd,buf,2) != 2){
 
-//     //     printf("erreur d'écriture de 0xAA dans EEUNLOCK\n");
-//     //     exit(EXIT_FAILURE);
-//     // }
+    //     printf("erreur d'écriture de 0xAA dans EEUNLOCK\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
 //     buf[0] = 0x00;
 //     buf[1] = 'a';
@@ -101,15 +86,13 @@ int main(int argc, char const *argv[])
 //         exit(EXIT_FAILURE);
 //     }
 
-//     usleep(100);
 // // lecture
 //     buf[0] = 0x00;
-//     if(write(fd,buf,1) != 2){
+//     if(write(fd,buf,2) != 1){
 
 //         printf("erreur de selection du registre 00\n");
 //         //exit(EXIT_FAILURE);
 //     }
-//     usleep(100);
     
 //     if(read(fd,buf,1) != 1){
 
