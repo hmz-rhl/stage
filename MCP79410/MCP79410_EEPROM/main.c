@@ -91,7 +91,7 @@ int main(int argc, char const *argv[])
     if(write(fd,buf,1) != 1){
 
         printf("erreur de selection du registre 00\n");
-        exit(EXIT_FAILURE);
+        //exit(EXIT_FAILURE);
     }
     
     if(read(fd,buf,1) != 1){
