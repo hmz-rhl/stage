@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("0x00 : %c\n", buf[0]);
+    printf("avant, 0x00 : %02X\n", buf[0]);
     usleep(5000);
 
 //___________________ ecriture
@@ -108,7 +108,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("0x00 : %02X\n", buf[0]);
+    printf("après,0x00 : %02X\n", buf[0]);
 
 
     close(fd);
