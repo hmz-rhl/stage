@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define I2C_DEVICE "/dev/i2c-1"
 #define EEUNLOCK 0x09
