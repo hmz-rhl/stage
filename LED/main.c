@@ -8,10 +8,12 @@
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
+#include "../lib/expander-i2c.h"
 
 
 int i = 0;
 #define LED_DATA 29
+#define LOCK_P 21
 
 void wait500(){
         
@@ -3424,10 +3426,15 @@ void interruption(int sig){
 }
 int main(int argc, char *argv[])
 {
+        
+    expander_t *exp = expander_init(0x26);
+
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
-    pinMode(21, OUTPUT);
-    digitalWrite(21, 1);
+    
+    pinMode(LOCK_P,OUTPUT);
+    digitalWrite(LOCK_P, 1);
+    
     signal(SIGINT, interruption);
 
     while(1)
@@ -3435,12 +3442,8 @@ int main(int argc, char *argv[])
         
         // led_red();
         // led_reset();
-       digitalWrite(LED_DATA,1);
-       wait500();
-    
-        digitalWrite(LED_DATA,0);
-       wait500();
-    
+       expander_togglePinGPIO(exp, LOCK_D);
+       usleep(500);
         
     }
 
