@@ -41,9 +41,15 @@ int main(int argc, char const *argv[])
     uint8_t buf[10];
 // lecture
     buf[0] = 0xF0;
+    if(write(fd,buf,1) != 1){
+
+        printf("erreur de selectioj du registre F0\n");
+        exit(EXIT_FAILURE);
+    }
+    
     if(read(fd,buf,1) != 1){
 
-        printf("erreur d'écriture de aAbBcCdD dans F0\n");
+        printf("erreur de lecture de F0\n");
         exit(EXIT_FAILURE);
     }
 
@@ -74,20 +80,24 @@ int main(int argc, char const *argv[])
     if(write(fd,buf,2) != 2){
 
         printf("erreur d'écriture de aAbBcCdD dans F0\n");
-        //exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
 // lecture
     buf[0] = 0xF0;
+    if(write(fd,buf,1) != 1){
+
+        printf("erreur de selectioj du registre F0\n");
+        exit(EXIT_FAILURE);
+    }
+    
     if(read(fd,buf,1) != 1){
 
         printf("erreur de lecture de F0\n");
         exit(EXIT_FAILURE);
     }
 
-        printf("%X ", buf[0]);
-
-    putchar('\n');
+    printf("%s\n", buf);
 
 
     
