@@ -109,7 +109,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 // lecture
-    sleep(1);
+    usleep(5000);
     buf[0] = 0x00;
     if(write(fd,buf,1) != 1){
 
