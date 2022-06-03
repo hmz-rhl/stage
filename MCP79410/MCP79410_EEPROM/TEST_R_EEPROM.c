@@ -32,7 +32,7 @@ void  main()
 
 
 	// Lecture du nouveau buffer dans l'eeprom privé
-	
+
     printf("EE0 0x%2x. ", EEPROM_Read(EEPROM_PROTECTED_START));
 	printf("EE1 0x%2x. ", EEPROM_Read(EEPROM_PROTECTED_START+1));
 	printf("EE2 0x%2x. ", EEPROM_Read(EEPROM_PROTECTED_START+2));
