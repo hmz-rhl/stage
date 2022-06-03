@@ -26,7 +26,7 @@ void  main()
 
 	// ecriture du nouveau buffer
 
-	unsigned char test="aAbBcCdD";
+	unsigned char test[]="aAbBcCdD";
 
 	EEPROM_WriteProtected(EEPROM_PROTECTED_START,test);
 
