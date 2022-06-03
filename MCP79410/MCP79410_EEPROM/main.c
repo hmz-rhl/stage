@@ -86,6 +86,8 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
+    printf("0x00 : %c\n", buf[0]);
+
 // lecture
     buf[0] = 0x00;
     if(read(fd,buf,1) != 1){
@@ -93,6 +95,7 @@ int main(int argc, char const *argv[])
         printf("erreur de selection du registre 00\n");
         //exit(EXIT_FAILURE);
     }
+    printf("0x00 : %c\n", buf[0]);
     
     // if(read(fd,buf,2) != 2){
 
