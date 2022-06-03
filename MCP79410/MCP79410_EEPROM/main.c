@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
         close(fd);
         exit(EXIT_FAILURE);
     }
-    uint8_t buf[9];
+    uint8_t buf[10];
 // lecture
     buf[0] = 0xF0;
     if(read(fd,buf,1) != 1){
@@ -85,9 +85,9 @@ int main(int argc, char const *argv[])
 
 // lecture
     buf[0] = 0xF0;
-    if(read(fd,buf,1) != 1){
+    if(read(fd,buf,1) != 8){
 
-        printf("erreur d'écriture de aAbBcCdD dans F0\n");
+        printf("erreur de lecture de aAbBcCdD dans F0\n");
         exit(EXIT_FAILURE);
     }
 
