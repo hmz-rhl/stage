@@ -3439,9 +3439,6 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        
-        // led_red();
-        // led_reset();
        expander_togglePinGPIO(exp, LOCK_D);
        usleep(500);
         
