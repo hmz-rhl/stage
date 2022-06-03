@@ -15,6 +15,7 @@
         "initializer_list": "cpp",
         "xstring": "cpp",
         "eeprom.h": "c",
-        "utilities.h": "c"
+        "utilities.h": "c",
+        "stdint.h": "c"
     }
 }
