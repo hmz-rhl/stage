@@ -71,7 +71,7 @@ int main(int argc, char const *argv[])
     buf[1] = 'a';
 
 
-    if(write(fd,buf,2) != 2){
+    if(write(fd,buf,2) != 1){
 
         printf("erreur d'écriture de aAbBcCdD dans F0\n");
         //exit(EXIT_FAILURE);
