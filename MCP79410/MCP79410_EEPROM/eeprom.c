@@ -2,7 +2,7 @@
 
 eeprom_t *eeprom_init(void){
 
-    eeprom_t *eeprom = (eeprom_t*)malloc(eeprom_t);
+    eeprom_t *eeprom = (eeprom_t*)malloc(sizeof(eeprom_t));
 
     if(eeprom == NULL){
 
@@ -39,7 +39,7 @@ eeprom_t *eeprom_init(void){
 uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 
-    buff[0] = reg;
+    buf[0] = reg;
 
     if(write(eeprom->fd,eeprom->buf,1) != 1){
 
@@ -87,7 +87,7 @@ void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val){
     //il faut attendre au moins 5ms
         usleep(5000);
     }
-    else if(reg=>0xF0 && reg<=0xF7){
+    else if(reg>=0xF0 && reg<=0xF7){
 
         printf("Error %s: vous avez choisi un registre protege (0xF0 - 0xF7), utiliser plutot : eeprom_writeProtected()\n", reg);
 
