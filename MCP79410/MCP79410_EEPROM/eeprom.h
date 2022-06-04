@@ -31,4 +31,7 @@ void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val);
 uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg);
 void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val);
 
+uint8_t eeprom_readStatus(eeprom_t* eeprom);
+
 void eeprom_closeAndFree(eeprom_t* eeprom);
+
