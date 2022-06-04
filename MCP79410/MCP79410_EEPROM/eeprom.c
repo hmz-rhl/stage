@@ -159,7 +159,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
         }
-
+        usleep(5000);
         eeprom->buf[0] = reg;
         if(write(eeprom->fd,eeprom->buf,1) != 1){
 
@@ -193,6 +193,62 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
 
 void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
+    if(eeprom == NULL){
+
+        printf("Error %s: eeprom est NULL\n");
+        exit(EXIT_FAILURE);
+    }
+    if(reg>=0x00 && reg<=0x7F){
+
+
+        printf("Error %s: vous avez choisi un registre normal (0x00 - 0x7F), vous avez choisi : %02X utiliser plutot : eeprom_read()\n", __func__, reg);
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+
+    }
+    else if(reg>=0xF0 && reg<=0xF7){
+
+        eeprom->buf[0] = 0x09;
+        eeprom->buf[1] = 0x55;
+        if(write(eeprom->fd,eeprom->buf,2) != 2){
+
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
+
+            eeprom_closeAndFree(eeprom);
+            exit(EXIT_FAILURE);
+        }
+        usleep(5000);
+        eeprom->buf[0] = 0x09;
+        eeprom->buf[1] = 0xAA;
+        if(write(eeprom->fd,eeprom->buf,2) != 2){
+
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
+
+            eeprom_closeAndFree(eeprom);
+            exit(EXIT_FAILURE);
+        }
+
+        usleep(5000);
+        eeprom->buf[0] = reg;
+        eeprom->buf[1] = val;
+        if(write(eeprom->fd,eeprom->buf,2) != 2){
+
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
+
+            eeprom_closeAndFree(eeprom);
+            exit(EXIT_FAILURE);
+        }
+        
+        usleep(5000);
+        return eeprom->buf[0];
+        
+    }
+    else{
+
+        printf("Error %s: vous n'avez pas choisi un registre valide (0x00 - 0x7F), vous avez choisi : %02X\n", __func__, reg);
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+    }
 }
 
 uint8_t eeprom_readStatus(eeprom_t* eeprom){
