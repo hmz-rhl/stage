@@ -17,12 +17,16 @@ int main(int argc, char const *argv[])
 
     printf("status : %02X\n", eeprom_readStatus(eeprom));
     printf("\n\non lit le contenue de 0xF7: %02X\n", eeprom_readProtected(eeprom, 0xF7));
+    printf("status : %02X\n", eeprom_readStatus(eeprom));
     
     printf("On incremente le contenu de 0xF7\n");
     eeprom_writeProtected(eeprom, 0xF7, 0xAB);
+    printf("status : %02X\n", eeprom_readStatus(eeprom));
+
 
     printf("on lit le contenue de 0xF7: %02X\n", eeprom_readProtected(eeprom, 0xF7));
 
+    printf("status : %02X\n", eeprom_readStatus(eeprom));
 
     eeprom_closeAndFree(eeprom);
     
