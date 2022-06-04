@@ -103,7 +103,7 @@ void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val){
         printf("on écrit %02X sur 0x00\n", eeprom->buf[1]);
         if(write(eeprom->fd,eeprom->buf,2) != 2){
 
-            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
@@ -144,7 +144,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
         eeprom->buf[1] = 0x55;
         if(write(eeprom->fd,eeprom->buf,2) != 2){
 
-            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
@@ -154,7 +154,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
         eeprom->buf[1] = 0xAA;
         if(write(eeprom->fd,eeprom->buf,2) != 2){
 
-            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
@@ -163,7 +163,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
         eeprom->buf[0] = reg;
         if(write(eeprom->fd,eeprom->buf,1) != 1){
 
-            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
