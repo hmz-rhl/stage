@@ -13,10 +13,12 @@
 #include <errno.h>
 
 #define EEPROM_ADDRESS 0x57
+#define RTC_ADDRESS 0x6F
 
 typedef struct{
 
-    int fd;
+    int eeprom_fd; // pour l'eeprom
+    int rtc_fd; // pour la rtc
     uint8_t buf[128];
     // TODO : a mettre en place dans les fonction
     int error;
