@@ -44,14 +44,14 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
     if(eeprom == NULL){
 
         printf("Error %s: eeprom est NULL\n");
-        return;
+        exit(EXIT_FAILURE);
     }
     eeprom->buf[0] = reg;
     if(write(eeprom->fd,eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
 
-        close(eeprom->fd);
+        eeprom_closeAndFree(eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -60,7 +60,7 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
     if(read(eeprom->fd,eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-        close(eeprom->fd);
+        eeprom_closeAndFree(eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -88,7 +88,7 @@ void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
 
-            close(eeprom->fd);
+            eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
         }
     //il faut attendre au moins 5ms
