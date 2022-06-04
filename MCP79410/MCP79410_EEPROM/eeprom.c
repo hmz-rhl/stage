@@ -205,7 +205,7 @@ uint8_t eeprom_readStatus(eeprom_t* eeprom){
     eeprom->buf[0] = 0xFF;
     if(write(eeprom->fd,eeprom->buf,1) != 1){
 
-        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0xFF: %s\n", __func__, strerror(errno));
 
         eeprom_closeAndFree(eeprom);
         exit(EXIT_FAILURE);
