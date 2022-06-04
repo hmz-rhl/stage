@@ -33,6 +33,8 @@ eeprom_t *eeprom_init(void){
     }
 
     printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
+    
+    return eeprom;
 
 }
 
