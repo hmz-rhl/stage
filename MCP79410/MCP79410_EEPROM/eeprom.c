@@ -240,7 +240,6 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
         }
         
         usleep(5000);
-        return eeprom->buf[0];
         
     }
     else{
