@@ -39,7 +39,7 @@ eeprom_t *eeprom_init(void){
 uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 
-    buf[0] = reg;
+    eeprom->buf[0] = reg;
 
     if(write(eeprom->fd,eeprom->buf,1) != 1){
 
