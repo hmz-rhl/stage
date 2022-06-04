@@ -289,12 +289,14 @@ void eeprom_print(eeprom_t *eeprom){
         eeprom_closeAndFree(eeprom);
         exit(EXIT_FAILURE);
     }
-        
+    
+    printf("______________________________\n");
     for (size_t i = 0; i < 128; i++)
     {
         /* code */
-        printf("0x%02X : \t%02X\n",i, eeprom->buf[i]);
+        printf("| 0x%02X : \t%02X \t|\n",i, eeprom->buf[i]);
     }
+    printf("______________________________\n");
     
         usleep(4000);
 
