@@ -15,6 +15,9 @@ int main(int argc, char const *argv[])
 
     printf("on lit le contenue de 0x00: %02X\n", eeprom_read(eeprom, 0x00));
 
+    printf("on lit le contenue de 0xF0: %02X\n", eeprom_readProtected(eeprom, 0xF0));
+
+
     eeprom_closeAndFree(eeprom);
     
     return 0;
