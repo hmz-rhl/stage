@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
     for (size_t i = 0; i < 8; i++)
     {
         /* code */
-        printf("%02X : %02X\n", 0xF0+i, eeprom_readProtected(0XF0 + i))
+        printf("%02X : %02X\n", 0xF0+i, eeprom_readProtected(0XF0 + i));
     }
 
     printf("On ecrit 0xAA dans 0xF7\n");
@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
     for (size_t i = 0; i < 8; i++)
     {
         /* code */
-        printf("%02X : %02X\n", 0xF0+i, eeprom_readProtected(0XF0 + i))
+        printf("%02X : %02X\n", 0xF0+i, eeprom_readProtected(0XF0 + i));
     }
 
     eeprom_closeAndFree(eeprom);
