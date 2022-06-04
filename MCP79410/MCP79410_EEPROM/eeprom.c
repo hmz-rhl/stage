@@ -40,7 +40,7 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 
     eeprom->buf[0] = reg;
-
+    printf("%s write\n", __func__);
     if(write(eeprom->fd,eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", reg, __func__, strerror(errno));
@@ -49,6 +49,7 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
         exit(EXIT_FAILURE);
     }
     
+    printf("%s read\n", __func__);
 
     if(read(eeprom->fd,eeprom->buf,1) != 1){
 
