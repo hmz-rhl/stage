@@ -58,7 +58,7 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
         }
         
         
-
+        usleep(100);
         if(read(eeprom->fd,eeprom->buf,1) != 1){
 
             fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
@@ -151,7 +151,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
         }
         
         
-
+        usleep(100);
         if(read(eeprom->fd,eeprom->buf,1) != 1){
 
             fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
@@ -198,7 +198,7 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
         }
-        // usleep(5000);
+        usleep(4000);
         eeprom->buf[0] = 0x09;
         eeprom->buf[1] = 0xAA;
         if(write(eeprom->fd,eeprom->buf,2) != 2){

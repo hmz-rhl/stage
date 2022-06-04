@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     printf("on lit le contenue de 0x00: %02X\n", eeprom_read(eeprom, 0x00));
 
     
-    printf("\\on lit le contenue de 0xF0: %02X\n", eeprom_readProtected(eeprom, 0xF0));
+    printf("\n\non lit le contenue de 0xF0: %02X\n", eeprom_readProtected(eeprom, 0xF0));
     
     printf("On incremente le contenu de 0xF0\n");
     eeprom_writeProtected(eeprom, 0xF0, 0xAB);
