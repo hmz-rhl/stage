@@ -10,7 +10,7 @@ eeprom_t *eeprom_init(void){
         exit(EXIT_FAILURE);
     }
     eeprom->eeprom_fd = open("/dev/i2c-1", O_RDWR);
-    eeprom->rtc_eeprom_fd = open("/dev/i2c-1", O_RDWR);
+    eeprom->rtc_fd = open("/dev/i2c-1", O_RDWR);
 
     if(eeprom->eeprom_fd < 0) {
 
@@ -24,12 +24,12 @@ eeprom_t *eeprom_init(void){
         }
         
     }
-    if(eeprom->rtc_eeprom_fd < 0) {
+    if(eeprom->rtc_fd < 0) {
 
         // on retente après 1 seconde si jamais un bug
         sleep(1);
-        eeprom->rtc_eeprom_fd = open("/dev/i2c-1", O_RDWR);
-        if(eeprom->rtc_eeprom_fd < 0) {
+        eeprom->rtc_fd = open("/dev/i2c-1", O_RDWR);
+        if(eeprom->rtc_fd < 0) {
         
             fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
             exit(EXIT_FAILURE);
@@ -44,9 +44,9 @@ eeprom_t *eeprom_init(void){
         close(eeprom->eeprom_fd);
         exit(EXIT_FAILURE);
     }
-    if(ioctl(eeprom->rtc_eeprom_fd,I2C_SLAVE,RTC_ADDRESS) < 0) {
+    if(ioctl(eeprom->rtc_fd,I2C_SLAVE,RTC_ADDRESS) < 0) {
         printf("ERREUR de setting de la communication avec l'eeprom (0x6F) sur i2c\n");
-        close(eeprom->rtc_eeprom_fd);
+        close(eeprom->rtc_fd);
         exit(EXIT_FAILURE);
     }
 
@@ -209,7 +209,7 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
         eeprom->buf[0] = 0x09;
         eeprom->buf[1] = 0x55;
-        if(write(eeprom->rtc_eeprom_fd,eeprom->buf,2) != 2){
+        if(write(eeprom->rtc_fd,eeprom->buf,2) != 2){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
@@ -219,7 +219,7 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
         usleep(4000);
         eeprom->buf[0] = 0x09;
         eeprom->buf[1] = 0xAA;
-        if(write(eeprom->rtc_eeprom_fd,eeprom->buf,2) != 2){
+        if(write(eeprom->rtc_fd,eeprom->buf,2) != 2){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
