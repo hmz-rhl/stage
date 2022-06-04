@@ -10,8 +10,8 @@ int main(int argc, char const *argv[])
     eeprom_print(eeprom);
     eeprom_printProtected(eeprom);
 
-    eeprom_write(eeprom, 0x0F, ++eeprom_read(eeprom,0x0F));
-    eeprom_writeProtected(eeprom, 0xF0, ++eeprom_readProtected(eeprom,0xF0));
+    eeprom_write(eeprom, 0x0F, ++(eeprom_read(eeprom,0x0F)));
+    eeprom_writeProtected(eeprom, 0xF0, ++(eeprom_readProtected(eeprom,0xF0)));
 
     eeprom_print(eeprom);
     eeprom_printProtected(eeprom);
