@@ -198,7 +198,7 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
             eeprom_closeAndFree(eeprom);
             exit(EXIT_FAILURE);
         }
-        usleep(5000);
+        // usleep(5000);
         eeprom->buf[0] = 0x09;
         eeprom->buf[1] = 0xAA;
         if(write(eeprom->fd,eeprom->buf,2) != 2){
