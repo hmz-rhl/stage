@@ -38,7 +38,7 @@ eeprom_t *eeprom_init(void){
 
 }
 
-void eeprom_read(eeprom_t* eeprom, uint8_t reg){
+uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 
     if(eeprom == NULL){
