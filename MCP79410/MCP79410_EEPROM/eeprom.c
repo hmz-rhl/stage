@@ -140,26 +140,7 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
 
     }
     else if(reg>=0xF0 && reg<=0xF7){
-        // eeprom->buf[0] = 0x09;
-        // eeprom->buf[1] = 0x55;
-        // if(write(eeprom->fd,eeprom->buf,2) != 2){
 
-        //     fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
-
-        //     eeprom_closeAndFree(eeprom);
-        //     exit(EXIT_FAILURE);
-        // }
-        // usleep(5000);
-        // eeprom->buf[0] = 0x09;
-        // eeprom->buf[1] = 0xAA;
-        // if(write(eeprom->fd,eeprom->buf,2) != 2){
-
-        //     fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
-
-        //     eeprom_closeAndFree(eeprom);
-        //     exit(EXIT_FAILURE);
-        // }
-        // usleep(5000);
         eeprom->buf[0] = reg;
         if(write(eeprom->fd,eeprom->buf,1) != 1){
 
