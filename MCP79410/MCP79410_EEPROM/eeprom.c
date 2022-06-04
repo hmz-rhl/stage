@@ -308,7 +308,7 @@ void eeprom_print(eeprom_t *eeprom){
         exit(EXIT_FAILURE);
     }
     
-    printf("    EEPROM Registers    \n")
+    printf("    EEPROM Registers    \n");
     printf("________________________\n");
     for (size_t i = 0; i < 128; i++)
     {
