@@ -315,15 +315,57 @@ void eeprom_print(eeprom_t *eeprom){
         /* code */
         printf("| 0x%02X : \t%02X \t|\n",i, eeprom->buf[i]);
     }
-    printf("|______________________|\n");
+    printf("|_______________________|\n\n");
     
         usleep(4000);
 
 }
 
+
+void eeprom_printProtected(eeprom_t *eeprom){
+    if(eeprom == NULL){
+
+        printf("Error %s: eeprom est NULL\n");
+        exit(EXIT_FAILURE);
+    }
+
+
+    eeprom->buf[0] = 0xF0;
+    if(write(eeprom->eeprom_fd,eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x00: %s\n",  __func__, strerror(errno));
+
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    usleep(100);
+    if(read(eeprom->eeprom_fd,eeprom->buf,8) != 8){
+
+        fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("EEPROM Protected Registers\n");
+    printf("__________________________\n");
+    for (size_t i = 0; i < 8; i++)
+    {
+        /* code */
+        printf("| 0x%02X : \t%02X \t  |\n",i, eeprom->buf[i]);
+    }
+    printf("|_________________________|\n\n");
+    
+        usleep(4000);
+
+}
+
+
 void eeprom_closeAndFree(eeprom_t* eeprom){
 
     close(eeprom->eeprom_fd);
+    close(eeprom->rtc_fd);
     free(eeprom);
 }
 
