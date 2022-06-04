@@ -17,7 +17,7 @@
 typedef struct{
 
     int fd;
-    uint8_t buf[10];
+    uint8_t buf[128];
     // TODO : a mettre en place dans les fonction
     int error;
 

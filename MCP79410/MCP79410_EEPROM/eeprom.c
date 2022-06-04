@@ -264,8 +264,45 @@ uint8_t eeprom_readStatus(eeprom_t* eeprom){
 }
 
 
+void eeprom_print(eeprom_t *eeprom){
+    if(eeprom == NULL){
+
+        printf("Error %s: eeprom est NULL\n");
+        exit(EXIT_FAILURE);
+    }
+
+
+    eeprom->buf[0] = 0x00;
+    if(write(eeprom->fd,eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
+
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    usleep(100);
+    if(read(eeprom->fd,eeprom->buf,128) != 128){
+
+        fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
+        eeprom_closeAndFree(eeprom);
+        exit(EXIT_FAILURE);
+    }
+        
+    for (size_t i = 0; i < 128; i++)
+    {
+        /* code */
+        printf("0x%02X : \t%02X\n",i, eeprom->buf[i]);
+    }
+    
+        usleep(4000);
+
+}
+
 void eeprom_closeAndFree(eeprom_t* eeprom){
 
     close(eeprom->fd);
     free(eeprom);
 }
+
