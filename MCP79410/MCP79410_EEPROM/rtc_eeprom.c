@@ -461,7 +461,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     
     
     usleep(100);
-    if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,8) != 8){
+    if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
         rtc_eeprom_closeAndFree(rtc_eeprom);
@@ -469,6 +469,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     }
     return rtc_eeprom->buf[0];
 }
+
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     
     if(rtc_eeprom == NULL){
