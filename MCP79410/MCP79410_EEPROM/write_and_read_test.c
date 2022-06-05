@@ -19,6 +19,7 @@ int main(int argc, char const *argv[])
     printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
     rtc_writeSeconds(rtc_eeprom, 0x06);
     printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
+    rtc_startClock(rtc_eeprom);
     sleep(2);
     printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
 
