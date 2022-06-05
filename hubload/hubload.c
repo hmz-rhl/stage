@@ -97,7 +97,7 @@ void *thread_rfid(void *ptr)
 
 				sleep(1);
 			}
-   			while(PN532_GetFirmwareVersion(&pn532, buff) =! PN532_STATUS_OK) {
+   			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
         		fprintf(stderr, "fonction %s: Unable to get fw version of PN532: %s\n", __func__, pn532.log);
 				sleep(1);
