@@ -34,20 +34,25 @@ typedef struct{
     // TODO : a mettre en place dans les fonction
     int error;
 
-}eeprom_t;
+}rtc_eeprom_t;
 
-eeprom_t *eeprom_init(void);
+rtc_eeprom_t *rtc_eeprom_init(void);
 
-uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg);
-void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val);
 
-uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg);
-void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val);
 
-uint8_t eeprom_readStatus(eeprom_t* eeprom);
+uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg);
+void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val);
 
-void eeprom_print(eeprom_t *eeprom);
-void eeprom_printProtected(eeprom_t *eeprom);
+uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg);
+void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val);
 
-void eeprom_closeAndFree(eeprom_t* eeprom);
+uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom);
+
+void eeprom_print(rtc_eeprom_t *rtc_eeprom);
+void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
+
+// uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
+// void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+
+void rtc_eeprom_closeAndFree(rtc_eeprom_t *rtc_eeprom);
 
