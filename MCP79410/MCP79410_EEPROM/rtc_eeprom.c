@@ -337,7 +337,7 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
 
     if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,9) != 9){
 
-            fprintf(stderr, "fonction %s: erreur d'écriture(write()): indice i=%d: %s\n",  __func__,i, strerror(errno));
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()): %s\n",  __func__, strerror(errno));
 
             rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
