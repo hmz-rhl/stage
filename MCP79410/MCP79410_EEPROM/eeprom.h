@@ -1,3 +1,14 @@
+/**
+ * @file EEPROM.h
+ * @author Hamza RAHAL
+ * @brief header du driver pour piloter MCP79410
+ * @version 0.1
+ * @date 2022-06-04
+ * 
+ * @copyright Saemload (c) 2022
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPi.h>

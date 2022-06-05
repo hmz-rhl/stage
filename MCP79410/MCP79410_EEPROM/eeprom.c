@@ -1,5 +1,25 @@
+/**
+ * @file EEPROM.c
+ * @author Hamza RAHAL
+ * @brief driver pour piloter MCP79410
+ * @version 0.1
+ * @date 2022-06-04
+ * 
+ * @copyright Saemload (c) 2022
+ * 
+ */
+
 #include "eeprom.h"
 
+
+/**
+ ** 
+ * @brief   ouvre et configure l'interface i2c de la RP, instancie une variable de type eeprom_t
+ * 
+ *  
+ * @return  renvoi un pointeur sur la variable instanciée
+ *  
+ **/
 eeprom_t *eeprom_init(void){
 
     eeprom_t *eeprom = (eeprom_t*)malloc(sizeof(eeprom_t));
@@ -56,6 +76,17 @@ eeprom_t *eeprom_init(void){
 
 }
 
+
+/**
+ ** 
+ * @brief   lit le contenue d'un registre non protégée
+ * 
+ * @param   reg adresse en HEXA du registre à lire
+ * 
+ * 
+ * @return  la valeur lu sur 8 bits
+ *  
+ **/
 uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 
@@ -104,6 +135,16 @@ uint8_t eeprom_read(eeprom_t* eeprom, uint8_t reg){
 
 }
 
+/**
+ ** 
+ * @brief   ecrit un octet dans un registre non protégée
+ * 
+ * @param   reg adresse en HEXA du registre à lire
+ * @param   val valeur à écrire
+ * 
+ * 
+ *  
+ **/
 void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
 
@@ -142,6 +183,16 @@ void eeprom_write(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
 }
 
+/**
+ ** 
+ * @brief   lit le contenue d'un registre protégée
+ * 
+ * @param   reg adresse en HEXA du registre à lire
+ * 
+ * 
+ * @return  la valeur lu sur 8 bits
+ *  
+ **/
 uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
     
     if(eeprom == NULL){
@@ -190,6 +241,16 @@ uint8_t eeprom_readProtected(eeprom_t* eeprom, uint8_t reg){
     }
 }
 
+/**
+ ** 
+ * @brief   ecrit un octet dans un registre protégée
+ * 
+ * @param   reg adresse en HEXA du registre à lire
+ * @param   val valeur à écrire
+ * 
+ * 
+ *  
+ **/
 void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
 
     if(eeprom == NULL){
@@ -249,7 +310,14 @@ void eeprom_writeProtected(eeprom_t* eeprom, uint8_t reg, uint8_t val){
     }
 }
 
-
+/**
+ ** 
+ * @brief   lit le contenue du registre STATUS(0xFF)
+ * 
+ * 
+ * @return  la valeur de STATUS lu sur 8 bits
+ *  
+ **/
 uint8_t eeprom_readStatus(eeprom_t* eeprom){
 
     if(eeprom == NULL){
@@ -282,6 +350,12 @@ uint8_t eeprom_readStatus(eeprom_t* eeprom){
 }
 
 
+/**
+ ** 
+ * @brief   Affiche le contenue de l'eeprom non protégé sur la console
+ * 
+ *  
+ **/
 void eeprom_print(eeprom_t *eeprom){
     if(eeprom == NULL){
 
@@ -321,7 +395,12 @@ void eeprom_print(eeprom_t *eeprom){
 
 }
 
-
+/**
+ ** 
+ * @brief   Affiche le contenue de l'eeprom protégée
+ *
+ *  
+ **/
 void eeprom_printProtected(eeprom_t *eeprom){
     if(eeprom == NULL){
 
@@ -353,7 +432,7 @@ void eeprom_printProtected(eeprom_t *eeprom){
     for (size_t i = 0; i < 8; i++)
     {
         /* code */
-        printf("| 0x%02X : \t%02X \t  |\n",i, eeprom->buf[i]);
+        printf("| 0x%02X : \t%02X \t  |\n",i+0XF0, eeprom->buf[i]);
     }
     printf("|_________________________|\n\n");
     
@@ -361,7 +440,13 @@ void eeprom_printProtected(eeprom_t *eeprom){
 
 }
 
-
+/**
+ ** 
+ * @brief   libère les descripteurs ainsi que la mémoire allouée
+ * 
+ * 
+ *  
+ **/
 void eeprom_closeAndFree(eeprom_t* eeprom){
 
     close(eeprom->eeprom_fd);
