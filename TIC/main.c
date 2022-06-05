@@ -19,9 +19,9 @@ int main(int argc, char const *argv[])
 		fprintf(stderr, "fonction %s: Unable to set up WiringPi: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-    pinMode(2, INPUT);
+    // pinMode(2, INPUT);
 
-	pullUpDnControl(2, PUD_UP);
+	// pullUpDnControl(2, PUD_UP);
 
     wiringPiISR (2, INT_EDGE_FALLING,  &interruption);
 
