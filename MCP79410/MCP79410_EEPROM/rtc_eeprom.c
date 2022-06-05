@@ -76,7 +76,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
     rtc_eeprom->buf[0] = 0x07;
     rtc_eeprom->buf[1] = 0x88;
 
-    printf("on écrit %02X sur 0x88\n", rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x88\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0x88, strerror(errno));
@@ -173,7 +173,7 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         rtc_eeprom->buf[0] = reg;
         rtc_eeprom->buf[1] = val;
     
-        printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+        printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
         if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
@@ -497,7 +497,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     rtc_eeprom->buf[0] = 0x00;
     rtc_eeprom->buf[1] = val | (rtc_readSeconds(rtc_eeprom) & 0x80);
 
-    printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0, strerror(errno));
@@ -523,7 +523,7 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
     rtc_eeprom->buf[0] = 0x00;
     rtc_eeprom->buf[1] = 0x7F & (rtc_readSeconds(rtc_eeprom));
 
-    printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0, strerror(errno));
