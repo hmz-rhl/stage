@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-    wiringPiISR (2, INT_EDGE_FALLING,  &interruption);
+    wiringPiISR (2, INT_EDGE_BOTH,  &interruption);
 
     while(1);
 
