@@ -51,8 +51,8 @@ uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom);
 void eeprom_print(rtc_eeprom_t *rtc_eeprom);
 void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
 
-// uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
-// void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
+void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 
 void rtc_eeprom_closeAndFree(rtc_eeprom_t *rtc_eeprom);
 
