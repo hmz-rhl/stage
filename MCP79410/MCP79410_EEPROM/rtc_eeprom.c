@@ -366,7 +366,7 @@ uint8_t eeprom_readStatus(rtc_eeprom_t* rtc_eeprom){
 
 /**
  ** 
- * @brief   Affiche le contenue de l'rtc_eeprom non protégé sur la console
+ * @brief   Affiche le contenue de l'eeprom non protégé sur la console
  * 
  *  
  **/
@@ -411,7 +411,7 @@ void eeprom_print(rtc_eeprom_t *rtc_eeprom){
 
 /**
  ** 
- * @brief   Affiche le contenue de l'rtc_eeprom protégée
+ * @brief   Affiche le contenue de l'eeprom protégée
  *
  *  
  **/
