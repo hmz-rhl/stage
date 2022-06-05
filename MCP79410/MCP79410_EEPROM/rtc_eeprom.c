@@ -344,6 +344,8 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
             rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
+        usleep(4000);
+
     }
     
     
