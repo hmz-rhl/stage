@@ -80,6 +80,7 @@ typedef struct expander
     uint8_t buff[4];            // buffer contenant la derniere valeur ecrite ou lue
     char label[8][MAX_STRING];  // label des port GPIO pour l'affichage dans console
     uint8_t addr;
+    int8_t erreur;              // TODO :mettre en place un systeme d'erreur pour le debug
 
 }expander_t;
 

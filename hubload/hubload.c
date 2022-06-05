@@ -10,6 +10,7 @@
  */
 #include <mosquitto.h>
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -84,16 +85,7 @@ void *thread_rfid(void *ptr)
     int32_t uid_len = 0;
     printf("Hello!\r\n");
     PN532 pn532;
-    PN532_I2C_Init(&pn532);
-    if (PN532_GetFirmwareVersion(&pn532, buff) == PN532_STATUS_OK) {
-		
-        printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
-    } 
-    else 
-    {
-        
-    }
-    PN532_SamConfiguration(&pn532);
+
 
         
 
@@ -101,37 +93,45 @@ void *thread_rfid(void *ptr)
 
 		if(scan_activated){
 			
-			printf("Waiting for RFID/NFC card...\r\n");
+			while(PN532_I2C_Init(&pn532) < 0){
 
+				sleep(1);
+			}
+   			while(PN532_GetFirmwareVersion(&pn532, buff) =! PN532_STATUS_OK) {
+		
+        		fprintf(stderr, "fonction %s: Unable to get fw version of PN532: %s\n", __func__, pn532.log);
+				sleep(1);
+    		}
+
+			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
+    		PN532_SamConfiguration(&pn532);
+
+			printf("Waiting for RFID/NFC card...\r\n");
 			while(scan_activated)
 			{
 			
-				// printf("attente : %f", attente);
 				// Check if a card is available to read
 				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
 				if (uid_len == PN532_STATUS_ERROR) 
 				{
-					printf("no RFID detected\n");
+					fprintf(stderr, "fonction %s: %s\n", __func__, pn532.log);
 					fflush(stdout);
 				} 
 				else 
 				{
 
 					printf("\n Found card with UID: ");
-					// for (uint8_t i = 0; i < uid_len; i++) {
-					//     printf("%02x ", uid[i]);
-					// 	str[i]=uid[i];                
-					// }
+			
 					char message[256];
 					printf("%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x \n",uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 					
 					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
-					// mosquitto_publish(mosq,NULL,"up/scan",strlen(str),str,0,false);
 					printf("\r\n");
 					
 					break;
-					scan_activated = 0;				}
+					scan_activated = 0;				
+				}
 
 			}
 		
