@@ -20,8 +20,8 @@ int main(int argc, char const *argv[])
 		exit(EXIT_FAILURE);
 	}
     pinMode(2, INPUT);
-    
-	pullUpDnControl(PP_IN, PUD_OFF);
+
+	pullUpDnControl(2, PUD_OFF);
 
     wiringPiISR (2, INT_EDGE_BOTH,  &interruption);
 
