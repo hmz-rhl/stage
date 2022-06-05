@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
 
 	pullUpDnControl(2, PUD_DOWN);
 
-    wiringPiISR (2, INT_EDGE_BOTH,  &interruption);
+    wiringPiISR (2, INT_EDGE_FALLING,  &interruption);
 
     while(1);
 
