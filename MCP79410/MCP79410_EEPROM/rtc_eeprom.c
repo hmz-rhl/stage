@@ -334,10 +334,18 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
     {
         rtc_eeprom->buf[i] = 0xFF;
     }
-    
-    for (size_t i = 0; i < 16; i++)
+
+    if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,9) != 9){
+
+            fprintf(stderr, "fonction %s: erreur d'écriture(write()): indice i=%d: %s\n",  __func__,i, strerror(errno));
+
+            rtc_eeprom_closeAndFree(rtc_eeprom);
+            exit(EXIT_FAILURE);
+        }
+        usleep(5000);
+    for (size_t i = 1; i < 16; i++)
     {
-        if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,9) != 9){
+        if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf+1,8) != 8){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()): indice i=%d: %s\n",  __func__,i, strerror(errno));
 
