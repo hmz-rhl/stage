@@ -56,14 +56,14 @@ void user_key_interrupt(void){
 	char str[] = "1";
 	if(digitalRead(USER_KEY) == 1){
 
-		rc = mosquitto_publish(mosq, NULL, "up/btn/released", strlen(str), str, 2, false);
+		rc = mosquitto_publish(mosq, NULL, "up/btn/released", strlen("released"), "released", 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
 	else{
 
-		rc = mosquitto_publish(mosq, NULL, "up/btn/pressed", strlen(str), str, 2, false);
+		rc = mosquitto_publish(mosq, NULL, "up/btn/pressed", strlen("pressed"), "pressed", 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
