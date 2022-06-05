@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     // eeprom_printProtected(rtc_eeprom);
 
     printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
-    // rtc_writeSeconds(rtc_eeprom, 0x06);
+    rtc_writeSeconds(rtc_eeprom, 0x0F);
     printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
     rtc_startClock(rtc_eeprom);
     sleep(2);
