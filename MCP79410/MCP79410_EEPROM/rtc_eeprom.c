@@ -76,7 +76,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
     rtc_eeprom->buf[0] = 0x07;
     rtc_eeprom->buf[1] = 0x88;
 
-    printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+    printf("on écrit %02X sur 0x88\n", rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
