@@ -530,7 +530,7 @@ int main(int argc, char *argv[])
 
 	// lock_fb
 	pinMode(LOCK_FB, INPUT);
-	pullUpDnControl(LOCK_FB, PUD_OFF);
+	pullUpDnControl(LOCK_FB, PUD_DOWN);
 
 	pinMode(WD_TRIP, OUTPUT);
 	digitalWrite(WD_TRIP, 0);
