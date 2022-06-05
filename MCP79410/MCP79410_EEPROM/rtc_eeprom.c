@@ -475,7 +475,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     
     
     usleep(100);
-    if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,1) != 1){
+    if(read(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
         rtc_eeprom_closeAndFree(rtc_eeprom);
@@ -498,7 +498,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     rtc_eeprom->buf[1] = val | (rtc_readSeconds(rtc_eeprom) & 0x80);
 
     printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
-    if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
+    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0, strerror(errno));
 
