@@ -72,9 +72,10 @@ rtc_eeprom_t *rtc_eeprom_init(void){
 
     printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
 
+    usleep(100);
     //configuration
     rtc_eeprom->buf[0] = 0x07;
-    rtc_eeprom->buf[1] = 0x88;
+    rtc_eeprom->buf[1] = 0x08;
 
     printf("%s on écrit %02X sur 0x07\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
