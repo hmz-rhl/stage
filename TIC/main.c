@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
 	}
     pinMode(2, INPUT);
 
-	pullUpDnControl(2, PUD_DOWN);
+	pullUpDnControl(2, PUD_UP);
 
     wiringPiISR (2, INT_EDGE_FALLING,  &interruption);
 
