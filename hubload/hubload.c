@@ -493,7 +493,7 @@ int main(int argc, char *argv[])
 
     if(wiringPiSetup() < 0)
 	{
-		fprintf(stderr, "fonction %s: Unable to set up: %s\n", __func__, strerror(errno));
+		fprintf(stderr, "fonction %s: Unable to set up WiringPi: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
