@@ -30,7 +30,7 @@ typedef struct{
 
     int eeprom_fd; // pour l'eeprom
     int rtc_fd; // pour la rtc
-    uint8_t buf[128];
+    uint8_t buf[129];
     // TODO : a mettre en place dans les fonction
     int error;
 
@@ -46,6 +46,8 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val);
 uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg);
 void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val);
 
+void eeprom_setAll(rtc_eeprom_t* rtc_eeprom);
+
 uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom);
 
 void eeprom_print(rtc_eeprom_t *rtc_eeprom);
@@ -53,6 +55,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
 
 uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+void rtc_incrementeSeconds(rtc_eeprom_t* rtc_eeprom);
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);
