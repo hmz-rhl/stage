@@ -332,7 +332,7 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
     rtc_eeprom->buf[0] = 0x00;
     for (size_t i = 1; i < 129; i++)
     {
-        rtc_eeprom->buf[i] = 0xFF;
+        rtc_eeprom->buf[i] = 0x00;
     }
     
     if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,129) != 129){
