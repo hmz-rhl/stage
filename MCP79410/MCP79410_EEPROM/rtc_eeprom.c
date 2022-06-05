@@ -71,6 +71,8 @@ rtc_eeprom_t *rtc_eeprom_init(void){
     }
 
     printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
+
+    //configuration
     
     return rtc_eeprom;
 
@@ -467,6 +469,8 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
         rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
+    usleep(4000);
+    
     return rtc_eeprom->buf[0];
 }
 
@@ -487,7 +491,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
         rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
-    
+    usleep(4000);
     
 
 }
