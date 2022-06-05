@@ -55,6 +55,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
+void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);
 
 void rtc_eeprom_closeAndFree(rtc_eeprom_t *rtc_eeprom);
 
