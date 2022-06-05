@@ -87,7 +87,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
-    usleep(4000);
+    usleep(5000);
     return rtc_eeprom;
 
 }
@@ -132,7 +132,7 @@ uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
         }
         
 
-        usleep(4000);
+        usleep(5000);
         return rtc_eeprom->buf[0];
 
     }
@@ -184,7 +184,7 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
             exit(EXIT_FAILURE);
         }
     //il faut attendre au moins 5ms
-        usleep(4000);
+        usleep(5000);
     }
     else if(reg>=0xF0 && reg<=0xF7){
 
@@ -245,7 +245,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
         }
         
 
-        usleep(4000);
+        usleep(5000);
         return rtc_eeprom->buf[0];
         
     }
@@ -293,7 +293,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
             rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
-        usleep(4000);
+        usleep(5000);
         rtc_eeprom->buf[0] = 0x09;
         rtc_eeprom->buf[1] = 0xAA;
         if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -304,7 +304,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
             exit(EXIT_FAILURE);
         }
 
-        usleep(4000);
+        usleep(5000);
         rtc_eeprom->buf[0] = reg;
         rtc_eeprom->buf[1] = val;
         if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
@@ -315,7 +315,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
             exit(EXIT_FAILURE);
         }
         
-        usleep(4000);
+        usleep(5000);
         
     }
     else{
@@ -344,12 +344,12 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
             rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
-        usleep(4000);
+        usleep(5000);
 
     }
     
     
-    usleep(4000);
+    usleep(5000);
 }
 
 
@@ -434,7 +434,7 @@ void eeprom_print(rtc_eeprom_t *rtc_eeprom){
     }
     printf("|_______________________|\n\n");
     
-        usleep(4000);
+        usleep(5000);
 
 }
 
@@ -480,7 +480,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
     }
     printf("|_________________________|\n\n");
     
-        usleep(4000);
+        usleep(5000);
 
 }
 
@@ -510,7 +510,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
         rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
-    usleep(4000);
+    usleep(5000);
     
     return rtc_eeprom->buf[0];
 }
@@ -535,7 +535,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
-    usleep(4000);
+    usleep(5000);
     
 
 }
@@ -560,7 +560,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 //         exit(EXIT_FAILURE);
 //     }
 // //il faut attendre au moins 5ms
-//     usleep(4000);
+//     usleep(5000);
 
 // }
 
@@ -584,7 +584,7 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
-    usleep(4000);
+    usleep(5000);
     
 
 }
@@ -609,7 +609,7 @@ void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
-    usleep(4000);
+    usleep(5000);
     
 
 }
