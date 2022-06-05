@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
     eeprom_printProtected(rtc_eeprom);
 
     eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1);
-    eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(eeprom,0xF0) + 1);
+    eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1);
 
     eeprom_print(rtc_eeprom);
     eeprom_printProtected(rtc_eeprom);
