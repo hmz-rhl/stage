@@ -546,6 +546,8 @@ int main(int argc, char *argv[])
 	sleep(30);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
+	expander_setPullup(exp1, 0b00000000);
+	expander_setPullup(exp1, 0b00000000);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 	expander_closeAndFree(exp1);

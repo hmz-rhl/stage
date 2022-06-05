@@ -42,17 +42,11 @@ expander_t* expander_init(uint8_t addr){
     expander_setI2C(exp);
 
     usleep(1);
-    // pull up activé
-    exp->buff[0] = REG_GPPU;
-    exp->buff[1] = 0xFF;
-
-    if(write(exp->fd,exp->buff,2) != 2) {
-        printf("ERREUR d'ecriture sur GPPU\r\n");
-        exit(EXIT_FAILURE);
-    }
 
     return exp;
 }
+
+
 
 
 
@@ -190,7 +184,33 @@ void expander_setI2C(expander_t *exp){
 
 }
 
+/**
+ ** 
+ * @brief   configure les pullUp des gpio
+ * 
+ * @param   exp pointeur sur variable structuré de l'expander
+ * @param   val valeur des pull up en HEXA
+ *
+ * 
+ *  **/
+void expander_setPullup(expander_t * exp, uint8_t val){
 
+    if(exp == NULL || exp == 0)
+    {
+        printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exit(EXIT_FAILURE);
+    }
+    
+        // pull up activé
+    exp->buff[0] = REG_GPPU;
+    exp->buff[1] = val;
+
+    if(write(exp->fd,exp->buff,2) != 2) {
+        printf("ERREUR d'ecriture sur GPPU\r\n");
+        exit(EXIT_FAILURE);
+    }
+    usleep(100);
+}
 
 /**
  ** 
@@ -210,7 +230,7 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
     }
 
     /**
- * polarité du registre POL de l'expoander
+ * polarité du registre POL de l'expander
  **/
     exp->buff[0] = MCP23008_IPOL;
     exp->buff[1] = 0x00;
@@ -222,7 +242,7 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
     }
 
 /**
- * Selection du registre GPIO de l'expoander
+ * Selection du registre GPIO de l'expander
  **/
     exp->buff[0] = REG_GPIO; 
     if(write(exp->fd,exp->buff,1) != 1){
@@ -240,6 +260,7 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
         close(exp->fd);
         exit(EXIT_FAILURE);
     }
+    usleep(100);
     
     return exp->buff[0];
 
@@ -271,6 +292,7 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
     }
 
     uint8_t ret = expander_getAllPinsGPIO(exp);
+    usleep(100);
 
     return (ret >> pin) & 0x01;
 }
@@ -303,10 +325,11 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
     uint8_t nouveauGPIO = ancienGPIO | (0x01 << pin);
 
 
-    while(expander_getAllPinsGPIO(exp) != nouveauGPIO){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != nouveauGPIO && cpt < 5){
     /* Ecriture des gpio de l'expander
     **/
-
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -327,10 +350,12 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
             printf("ERREUR d'ecriture sur OLAT\r\n");
             exit(EXIT_FAILURE);
         }
-        #ifdef DEBUG
+    #ifdef DEBUG
         printf("mise a 1 de GPIO[%d] %s\n", pin, exp->label[pin]);
     #endif
     }
+    usleep(100);
+
 }
 
 
@@ -361,10 +386,12 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     uint8_t ancienGPIO = expander_getAllPinsGPIO(exp);
     uint8_t nouveauGPIO = ancienGPIO & ~(0x01 << pin);
 
-    while(expander_getAllPinsGPIO(exp) != nouveauGPIO){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != nouveauGPIO && cpt < 5){
 
     /* Ecriture des gpio de l'expander
-    **/
+    **/         
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -443,10 +470,12 @@ void expander_setAllPinsGPIO(expander_t *exp){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-
-    while(expander_getAllPinsGPIO(exp) != 0xFF){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != 0xFF && cpt < 5){
     /* Ecriture des gpio de l'expander
     **/
+
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -469,6 +498,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
         printf("mise a 1 de tous les GPIO\n");
     #endif
     }
+    usleep(100);
+
 }
 
 
@@ -489,10 +520,11 @@ void expander_resetAllPinsGPIO(expander_t *exp){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-
-    while(expander_getAllPinsGPIO(exp) != 0x00){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != 0x00 && cpt < 5){
     /* Ecriture des gpio de l'expander
     **/
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -513,6 +545,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
         printf("mise a 0 de tous les GPIO\n");
     #endif
     }
+    usleep(100);
+
 }
 
 
@@ -539,8 +573,10 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
-
-    while(expander_getAllPinsGPIO(exp) != (0x01 << pin)){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != (0x01 << pin) && cpt < 5){
+        
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -561,6 +597,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("mise a 1 du seul GPIO[%d] %s\n", pin, exp->label[pin]);
         #endif
     }
+    usleep(100);
+
 }
 
 
@@ -587,7 +625,10 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin doit etre compris entre 0 et 7\n", __func__);
         exit(EXIT_FAILURE);
     }
-    while(expander_getAllPinsGPIO(exp) != (0x01 << pin)){
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != (0x01 << pin) && cpt < 5){
+        
+        cpt++;
         exp->buff[0] = MCP23008_IODIR;
         exp->buff[1] = 0x00;
 
@@ -609,6 +650,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
         printf("mise a 1 du seul GPIO[%d]\n", pin);
     #endif
     }
+    usleep(100);
+    
 }
 
 /**
@@ -635,8 +678,10 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         printf("ERREUR d'ecriture sur IODIR\r\n");
         exit(EXIT_FAILURE);
     }
+    int cpt = 0;
+    while(expander_getAllPinsGPIO(exp) != config && cpt < 5){
 
-    while(expander_getAllPinsGPIO(exp) != config){
+        cpt++;
         exp->buff[0] = REG_OLAT;
         exp->buff[1] = config;
     #ifdef DEBUG
@@ -651,6 +696,8 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
         printf("mise a %02x du GPIO\n", config);
     #endif
     }
+    usleep(100);
+
 }
 
 /**
@@ -670,7 +717,7 @@ void expander_printGPIO(expander_t *exp){
     }
 
 /**
- * polarité du registre POL de l'expoander
+ * polarité du registre POL de l'expander
  **/
     exp->buff[0] = MCP23008_IPOL;
     exp->buff[1] = 0x00;
@@ -713,6 +760,8 @@ void expander_printGPIO(expander_t *exp){
     }
     printf("_______________________________\n");
     putchar('\n');
+    usleep(100);
+
 }
 
 

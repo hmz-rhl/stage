@@ -93,6 +93,8 @@ void expander_closeI2C(expander_t*);
 
 void expander_setI2C(expander_t*);
 
+void expander_setPullup(expander_t * exp, uint8_t val);
+
 uint8_t expander_getAllPinsGPIO(expander_t*);
 uint8_t expander_getPinGPIO(expander_t*, uint8_t);
 
