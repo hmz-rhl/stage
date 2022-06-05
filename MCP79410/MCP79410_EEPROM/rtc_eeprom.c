@@ -73,7 +73,19 @@ rtc_eeprom_t *rtc_eeprom_init(void){
     printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
 
     //configuration
-    
+    rtc_eeprom->buf[0] = 0x07;
+    rtc_eeprom->buf[1] = 0x88;
+
+    printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+    if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
+
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+//il faut attendre au moins 5ms
+    usleep(4000);
     return rtc_eeprom;
 
 }
@@ -484,13 +496,16 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[0] = 0x00;
     rtc_eeprom->buf[1] = val | (rtc_readSeconds(rtc_eeprom) & 0x80);
-    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
-        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x00: %s\n",  __func__, strerror(errno));
+    printf("on écrit %02X sur 0x00\n", rtc_eeprom->buf[1]);
+    if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
         rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
+//il faut attendre au moins 5ms
     usleep(4000);
     
 
