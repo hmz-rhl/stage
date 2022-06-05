@@ -83,7 +83,7 @@ void *thread_rfid(void *ptr)
 
     uint32_t pn532_error = PN532_ERROR_NONE;
     int32_t uid_len = 0;
-    printf("Hello!\r\n");
+    printf("Hello je suis le thread RFID !\r\n");
     PN532 pn532;
 
 
