@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include <wirinPi.h>
+#include <wiringPi.h>
 // #include <wiringSerial.h>
 
 void interruption(void){
@@ -21,6 +21,8 @@ int main(int argc, char const *argv[])
 	}
 
     wiringPiISR (2, INT_EDGE_FALLING,  &interruption);
+
+    while(1);
 
     return 0;
 }
