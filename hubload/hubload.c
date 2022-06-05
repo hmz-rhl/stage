@@ -517,7 +517,7 @@ int main(int argc, char *argv[])
 	wiringPiISR (USER_KEY, INT_EDGE_BOTH,  &user_key_interrupt) ;
 
 	pinMode(SM_TIC_D, INPUT);
-	pullUpDnControl(SM_TIC_D, PUD_OFF);
+	pullUpDnControl(SM_TIC_D, PUD_DOWN);
 
 	pinMode(CF4, INPUT);
 	pullUpDnControl(CF4, PUD_DOWN);
