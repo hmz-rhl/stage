@@ -460,7 +460,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     }
     
     
-    usleep(100);
+    usleep(4000);
     if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
