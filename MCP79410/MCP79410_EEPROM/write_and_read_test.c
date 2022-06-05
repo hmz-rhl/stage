@@ -5,7 +5,7 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    eeprom_t *eeprom = eeprom_init();
+    eeprom_t *eeprom = rtc_eeprom_init();
 
     eeprom_print(eeprom);
     eeprom_printProtected(eeprom);
@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     eeprom_print(eeprom);
     eeprom_printProtected(eeprom);
 
-    eeprom_closeAndFree(eeprom);
+    rtc_eeprom_closeAndFree(eeprom);
     
     return 0;
 }

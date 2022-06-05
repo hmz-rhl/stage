@@ -102,7 +102,7 @@ uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         
@@ -111,7 +111,7 @@ uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
         if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,1) != 1){
 
             fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         
@@ -123,13 +123,13 @@ uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
     else if(reg>=0xF0 && reg<=0xF7){
 
         printf("Error %s: vous avez choisi un registre protege (0xF0 - 0xF7), vous avez choisi : %02X utiliser plutot : eeprom_readProtected()\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     else{
 
         printf("Error %s: vous n'avez pas choisi un registre valide (0x00 - 0x7F), vous avez choisi : %02X\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
 
@@ -164,7 +164,7 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
     //il faut attendre au moins 5ms
@@ -204,7 +204,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
 
 
         printf("Error %s: vous avez choisi un registre normal (0x00 - 0x7F), vous avez choisi : %02X utiliser plutot : eeprom_read()\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
 
     }
@@ -215,7 +215,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         
@@ -224,7 +224,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
         if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,8) != 8){
 
             fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         
@@ -236,7 +236,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
     else{
 
         printf("Error %s: vous n'avez pas choisi un registre valide (0x00 - 0x7F), vous avez choisi : %02X\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
 }
@@ -262,7 +262,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
 
         printf("Error %s: vous avez choisi un registre normal (0x00 - 0x7F), vous avez choisi : %02X utiliser plutot : eeprom_read()\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
 
     }
@@ -274,7 +274,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         usleep(4000);
@@ -284,7 +284,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
 
@@ -295,7 +295,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n",  __func__, reg, strerror(errno));
 
-            eeprom_closeAndFree(rtc_eeprom);
+            rtc_eeprom_closeAndFree(rtc_eeprom);
             exit(EXIT_FAILURE);
         }
         
@@ -305,7 +305,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
     else{
 
         printf("Error %s: vous n'avez pas choisi un registre valide (0x00 - 0x7F), vous avez choisi : %02X\n", __func__, reg);
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
 }
@@ -330,7 +330,7 @@ uint8_t eeprom_readStatus(rtc_eeprom_t* rtc_eeprom){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0xFF: %s\n", __func__, strerror(errno));
 
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -339,7 +339,7 @@ uint8_t eeprom_readStatus(rtc_eeprom_t* rtc_eeprom){
     if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,1) != 1){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -369,7 +369,7 @@ void eeprom_print(rtc_eeprom_t *rtc_eeprom){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x00: %s\n",  __func__, strerror(errno));
 
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -378,7 +378,7 @@ void eeprom_print(rtc_eeprom_t *rtc_eeprom){
     if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,128) != 128){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -414,7 +414,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x00: %s\n",  __func__, strerror(errno));
 
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
@@ -423,7 +423,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
     if(read(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,8) != 8){
 
         fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
-        eeprom_closeAndFree(rtc_eeprom);
+        rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
     
