@@ -553,7 +553,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[1] = (val % 10) + ((val - val%10)/10)<< 4;
 
-    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x01\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 1, strerror(errno));
@@ -577,7 +577,7 @@ void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[1] = (val % 10) + ((val - val%10)/10)<< 4;
 
-    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x02\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 2, strerror(errno));
@@ -601,7 +601,7 @@ void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[1] = (val % 10) + ((val - val%10)/10)<< 4;
 
-    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x04\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 4, strerror(errno));
@@ -626,7 +626,7 @@ void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[1] = (val % 10) + ((val - val%10)/10)<< 4;
 
-    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x05\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 5, strerror(errno));
@@ -650,7 +650,7 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[1] = (val % 10) + ((val - val%10)/10)<< 4;
 
-    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    printf("%s on écrit %02X sur 0x06\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 6, strerror(errno));
