@@ -16,23 +16,23 @@ int main(int argc, char const *argv[])
     // eeprom_print(rtc_eeprom);
     // eeprom_printProtected(rtc_eeprom);
     // eeprom_setAll(rtc_eeprom);
-    rtc_stopClock(rtc_eeprom);
-    rtc_writeMinutes(rtc_eeprom, 23);
-    rtc_writeHours(rtc_eeprom, 2);
-    rtc_writeDate(rtc_eeprom, 06);
-    rtc_writeMonth(rtc_eeprom, 6);
-    rtc_writeYear(rtc_eeprom, 22);
-    rtc_startClock(rtc_eeprom);
+    // rtc_stopClock(rtc_eeprom);
+    // rtc_writeMinutes(rtc_eeprom, 23);
+    // rtc_writeHours(rtc_eeprom, 2);
+    // rtc_writeDate(rtc_eeprom, 06);
+    // rtc_writeMonth(rtc_eeprom, 6);
+    // rtc_writeYear(rtc_eeprom, 22);
+    // rtc_startClock(rtc_eeprom);
 
-        eeprom_print(rtc_eeprom);
-    eeprom_printProtected(rtc_eeprom);
-    eeprom_setAll(rtc_eeprom);
+    // eeprom_print(rtc_eeprom);
+    // eeprom_printProtected(rtc_eeprom);
+    // eeprom_setAll(rtc_eeprom);
     printf("Date : %X/%X/%X, Time : %X:%X:%X\n", rtc_readDate(rtc_eeprom), rtc_readMonth(rtc_eeprom), rtc_readYear(rtc_eeprom), rtc_readHours(rtc_eeprom), rtc_readMinutes(rtc_eeprom), rtc_readSeconds(rtc_eeprom));
     
     
     
     
-    rtc_startClock(rtc_eeprom);
+    // rtc_startClock(rtc_eeprom);
 
     // printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
     // rtc_writeSeconds(rtc_eeprom, 0x0F);
