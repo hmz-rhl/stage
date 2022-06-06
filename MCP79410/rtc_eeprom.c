@@ -968,7 +968,7 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
     }
 
     rtc_eeprom->buf[0] = 0x00;
-    rtc_eeprom->buf[1] = 0xFF;
+    rtc_eeprom->buf[1] = 0xF9;
 
     printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
