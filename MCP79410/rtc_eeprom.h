@@ -81,6 +81,11 @@ void rtc_enableVbat(rtc_eeprom_t * rtcc_eeprom);
 void rtc_mode24h(rtc_eeprom_t *rtc_eeprom);
 void rtc_mode12h(rtc_eeprom_t *rtc_eeprom);
 
+void rtc_printDate(rtc_eeprom_t *rtc_eeprom);
+void rtc_printTime(rtc_eeprom_t *rtc_eeprom);
+
+
+
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);

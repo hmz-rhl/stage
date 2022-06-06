@@ -1096,6 +1096,18 @@ void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
 
 }
 
+void rtc_printDate(rtc_eeprom_t *rtc_eeprom){
+
+    printf("Date : %X/%X/%X\n", rtc_readDate(rtc_eeprom), rtc_readMonth(rtc_eeprom), rtc_readYear(rtc_eeprom));
+
+}
+
+void rtc_printTime(rtc_eeprom_t *rtc_eeprom){
+
+    printf("Time : %X:%X:%X\n", rtc_readHours(rtc_eeprom), rtc_readMinutes(rtc_eeprom), rtc_readSeconds(rtc_eeprom));
+
+
+}
 
 
 
