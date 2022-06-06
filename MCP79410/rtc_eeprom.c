@@ -882,7 +882,7 @@ uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 }
 
 
-uint8_t rtc_isVbatEnabled(rtc_eeprom){
+uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
 
         if(rtc_eeprom == NULL){
 
