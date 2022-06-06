@@ -56,8 +56,6 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
 uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 
-void rtc_incrementeSeconds(rtc_eeprom_t* rtc_eeprom);
-
 void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom);
 
@@ -78,6 +76,7 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom);
 uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom);
 
 uint8_t rtc_isVbatEnabled(rtc_eeprom_t * rtcc_eeprom);
+void rtc_enableVbat(rtc_eeprom_t * rtcc_eeprom);
 
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);

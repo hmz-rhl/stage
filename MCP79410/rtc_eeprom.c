@@ -912,29 +912,52 @@ uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
     
     return (rtc_eeprom->buf[0] & 0x08) >> 3;
 }
-// void rtc_incrementeSeconds(rtc_eeprom_t* rtc_eeprom){
+
+void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
+
+    if(rtc_eeprom == NULL){
+
+        printf("Error %s: rtc_eeprom est NULL\n");
+        exit(EXIT_FAILURE);
+    }
+
+    rtc_eeprom->buf[0] = 0x03;
     
-//     if(rtc_eeprom == NULL){
+    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
 
-//         printf("Error %s: rtc_eeprom est NULL\n");
-//         exit(EXIT_FAILURE);
-//     }
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x03: %s\n",  __func__, strerror(errno));
 
-//     rtc_eeprom->buf[0] = 0x00;
-//     rtc_eeprom->buf[1] = (0x7F & (1+rtc_readSeconds(rtc_eeprom) )) ;
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    usleep(100);
+    if(read(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
 
-//     printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
-//     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
+        fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+    usleep(5000);
 
-//         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0, strerror(errno));
+    rtc_eeprom->buf[1] = 0x08 | rtc_eeprom->buf[0];
+    rtc_eeprom->buf[0] = 0x03;
 
-//         rtc_eeprom_closeAndFree(rtc_eeprom);
-//         exit(EXIT_FAILURE);
-//     }
-// //il faut attendre au moins 5ms
-//     usleep(5000);
+    printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
-// }
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0xFF dans 0x00: %s\n", __func__, strerror(errno));
+
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+//il faut attendre au moins 5ms
+    usleep(5000);
+
+}
+
+
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
     
