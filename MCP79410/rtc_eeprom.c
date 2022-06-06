@@ -565,7 +565,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 }
 
-void rtc_writeMHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
+void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
