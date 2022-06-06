@@ -32,12 +32,6 @@ int main(int argc, char const *argv[])
     printf("OSCRUN : %d\n", rtc_isOscRunning(rtc_eeprom));
     printf("VBATEN : %d\n", rtc_isVbatEnabled(rtc_eeprom));
 
-    rtc_enableVbat(rtc_eeprom);
-
-    printf("PWRFAIL : %d\n", rtc_isPwrFail(rtc_eeprom));
-    printf("OSCRUN : %d\n", rtc_isOscRunning(rtc_eeprom));
-    printf("VBATEN : %d\n", rtc_isVbatEnabled(rtc_eeprom));
-
     rtc_printDate(rtc_eeprom);    
     rtc_printTime(rtc_eeprom);    
     
