@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
     // eeprom_print(rtc_eeprom);
     // eeprom_printProtected(rtc_eeprom);
     // eeprom_setAll(rtc_eeprom);
+    rtc_startClock(rtc_eeprom);
     printf("PWRFAIL : %d\n", rtc_isPwrFail(rtc_eeprom));
     printf("OSCRUN : %d\n", rtc_isOscRunning(rtc_eeprom));
 
@@ -35,7 +36,6 @@ int main(int argc, char const *argv[])
     
     
     
-    // rtc_startClock(rtc_eeprom);
 
     // printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
     // rtc_writeSeconds(rtc_eeprom, 0x0F);
