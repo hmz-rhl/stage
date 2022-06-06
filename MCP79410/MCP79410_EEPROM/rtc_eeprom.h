@@ -60,6 +60,19 @@ void rtc_incrementeSeconds(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 void rtc_readMinutes(rtc_eeprom_t* rtc_eeprom);
 
+void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+void rtc_readHours(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+void rtc_readDate(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+void rtc_readMonth(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+void rtc_readYear(rtc_eeprom_t* rtc_eeprom);
+
+
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);
 

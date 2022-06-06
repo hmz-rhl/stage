@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
     rtc_writeHours(rtc_eeprom, 2);
     rtc_writeDate(rtc_eeprom, 06);
     rtc_writeMonth(rtc_eeprom, 6);
-    rtc_writeYear(rtc_eeprom, 2022);
+    rtc_writeYear(rtc_eeprom, 22);
     rtc_startClock(rtc_eeprom);
     // printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
     // rtc_writeSeconds(rtc_eeprom, 0x0F);
