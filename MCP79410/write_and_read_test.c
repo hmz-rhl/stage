@@ -32,7 +32,7 @@ int main(int argc, char const *argv[])
     
     
     
-    
+    rtc_stopClock(rtc_eeprom);
     rtc_startClock(rtc_eeprom);
 
     // printf("sec: %02X \n", rtc_readSeconds(rtc_eeprom));
