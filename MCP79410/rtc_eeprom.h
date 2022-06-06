@@ -75,8 +75,10 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom);
 
 uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom);
 
-uint8_t rtc_isVbatEnabled(rtc_eeprom_t * rtcc_eeprom);
-void rtc_enableVbat(rtc_eeprom_t * rtcc_eeprom);
+uint8_t rtc_isVbatEnabled(rtc_eeprom_t * rtc_eeprom);
+void rtc_enableVbat(rtc_eeprom_t * rtc_eeprom);
+
+void rtc_enableExtOscillator(rtc_eeprom_t * rtc_eeprom);
 
 void rtc_mode24h(rtc_eeprom_t *rtc_eeprom);
 void rtc_mode12h(rtc_eeprom_t *rtc_eeprom);
