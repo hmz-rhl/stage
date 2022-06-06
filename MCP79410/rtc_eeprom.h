@@ -73,6 +73,8 @@ uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val);
 uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom);
 
+uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom);
+
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);

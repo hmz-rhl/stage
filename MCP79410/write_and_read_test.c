@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
     // eeprom_print(rtc_eeprom);
     // eeprom_printProtected(rtc_eeprom);
     // eeprom_setAll(rtc_eeprom);
+    printf("PWRFAIL : %d\n", rtc_isPwrFail(rtc_eeprom));
     printf("Date : %X/%X/%X, Time : %X:%X:%X\n", rtc_readDate(rtc_eeprom), rtc_readMonth(rtc_eeprom), rtc_readYear(rtc_eeprom), rtc_readHours(rtc_eeprom), rtc_readMinutes(rtc_eeprom), rtc_readSeconds(rtc_eeprom));
     
     
