@@ -28,6 +28,7 @@ int main(int argc, char const *argv[])
     // eeprom_printProtected(rtc_eeprom);
     // eeprom_setAll(rtc_eeprom);
     // rtc_startClock(rtc_eeprom);
+    rtc_enableExtOsc(rtc_eeprom);
     printf("PWRFAIL : %d\n", rtc_isPwrFail(rtc_eeprom));
     printf("OSCRUN : %d\n", rtc_isOscRunning(rtc_eeprom));
     printf("VBATEN : %d\n", rtc_isVbatEnabled(rtc_eeprom));
