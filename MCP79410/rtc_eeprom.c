@@ -666,7 +666,7 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
 
 
-void rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
+uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
@@ -756,7 +756,7 @@ void rtc_readDate(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0];
 }
 
-void rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
+uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
