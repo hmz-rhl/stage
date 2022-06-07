@@ -144,10 +144,11 @@ void *thread_rfid(void *ptr)
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
 					printf("\r\n");
 					
-					sleep(1);
 					break;
 								
 				}
+				sleep(1);
+
 
 			}
 		
