@@ -894,7 +894,12 @@ uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0];
 }
 
-
+/**
+ ** 
+ * @brief   Vérifie si il y a un problème de démarrage 
+ *
+ *  
+ **/
 uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -927,7 +932,12 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 }
 
 
-
+/**
+ ** 
+ * @brief   Vérifie si l'oscilloscope à bien démarrer 
+ *
+ *  
+ **/
 uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -960,6 +970,12 @@ uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 }
 
 
+/**
+ ** 
+ * @brief   Vérifie si  
+ *
+ *  
+ **/
 uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
 
         if(rtc_eeprom == NULL){
@@ -991,6 +1007,13 @@ uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
     return (rtc_eeprom->buf[0] & 0x08) >> 3;
 }
 
+
+/**
+ ** 
+ * @brief   Active  
+ *
+ *  
+ **/
 void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -1198,6 +1221,13 @@ void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
 
 }
 
+
+/**
+ ** 
+ * @brief   
+ *
+ *  
+ **/
 void rtc_enableExtOsc(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){

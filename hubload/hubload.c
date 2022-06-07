@@ -74,16 +74,8 @@ void user_key_interrupt(void){
 }
 
 void tic_interrupt(void){
-	int rc;
-	char str[128];
-	sprintf(str, "%lld", temp);;
-	compteur_tic++;
 
-	
-	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen("released"), "released", 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
+	compteur_tic++;
 
 }
 
@@ -203,7 +195,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[9]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown"};
+    char *topics[9]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown","down/tic/reset"};
 
     rc = mosquitto_subscribe_multiple(mosq,NULL,9,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
@@ -364,6 +356,11 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		scan_activated = 0;
 	}
 
+	else if(!strcmp(msg->topic, "down/tic/reset")){
+		
+		compteur_tic = 0;
+	}
+
 
 
 }
@@ -498,6 +495,13 @@ void publish_values(struct mosquitto *mosq)
 	}
 
 	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+
+	char str_tic[128];
+	sprintf(str_tic, "%lld", compteur_tic);
+	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen(str_tic), str_tic, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
