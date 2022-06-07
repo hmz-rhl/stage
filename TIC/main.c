@@ -8,7 +8,7 @@
 
 void interruption(void){
 
-    printf("donnée !\n");
+    printf("Tic 1Wh !\n");
 
 }
 int main(int argc, char const *argv[])
