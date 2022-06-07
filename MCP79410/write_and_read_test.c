@@ -7,14 +7,14 @@ int main(int argc, char const *argv[])
     /* code */
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
 
-    eeprom_print(rtc_eeprom);
-    eeprom_printProtected(rtc_eeprom);
+    eeprom_print(rtc_eeprom); // On lit l'EEPROM
+    eeprom_printProtected(rtc_eeprom); // On lit l'EEPROM Protege
 
-    eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1);
-    eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1);
+    eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1); // On ecrit 0x0F dans l'adresse n+1 de l'EEPROM 
+    eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1); // On ecrit dans l'EEPROM Protege
 
-    eeprom_print(rtc_eeprom);
-    eeprom_printProtected(rtc_eeprom);
+    eeprom_print(rtc_eeprom); // On affiche l'EEPROM 
+    eeprom_printProtected(rtc_eeprom); // ON affiche l'EEPROM Protege
 
 
     // eeprom_setAll(rtc_eeprom);
