@@ -501,6 +501,7 @@ void publish_values(struct mosquitto *mosq)
 
 	char str_tic[128];
 	sprintf(str_tic, "%llu", compteur_tic);
+	printf("tic : %s\n", str_tic);
 	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen(str_tic), str_tic, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
