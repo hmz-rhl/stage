@@ -114,7 +114,6 @@ void *thread_rfid(void *ptr)
 			}
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
-        		fprintf(stderr, "fonction %s: Unable to get fw version of PN532: %s\n", __func__, pn532.log);
 				sleep(1);
     		}
 
@@ -129,7 +128,6 @@ void *thread_rfid(void *ptr)
 				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
 				if (uid_len == PN532_STATUS_ERROR) 
 				{
-					fprintf(stderr, "fonction %s: %s\n", __func__, pn532.log);
 					fflush(stdout);
 				} 
 				else 
