@@ -25,7 +25,7 @@
 
 #include "../lib/MCP3202.h"
 
-//Pins BCM
+//Pins Wpi
 #define LOCK_P 21
 #define CP_PWM 23
 #define I2C_D 8 // Pin de data I2C
@@ -55,6 +55,8 @@ unsigned long long historique_Wh = 0;
 
 
 void user_key_interrupt(void){
+
+	printf("%s: Début de routine\n",__func__);
 	int rc;
 	char str[] = "1";
 	if(digitalRead(USER_KEY) == 1){
@@ -71,11 +73,15 @@ void user_key_interrupt(void){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
+	printf("%s: Fin de routine\n",__func__);
 }
 
 void tic_interrupt(void){
 
+	printf("%s: debut de routine\n",__func__);
 	compteur_tic++;
+	printf("%s: Fin de routine\n",__func__);
+
 
 }
 
@@ -501,7 +507,7 @@ void publish_values(struct mosquitto *mosq)
 
 	char str_tic[128];
 	sprintf(str_tic, "%llu", compteur_tic);
-	printf("tic : %s\n", str_tic);
+	//printf("tic : %s\n", str_tic);
 	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen(str_tic), str_tic, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
