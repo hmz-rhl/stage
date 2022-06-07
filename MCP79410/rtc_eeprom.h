@@ -23,8 +23,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define EEPROM_ADDRESS 0x57
-#define RTC_ADDRESS 0x6F
+#define EEPROM_ADDRESS 0x57 // Adresse de l'EEPROM du MCP79410
+#define RTC_ADDRESS 0x6F // Adresse du RTC du MCP79410
 
 typedef struct{
 
