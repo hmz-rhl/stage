@@ -17,7 +17,7 @@
  * @brief   ouvre et configure l'interface i2c de la RP, instancie une variable de type rtc_eeprom_t
  * 
  *  
- * @return  renvoi un pointeur sur la variable instanciée
+ * @return  renvoie un pointeur sur la variable instanciée
  *  
  **/
 rtc_eeprom_t *rtc_eeprom_init(void){
@@ -34,7 +34,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
 
     if(rtc_eeprom->eeprom_fd < 0) {
 
-        // on retente après 1 seconde si jamais un bug
+        // on retente après 1 seconde si jamais il y a un bug
         sleep(1);
         rtc_eeprom->eeprom_fd = open("/dev/i2c-1", O_RDWR);
         if(rtc_eeprom->eeprom_fd < 0) {
@@ -46,7 +46,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
     }
     if(rtc_eeprom->rtc_fd < 0) {
 
-        // on retente après 1 seconde si jamais un bug
+        // on retente après 1 seconde si jamais il y a un bug
         sleep(1);
         rtc_eeprom->rtc_fd = open("/dev/i2c-1", O_RDWR);
         if(rtc_eeprom->rtc_fd < 0) {
@@ -95,7 +95,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
 
 /**
  ** 
- * @brief   lit le contenue d'un registre non protégée
+ * @brief   lit le contenue d'un registre non protégé
  * 
  * @param   reg adresse en HEXA du registre à lire
  * 
@@ -327,6 +327,13 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 }
 
 
+/**
+ ** 
+ * @brief   met chaque registre de l'eeprom à 0xFF
+ * 
+ *
+ *
+ **/
 void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
 
     for (size_t i = 1; i < 9; i++)
@@ -484,7 +491,12 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
 
 }
 
-
+/**
+ ** 
+ * @brief   Affiche le nombre de secondes de l'heure
+ *
+ *  
+ **/
 uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -515,6 +527,12 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0] & 0x7F;
 }
 
+/**
+ ** 
+ * @brief   Ecrit le nombre de secondes de l'heure
+ *
+ *  
+ **/
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     
     if(rtc_eeprom == NULL){
@@ -541,6 +559,12 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 }
 
 
+/**
+ ** 
+ * @brief   Ecrit le nombre de minutes de l'heure
+ *
+ *  
+ **/
 void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
@@ -565,6 +589,12 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 }
 
+/**
+ ** 
+ * @brief   Ecrit le nombre d'heures de l'heure de la RTC
+ *
+ *  
+ **/
 void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
@@ -589,6 +619,14 @@ void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 }
 
+/**
+ ** 
+ * @brief   ecrit la date dans la RTC
+ *
+ * @param   val valeur à écrire
+ * 
+ * 
+ **/
 void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
@@ -613,7 +651,12 @@ void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 }
 
-
+/**
+ ** 
+ * @brief   Ecrit le numero du mois dans la date 
+ *
+ *  
+ **/
 void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
@@ -638,6 +681,12 @@ void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 }
 
+/**
+ ** 
+ * @brief   Ecrit l'année dans la date 
+ *
+ *  
+ **/
 void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
@@ -665,7 +714,12 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
 
 
-
+/**
+ ** 
+ * @brief   Affiche le nombre de minutes de l'heure
+ *
+ *  
+ **/
 uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -696,6 +750,12 @@ uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0] & 0x7F;
 }
 
+/**
+ ** 
+ * @brief   Affiche le nombre d'heures de l'heure de la RTC
+ *
+ *  
+ **/
 uint8_t rtc_readHours(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -726,6 +786,12 @@ uint8_t rtc_readHours(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0] & 0x1F;
 }
 
+/**
+ ** 
+ * @brief   Affiche la date complete
+ *
+ *  
+ **/
 uint8_t rtc_readDate(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -756,6 +822,12 @@ uint8_t rtc_readDate(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0] & 0x07;
 }
 
+/**
+ ** 
+ * @brief   Affiche le mois de la date
+ *
+ *  
+ **/
 uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -786,6 +858,12 @@ uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
     return rtc_eeprom->buf[0] & 0x1F;
 }
 
+/**
+ ** 
+ * @brief   Affiche l'année de la date
+ *
+ *  
+ **/
 uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -957,6 +1035,12 @@ void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
 
 }
 
+/**
+ ** 
+ * @brief   Change le format de l'heure en 24h
+ *
+ *  
+ **/
 void rtc_mode24h(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -1001,6 +1085,12 @@ void rtc_mode24h(rtc_eeprom_t *rtc_eeprom){
 
 }
 
+/**
+ ** 
+ * @brief   Change le format de l'heure en 12h
+ *
+ *  
+ **/
 void rtc_mode12h(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -1046,6 +1136,12 @@ void rtc_mode12h(rtc_eeprom_t *rtc_eeprom){
 
 }
 
+/**
+ ** 
+ * @brief   Démarrage de la clock
+ *
+ *  
+ **/
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
     
     if(rtc_eeprom == NULL){
@@ -1071,6 +1167,12 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
 
 }
 
+/**
+ ** 
+ * @brief   Arrêt de la clock
+ *
+ *  
+ **/
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
     
     if(rtc_eeprom == NULL){
@@ -1141,13 +1243,24 @@ void rtc_enableExtOsc(rtc_eeprom_t* rtc_eeprom){
 }
 
 
-
+/**
+ ** 
+ * @brief   Affiche la date complète sur le terminal
+ *
+ *  
+ **/
 void rtc_printDate(rtc_eeprom_t *rtc_eeprom){
 
     printf("Date : %X/%X/%X\n", rtc_readDate(rtc_eeprom), rtc_readMonth(rtc_eeprom), rtc_readYear(rtc_eeprom));
 
 }
 
+/**
+ ** 
+ * @brief   Affiche l'heure complète sur le terminal
+ *
+ *  
+ **/
 void rtc_printTime(rtc_eeprom_t *rtc_eeprom){
 
     printf("Time : %X:%X:%X\n", rtc_readHours(rtc_eeprom), rtc_readMinutes(rtc_eeprom), rtc_readSeconds(rtc_eeprom));
