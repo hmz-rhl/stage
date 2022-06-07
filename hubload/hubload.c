@@ -110,11 +110,21 @@ void *thread_rfid(void *ptr)
 			
 			while(PN532_I2C_Init(&pn532) < 0){
 
-				sleep(1);
+				for (size_t i = 0; i < 10; i++)
+				{
+					/* code */
+					delay(99);
+				}
+				
 			}
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
-				sleep(1);
+				for (size_t i = 0; i < 10; i++)
+				{
+					/* code */
+					delay(99);
+				}
+				
     		}
 
 			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
@@ -145,14 +155,23 @@ void *thread_rfid(void *ptr)
 					break;
 								
 				}
-				sleep(1);
+				for (size_t i = 0; i < 10; i++)
+				{
+					/* code */
+					delay(99);
+				}
+
 
 
 			}
 		
 		}
 		else{
-			sleep(1);
+				for (size_t i = 0; i < 10; i++)
+				{
+					/* code */
+					delay(99);
+				}
 		}
 
 
