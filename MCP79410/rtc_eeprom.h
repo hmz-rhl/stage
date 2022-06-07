@@ -55,10 +55,39 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
 
 uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom);
 void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val);
-void rtc_incrementeSeconds(rtc_eeprom_t* rtc_eeprom);
 
 void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val);
-void rtc_readMinutes(rtc_eeprom_t* rtc_eeprom);
+uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+uint8_t rtc_readHours(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+uint8_t rtc_readDate(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom);
+
+void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val);
+uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom);
+
+uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom);
+
+uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom);
+
+uint8_t rtc_isVbatEnabled(rtc_eeprom_t * rtc_eeprom);
+void rtc_enableVbat(rtc_eeprom_t * rtc_eeprom);
+
+void rtc_enableExtOsc(rtc_eeprom_t * rtc_eeprom);
+
+void rtc_mode24h(rtc_eeprom_t *rtc_eeprom);
+void rtc_mode12h(rtc_eeprom_t *rtc_eeprom);
+
+void rtc_printDate(rtc_eeprom_t *rtc_eeprom);
+void rtc_printTime(rtc_eeprom_t *rtc_eeprom);
+
+
+
 
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom);
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom);
