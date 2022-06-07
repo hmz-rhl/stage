@@ -46,9 +46,9 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); // Permet
 uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg); // Permet de lire un registre dans l'EEPROM Protégée
 void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); // Permet d'écrire dans l'EEPROM Protégée
 
-void eeprom_setAll(rtc_eeprom_t* rtc_eeprom); // Active les états des EEPROMS
+void eeprom_setAll(rtc_eeprom_t* rtc_eeprom); // Set a OxFF les registres
 
-uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom); // Lit l'état de l'EEPROM
+uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom); //lit le contenue du registre STATUS(0xFF)
 
 void eeprom_print(rtc_eeprom_t *rtc_eeprom);
 void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom);
@@ -92,5 +92,5 @@ void rtc_printTime(rtc_eeprom_t *rtc_eeprom); // Affiche l'heure ( Heure Minutes
 void rtc_startClock(rtc_eeprom_t* rtc_eeprom); // Lance un cronomètre
 void rtc_stopClock(rtc_eeprom_t* rtc_eeprom); // Stop le chronomètre
 
-void rtc_eeprom_closeAndFree(rtc_eeprom_t *rtc_eeprom); // Libère la mémoire d
+void rtc_eeprom_closeAndFree(rtc_eeprom_t *rtc_eeprom); // Libère la mémoire allouée
 
