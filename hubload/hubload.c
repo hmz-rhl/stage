@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include <mosquitto.h>
+#include <mosquitto.h> // Broker MQTT
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -25,14 +25,15 @@
 
 #include "../lib/MCP3202.h"
 
+//Pins BCM
 #define LOCK_P 21
 #define CP_PWM 23
-#define I2C_D 8
-#define I2C_C 9
+#define I2C_D 8 // Pin de data I2C
+#define I2C_C 9 // Pin de clock I2C
 #define SM_TIC_D 2
 #define USER_KEY 3
-#define MOSI 12
-#define MISO 13
+#define MOSI 12 // Pin du MOSI SPI
+#define MISO 13 // Pin du MISO SPI
 #define SCLK 14
 #define PP_IN 22
 #define WD_TRIP 24
@@ -49,6 +50,8 @@ struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
 int user_key_clicked = 0;
+int compteur_tic = 0;
+unsigned long long historique_Wh = 0;
 
 
 void user_key_interrupt(void){
@@ -68,6 +71,20 @@ void user_key_interrupt(void){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
+}
+
+void tic_interrupt(void){
+	int rc;
+	char str[128];
+	sprintf(str, "%lld", temp);;
+	compteur_tic++;
+
+	
+	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen("released"), "released", 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+
 }
 
 void *thread_rfid(void *ptr)
@@ -518,6 +535,8 @@ int main(int argc, char *argv[])
 
 	pinMode(SM_TIC_D, INPUT);
 	pullUpDnControl(SM_TIC_D, PUD_OFF);
+    wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &tic_interrupt);
+
 
 	pinMode(CF4, INPUT);
 	pullUpDnControl(CF4, PUD_DOWN);
