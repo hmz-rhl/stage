@@ -5,7 +5,7 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init(); // Initialisation de la communicatio
 
     eeprom_print(rtc_eeprom); // On lit l'EEPROM
     eeprom_printProtected(rtc_eeprom); // On lit l'EEPROM Protege
