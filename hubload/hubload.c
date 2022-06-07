@@ -122,7 +122,7 @@ void *thread_rfid(void *ptr)
     		PN532_SamConfiguration(&pn532);
 
 			printf("Waiting for RFID/NFC card...\r\n");
-			while(scan_activated)
+			while(1)
 			{
 			
 				// Check if a card is available to read
@@ -144,8 +144,9 @@ void *thread_rfid(void *ptr)
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
 					printf("\r\n");
 					
+					sleep(1);
 					break;
-					scan_activated = 0;				
+								
 				}
 
 			}
