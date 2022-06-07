@@ -247,6 +247,8 @@ int PN532_ReadPassiveTarget(
     int length = PN532_CallFunction(pn532, PN532_COMMAND_INLISTPASSIVETARGET,
                         buff, sizeof(buff), params, sizeof(params), timeout);
     if (length < 0) {
+
+        pn532->log("No card found!");
         return PN532_STATUS_ERROR; // No card found
     }
     // Check only 1 card with up to a 7 byte UID is present.
