@@ -426,7 +426,7 @@ void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom)
     for (size_t i = 0; i < 8; i++)
     {
         eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
-        if(eeprom_readProtected(rtc_eeprom, rtc_eeprom->buf[0xF0 + i]) == 0x00)
+        if(eeprom_readProtected(rtc_eeprom, 0xF0 + i) == 0x00)
         {
             printf("%s: 0x00 was Successfuly written on %02X \n",__func__, 0xF0 + i);
             rtc_eeprom->error = 1;
