@@ -98,7 +98,7 @@ void interruption(void){
 
     printf("energie : %d Wh\n", eeprom_getWh());
 
-    printf("puissance : %d W\n", (eeprom_getWh()/temps)*3600);
+    printf("puissance : %d W\n", (eeprom_getWh()/temps));
 
 }
 
@@ -107,6 +107,7 @@ int main(int argc, char const *argv[])
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
     eeprom_resetAllProtected(rtc_eeprom);
     eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
+    rtc_printTime(rtc_eeprom);
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
     if(wiringPiSetup() < 0)
