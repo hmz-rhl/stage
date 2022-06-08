@@ -944,7 +944,7 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 
 /**
  ** 
- * @brief   Vérifie si l'oscilloscope à bien démarrer 
+ * @brief   Vérifie si l'oscillateur à bien démarrer 
  *
  *  
  **/
