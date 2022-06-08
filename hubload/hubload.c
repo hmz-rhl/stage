@@ -146,7 +146,7 @@ void *thread_rfid(void *ptr)
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
 					printf("\r\n");
 					
-					scan_activated = 0;
+					//scan_activated = 0;
 					break;
 								
 				}
