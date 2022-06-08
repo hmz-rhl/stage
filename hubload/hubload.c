@@ -53,6 +53,21 @@ int user_key_clicked = 0;
 unsigned long long compteur_tic = 0;
 unsigned long long historique_Wh = 0;
 
+void Sleep(uint32_t time) {
+
+    struct timespec timenow;
+    struct timespec timestart;
+    clock_gettime(CLOCK_MONOTONIC, &timestart);
+    while (1) {
+
+		delay(5);
+        clock_gettime(CLOCK_MONOTONIC, &timenow);
+        if ((timenow.tv_sec - timestart.tv_sec) * 1000 + \
+            (timenow.tv_nsec - timestart.tv_nsec) / 1000000 > time) {
+            break;
+        }
+    }
+}
 
 void user_key_interrupt(void){
 
@@ -110,21 +125,11 @@ void *thread_rfid(void *ptr)
 			
 			while(PN532_I2C_Init(&pn532) < 0){
 
-				for (size_t i = 0; i < 10; i++)
-				{
-					/* code */
-					delay(99);
-				}
-				
+				Sleep(1);
 			}
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
-				for (size_t i = 0; i < 10; i++)
-				{
-					/* code */
-					delay(99);
-				}
-				
+				Sleep(1);
     		}
 
 			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
@@ -155,23 +160,14 @@ void *thread_rfid(void *ptr)
 					break;
 								
 				}
-				for (size_t i = 0; i < 10; i++)
-				{
-					/* code */
-					delay(99);
-				}
-
+				Sleep(1);
 
 
 			}
 		
 		}
 		else{
-				for (size_t i = 0; i < 10; i++)
-				{
-					/* code */
-					delay(99);
-				}
+			Sleep(1);
 		}
 
 
@@ -363,7 +359,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		expander_resetPinGPIO(expander, LOCK_D);
 		digitalWrite(LOCK_P,1);
 
-		sleep(1);
+		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
 		expander_closeAndFree(expander);
@@ -592,7 +588,7 @@ int main(int argc, char *argv[])
 	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	sleep(30);
+	Sleep(30);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
 	expander_setPullup(exp1, 0b00000000);
@@ -603,7 +599,7 @@ int main(int argc, char *argv[])
 	expander_closeAndFree(exp2);
 // on ouvre la prise on sait jamais
 	digitalWrite(LOCK_P, 1);
-	sleep(1);
+	Sleep(1);
 	digitalWrite(LOCK_P, 0);
 	
 
@@ -715,7 +711,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "fonction %s: Error mosquitto_loop: %s\n", __func__, mosquitto_strerror(rc));
 
 			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
-			sleep(30);
+			Sleep(30);
 
 			// initialisation mosquitto
 			rc = mosquitto_lib_init();
@@ -773,7 +769,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			sleep(1);
+			Sleep(1);
 			
             tentatives = 0;
 
