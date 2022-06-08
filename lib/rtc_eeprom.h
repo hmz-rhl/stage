@@ -39,6 +39,8 @@ typedef struct{
 rtc_eeprom_t *rtc_eeprom_init(void);
 
 
+uint8_t int2bcd(uint8_t val);
+uint8_t bcd2int(uint8_t val); 
 
 uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg); // Permet de lire un registre de l'EEPROM
 void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); // Permet d'écrire dans l'EEPROM Libre
