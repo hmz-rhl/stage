@@ -36,7 +36,7 @@ void interruption(void){
 
 
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-    unsigned long temps;
+    double temps;
 
     eeprom_printProtected(rtc_eeprom);
 
@@ -73,16 +73,16 @@ void interruption(void){
     if(test == 0)
     {
         debut=time(NULL);
-        temps = (unsigned long) difftime( fin, debut);
+        temps = difftime( fin, debut);
         test = 1;
-        printf("temps : %f\n",temps);
+        printf("temps : %f \n",temps);
     }
     else
     {
         fin=time(NULL);
-        temps = (unsigned long) difftime( debut, fin);
+        temps = difftime( debut, fin);
         test = 0;
-         printf("temps : %f\n",temps);
+        printf("temps : %f \n",temps);
     }
 
     rtc_eeprom_closeAndFree(rtc_eeprom);
