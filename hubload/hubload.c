@@ -112,6 +112,8 @@ void *thread_rfid(void *ptr)
 
 		if(scan_activated){
 			
+			Sleep(1);
+
 			while(PN532_I2C_Init(&pn532) < 0){
 
 				Sleep(1);
@@ -150,7 +152,6 @@ void *thread_rfid(void *ptr)
 					break;
 								
 				}
-				Sleep(1);
 
 
 			}
