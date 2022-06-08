@@ -10,6 +10,19 @@
 #define SM_TIC_D 2
 //unsigned long long compteur_tic = 0;
 
+
+uint16_t eeprom_getWh()
+{
+    rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    uint8_t val1 = eeprom_readProtected (rtc_eeprom, 0xF0);
+    uint8_t val2 = eeprom_readProtected (rtc_eeprom, 0xF1);
+    uint16_t result = ((val2 << 8) | val1);
+
+    return result; 
+
+}
+
+
 void interruption(void){
     // registre   F1 F0     F1 F0      F1 F0     F1 F0   
     // passé de 0x00 00 a 0x00 01 ou 0x00 FF a 0x01 00
@@ -53,6 +66,8 @@ void interruption(void){
 
     eeprom_printProtected(rtc_eeprom);
     rtc_eeprom_closeAndFree(rtc_eeprom);
+
+    printf("Nombre Wh : %d \n", eeprom_getWh());
 
 }
 
