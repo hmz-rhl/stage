@@ -589,7 +589,7 @@ int main(int argc, char *argv[])
 	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	Sleep(30);
+	usleep(10000000);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
 	expander_setPullup(exp1, 0b00000000);
