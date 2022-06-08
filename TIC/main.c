@@ -2,15 +2,18 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-
+#include <time.h>
 #include <wiringPi.h>
 #include "../lib/rtc_eeprom.h"
 // #include <wiringSerial.h>
 
 #define SM_TIC_D 2
-//unsigned long long compteur_tic = 0;
 
+    time_t debut=time(NULL); // Variable de temps 1
+    time_t fin=time(NULL);   // Variable de temps 2
 
+    int test = 0; // Variable pour switcher entre debut-fin et fin_debut
+ 
 uint16_t eeprom_getWh()
 {
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
@@ -24,8 +27,8 @@ uint16_t eeprom_getWh()
 
 
 void interruption(void){
-    // registre   F1 F0     F1 F0      F1 F0     F1 F0   
-    // passé de 0x00 00 a 0x00 01 ou 0x00 FF a 0x01 00
+    // registre   F1 F0     F1 F0        F1 F0     F1 F0   
+    // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
 
     // 1) on incrémente le bite de poids faible a chaque intérruption
     // 2) Quand il atteint la valeur max ( 0xFF ) on le passe a zéro et on incrémente le 2e bite
@@ -61,13 +64,27 @@ void interruption(void){
        uint8_t val_F0 = eeprom_readProtected(rtc_eeprom,0xF0);
        eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
     }
+    
+    if(test == 0)
+    {
+        debut=time(NULL);
+        unsigned long temps = (unsigned long) difftime( fin, debut);
+        test = 1;
+        printf("temps : %f\n",temps);
+    }
+    else
+    {
+        fin=time(NULL);
+        unsigned long temps = (unsigned long) difftime( debut, fin);
+        test = 0;
+         printf("temps : %f\n",temps);
+    }
 
-   
-
-    eeprom_printProtected(rtc_eeprom);
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
-    printf("Nombre Wh : %d \n", eeprom_getWh());
+    printf("energie : %d Wh\n", eeprom_getWh());
+
+    printf("puissance : %d W\n", (eeprom_getWh()/temps)*3600);
 
 }
 
