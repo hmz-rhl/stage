@@ -107,7 +107,7 @@ int main(int argc, char const *argv[])
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
     eeprom_resetAllProtected(rtc_eeprom);
     eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
-    eeprom_printProtected(rtc_eeprom);
+    eeprom_print(rtc_eeprom);
     rtc_printTime(rtc_eeprom);
     printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
     rtc_startClock(rtc_eeprom);
