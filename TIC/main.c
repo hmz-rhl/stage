@@ -12,7 +12,7 @@
     time_t debut=0; // Variable de temps 1
     time_t fin=0;   // Variable de temps 2
 
-    int test = 0; // Variable pour switcher entre debut-fin et fin_debut
+    int test = -1; // Variable pour switcher entre debut-fin et fin_debut
  
 uint16_t eeprom_getWh()
 {
@@ -65,6 +65,11 @@ void interruption(void){
        eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
     }
 
+    if(test==-1)
+    {
+        fin=time(NULL);
+        test = 0;
+    }
     if(test == 0)
     {
         debut=time(NULL);
