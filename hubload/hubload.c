@@ -2,7 +2,7 @@
  * @file hubload.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.2
+ * @version 0.3
  * @date 2022-05-23
  * 
  * @copyright Copyright (c) 2022
@@ -53,7 +53,7 @@ int user_key_clicked = 0;
 unsigned long long compteur_tic = 0;
 unsigned long long historique_Wh = 0;
 
-void Sleep(uint32_t time) {
+void Sleep(uint time) {
 
 	usleep(1000000*time);
 }
@@ -584,8 +584,8 @@ int main(int argc, char *argv[])
 	Sleep(10);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
-	expander_setPullup(exp1, 0b00000000);
-	expander_setPullup(exp1, 0b00000000);
+	expander_setPullup(exp1, 0XFF);
+	expander_setPullup(exp1, 0XFF);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 	expander_closeAndFree(exp1);
