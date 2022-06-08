@@ -261,7 +261,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
  ** 
  * @brief   ecrit un octet dans un registre protégée
  * 
- * @param   reg adresse en HEXA du registre à lire
+ * @param   reg adresse en HEXA du registre où écrire
  * @param   val valeur à écrire
  * 
  * 
@@ -357,6 +357,41 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
     }
     
     
+}
+
+
+/**
+ ** 
+ * @brief   met chaque registre de l'eeprom protege à 0x00
+ * 
+ *
+ *
+ **/
+void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom){
+    
+    for (size_t i = 0; i < 8; i++)
+    {
+        eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
+
+    }
+
+}
+
+
+/**
+ ** 
+ * @brief   met chaque registre de l'eeprom de l'eeprom protege à 0x00
+ * 
+ *
+ *
+ **/
+void eeprom_setAllProtected(rtc_eeprom_t* rtc_eeprom){
+    
+    for (size_t i = 0; i < 8; i++)
+    {
+        eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0xFF);
+    }
+
 }
 
 

@@ -360,6 +360,16 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
 }
 
 
+void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom){
+    
+    for (size_t i = 0; i < 8; i++)
+    {
+        eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
+
+    }
+
+}
+
 /**
  ** 
  * @brief   lit le contenue du registre STATUS(0xFF)

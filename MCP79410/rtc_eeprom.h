@@ -48,6 +48,8 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); 
 
 void eeprom_setAll(rtc_eeprom_t* rtc_eeprom); // Set a OxFF les registres
 
+void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
+
 uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom); //lit le contenue du registre STATUS(0xFF)
 
 void eeprom_print(rtc_eeprom_t *rtc_eeprom);
