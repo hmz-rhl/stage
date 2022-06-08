@@ -55,18 +55,7 @@ unsigned long long historique_Wh = 0;
 
 void Sleep(uint32_t time) {
 
-    struct timespec timenow;
-    struct timespec timestart;
-    clock_gettime(CLOCK_MONOTONIC, &timestart);
-    while (1) {
-
-		delay(5);
-        clock_gettime(CLOCK_MONOTONIC, &timenow);
-        if ((timenow.tv_sec - timestart.tv_sec) * 1000 + \
-            (timenow.tv_nsec - timestart.tv_nsec) / 1000000 > time) {
-            break;
-        }
-    }
+	usleep(1000000*time);
 }
 
 void user_key_interrupt(void){
@@ -589,7 +578,7 @@ int main(int argc, char *argv[])
 	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	usleep(10000000);
+	Sleep(10);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
 	expander_setPullup(exp1, 0b00000000);
