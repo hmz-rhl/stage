@@ -9,8 +9,8 @@
 
 #define SM_TIC_D 2
 
-    time_t debut=time(NULL); // Variable de temps 1
-    time_t fin=time(NULL);   // Variable de temps 2
+    time_t debut=0; // Variable de temps 1
+    time_t fin=0;   // Variable de temps 2
 
     int test = 0; // Variable pour switcher entre debut-fin et fin_debut
  
@@ -64,7 +64,7 @@ void interruption(void){
        uint8_t val_F0 = eeprom_readProtected(rtc_eeprom,0xF0);
        eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
     }
-    
+
     if(test == 0)
     {
         debut=time(NULL);
