@@ -763,14 +763,13 @@ int main(int argc, char *argv[])
 			Sleep(1);
 			
             tentatives = 0;
-
+			delay++;
     		
-            end = te.tv_sec;
-		    delay = end-start;
+           
 
             if(delay > 4){
 
-                start = end;
+                delay = 0;
 			    publish_values(mosq);
 
             }
