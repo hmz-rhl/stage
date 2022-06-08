@@ -22,7 +22,7 @@ uint8_t int2bcd(uint8_t val){
 // 32
 uint8_t bcd2int(uint8_t val){
     
-    return (val>>4 * 10) + (val & 0x0F);
+    return ((val>>4) * 10) + (val & 0x0F);
 }
 
 
