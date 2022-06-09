@@ -3434,8 +3434,8 @@ int main(int argc, char *argv[])
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
     
-    //pinMode(LOCK_P,OUTPUT);
-   // digitalWrite(LOCK_P, 1);
+        pinMode(LOCK_P,OUTPUT);
+        digitalWrite(LOCK_P, 1);
     
     signal(SIGINT, interruption);
         printf("on tourne !\n");
