@@ -11,6 +11,20 @@
 
 #include "rtc_eeprom.h"
 
+uint8_t int2bcd(uint8_t val){
+    
+    return (val % 10) + (((val - val%10)/10)<< 4);
+}
+
+// 0x32
+// 0x03->30
+// 0x02->2
+// 32
+uint8_t bcd2int(uint8_t val){
+    
+    return ((val>>4) * 10) + (val & 0x0F);
+}
+
 
 /**
  ** 
@@ -87,6 +101,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
+    rtc_eeprom->error = 0;
     usleep(5000);
     return rtc_eeprom;
 
@@ -195,6 +210,17 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
         printf("Error %s: vous n'avez pas choisi un registre valide (0x00 - 0x7F), vous avez choisi : %02X\n", __func__, reg);
         
+    }
+
+    if(eeprom_read(rtc_eeprom, reg) == val){
+
+        printf("%s: %02X was successfully written on %02X \n",__func__, val, reg);
+        rtc_eeprom->error = 1;
+    }
+    else{
+        printf("%s:Error %02X was not written on %02X \n",__func__, val, reg);
+        
+
     }
 
 }
@@ -317,6 +343,17 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         
         usleep(5000);
         
+        if(eeprom_readProtected(rtc_eeprom,reg) == val)
+        {
+            printf("%s: %02X was successfully written on %02X \n",__func__, val, reg);
+            rtc_eeprom->error = 1;
+        }
+        else{
+            printf("%s:Error %02X was not written on %02X \n",__func__, val, reg);
+            
+
+        }
+        
     }
     else{
 
@@ -324,6 +361,9 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         rtc_eeprom_closeAndFree(rtc_eeprom);
         exit(EXIT_FAILURE);
     }
+
+
+
 }
 
 
@@ -339,6 +379,7 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
     for (size_t i = 1; i < 9; i++)
     {
         rtc_eeprom->buf[i] = 0xFF;
+        
     }
     
     for (size_t i = 0; i < 16; i++)
@@ -354,11 +395,53 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
         }
         usleep(5000);
 
+     // ici________________________________
+        for (size_t j = 0; j < 8; j++)
+        {
+            if(eeprom_read(rtc_eeprom, rtc_eeprom->buf[0x00 + 8*i + j]) == 0xFF)
+            {
+                printf("%s: 0xFF was successfully written on %02X \n",__func__, 0x00 + 8*i + j);
+                rtc_eeprom->error = 1;
+            }
+            else
+            {
+                printf("%s:Error 0xFF was not written on %02X \n",__func__, 0x00 + 8*i + j);
+                
+
+            }
+            
+        }
+
     }
-    
+
+
+
     
 }
 
+
+void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom)
+{
+    
+    for (size_t i = 0; i < 8; i++)
+    {
+        eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
+        if(eeprom_readProtected(rtc_eeprom, 0xF0 + i) == 0x00)
+        {
+            printf("%s: 0x00 was successfully written on %02X \n",__func__, 0xF0 + i);
+            rtc_eeprom->error = 1;
+        }
+        else
+        {
+            printf("%s:Error 0x00 was not written on %02X \n",__func__, 0xF0 + i);
+            
+
+        }
+          
+    
+    }
+
+}
 
 /**
  ** 
@@ -524,7 +607,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0] & 0x7F;
+    return bcd2int(rtc_eeprom->buf[0] & 0x7F);
 }
 
 /**
@@ -542,7 +625,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 
     rtc_eeprom->buf[0] = 0x00;
-    rtc_eeprom->buf[1] = val | (rtc_readSeconds(rtc_eeprom) & 0x80);
+    rtc_eeprom->buf[1] = int2bcd(val) & 0x7F;
 
     printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -554,6 +637,20 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readSeconds(rtc_eeprom) == int2bcd(val) & 0x7F)
+    {
+        printf("%s: %02X was successfully written on 0x00 \n",__func__, int2bcd(val) & 0x7F);
+    }
+    else
+    {
+        printf("%s:Error %02X was not written on 0x00 \n",__func__, int2bcd(val) & 0x7F);
+        rtc_eeprom->error = 1;
+        
+
+    }
+    
     
 
 }
@@ -575,7 +672,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[0] = 0x01;
 
-    rtc_eeprom->buf[1] = (val % 10) + (((val - val%10)/10)<< 4);
+    rtc_eeprom->buf[1] = int2bcd(val) & 0x7F;
 
     printf("%s on écrit %02X sur 0x01\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -587,6 +684,20 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readMinutes(rtc_eeprom) == val)
+    {
+        printf("%s: %02X was successfully written on 0x01 \n",__func__, int2bcd(val));
+    }
+    else
+    {
+        printf("%s:Error  %02X  was not written on 0x01 \n",__func__, int2bcd(val));
+        rtc_eeprom->error = 1;
+        
+
+    }
+
 }
 
 /**
@@ -596,7 +707,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
  *  
  **/
 void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
-
+// TODO ecrire correctement sans changer les autres
     if(rtc_eeprom == NULL){
 
         printf("Error %s: rtc_eeprom est NULL\n");
@@ -605,7 +716,7 @@ void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[0] = 0x02;
 
-    rtc_eeprom->buf[1] = (val % 10) + (((val - val%10)/10)<< 4);
+    rtc_eeprom->buf[1] = int2bcd(val);
 
     printf("%s on écrit %02X sur 0x02\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -617,13 +728,28 @@ void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readHours(rtc_eeprom) == val)
+    {
+        printf("%s: %02X was successfully written on 0x02 \n",__func__, int2bcd(val));
+    }
+    else
+    {
+        printf("%s:Error  %02X  was not written on 0x02 \n",__func__, int2bcd(val));
+        rtc_eeprom->error = 1;
+        
+
+    }
+
+
 }
 
 /**
  ** 
  * @brief   ecrit la date dans la RTC
  *
- * @param   val valeur à écrire
+ * @param   val jour 0-31
  * 
  * 
  **/
@@ -637,7 +763,7 @@ void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     
     rtc_eeprom->buf[0] = 0x04;
 
-    rtc_eeprom->buf[1] = (val % 10) + (((val - val%10)/10)<< 4);
+    rtc_eeprom->buf[1] = int2bcd(val);
 
     printf("%s on écrit %02X sur 0x04\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -649,11 +775,26 @@ void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readDate(rtc_eeprom) == int2bcd(val))
+    {
+        printf("%s: %02X was successfully written on 0x04 \n",__func__, int2bcd(val));
+    }
+    else
+    {
+        printf("%s:Error  %02X  was not written on 0x04 \n",__func__, int2bcd(val));
+        rtc_eeprom->error = 1;
+        
+
+    }
+
+
 }
 
 /**
  ** 
- * @brief   Ecrit le numero du mois dans la date 
+ * @brief   Ecrit le numero du mois dans le registre associé 
  *
  *  
  **/
@@ -667,7 +808,7 @@ void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[0] = 0x05;
 
-    rtc_eeprom->buf[1] = (val % 10) + (((val - val%10)/10)<< 4);
+    rtc_eeprom->buf[1] = int2bcd(val);
 
     printf("%s on écrit %02X sur 0x05\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -679,6 +820,21 @@ void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readMonth(rtc_eeprom) == val)
+    {
+        printf("%s: %02X was successfully written on 0x05 \n",__func__, int2bcd(val));
+    }
+    else
+    {
+        printf("%s:Error  %02X  was not written on 0x05 \n",__func__, int2bcd(val));
+        rtc_eeprom->error = 1;
+        
+
+    }
+
+
 }
 
 /**
@@ -697,7 +853,7 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     rtc_eeprom->buf[0] = 0x06;
 
-    rtc_eeprom->buf[1] = (val % 10) + (((val - val%10)/10)<< 4);
+    rtc_eeprom->buf[1] = int2bcd(val);
 
     printf("%s on écrit %02X sur 0x06\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
@@ -709,6 +865,21 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+
+    //ici___________________________________________
+    if(rtc_readYear(rtc_eeprom) == val)
+    {
+        printf("%s: %02X was successfully written on 0x06 \n",__func__, int2bcd(val));
+    }
+    else
+    {
+        printf("%s:Error  %02X  was not written on 0x06 \n",__func__, int2bcd(val));
+        rtc_eeprom->error = 1;
+        
+
+    }
+
+
 }
 
 
@@ -747,7 +918,7 @@ uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0] & 0x7F;
+    return bcd2int(rtc_eeprom->buf[0] & 0x7F);
 }
 
 /**
@@ -783,7 +954,7 @@ uint8_t rtc_readHours(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0] & 0x1F;
+    return bcd2int(rtc_eeprom->buf[0] & 0x1F);
 }
 
 /**
@@ -819,7 +990,7 @@ uint8_t rtc_readDate(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0] & 0x07;
+    return bcd2int(rtc_eeprom->buf[0] & 0x07);
 }
 
 /**
@@ -855,7 +1026,7 @@ uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0] & 0x1F;
+    return bcd2int(rtc_eeprom->buf[0] & 0x1F);
 }
 
 /**
@@ -891,10 +1062,15 @@ uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom){
     }
     usleep(5000);
     
-    return rtc_eeprom->buf[0];
+    return bcd2int(rtc_eeprom->buf[0]);
 }
 
-
+/**
+ ** 
+ * @brief   Vérifie si il y a un problème de démarrage 
+ *
+ *  
+ **/
 uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -927,7 +1103,12 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 }
 
 
-
+/**
+ ** 
+ * @brief   Vérifie si l'oscillateur à bien démarrer 
+ *
+ *  
+ **/
 uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -960,6 +1141,12 @@ uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 }
 
 
+/**
+ ** 
+ * @brief   Vérifie si  
+ *
+ *  
+ **/
 uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
 
         if(rtc_eeprom == NULL){
@@ -991,6 +1178,13 @@ uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
     return (rtc_eeprom->buf[0] & 0x08) >> 3;
 }
 
+
+/**
+ ** 
+ * @brief   Active  
+ *
+ *  
+ **/
 void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
@@ -1018,7 +1212,7 @@ void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
         exit(EXIT_FAILURE);
     }
     usleep(5000);
-
+   
     rtc_eeprom->buf[1] = 0x08 | rtc_eeprom->buf[0];
     rtc_eeprom->buf[0] = 0x03;
 
@@ -1031,6 +1225,16 @@ void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
+    if(rtc_isVbatEnabled(rtc_eeprom) == 1){
+
+        printf("%s: Vbat was successfully enabled \n", __func__);
+
+    }
+    else{
+        printf("%s: Error Vbat was not enabled \n", __func__);
+        rtc_eeprom->error = 1;
+
+    }
     usleep(5000);
 
 }
@@ -1162,7 +1366,38 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
         exit(EXIT_FAILURE);
     }
 //il faut attendre au moins 5ms
+
     usleep(5000);
+
+    rtc_eeprom->buf[0] = 0x00;
+    
+    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x02: %s\n",  __func__, strerror(errno));
+
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    usleep(100);
+    if(read(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+
+    usleep(5000);
+    if(rtc_eeprom->buf[0] == 0x80){
+
+        printf("%s: Clock was successfully started \n", __func__);
+        
+    }
+    else{
+        printf("%s: Error clock was not started \n", __func__);
+
+    }
     
 
 }
@@ -1194,10 +1429,45 @@ void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
     }
 //il faut attendre au moins 5ms
     usleep(5000);
+    rtc_eeprom->buf[0] = 0x00;
     
+    if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur d'écriture(write()) de 0x02: %s\n",  __func__, strerror(errno));
+
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    usleep(100);
+    if(read(rtc_eeprom->rtc_fd,rtc_eeprom->buf,1) != 1){
+
+        fprintf(stderr, "fonction %s: erreur de lecture(read()): %s\n", __func__, strerror(errno));
+        rtc_eeprom_closeAndFree(rtc_eeprom);
+        exit(EXIT_FAILURE);
+    }
+
+    usleep(5000);
+    if(rtc_eeprom->buf[0] == 0x00){
+
+        printf("%s: Clock was successfully stopped \n", __func__);
+        
+    }
+    else{
+        printf("%s: Error clock was not stopped \n", __func__);
+
+    }    
 
 }
 
+
+/**
+ ** 
+ * @brief   
+ *
+ *  
+ **/
 void rtc_enableExtOsc(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){

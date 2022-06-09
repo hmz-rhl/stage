@@ -23,8 +23,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define EEPROM_ADDRESS 0x57
-#define RTC_ADDRESS 0x6F
+#define EEPROM_ADDRESS 0x57 // Adresse de l'EEPROM du MCP79410
+#define RTC_ADDRESS 0x6F // Adresse du RTC du MCP79410
 
 typedef struct{
 
@@ -39,6 +39,8 @@ typedef struct{
 rtc_eeprom_t *rtc_eeprom_init(void);
 
 
+uint8_t int2bcd(uint8_t val);
+uint8_t bcd2int(uint8_t val); 
 
 uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg); // Permet de lire un registre de l'EEPROM
 void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); // Permet d'écrire dans l'EEPROM Libre
@@ -47,6 +49,8 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg); // Permet d
 void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val); // Permet d'écrire dans l'EEPROM Protégée
 
 void eeprom_setAll(rtc_eeprom_t* rtc_eeprom); // Set a OxFF les registres
+
+void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom); 
 
 uint8_t eeprom_readStatus(rtc_eeprom_t *rtc_eeprom); //lit le contenue du registre STATUS(0xFF)
 

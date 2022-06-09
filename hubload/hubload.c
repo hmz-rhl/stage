@@ -2,7 +2,7 @@
  * @file hubload.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.2
+ * @version 0.3
  * @date 2022-05-23
  * 
  * @copyright Copyright (c) 2022
@@ -25,7 +25,7 @@
 
 #include "../lib/MCP3202.h"
 
-//Pins BCM
+//Pins Wpi
 #define LOCK_P 21
 #define CP_PWM 23
 #define I2C_D 8 // Pin de data I2C
@@ -50,11 +50,17 @@ struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
 int user_key_clicked = 0;
-int compteur_tic = 0;
+unsigned long long compteur_tic = 0;
 unsigned long long historique_Wh = 0;
 
+void Sleep(uint time) {
+
+	usleep(1000000*time);
+}
 
 void user_key_interrupt(void){
+
+	printf("%s: Début de routine\n",__func__);
 	int rc;
 	char str[] = "1";
 	if(digitalRead(USER_KEY) == 1){
@@ -71,19 +77,15 @@ void user_key_interrupt(void){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
+	printf("%s: Fin de routine\n",__func__);
 }
 
 void tic_interrupt(void){
-	int rc;
-	char str[128];
-	sprintf(str, "%lld", temp);;
-	compteur_tic++;
 
-	
-	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen("released"), "released", 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
+	printf("%s: debut de routine\n",__func__);
+	compteur_tic++;
+	printf("%s: Fin de routine\n",__func__);
+
 
 }
 
@@ -110,28 +112,28 @@ void *thread_rfid(void *ptr)
 
 		if(scan_activated){
 			
+			Sleep(1);
+
 			while(PN532_I2C_Init(&pn532) < 0){
 
-				sleep(1);
+				Sleep(1);
 			}
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
-        		fprintf(stderr, "fonction %s: Unable to get fw version of PN532: %s\n", __func__, pn532.log);
-				sleep(1);
+				Sleep(1);
     		}
 
 			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
     		PN532_SamConfiguration(&pn532);
 
 			printf("Waiting for RFID/NFC card...\r\n");
-			while(scan_activated)
+			while(1)
 			{
 			
 				// Check if a card is available to read
 				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
 				if (uid_len == PN532_STATUS_ERROR) 
 				{
-					fprintf(stderr, "fonction %s: %s\n", __func__, pn532.log);
 					fflush(stdout);
 				} 
 				else 
@@ -146,15 +148,17 @@ void *thread_rfid(void *ptr)
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
 					printf("\r\n");
 					
+					//scan_activated = 0;
 					break;
-					scan_activated = 0;				
+								
 				}
+
 
 			}
 		
 		}
 		else{
-			sleep(1);
+			Sleep(1);
 		}
 
 
@@ -203,9 +207,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[9]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown"};
+    char *topics[10]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown","down/tic/reset"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,9,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,10,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -346,7 +350,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		expander_resetPinGPIO(expander, LOCK_D);
 		digitalWrite(LOCK_P,1);
 
-		sleep(1);
+		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
 		expander_closeAndFree(expander);
@@ -362,6 +366,11 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	else if( !strcmp(msg->topic, "down/scan/shutdown"))
 	{
 		scan_activated = 0;
+	}
+
+	else if(!strcmp(msg->topic, "down/tic/reset")){
+		
+		compteur_tic = 0;
 	}
 
 
@@ -491,13 +500,23 @@ void publish_values(struct mosquitto *mosq)
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
-	
+	usleep(100);
 	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
+	usleep(100);
 
 	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+
+	char str_tic[128];
+	sprintf(str_tic, "%llu", compteur_tic);
+	//printf("tic : %s\n", str_tic);
+	usleep(100);
+	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen(str_tic), str_tic, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
@@ -562,18 +581,18 @@ int main(int argc, char *argv[])
 	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
-	sleep(30);
+	Sleep(10);
 	expander_t* exp1 = expander_init(0x27);
 	expander_t* exp2 = expander_init(0x26);
-	expander_setPullup(exp1, 0b00000000);
-	expander_setPullup(exp1, 0b00000000);
+	expander_setPullup(exp1, 0XFF);
+	expander_setPullup(exp1, 0XFF);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
 	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
 	expander_closeAndFree(exp1);
 	expander_closeAndFree(exp2);
 // on ouvre la prise on sait jamais
 	digitalWrite(LOCK_P, 1);
-	sleep(1);
+	Sleep(1);
 	digitalWrite(LOCK_P, 0);
 	
 
@@ -685,7 +704,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "fonction %s: Error mosquitto_loop: %s\n", __func__, mosquitto_strerror(rc));
 
 			printf("%d tentatives, On attend durant 30s pour réessayer de se connecter au broker\n", ++tentatives);
-			sleep(30);
+			Sleep(30);
 
 			// initialisation mosquitto
 			rc = mosquitto_lib_init();
@@ -743,17 +762,16 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			sleep(1);
+			Sleep(1);
 			
             tentatives = 0;
-
+			delay++;
     		
-            end = te.tv_sec;
-		    delay = end-start;
+           
 
             if(delay > 4){
 
-                start = end;
+                delay = 0;
 			    publish_values(mosq);
 
             }
