@@ -99,7 +99,7 @@ void interruption(void){
     //     test = 0;
     //     printf("temps : %f \n",temps);
     // }
-    temps = (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
+    temps = (end.tv_sec - start.tv_sec) + 1e-6*(end.tv_usec - start.tv_usec);
     printf("temps : %ld \n",temps);
 
     rtc_eeprom_closeAndFree(rtc_eeprom);
