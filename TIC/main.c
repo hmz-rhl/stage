@@ -106,7 +106,7 @@ void interruption(void){
 
     printf("energie : %d Wh\n", eeprom_getWh());
 
-    printf("puissance : %d W\n", 1.0/(temps/3600000000.0));
+    printf("puissance : %ld W\n", 1.0/(temps/3600000000.0));
 
 }
 
