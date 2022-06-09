@@ -944,18 +944,18 @@ while(digitalRead(IRQ0)){}
   
 }
 
-int ADE9078_getAVrms(){
+uint32_t ADE9078_getAVrms(){
 
-	int value=0;
+	uint32_t value=0;
 	value=spiRead32(AVRMS_32);
 	double decimal = decimalize(value, AVrmsGain, AVrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }
 
-int ADE9078_getAIrms(){
+uint32_t ADE9078_getAIrms(){
 
-	int value=0;
-	value=spiRead32(AIRMS_1_32);
+	uint32_t value=0;
+	value=spiRead32(AIRMS_32);
 	double decimal = decimalize(value, AIrmsGain, AIrmsOffset,0); //convert to double with calibration factors specified, no abs value
 	return value;
 }
