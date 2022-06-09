@@ -42,7 +42,7 @@ void interruption(void){
     gettimeofday(&end, NULL);
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
     // time_t temps;
-    long long temps;
+    double temps;
     
 
     eeprom_printProtected(rtc_eeprom);
