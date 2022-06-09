@@ -127,65 +127,6 @@ void waitForSPIReady(expander_t *exp){
 }
 
 
-void spiWrite16(uint16_t addresse, uint16_t value){
-
-	uint8_t data[6] ={0};
-	data[0] = 0x00FF & (addresse >> 4) ;
-	data[1] = ((addresse & 0x00F) << 4) & WRITE;
-	data[2] = 0x00FF & (value >> 8) ;
-	data[3] = ((value & 0x00FF)) ;
-  	
-#ifdef DEBUG
-	printf("\n\non envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
-#endif	
-
-
-#ifdef DEBUG
-#endif
-// on attend que irq1 passe a 0
-
-	expander_t *exp = expander_init(EXPANDER_2);
-
-	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
-	// on si on depasse un certain timeout on return
-	
-	waitForSPIReady(exp);
-
-
-	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
-  // expander_resetAllPinsGPIO(exp);
- 	setAllCS(exp);
-
-	usleep(1);
-	
-	// cs de Temperature ADE a 0 uniquement lui les autres 1 
- 	expander_resetPinGPIO(exp, PM_CS);
-	
-	usleep(1);
-#ifdef DEBUG
- 	printf("|write %x on register %x|\n", value, addresse);
-#endif
-while(digitalRead(IRQ0)){}
-	wiringPiSPIDataRW(0, data,6);
-
-	usleep(1);
-  	expander_setPinGPIO(exp, PM_CS);
-
-	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
-	if(spiRead16(addresse) != value){
-
-		printf("%s: Error %04X n'a pas été écris dans %04X\n", __func__, value,  addresse);
-	}
-	else{
-		printf("%s: Success %04X a été écris dans %04X\n", __func__, value,  addresse);
-	}
-
-
-  	expander_closeAndFree(exp);
-
-}
-
-
 uint16_t spiRead16(uint16_t addresse){
        
 
@@ -309,6 +250,66 @@ while(digitalRead(IRQ0)){}
 
   return recu;
 }
+
+
+void spiWrite16(uint16_t addresse, uint16_t value){
+
+	uint8_t data[6] ={0};
+	data[0] = 0x00FF & (addresse >> 4) ;
+	data[1] = ((addresse & 0x00F) << 4) & WRITE;
+	data[2] = 0x00FF & (value >> 8) ;
+	data[3] = ((value & 0x00FF)) ;
+  	
+#ifdef DEBUG
+	printf("\n\non envoit %02X%02X %02X%02X sur SPI \n", data[0], data[1], data[2], data[3]);
+#endif	
+
+
+#ifdef DEBUG
+#endif
+// on attend que irq1 passe a 0
+
+	expander_t *exp = expander_init(EXPANDER_2);
+
+	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
+	// on si on depasse un certain timeout on return
+	
+	waitForSPIReady(exp);
+
+
+	// uint8_t ancienne_config = expander_getAllPinsGPIO(exp);
+  // expander_resetAllPinsGPIO(exp);
+ 	setAllCS(exp);
+
+	usleep(1);
+	
+	// cs de Temperature ADE a 0 uniquement lui les autres 1 
+ 	expander_resetPinGPIO(exp, PM_CS);
+	
+	usleep(1);
+#ifdef DEBUG
+ 	printf("|write %x on register %x|\n", value, addresse);
+#endif
+while(digitalRead(IRQ0)){}
+	wiringPiSPIDataRW(0, data,6);
+
+	usleep(1);
+  	expander_setPinGPIO(exp, PM_CS);
+
+	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	if(spiRead16(addresse) != value){
+
+		printf("%s: Error %04X n'a pas été écris dans %04X\n", __func__, value,  addresse);
+	}
+	else{
+		printf("%s: Success %04X a été écris dans %04X\n", __func__, value,  addresse);
+	}
+
+
+  	expander_closeAndFree(exp);
+
+}
+
 
 
 void spiWrite32(uint16_t addresse, uint32_t value){
