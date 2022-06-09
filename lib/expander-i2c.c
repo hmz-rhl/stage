@@ -242,16 +242,16 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
     /**
  * polarité du registre POL de l'expander
  **/
-    exp->buff[0] = MCP23008_IPOL;
-    exp->buff[1] = 0x00;
-    if(write(exp->fd,exp->buff,2) != 2){
+    // exp->buff[0] = MCP23008_IPOL;
+    // exp->buff[1] = 0x00;
+    // if(write(exp->fd,exp->buff,2) != 2){
         
-        printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
-        close(exp->fd);
-        exit(EXIT_FAILURE);
-        exp->erreur = -1;
+    //     printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
+    //     close(exp->fd);
+    //     exit(EXIT_FAILURE);
+    //     exp->erreur = -1;
 
-    }
+    // }
 
 /**
  * Selection du registre GPIO de l'expander
@@ -777,15 +777,15 @@ void expander_printGPIO(expander_t *exp){
 /**
  * polarité du registre POL de l'expander
  **/
-    exp->buff[0] = MCP23008_IPOL;
-    exp->buff[1] = 0x00;
-    if(write(exp->fd,exp->buff,2) != 2){
+    // exp->buff[0] = MCP23008_IPOL;
+    // exp->buff[1] = 0x00;
+    // if(write(exp->fd,exp->buff,2) != 2){
         
-        printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
-        close(exp->fd);
-        exit(EXIT_FAILURE);
-        exp->erreur = -1;
-    }
+    //     printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
+    //     close(exp->fd);
+    //     exit(EXIT_FAILURE);
+    //     exp->erreur = -1;
+    // }
 
 
 /**
