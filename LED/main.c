@@ -14,7 +14,7 @@
 int i = 0;
 #define LED_DATA 29
 #define LOCK_P 21
-
+expander_t *exp ;
 void wait500(){
         
         asm("nop;");
@@ -3428,7 +3428,7 @@ void interruption(int sig){
 int main(int argc, char *argv[])
 {
         
-    expander_t *exp = expander_init(0x26);
+    exp= expander_init(0x26);
 
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
