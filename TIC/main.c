@@ -38,11 +38,11 @@ void interruption(void){
     // 3) On remet a 0 le 2e registre quand il atteind 0xFF et que le premier atteint 0xFF
 
 
+    gettimeofday(&end, NULL);
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
     // time_t temps;
     long long temps;
     
-    gettimeofday(&end, NULL);
 
     eeprom_printProtected(rtc_eeprom);
 
