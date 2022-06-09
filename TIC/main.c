@@ -99,14 +99,14 @@ void interruption(void){
     //     test = 0;
     //     printf("temps : %f \n",temps);
     // }
-    temps = end.tv_usec - start.tv_usec;
+    temps = (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
     printf("temps : %ld \n",temps);
 
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
     printf("energie : %d Wh\n", eeprom_getWh());
 
-    printf("puissance : %lf W\n", 1.0/(temps/1000000.0/3600.0));
+    printf("puissance : %lf W\n", 1.0/(temps/3600.0));
     start = end;
 
 }
