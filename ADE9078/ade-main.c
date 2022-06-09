@@ -168,11 +168,11 @@ void spiWrite16(uint16_t addresse, uint16_t value){
 while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,6);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
   	expander_closeAndFree(exp);
 
@@ -350,11 +350,11 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,10);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
   	expander_closeAndFree(exp);
 
@@ -493,11 +493,11 @@ void ADE9078_setRun(){
 #endif
 	wiringPiSPIDataRW(0, data,4);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
   	expander_closeAndFree(exp);
 
@@ -537,11 +537,11 @@ void ADE9078_resetRun(){
 
 	wiringPiSPIDataRW(0, data,4);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
   	expander_closeAndFree(exp);
 
@@ -588,11 +588,11 @@ uint16_t ADE9078_getVersion(){
 
 	wiringPiSPIDataRW(0, data,4);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
 
 
@@ -639,11 +639,11 @@ uint32_t ADE9078_getPartID(){
 
 	wiringPiSPIDataRW(0, data,6);
 
+	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
-	usleep(1);
 
 
 
