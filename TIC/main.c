@@ -12,7 +12,10 @@
     time_t debut=0; // Variable de temps 1
     time_t fin=0;   // Variable de temps 2
 
-    int test = -1; // Variable pour switcher entre debut-fin et fin_debut
+    struct timeval start;
+    struct timeval end;
+
+    int i = -1; // Variable pour switcher entre debut-fin et fin_debut
  
 uint16_t eeprom_getWh()
 {
@@ -36,7 +39,10 @@ void interruption(void){
 
 
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-    time_t temps;
+    // time_t temps;
+    long long temps;
+    
+    gettimeofday(&end, NULL);
 
     eeprom_printProtected(rtc_eeprom);
 
@@ -66,13 +72,12 @@ void interruption(void){
     }
 
 
-    fin=time(NULL);
+    // fin=time(NULL);
 
-    temps = fin - debut;
-    printf("temps : %ld \n",temps);
+    // temps = fin - debut;
 
 
-    debut=time(NULL);
+    // debut=time(NULL);
 
     // if(test==-1)
     // {
@@ -93,12 +98,15 @@ void interruption(void){
     //     test = 0;
     //     printf("temps : %f \n",temps);
     // }
+    gettimeofday(&start, NULL);
+    temps = end.tv_usec - start.tv_usec;
+    printf("temps : %ld \n",temps);
 
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
     printf("energie : %d Wh\n", eeprom_getWh());
 
-    printf("puissance : %d W\n", 1.0/(temps/3600.0));
+    printf("puissance : %d W\n", 1.0/(temps/3600000000.0));
 
 }
 
