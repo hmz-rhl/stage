@@ -3423,12 +3423,13 @@ void led_red(){
 void interruption(int sig){
     digitalWrite(21, 0);
     expander_closeAndFree(exp);
+    printf("Fin\n");
     exit(EXIT_SUCCESS);
 }
 int main(int argc, char *argv[])
 {
         
-    exp= expander_init(0x26);
+    exp = expander_init(0x26);
 
     wiringPiSetup();
     pinMode(LED_DATA,OUTPUT);
@@ -3437,7 +3438,7 @@ int main(int argc, char *argv[])
    // digitalWrite(LOCK_P, 1);
     
     signal(SIGINT, interruption);
-
+        printf("on tourne !\n");
     while(1)
     {
        expander_togglePinGPIO(exp, LOCK_D);
