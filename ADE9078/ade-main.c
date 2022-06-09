@@ -172,6 +172,13 @@ while(digitalRead(IRQ0)){}
   	expander_setPinGPIO(exp, PM_CS);
 
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
+	if(spiRead16(addresse) != value){
+
+		printf("%s: Error %04X n'a pas été écris dans %04X\n", __func__, value,  addresse);
+	}
+	else{
+		printf("%s: Success %04X a été écris dans %04X\n", __func__, value,  addresse);
+	}
 
 
   	expander_closeAndFree(exp);
@@ -357,6 +364,14 @@ while(digitalRead(IRQ0)){}
 
 
   	expander_closeAndFree(exp);
+
+	if(spiRead32(addresse) != value){
+
+		printf("%s: Error %08X n'a pas été écris dans %04X\n", __func__, value,  addresse);
+	}
+	else{
+		printf("%s: Success %08X a été écris dans %04X\n", __func__, value,  addresse);
+	}
 
 }
 
