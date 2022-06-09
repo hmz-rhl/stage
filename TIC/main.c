@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include <wiringPi.h>
 #include "../lib/rtc_eeprom.h"
 // #include <wiringSerial.h>
