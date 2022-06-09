@@ -99,7 +99,6 @@ void interruption(void){
     //     test = 0;
     //     printf("temps : %f \n",temps);
     // }
-    gettimeofday(&start, NULL);
     temps = end.tv_usec - start.tv_usec;
     printf("temps : %ld \n",temps);
 
@@ -108,6 +107,7 @@ void interruption(void){
     printf("energie : %d Wh\n", eeprom_getWh());
 
     printf("puissance : %ld W\n", 1.0/(temps/3600000000.0));
+    gettimeofday(&start, NULL);
 
 }
 
