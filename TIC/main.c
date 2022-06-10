@@ -142,7 +142,7 @@ int main(int argc, char const *argv[])
 	for (size_t i = 0; i < 6; i++)
 	{
 		/* code */
-		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
+		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
 	}
     char str_id[13];
 	sprintf(str_id, "%.012X", id);
