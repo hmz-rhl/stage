@@ -145,12 +145,15 @@ int main(int argc, char const *argv[])
 	{
 		/* code */
 		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
+        printf("id: %X \n", id);
 	}
     	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
 		id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
+        printf("id2: %X \n", id2);
 	}
+    
     id = id + (id2 << (24));
     char str_id[13];
 
