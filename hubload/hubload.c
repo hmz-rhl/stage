@@ -205,11 +205,8 @@ void S0_interrupt(void){
        uint8_t val_F0 = eeprom_readProtected(rtc_eeprom,0xF0);
        eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
     }
+
     rtc_eeprom_closeAndFree(rtc_eeprom);
-
-
-	charge++;
-
 
     // printf("temps : %ld \n",temps);
 
@@ -219,7 +216,9 @@ void S0_interrupt(void){
 	power = 1.0/(temps/3600.0);
 	current = power/230.0;
 
+
     start = end;
+	charge = eeprom_getWh();
 
 }
 
