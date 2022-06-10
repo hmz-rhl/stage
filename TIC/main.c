@@ -30,6 +30,20 @@ uint16_t eeprom_getWh()
 }
 
 
+void eeprom_writeID(rtc_eeprom_t * rtc_eeprom, char *ID)
+{
+  if(strlen(ID) != 12)
+  {
+      printf("Error %s: Id dépasse la taille autorisé \n", __func__);
+      exit(EXIT_FAILURE);
+  }
+
+  if()
+
+
+    
+}
+
 void interruption(void){
     // registre   F1 F0     F1 F0        F1 F0     F1 F0   
     // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
