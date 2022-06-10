@@ -112,6 +112,7 @@ void expander_resetAllPinsGPIO(expander_t*);
 
 void expander_setAndResetSomePinsGPIO(expander_t*, uint8_t);
 
+void expander_polGPIO(expander_t *exp, uint8_t val);
 
 void expander_printGPIO(expander_t*);
 

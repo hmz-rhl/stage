@@ -827,7 +827,34 @@ void expander_printGPIO(expander_t *exp){
 
 }
 
+/**
+ * 
+ * @brief   configure la polarité des gpio( inverser les read)
+ * @param   exp pointeur sur variable structuré de l'expander
+ * @param   val valeur des polarité, Si un bit est est à 1, le bit du registre GPIO correspondant reflétera la valeur inversée sur la broche.
+ * 
+ * 
+ *  **/
+void expander_polGPIO(expander_t *exp, uint8_t val){
 
+    if(exp == NULL || exp == 0)
+    {
+        printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exit(EXIT_FAILURE);
+    }
+
+
+    exp->buff[0] = MCP23008_IPOL;
+    exp->buff[1] = val;
+    if(write(exp->fd,exp->buff,2) != 2){
+        
+        printf("ERREUR d'écriture du registre IPOL (branché sur i2c?)\n");
+        close(exp->fd);
+        exit(EXIT_FAILURE);
+        exp->erreur = -1;
+    }
+
+}
 
 /**
  * 
