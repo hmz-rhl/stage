@@ -70,7 +70,7 @@ void eeprom_writeID(char *id){
 		eeprom_writeProtected(rtc_eeprom, 0xF2 + i, (value >> 8*i) & 0xFF);
 	}
 
-	eeprom_printProtected(rtc_eeprom);
+	// eeprom_printProtected(rtc_eeprom);
 	
 	rtc_eeprom_closeAndFree(rtc_eeprom);
 
@@ -133,7 +133,7 @@ int main(int argc, char const *argv[])
     eeprom_printProtected(rtc_eeprom);
 
     eeprom_writeID("123ABCDEF456");
-    eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
+    // eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
     eeprom_printProtected(rtc_eeprom);
     // rtc_printTime(rtc_eeprom);
     // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
