@@ -78,7 +78,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
         close(rtc_eeprom->eeprom_fd);
         exit(EXIT_FAILURE);
     }
-    printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
+    // printf("%s: i2c communication with EEPROM(0x57) was set successfully\n",__func__);
     if(ioctl(rtc_eeprom->rtc_fd,I2C_SLAVE,RTC_ADDRESS) < 0) {
         printf("ERREUR de setting de la communication avec l'rtc_eeprom (0x6F) sur i2c\n");
         close(rtc_eeprom->rtc_fd);
@@ -190,7 +190,7 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         rtc_eeprom->buf[0] = reg;
         rtc_eeprom->buf[1] = val;
     
-        printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
+        //printf("%s on écrit %02X sur 0x00\n",__func__, rtc_eeprom->buf[1]);
         if(write(rtc_eeprom->eeprom_fd,rtc_eeprom->buf,2) != 2){
 
             fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, reg, strerror(errno));
@@ -212,13 +212,10 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         
     }
 
-    if(eeprom_read(rtc_eeprom, reg) == val){
+    if(eeprom_read(rtc_eeprom, reg) != val){
 
-        printf("%s: %02X was successfully written on %02X \n",__func__, val, reg);
-        rtc_eeprom->error = 1;
-    }
-    else{
         printf("%s:Error %02X was not written on %02X \n",__func__, val, reg);
+        rtc_eeprom->error = 1;
         
 
     }
@@ -415,15 +412,10 @@ void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom)
     for (size_t i = 0; i < 8; i++)
     {
         eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
-        if(eeprom_readProtected(rtc_eeprom, 0xF0 + i) == 0x00)
-        {
-            printf("%s: 0x00 was successfully written on %02X \n",__func__, 0xF0 + i);
-            rtc_eeprom->error = 1;
-        }
-        else
+        if(eeprom_readProtected(rtc_eeprom, 0xF0 + i) != 0x00)
         {
             printf("%s:Error 0x00 was not written on %02X \n",__func__, 0xF0 + i);
-            
+            rtc_eeprom->error = 1;          
 
         }
           
@@ -628,12 +620,9 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 
     //ici___________________________________________
-    if(rtc_readSeconds(rtc_eeprom) == int2bcd(val) & 0x7F)
+    if(rtc_readSeconds(rtc_eeprom) != int2bcd(val) & 0x7F)
     {
-        printf("%s: %02X was successfully written on 0x00 \n",__func__, int2bcd(val) & 0x7F);
-    }
-    else
-    {
+
         printf("%s:Error %02X was not written on 0x00 \n",__func__, int2bcd(val) & 0x7F);
         rtc_eeprom->error = 1;
         
@@ -675,11 +664,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 
     //ici___________________________________________
-    if(rtc_readMinutes(rtc_eeprom) == val)
-    {
-        printf("%s: %02X was successfully written on 0x01 \n",__func__, int2bcd(val));
-    }
-    else
+    if(rtc_readMinutes(rtc_eeprom) != val)
     {
         printf("%s:Error  %02X  was not written on 0x01 \n",__func__, int2bcd(val));
         rtc_eeprom->error = 1;
