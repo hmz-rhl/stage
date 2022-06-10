@@ -2,7 +2,7 @@
  * @file hubload.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.3
+ * @version 0.4
  * @date 2022-05-23
  * 
  * @copyright Copyright (c) 2022
@@ -793,8 +793,6 @@ int main(int argc, char *argv[])
 	}
 
 	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-
-	charge = eeprom_getWh(rtc_eeprom);
 
 	rtc_eeprom_closeAndFree(rtc_eeprom);
 
