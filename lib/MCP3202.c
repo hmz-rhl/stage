@@ -103,7 +103,7 @@ int readAdc(int channel, uint8_t cs){
 
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);
 
-	printf("ADC retourne : %d\n", reData);
+	// printf("ADC retourne : %d\n", reData);
 	expander_closeAndFree(exp);
 	
 	close(fd);
