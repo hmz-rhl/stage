@@ -27,32 +27,53 @@ uint16_t eeprom_getWh()
 
 }
 
-
-void eeprom_writeID( char id)
-{
+void eeprom_writeID(char *id){
 
 
-    if(strlen(id) != 12)
-    {
-        printf("Error %s: Id dépasse la taille autorisé \n", __func__);
-        exit(EXIT_FAILURE);
-    }
+	uint8_t a,b;
+	if(strlen(id) != 12)
+	{
+		printf("Error %s: Id dépasse la taille autorisé (12 caractères 0-F)\n", __func__);
+		exit(EXIT_FAILURE);
+	}
 
-    eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
 
-    char id2[15] = "0x";
+
+
+// on verifie l'id
+	for(int i = 0; i<12 ; i++){
+
+		if((id[i] >= 48 && id[i]<=57) || (id[i] >= 'A' && id[i] < 'Z'))
+		{
+			
+		}
+		else
+		{
+		    printf("Error %s: ID incorrect, les caracteres utilisés ne sont pas corrects (0-F)\n", __func__);
+		    exit(EXIT_FAILURE);
+		}
+	}
+
+	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+
+// on reset le compteur d'energie
+	eeprom_writeProtected(rtc_eeprom, 0xF0, 0x00);
+	eeprom_writeProtected(rtc_eeprom, 0xF1, 0x00);
+
+	char id2[15] = "0x";
     strcat(id2,id);
-    printf("%s\n", id2);
     long value = strtol( id2,NULL, 16 );
+	// on ecrit l'id
+	for (size_t i = 0; i < 6; i++)
+	{
+		/* code */
+		eeprom_writeProtected(rtc_eeprom, 0xF2 + i, (value >> 8*i) & 0xFF);
+	}
 
-    printf("%lX\n", value);
+	eeprom_printProtected(rtc_eeprom);
+	
+	rtc_eeprom_closeAndFree(rtc_eeprom);
 
-
-
-//   if()
-
-
-    
 }
 
 void S0_interrupt(void){
@@ -115,14 +136,14 @@ int main(int argc, char const *argv[])
     rtc_printTime(rtc_eeprom);
     printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
     rtc_startClock(rtc_eeprom);
-    	uint64_t id = 0;
+    uint64_t id = 0;
 	for (size_t i = 0; i < 6; i++)
 	{
 		/* code */
 		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
 	}
     char str_id[13];
-	sprintf(str_id, "%012X", id);
+	sprintf(str_id, "%.012X", id);
 
 	printf("ID :%s\n",str_id);
     rtc_eeprom_closeAndFree(rtc_eeprom);
