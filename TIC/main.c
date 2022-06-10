@@ -137,10 +137,7 @@ int main(int argc, char const *argv[])
     eeprom_printProtected(rtc_eeprom);
     // rtc_printTime(rtc_eeprom);
     // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
-    // rtc_startClock(rtc_eeprom);
-    AB CD EF
-        
-    0000EF
+
     long id = 0;
     int a=0;
 	for (size_t i = 0; i < 6; i++)
@@ -148,7 +145,7 @@ int main(int argc, char const *argv[])
 		/* code */
         a = (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
 		id = id + a;
-        printf(" i:%d \n",i);
+        printf(" i:%d \n", i);
         printf("a : %X\n", a);
         printf("id : %X\n", id);
 
