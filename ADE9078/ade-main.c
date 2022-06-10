@@ -862,8 +862,8 @@ while(digitalRead(IRQ0)){}
 while(digitalRead(IRQ0)){}
   spiWrite16(EGY_TIME_16, 0x0001); // update time accumulation
 
-  while(digitalRead(IRQ0)){}
-  spiWrite16(WFB_CFG_16, 0b0001000011011111);
+//   while(digitalRead(IRQ0)){}
+//   spiWrite16(WFB_CFG_16, 0b0001000011011111);
 
 // // // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
     while(digitalRead(IRQ0)){}
