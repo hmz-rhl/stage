@@ -16,11 +16,13 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
+#include <sys/time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 #include "../pn532/pn532.h"
 #include "../pn532/PN532_Rpi_I2C.h"
+#include "../lib/rtc_eeprom.h"
 
 
 #include "../lib/MCP3202.h"
@@ -52,10 +54,83 @@ uint8_t scan_activated = 0;
 int user_key_clicked = 0;
 unsigned long long compteur_tic = 0;
 unsigned long long historique_Wh = 0;
+struct timeval start;
+struct timeval end;
+uint16_t charge = 0;
+double power = 0;
+double current = 0;
+
 
 void Sleep(uint time) {
 
 	usleep(1000000*time);
+}
+
+uint16_t eeprom_getWh()
+{
+    rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    uint8_t val1 = eeprom_readProtected (rtc_eeprom, 0xF0);
+    uint8_t val2 = eeprom_readProtected (rtc_eeprom, 0xF1);
+    uint16_t result = ((val2 << 8) | val1);
+
+    return result;
+}
+void S0_interrupt(void){
+    // registre   F1 F0     F1 F0        F1 F0     F1 F0   
+    // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
+
+    // 1) on incrémente le bite de poids faible a chaque intérruption
+    // 2) Quand il atteint la valeur max ( 0xFF ) on le passe a zéro et on incrémente le 2e bite
+    // 3) On remet a 0 le 2e registre quand il atteind 0xFF et que le premier atteint 0xFF
+ 
+
+    gettimeofday(&end, NULL);
+    rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    // time_t temps;
+    double temps = (end.tv_sec - start.tv_sec) + 1e-6*(end.tv_usec - start.tv_usec);
+
+    eeprom_printProtected(rtc_eeprom);
+    
+
+    //ecriture de la charge cumulée dans l'eeprom protegee
+
+    if(eeprom_readProtected(rtc_eeprom,0xF0) == 0xFF)
+    {
+        eeprom_writeProtected(rtc_eeprom, 0xF0, 0x00);
+       
+        if(eeprom_readProtected(rtc_eeprom,0xF1) == 0xFF)
+        {
+            eeprom_writeProtected(rtc_eeprom, 0xF1, 0x00);
+        }
+        else
+        {
+            uint8_t val_F1 = eeprom_readProtected(rtc_eeprom,0xF1);
+            eeprom_writeProtected(rtc_eeprom, 0xF1, val_F1 + 1);
+        }
+
+    }
+    
+    else
+    {
+       uint8_t val_F0 = eeprom_readProtected(rtc_eeprom,0xF0);
+       eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
+    }
+    rtc_eeprom_closeAndFree(rtc_eeprom);
+
+
+	charge++;
+
+
+    printf("temps : %ld \n",temps);
+
+
+    printf("power : %lf W\n", 1.0/(temps/3600.0));
+
+	power = 1.0/(temps/3600.0);
+	current = power/230.0;
+
+    start = end;
+
 }
 
 void user_key_interrupt(void){
@@ -512,14 +587,30 @@ void publish_values(struct mosquitto *mosq)
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
 
-	char str_tic[128];
-	sprintf(str_tic, "%llu", compteur_tic);
+	char str_charge[128];
+	char str_current[128];
+	char str_power[128];
+	sprintf(str_charge, "%d", charge);
+	sprintf(str_current, "%lf", current);
+	sprintf(str_power, "%lf", power);
+
 	//printf("tic : %s\n", str_tic);
 	usleep(100);
-	rc = mosquitto_publish(mosq, NULL, "up/value/tic", strlen(str_tic), str_tic, 2, false);
+	rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
+
+	rc = mosquitto_publish(mosq, NULL, "up/value/s0/power", strlen(str_power), str_power, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+
+	rc = mosquitto_publish(mosq, NULL, "up/value/s0/current", strlen(str_current), str_current, 2, false);
+	if(rc != MOSQ_ERR_SUCCESS){
+		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+	}
+
 
 }
 
@@ -554,7 +645,8 @@ int main(int argc, char *argv[])
 
 	pinMode(SM_TIC_D, INPUT);
 	pullUpDnControl(SM_TIC_D, PUD_OFF);
-    wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &tic_interrupt);
+    wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &S0_interrupt);
+	
 
 
 	pinMode(CF4, INPUT);
@@ -602,6 +694,12 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 
 	}
+
+	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+
+	charge = eeprom_getWh(rtc_eeprom);
+
+	rtc_eeprom_closeAndFree(rtc_eeprom);
 
 
 	// declartion des variables
