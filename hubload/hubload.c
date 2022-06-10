@@ -92,7 +92,7 @@ void S0_interrupt(void){
     // time_t temps;
     double temps = (end.tv_sec - start.tv_sec) + 1e-6*(end.tv_usec - start.tv_usec);
 
-    eeprom_printProtected(rtc_eeprom);
+    //eeprom_printProtected(rtc_eeprom);
     
 
     //ecriture de la charge cumulée dans l'eeprom protegee
@@ -124,10 +124,10 @@ void S0_interrupt(void){
 	charge++;
 
 
-    printf("temps : %ld \n",temps);
+    // printf("temps : %ld \n",temps);
 
 
-    printf("power : %lf W\n", 1.0/(temps/3600.0));
+    // printf("power : %lf W\n", 1.0/(temps/3600.0));
 
 	power = 1.0/(temps/3600.0);
 	current = power/230.0;
