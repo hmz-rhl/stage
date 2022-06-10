@@ -137,19 +137,21 @@ int main(int argc, char const *argv[])
     eeprom_printProtected(rtc_eeprom);
     // rtc_printTime(rtc_eeprom);
     // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
+    // rtc_startClock(rtc_eeprom);
 
-    long id = 0;
-    long long a=0;
-	for (size_t i = 0; i < 6; i++)
+    uint64_t id = 0;
+    uint32_t id2 = 0;
+	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
-        a = (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
-		id = id + a;
-        printf("i : %d \n", i);
-        printf("a : %X \n", a);
-        printf("id : %X \n", id);
-
+		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
 	}
+    	for (size_t i = 0; i < 3; i++)
+	{
+		/* code */
+		id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
+	}
+    id = id + (id2 << (24));
     char str_id[13];
 
     printf("%X \n", id);
