@@ -68,6 +68,25 @@ void Sleep(uint time) {
 	usleep(1000000*time);
 }
 
+void eeprom_readStringID(char* str_id)
+{
+
+	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+
+	uint64_t id = 0;
+	for (size_t i = 0; i < 6; i++)
+	{
+		/* code */
+		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
+	}
+	sprintf(str_id, "%012X", id);
+
+	printf("ID :%s\n",str_id);
+	
+	rtc_eeprom_closeAndFree(rtc_eeprom);
+	
+	
+}
 void eeprom_writeID(char *id){
 
 
@@ -81,7 +100,7 @@ void eeprom_writeID(char *id){
 
 
 
-// on ecris l'id
+// on verifie l'id
 	for(int i = 0; i<12 ; i++){
 
 		if((id[i] >= 48 && id[i]<=57) || (id[i] >= 'A' && id[i] < 'Z'))
@@ -104,6 +123,7 @@ void eeprom_writeID(char *id){
 	char id2[15] = "0x";
     strcat(id2,id);
     long value = strtol( id2,NULL, 16 );
+	// on ecrit l'id
 	for (size_t i = 0; i < 6; i++)
 	{
 		/* code */
@@ -325,9 +345,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[10]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID"};
+    char *topics[11]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,10,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,11,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -495,9 +515,19 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		compteur_tic = 0;
 	}
 
-	else if(!strcmp(msg->topic, "down/ID")){
+	else if(!strcmp(msg->topic, "down/ID/write")){
 		eeprom_writeID(msg->payload);
 	}
+
+	else if(!strcmp(msg->topic, "down/ID/read")){
+		
+		char ID[13] = eeprom_readStringID();
+		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+	}
+
 
 
 

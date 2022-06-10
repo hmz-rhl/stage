@@ -39,7 +39,7 @@ void eeprom_writeID( char id)
     }
 
     eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
-    
+
     char id2[15] = "0x";
     strcat(id2,id);
     printf("%s\n", id2);
@@ -49,7 +49,7 @@ void eeprom_writeID( char id)
 
 
 
-  if()
+//   if()
 
 
     
@@ -115,6 +115,15 @@ int main(int argc, char const *argv[])
     rtc_printTime(rtc_eeprom);
     printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
     rtc_startClock(rtc_eeprom);
+    	uint64_t id = 0;
+	for (size_t i = 0; i < 6; i++)
+	{
+		/* code */
+		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
+	}
+	sprintf(str_id, "%012X", id);
+
+	printf("ID :%s\n",str_id);
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
     if(wiringPiSetup() < 0)
@@ -127,6 +136,9 @@ int main(int argc, char const *argv[])
 	pullUpDnControl(SM_TIC_D, PUD_OFF);
 
     wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &interruption);
+    
+	
+
 
     while(1);
 
