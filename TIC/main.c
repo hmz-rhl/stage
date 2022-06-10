@@ -10,13 +10,11 @@
 
 #define SM_TIC_D 2
 
-    time_t debut=0; // Variable de temps 1
-    time_t fin=0;   // Variable de temps 2
+   
 
     struct timeval start;
     struct timeval end;
 
-    int i = -1; // Variable pour switcher entre debut-fin et fin_debut
  
 uint16_t eeprom_getWh()
 {
@@ -38,13 +36,16 @@ void eeprom_writeID(rtc_eeprom_t * rtc_eeprom, char *ID)
       exit(EXIT_FAILURE);
   }
 
+  eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
+
+
   if()
 
 
     
 }
 
-void interruption(void){
+void S0_interrupt(void){
     // registre   F1 F0     F1 F0        F1 F0     F1 F0   
     // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
 
@@ -60,10 +61,6 @@ void interruption(void){
     
 
     eeprom_printProtected(rtc_eeprom);
-
-    printf("1Wh !\n");
-    
-
     
     if(eeprom_readProtected(rtc_eeprom,0xF0) == 0xFF)
     {
@@ -80,39 +77,13 @@ void interruption(void){
         }
 
     }
+    
     else
     {
        uint8_t val_F0 = eeprom_readProtected(rtc_eeprom,0xF0);
        eeprom_writeProtected(rtc_eeprom, 0xF0, val_F0 + 1);
     }
 
-
-    // fin=time(NULL);
-
-    // temps = fin - debut;
-
-
-    // debut=time(NULL);
-
-    // if(test==-1)
-    // {
-    //     fin=time(NULL);
-    //     test = 0;
-    // }
-    // if(test == 0)
-    // {
-    //     debut=time(NULL);
-    //     temps = difftime( fin, debut);
-    //     test = 1;
-    //     printf("temps : %f \n",temps);
-    // }
-    // else
-    // {
-    //     fin=time(NULL);
-    //     temps = difftime( debut, fin);
-    //     test = 0;
-    //     printf("temps : %f \n",temps);
-    // }
     temps = (end.tv_sec - start.tv_sec) + 1e-6*(end.tv_usec - start.tv_usec);
     printf("temps : %ld \n",temps);
 
