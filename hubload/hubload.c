@@ -107,7 +107,7 @@ void eeprom_writeID(char *id){
 	for (size_t i = 0; i < 6; i++)
 	{
 		/* code */
-		eeprom_writeProtected(rtc_eeprom, 0xF2 + i, (value >> 4*i) & 0xFF);
+		eeprom_writeProtected(rtc_eeprom, 0xF2 + i, (value >> 8*i) & 0xFF);
 	}
 
 	eeprom_printProtected(rtc_eeprom);
