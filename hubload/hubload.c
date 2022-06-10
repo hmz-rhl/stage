@@ -59,6 +59,8 @@ struct timeval end;
 uint16_t charge = 0;
 double power = 0;
 double current = 0;
+int charge_active = 0;
+int mode_phase = 0; // 1 -> tri | 0 -> Mono
 
 
 void Sleep(uint time) {
@@ -75,6 +77,7 @@ uint16_t eeprom_getWh()
 
     return result;
 }
+
 void S0_interrupt(void){
     // registre   F1 F0     F1 F0        F1 F0     F1 F0   
     // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
@@ -153,15 +156,6 @@ void user_key_interrupt(void){
 		}
 	}
 	printf("%s: Fin de routine\n",__func__);
-}
-
-void tic_interrupt(void){
-
-	printf("%s: debut de routine\n",__func__);
-	compteur_tic++;
-	printf("%s: Fin de routine\n",__func__);
-
-
 }
 
 void *thread_rfid(void *ptr)
@@ -282,9 +276,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[10]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown","down/tic/reset"};
+    char *topics[9]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,10,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,9,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -343,7 +337,9 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         expander_t* expander = expander_init(0x26); //Pour les relais
         expander_resetPinGPIO(expander, TYPE_E_F_ON); 
         printf("Le relais de la prise E/F est ouvert\n");
-        expander_closeAndFree(expander);        
+        expander_closeAndFree(expander);
+		current = 0;
+		power = 0;
     }
 
     else if(!strcmp(msg->topic,"down/type_ef/close")){
@@ -383,6 +379,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             // expander_resetPinGPIO(expander, 1);
             printf("Les relais N et L1 de la prise type 2 sont ouverts\n");
             expander_closeAndFree(expander);
+			current = 0;
+			power = 0;
         }
         else if(!strcmp(msg->payload, "3")){
             expander_t* expander = expander_init(0x26); //Pour les relais
@@ -488,7 +486,7 @@ void publish_values(struct mosquitto *mosq)
 	sprintf(str_temp, "%lf", temp);
 
 	
-	printf("___les tensions et temperature reeles recues chez l'adc___\n\n", cp_reel);
+	printf("___les tensions et temperature reelles recues chez l'adc___\n\n", cp_reel);
 
 	printf("temperature: %lf°C\n", temp);
 	printf("pp: %lfV\n", pp);
