@@ -68,20 +68,37 @@ void Sleep(uint time) {
 	usleep(1000000*time);
 }
 
-void eeprom_readStringID(char* str_id)
+void eeprom_getStringID(char* str_id)
 {
 
 	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
 
-	uint64_t id = 0;
-	for (size_t i = 0; i < 6; i++)
+	long id = 0;
+    long id2 = 0;
+
+	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
-		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
+		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
+        printf("id: %X \n", id);
 	}
-	sprintf(str_id, "%012X", id);
+    	for (size_t i = 0; i < 3; i++)
+	{
+		/* code */
+		id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
+        printf("id2: %X \n", id2);
+	}
+    
+    
+    char str_id1[7];
+    char str_id2[7];
 
-	printf("ID :%s\n",str_id);
+
+    
+	sprintf(str_id1, "%.06X", id);
+    sprintf(str_id2, "%.06X", id2);
+    strcat(str_id,str_id2);
+    strcat(str_id,str_id1);
 	
 	rtc_eeprom_closeAndFree(rtc_eeprom);
 	
@@ -522,7 +539,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	else if(!strcmp(msg->topic, "down/ID/read")){
 		
-		//char ID[13] = eeprom_readStringID();
+		char ID[13];
+		eeprom_getStringID(ID);
 		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
