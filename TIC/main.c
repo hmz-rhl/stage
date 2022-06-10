@@ -140,7 +140,7 @@ int main(int argc, char const *argv[])
     // rtc_startClock(rtc_eeprom);
 
     uint64_t id = 0;
-    uint32_t id2 = 0;
+    uint64_t id2 = 0;
 	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
