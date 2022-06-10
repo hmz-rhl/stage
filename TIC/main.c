@@ -28,15 +28,25 @@ uint16_t eeprom_getWh()
 }
 
 
-void eeprom_writeID(rtc_eeprom_t * rtc_eeprom, char *ID)
+void eeprom_writeID( char id)
 {
-  if(strlen(ID) != 12)
-  {
-      printf("Error %s: Id dépasse la taille autorisé \n", __func__);
-      exit(EXIT_FAILURE);
-  }
 
-  eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
+
+    if(strlen(id) != 12)
+    {
+        printf("Error %s: Id dépasse la taille autorisé \n", __func__);
+        exit(EXIT_FAILURE);
+    }
+
+    eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom);
+    
+    char id2[15] = "0x";
+    strcat(id2,id);
+    printf("%s\n", id2);
+    long value = strtol( id2,NULL, 16 );
+
+    printf("%lX\n", value);
+
 
 
   if()
