@@ -145,8 +145,8 @@ int main(int argc, char const *argv[])
 		/* code */
         a = (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
 		id = id + a;
-        printf(" i:%d \n", i);
-        printf("a : %lg \n", a);
+        printf("i :%d \n", i);
+        printf("a : %X \n", a);
         printf("id : %X \n", id);
 
 	}
