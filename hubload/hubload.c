@@ -654,10 +654,10 @@ void publish_values(struct mosquitto *mosq)
 // affiche sur la console
 
 // affichage sur la console
-	printf("___l'interpretation qui doit être envoyé par MQTT___\n");
-	printf("temp %s°C\n", str_temp);
-	printf("cp %s\n", str_cp);
-	printf("pp %s\n", str_pp);
+	//printf("___l'interpretation qui doit être envoyé par MQTT___\n");
+	//printf("temp %s°C\n", str_temp);
+	//printf("cp %s\n", str_cp);
+	//printf("pp %s\n", str_pp);
 
 	/* Publish the message
 	 * mosq - our client instance
