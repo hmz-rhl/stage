@@ -562,14 +562,14 @@ void publish_values(struct mosquitto *mosq)
 
 // affiche sur la console
 
-	printf("%s: Lecture de Temperature\n", __func__);
+	// printf("%s: Lecture de Temperature\n", __func__);
 	//conversion en degres
 	temp = toDegres(readAdc(0,T_CS));
 	usleep(50000);
 
 // affiche sur la console
 
-	printf("%s: Lecture de CP\n", __func__);
+	// printf("%s: Lecture de CP\n", __func__);
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
@@ -577,7 +577,7 @@ void publish_values(struct mosquitto *mosq)
 
 // affiche sur la console
 
-	printf("%s: Lecture de PP\n", __func__);
+	// printf("%s: Lecture de PP\n", __func__);
 	//conversion en volt
 	pp = toVolt(readAdc(0,PP_CS));
 	usleep(50000);
@@ -585,11 +585,11 @@ void publish_values(struct mosquitto *mosq)
 	sprintf(str_temp, "%lf", temp);
 
 	
-	printf("___les tensions et temperature reelles recues chez l'adc___\n\n", cp_reel);
+	// printf("___les tensions et temperature reelles recues chez l'adc___\n\n", cp_reel);
 
-	printf("temperature: %lf°C\n", temp);
-	printf("pp: %lfV\n", pp);
-	printf("cp_reel: %lfV\n\n", cp_reel);
+	// printf("temperature: %lf°C\n", temp);
+	// printf("pp: %lfV\n", pp);
+	// printf("cp_reel: %lfV\n\n", cp_reel);
 
 // on donne a CP les vraies valeurs correspondantes 
 	CP = -12;

@@ -343,15 +343,10 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
         
         usleep(5000);
         
-        if(eeprom_readProtected(rtc_eeprom,reg) == val)
+        if(eeprom_readProtected(rtc_eeprom,reg) != val)
         {
-            printf("%s: %02X was successfully written on %02X \n",__func__, val, reg);
-            rtc_eeprom->error = 1;
-        }
-        else{
             printf("%s:Error %02X was not written on %02X \n",__func__, val, reg);
-            
-
+            rtc_eeprom->error = 1;
         }
         
     }
@@ -398,16 +393,10 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
      // ici________________________________
         for (size_t j = 0; j < 8; j++)
         {
-            if(eeprom_read(rtc_eeprom, rtc_eeprom->buf[0x00 + 8*i + j]) == 0xFF)
-            {
-                printf("%s: 0xFF was successfully written on %02X \n",__func__, 0x00 + 8*i + j);
-                rtc_eeprom->error = 1;
-            }
-            else
+            if(eeprom_read(rtc_eeprom, rtc_eeprom->buf[0x00 + 8*i + j]) != 0xFF)
             {
                 printf("%s:Error 0xFF was not written on %02X \n",__func__, 0x00 + 8*i + j);
-                
-
+                rtc_eeprom->error = 1;
             }
             
         }
