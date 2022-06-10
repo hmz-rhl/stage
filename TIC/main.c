@@ -139,7 +139,7 @@ int main(int argc, char const *argv[])
     // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
 
     long id = 0;
-    uint64_t a=0;
+    long long a=0;
 	for (size_t i = 0; i < 6; i++)
 	{
 		/* code */
