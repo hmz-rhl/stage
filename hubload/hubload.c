@@ -589,8 +589,8 @@ void publish_values(struct mosquitto *mosq)
 	char str_current[128];
 	char str_power[128];
 	sprintf(str_charge, "%d", charge);
-	sprintf(str_current, "%lf", current);
-	sprintf(str_power, "%lf", power);
+	sprintf(str_current, "%.2lf", current);
+	sprintf(str_power, "%.2lf", power);
 
 	//printf("tic : %s\n", str_tic);
 	usleep(100);
