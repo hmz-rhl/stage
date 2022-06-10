@@ -80,13 +80,13 @@ void eeprom_getStringID(char* str_id)
 	{
 		/* code */
 		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
-        printf("id: %X \n", id);
+        //printf("id: %X \n", id);
 	}
     	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
 		id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
-        printf("id2: %X \n", id2);
+        //printf("id2: %X \n", id2);
 	}
     
     
@@ -112,7 +112,7 @@ void eeprom_writeID(char *id){
 	if(strlen(id) != 12)
 	{
 		printf("Error %s: Id dépasse la taille autorisé (12 caractères 0-F)\n", __func__);
-		exit(EXIT_FAILURE);
+		return;
 	}
 
 
@@ -128,7 +128,7 @@ void eeprom_writeID(char *id){
 		else
 		{
 		    printf("Error %s: ID incorrect, les caracteres utilisés ne sont pas corrects (0-F)\n", __func__);
-		    exit(EXIT_FAILURE);
+		    return;
 		}
 	}
 
@@ -218,13 +218,12 @@ void S0_interrupt(void){
 
 
     start = end;
-	charge = eeprom_getWh();
 
 }
 
 void user_key_interrupt(void){
 
-	printf("%s: Début de routine\n",__func__);
+	//printf("%s: Début de routine\n",__func__);
 	int rc;
 	char str[] = "1";
 	if(digitalRead(USER_KEY) == 1){
@@ -241,7 +240,7 @@ void user_key_interrupt(void){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
-	printf("%s: Fin de routine\n",__func__);
+	//printf("%s: Fin de routine\n",__func__);
 }
 
 void *thread_rfid(void *ptr)
@@ -405,7 +404,7 @@ void on_subscribe(struct mosquitto *mosq, void *obj, int mid, int qos_count, con
  * received a PUBCOMP from the broker. */
 void on_publish(struct mosquitto *mosq, void *obj, int mid)
 {
-	printf("%s: Message %d has been published.\n\n",__func__, mid);
+	//printf("%s: Message %d has been published.\n\n",__func__, mid);
 }
 
 
@@ -689,7 +688,7 @@ void publish_values(struct mosquitto *mosq)
 	char str_charge[128];
 	char str_current[128];
 	char str_power[128];
-	sprintf(str_charge, "%d", charge);
+	sprintf(str_charge, "%d", eeprom_getWh());
 	sprintf(str_current, "%.2lf", current);
 	sprintf(str_power, "%.2lf", power);
 
