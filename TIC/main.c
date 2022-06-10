@@ -157,7 +157,7 @@ int main(int argc, char const *argv[])
 
 	pullUpDnControl(SM_TIC_D, PUD_OFF);
 
-    wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &interruption);
+    //wiringPiISR (SM_TIC_D, INT_EDGE_FALLING,  &interruption);
     
 	
 
