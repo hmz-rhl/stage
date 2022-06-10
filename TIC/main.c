@@ -130,12 +130,12 @@ void S0_interrupt(void){
 int main(int argc, char const *argv[])
 {
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-    eeprom_resetAllProtected(rtc_eeprom);
+    eeprom_writeID("123ABCDEF456");
     eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
-    eeprom_print(rtc_eeprom);
-    rtc_printTime(rtc_eeprom);
-    printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
-    rtc_startClock(rtc_eeprom);
+    eeprom_printProtected(rtc_eeprom);
+    // rtc_printTime(rtc_eeprom);
+    // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
+    // rtc_startClock(rtc_eeprom);
     uint64_t id = 0;
 	for (size_t i = 0; i < 6; i++)
 	{

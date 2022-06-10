@@ -87,6 +87,7 @@ void eeprom_readStringID(char* str_id)
 	
 	
 }
+
 void eeprom_writeID(char *id){
 
 
@@ -521,7 +522,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	else if(!strcmp(msg->topic, "down/ID/read")){
 		
-		char ID[13] = eeprom_readStringID();
+		//char ID[13] = eeprom_readStringID();
 		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
