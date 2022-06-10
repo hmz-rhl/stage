@@ -155,11 +155,17 @@ int main(int argc, char const *argv[])
 	}
     
     id = id + (id2 << (24));
+    
+    char str_id1[7];
+    char str_id2[7];
     char str_id[13];
 
     printf("%X \n", id);
     
-	sprintf(str_id, "%.012X \n", id);
+	sprintf(str_id1, "%.06X \n", id);
+    sprintf(str_id2, "%.06X \n", id2);
+    strcat(str_id,str_id2);
+    strcat(str_id,str_id1);
 
 	printf("ID :%s\n",str_id);
     rtc_eeprom_closeAndFree(rtc_eeprom);
