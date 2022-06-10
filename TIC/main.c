@@ -139,8 +139,8 @@ int main(int argc, char const *argv[])
     // printf("OSC running : %d\n", rtc_isOscRunning(rtc_eeprom));
     // rtc_startClock(rtc_eeprom);
 
-    uint64_t id = 0;
-    uint64_t id2 = 0;
+    long id = 0;
+    long id2 = 0;
 	for (size_t i = 0; i < 3; i++)
 	{
 		/* code */
