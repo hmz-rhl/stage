@@ -121,6 +121,7 @@ int main(int argc, char const *argv[])
 		/* code */
 		id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << 8*i);
 	}
+    char str_id[13];
 	sprintf(str_id, "%012X", id);
 
 	printf("ID :%s\n",str_id);
