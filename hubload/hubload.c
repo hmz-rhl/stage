@@ -56,7 +56,6 @@ unsigned long long compteur_tic = 0;
 unsigned long long historique_Wh = 0;
 struct timeval start;
 struct timeval end;
-uint16_t charge = 0;
 double power = 0;
 double current = 0;
 int charge_active = 0;
