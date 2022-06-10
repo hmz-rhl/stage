@@ -71,7 +71,7 @@ rtc_eeprom_t *rtc_eeprom_init(void){
         
     }
 
-    printf("%s: i2c device opened successfully\n",__func__);
+    //printf("%s: i2c device opened successfully\n",__func__);
 
     if(ioctl(rtc_eeprom->eeprom_fd,I2C_SLAVE,EEPROM_ADDRESS) < 0) {
         printf("ERREUR de setting de la communication avec l'rtc_eeprom (0x57) sur i2c\n");
@@ -85,14 +85,14 @@ rtc_eeprom_t *rtc_eeprom_init(void){
         exit(EXIT_FAILURE);
     }
 
-    printf("%s: i2c communication with RTC(0x6F) was set successfully\n",__func__);
+    //printf("%s: i2c communication with RTC(0x6F) was set successfully\n",__func__);
 
     usleep(100);
     //configuration
     rtc_eeprom->buf[0] = 0x07;
     rtc_eeprom->buf[1] = 0x08;
 
-    printf("%s on écrit %02X sur 0x07\n",__func__, rtc_eeprom->buf[1]);
+    //printf("%s on écrit %02X sur 0x07\n",__func__, rtc_eeprom->buf[1]);
     if(write(rtc_eeprom->rtc_fd,rtc_eeprom->buf,2) != 2){
 
         fprintf(stderr, "fonction %s: erreur d'écriture(write()) de %02X: %s\n", __func__, 0x88, strerror(errno));
