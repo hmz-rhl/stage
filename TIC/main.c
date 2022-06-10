@@ -130,6 +130,8 @@ void S0_interrupt(void){
 int main(int argc, char const *argv[])
 {
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    eeprom_printProtected(rtc_eeprom);
+
     eeprom_writeID("123ABCDEF456");
     eeprom_writeProtected(rtc_eeprom, 0xF0, 0xFA);
     eeprom_printProtected(rtc_eeprom);
