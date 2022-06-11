@@ -840,19 +840,19 @@ while(digitalRead(IRQ0)){}
 while(digitalRead(IRQ0)){}
    spiWrite32(CPGAIN_32, is->powerCGain);
 
-   	spiWrite32(AIGAIN_32, 2);
+   	spiWrite32(AIGAIN_32, 1);
 	   while(digitalRead(IRQ0)){}
-	spiWrite32(BIGAIN_32, 2);
+	spiWrite32(BIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(CIGAIN_32, 2);
+	spiWrite32(CIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(NIGAIN_32, 2);
+	spiWrite32(NIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(AVGAIN_32, 2);
+	spiWrite32(AVGAIN_32, 1);
 while(digitalRead(IRQ0)){}
-	spiWrite32(BVGAIN_32, 2);
+	spiWrite32(BVGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(CVGAIN_32, 2);
+	spiWrite32(CVGAIN_32, 1);
 
 //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
 //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
