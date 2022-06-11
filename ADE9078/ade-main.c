@@ -848,7 +848,7 @@ while(digitalRead(IRQ0)){}
 	while(digitalRead(IRQ0)){}
 	spiWrite32(NIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(AVGAIN_32, 1);
+	spiWrite32(AVGAIN_32, 10);
 while(digitalRead(IRQ0)){}
 	spiWrite32(BVGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
