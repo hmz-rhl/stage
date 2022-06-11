@@ -1064,7 +1064,7 @@ int main(){
 
 	while(1){
 
-		while(digitalRead(IRQ0) && !digitalRead(25)){}
+		// while(digitalRead(IRQ0) && !digitalRead(25)){}
 // 		usleep(20);
 // 		printf("\nPHNOLOAD :\t ");
 // 		print32bits(spiRead32(PHNOLOAD_32));
@@ -1152,7 +1152,7 @@ int main(){
 
 
 		
-      	sleep(5);
+      	// sleep(5);
     }
 
 	close(is.fd);
