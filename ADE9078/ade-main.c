@@ -903,7 +903,7 @@ while(digitalRead(IRQ0)){}
   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
 while(digitalRead(IRQ0)){}
-  spiWrite16(ACCMODE_16, 0b00000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
+  spiWrite16(ACCMODE_16, 0b00000000000010000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
