@@ -903,7 +903,7 @@ while(digitalRead(IRQ0)){}
   uint16_t settingsACCMODE = 0x0020;// 0x0020;//(is->iConsel << 6) + (is->vConsel << 5);
 
 while(digitalRead(IRQ0)){}
-  spiWrite16(ACCMODE_16, 0b00000000000110000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
+  spiWrite16(ACCMODE_16, 0b0000000000000000); // chooses the wiring mode (delta/Wye, Blondel vs. Non-blondel) to push up in initial config, Need the other if statements for all configuration modes
 
 
 // 8: Write 1 to Run register
@@ -1103,11 +1103,11 @@ int main(){
 // //		ADE9078_waitForDataReady();
 
 // 		printf("\nCV_PCF : %d\n", spiRead32(CV_PCF_32));
-// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
-// //		ADE9078_waitForDataReady();
+		// printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+		ADE9078_waitForDataReady();
 
-// 		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
-// 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
+		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 // //		ADE9078_waitForDataReady();
 
 // 		printf("\nBI_PCF : %d\n", spiRead32(BI_PCF_32));
