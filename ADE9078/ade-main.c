@@ -818,7 +818,7 @@ while(digitalRead(IRQ0)){}
   spiWrite32(CONFIG0_32, 0x00000010);
 
 while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG1_16, 0b1001001100001100);
+  spiWrite16(CONFIG1_16, 0b0001001100001100);
 
 while(digitalRead(IRQ0)){}
   spiWrite32(AIGAIN_32, 0x00000001);
