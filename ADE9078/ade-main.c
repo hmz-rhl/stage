@@ -1078,8 +1078,8 @@ int main(){
 // 		print32bits(spiRead32(MASK0_32));
 // 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-// 		printf("\nSTATUS1 :\t ");
-// 		print32bits(spiRead32(STATUS1_32));
+		printf("\nSTATUS1 :\t ");
+		print32bits(spiRead32(STATUS1_32));
 // 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 		
 // 		printf("\nMASK1 :  \t ");
