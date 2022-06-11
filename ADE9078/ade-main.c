@@ -867,7 +867,7 @@ while(digitalRead(IRQ0)){}
 
 // // // on veut activer l'interruption losqu'une donnee est disp dans le waveform buffer
     while(digitalRead(IRQ0)){}
-  spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
+  spiWrite32(MASK0_32, 0b00000000000000001000000000000000);
 
     while(digitalRead(IRQ0)){}
   spiWrite16(WFB_CFG_16, 0b0000000000001111);
