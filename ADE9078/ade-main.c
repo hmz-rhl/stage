@@ -177,7 +177,7 @@ while(digitalRead(IRQ0)){}
 
 
 
-  	uint32_t recu = data[3] + (data[2] << 8);
+  	uint16_t recu = data[3] + (data[2] << 8);
 
 #ifdef DEBUG
   	printf("recue : %04x\n", recu);
@@ -192,7 +192,7 @@ while(digitalRead(IRQ0)){}
 uint32_t spiRead32(uint16_t addresse){
        
 
-	uint8_t data[10] = {0};
+	uint8_t data[8] = {0};
 	
     //0x4FE << 4 = 0x4FE0  = 0x4fe8 = 0x4F,                             16
 	data[0] = 0x00FF & (addresse >> 4) ;
@@ -229,7 +229,7 @@ uint32_t spiRead32(uint16_t addresse){
   	printf("|read register %x|\n", addresse);
 #endif
 // while(digitalRead(IRQ0)){}
-	wiringPiSPIDataRW(0, data,10);
+	wiringPiSPIDataRW(0, data,8);
 
 	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
@@ -254,7 +254,7 @@ uint32_t spiRead32(uint16_t addresse){
 
 void spiWrite16(uint16_t addresse, uint16_t value){
 
-	uint8_t data[6] ={0};
+	uint8_t data[4] ={0};
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
 	data[2] = 0x00FF & (value >> 8) ;
@@ -291,7 +291,7 @@ void spiWrite16(uint16_t addresse, uint16_t value){
  	printf("|write %x on register %x|\n", value, addresse);
 #endif
 while(digitalRead(IRQ0)){}
-	wiringPiSPIDataRW(0, data,6);
+	wiringPiSPIDataRW(0, data,4);
 
 	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
@@ -315,7 +315,7 @@ while(digitalRead(IRQ0)){}
 void spiWrite32(uint16_t addresse, uint32_t value){
 
 
-	uint8_t data[10] = {0};
+	uint8_t data[6] = {0};
 	data[0] = 0x00FF & (addresse >> 4) ;
 	data[1] = ((addresse & 0x00F) << 4) & WRITE;
 	data[2] = 0x00FF & (value >> 24) ;
@@ -356,7 +356,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
  	printf("|write %08X on register %04x|\n", value, addresse);
 #endif
 while(digitalRead(IRQ0)){}
-	wiringPiSPIDataRW(0, data,10);
+	wiringPiSPIDataRW(0, data,6);
 
 	usleep(1);
   	expander_setPinGPIO(exp, PM_CS);
