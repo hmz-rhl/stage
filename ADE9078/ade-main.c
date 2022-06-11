@@ -779,7 +779,7 @@ void ADE9078_startFillingBuffer(){
 
 void ADE9078_waitForDataReady(){
 
-	while(spiRead32(STATUS0_32) & 0b00000000000000001000000000000000 != 0b00000000000000001000000000000000);
+	while(digitalRead(25));
 }
 
 void ADE9078_initialize(InitializationSettings *is){
@@ -818,7 +818,7 @@ while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG0_32, 0x00000010);
 
 while(digitalRead(IRQ0)){}
-  spiWrite16(CONFIG1_16, 0b0000100000001100);
+  spiWrite16(CONFIG1_16, 0b0000000000111100);
 
 while(digitalRead(IRQ0)){}
   spiWrite32(AIGAIN_32, 0x00000001);
