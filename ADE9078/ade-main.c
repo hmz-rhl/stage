@@ -869,6 +869,9 @@ while(digitalRead(IRQ0)){}
     while(digitalRead(IRQ0)){}
   spiWrite16(MASK0_32, 0b00000000000000001000000000000000);
 
+    while(digitalRead(IRQ0)){}
+  spiWrite16(WFB_CFG_16, 0b0000000000001111);
+
 // // // #5 : Write VLevel 0x117514
    uint32_t vLevelData = 0x117514;//0x35A98F;  
 while(digitalRead(IRQ0)){}
