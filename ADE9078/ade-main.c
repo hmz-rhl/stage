@@ -1106,8 +1106,8 @@ int main(){
 		// printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 		// ADE9078_waitForDataReady();
 
-		printf("\nAI_PCF : %d\n", spiRead32(AI_PCF_32));
-		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
+		printf("%d\n", spiRead32(AI_PCF_32));
+		// printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 // //		ADE9078_waitForDataReady();
 
 // 		printf("\nBI_PCF : %d\n", spiRead32(BI_PCF_32));
