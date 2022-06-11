@@ -834,7 +834,7 @@ while(digitalRead(IRQ0)){}
 
 // // // #2: Configure Gains
 while(digitalRead(IRQ0)){}
-   spiWrite32(APGAIN_32, is->powerAGain);
+   spiWrite32(APGAIN_32, 10);
 while(digitalRead(IRQ0)){}
    spiWrite32(BPGAIN_32, is->powerBGain);
 while(digitalRead(IRQ0)){}
