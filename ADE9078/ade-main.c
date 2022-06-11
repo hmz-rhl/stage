@@ -1078,8 +1078,8 @@ int main(){
 // 		print32bits(spiRead32(MASK0_32));
 // 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 
-		printf("\nSTATUS1 :\t ");
-		print32bits(spiRead32(STATUS1_32));
+		// printf("\nSTATUS1 :\t ");
+		// print32bits(spiRead32(STATUS1_32));
 // 		printf("LAST_CMD: %04X\n", spiRead16(LAST_CMD_16));
 		
 // 		printf("\nMASK1 :  \t ");
@@ -1106,7 +1106,7 @@ int main(){
 		// printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 		// ADE9078_waitForDataReady();
 
-		printf("%d\n", spiRead32(AV_PCF_32));
+		// printf("%d\n", spiRead32(AV_PCF_32));
 		// printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 // //		ADE9078_waitForDataReady();
 
