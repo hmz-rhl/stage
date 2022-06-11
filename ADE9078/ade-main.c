@@ -228,7 +228,7 @@ uint32_t spiRead32(uint16_t addresse){
 #ifdef DEBUG
   	printf("|read register %x|\n", addresse);
 #endif
-while(digitalRead(IRQ0)){}
+// while(digitalRead(IRQ0)){}
 	wiringPiSPIDataRW(0, data,10);
 
 	usleep(1);
