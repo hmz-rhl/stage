@@ -60,7 +60,7 @@ double power = 0;
 double current = 0;
 int charge_active = 0;
 int mode_phase = 0; // 1 -> tri | 0 -> Mono
-int old_PP;
+int delay = 0;
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
@@ -555,6 +555,17 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 // fonction qui lit et publie les valeurs en mqtt
 void publish_values(struct mosquitto *mosq)
 {
+
+	/* Publish the message
+	 * mosq - our client instance
+	 * *mid = NULL - we don't want to know what the message id for this message is
+	 * topic = "example/temperature" - the topic on which this message will be published
+	 * payloadlen = strlen(payload) - the length of our payload in bytes
+	 * payload - the actual payload
+	 * qos = 2 - publish with QoS 2 for this example
+	 * retain = false - do not use the retained message feature for this message
+	 */
+
 	char payload[20];
 	double pp, cp, temp, cp_reel;
 	int PP, CP;
@@ -563,36 +574,11 @@ void publish_values(struct mosquitto *mosq)
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-// affiche sur la console
-
-	// printf("%s: Lecture de Temperature\n", __func__);
-	//conversion en degres
-	temp = toDegres(readAdc(0,T_CS));
-	// usleep(50000);
-
-// affiche sur la console
-
-	// printf("%s: Lecture de CP\n", __func__);
-	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
-	// usleep(50000);
 
-// affiche sur la console
-
-	// printf("%s: Lecture de PP\n", __func__);
-	//conversion en volt
 	pp = toVolt(readAdc(0,PP_CS));
-	// usleep(50000);
 
-	sprintf(str_temp, "%lf", temp);
-
-	
-	// printf("___les tensions et temperature reelles recues chez l'adc___\n\n", cp_reel);
-
-	// printf("temperature: %lf°C\n", temp);
-	// printf("pp: %lfV\n", pp);
-	// printf("cp_reel: %lfV\n\n", cp_reel);
 
 // on donne a CP les vraies valeurs correspondantes 
 	CP = -12;
@@ -654,28 +640,7 @@ void publish_values(struct mosquitto *mosq)
 
 // on stringify ce qu'il faut publier
 	sprintf(str_pp, "%d", PP);
-// affiche sur la console
 
-// affichage sur la console
-	//printf("___l'interpretation qui doit être envoyé par MQTT___\n");
-	//printf("temp %s°C\n", str_temp);
-	//printf("cp %s\n", str_cp);
-	//printf("pp %s\n", str_pp);
-
-	/* Publish the message
-	 * mosq - our client instance
-	 * *mid = NULL - we don't want to know what the message id for this message is
-	 * topic = "example/temperature" - the topic on which this message will be published
-	 * payloadlen = strlen(payload) - the length of our payload in bytes
-	 * payload - the actual payload
-	 * qos = 2 - publish with QoS 2 for this example
-	 * retain = false - do not use the retained message feature for this message
-	 */
-	rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
-	
 	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
@@ -687,28 +652,43 @@ void publish_values(struct mosquitto *mosq)
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
 
-	char str_charge[128];
-	char str_current[128];
-	char str_power[128];
-	sprintf(str_charge, "%d", eeprom_getWh());
-	sprintf(str_current, "%.2lf", current);
-	sprintf(str_power, "%.2lf", power);
 
-	//printf("tic : %s\n", str_tic);
-	
-	rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/s0/power", strlen(str_power), str_power, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
+	if(delay > 80){
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/s0/current", strlen(str_current), str_current, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		temp = toDegres(readAdc(0,T_CS));
+		sprintf(str_temp, "%lf", temp);
+		rc = mosquitto_publish(mosq, NULL, "up/value/temp", strlen(str_temp), str_temp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+		
+
+
+		char str_charge[128];
+		char str_current[128];
+		char str_power[128];
+		sprintf(str_charge, "%d", eeprom_getWh());
+		sprintf(str_current, "%.2lf", current);
+		sprintf(str_power, "%.2lf", power);
+
+		//printf("tic : %s\n", str_tic);
+		
+		rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+
+		rc = mosquitto_publish(mosq, NULL, "up/value/s0/power", strlen(str_power), str_power, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+
+		rc = mosquitto_publish(mosq, NULL, "up/value/s0/current", strlen(str_current), str_current, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+		delay = 0;
 	}
 
 
@@ -805,7 +785,6 @@ int main(int argc, char *argv[])
 	int rc, tentatives = 0;
 	struct timeval te; 
     time_t start, end;
-	double delay = 0;
 	start = 0;
 	pthread_t thread_obj;
 
@@ -961,7 +940,7 @@ int main(int argc, char *argv[])
 			// Sleep(1);
 			usleep(50000);
             tentatives = 0;
-			// delay++;
+			delay++;
     		
            	publish_values(mosq);
 
