@@ -9,6 +9,7 @@
 #include <pthread.h> // compilation ajouter -lptrhread
 #include <softPwm.h>
 
+#define I2C_DEVICE          "/dev/i2c-1"
 
 int i = 0;
 #define LED_DATA 29
