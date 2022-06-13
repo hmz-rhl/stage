@@ -162,6 +162,7 @@ uint16_t eeprom_getWh()
     uint8_t val2 = eeprom_readProtected (rtc_eeprom, 0xF1);
     uint16_t result = ((val2 << 8) | val1);
 
+	rtc_eeprom_closeAndFree(rtc_eeprom);
     return result;
 }
 
@@ -812,7 +813,7 @@ int main(int argc, char *argv[])
 
 
 //création du thread du scan rfid
-	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+	// pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */

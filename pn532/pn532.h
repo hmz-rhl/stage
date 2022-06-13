@@ -248,6 +248,7 @@ typedef struct _PN532 {
     bool (*wait_ready)(uint32_t timeout);
     int (*wakeup)(void);
     void (*log)(const char* log);
+    int fd;
 } PN532;
 
 int PN532_WriteFrame(PN532* pn532, uint8_t* data, uint16_t length);
