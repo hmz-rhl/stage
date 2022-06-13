@@ -107,11 +107,11 @@ int PN532_I2C_Init(PN532* pn532) {
     snprintf(devname, 19, "/dev/i2c-%d", _I2C_CHANNEL);
     fd = open(devname, O_RDWR);
     if (fd < 0) {
-        fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
+        fprintf(stderr, "%s: Unable to open i2c device: %s\n",__func__, strerror(errno));
         return -1;
     }
     if (ioctl(fd, I2C_SLAVE, _I2C_ADDRESS) < 0) {
-        fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
+        fprintf(stderr, "%s: Unable to open i2c device: %s\n",__func__, strerror(errno));
         return -1;
     }
     // if (wiringPiSetupGpio() < 0) {  // using Broadcom GPIO pin mapping
@@ -130,7 +130,7 @@ void PN532_I2C_Close(){
 
     if(close(fd) <0){
 
-        fprintf(stderr, "Unable to cloe i2c device: %s\n", strerror(errno));
+        fprintf(stderr, "%s: Unable to cloe i2c device: %s\n",__func__, strerror(errno));
 
     }
 }
