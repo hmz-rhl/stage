@@ -61,6 +61,9 @@ double current = 0;
 int charge_active = 0;
 int mode_phase = 0; // 1 -> tri | 0 -> Mono
 int tempo = 0;
+int cp_old = -1;
+int pp_old = -1;
+
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
@@ -577,7 +580,8 @@ void publish_values(struct mosquitto *mosq)
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
 
-	pp = toVolt(readAdc(0,PP_CS));
+
+	
 
 
 // on donne a CP les vraies valeurs correspondantes 
@@ -607,10 +611,18 @@ void publish_values(struct mosquitto *mosq)
 		CP = -12;
 	}
 
-// on stringify ce qu'il faut publier
-	sprintf(str_cp, "%d", CP);
-// affiche sur la console
+	if(CP != cp_old){
 
+		sprintf(str_cp, "%d", CP);
+		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+		cp_old = CP;
+	}
+// on stringify ce qu'il faut publier
+// affiche sur la console
+	pp = toVolt(readAdc(0,PP_CS));
 // on donne a PP les valeurs correspondantes 
 	if (pp < 0.58){
 
@@ -639,22 +651,39 @@ void publish_values(struct mosquitto *mosq)
 
 
 // on stringify ce qu'il faut publier
-	sprintf(str_pp, "%d", PP);
+	if(PP != pp_old){
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		sprintf(str_pp, "%d", PP);
+		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+
+		pp_old = PP;
+
 	}
 	
 
-	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
-	if(rc != MOSQ_ERR_SUCCESS){
-		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-	}
 
 
 
 	if(tempo > 30){
+
+
+
+		sprintf(str_pp, "%d", PP);
+
+		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+		
+		sprintf(str_cp, "%d", CP);
+
+		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
 
 		temp = toDegres(readAdc(0,T_CS));
 		sprintf(str_temp, "%lf", temp);
@@ -894,7 +923,7 @@ int main(int argc, char *argv[])
 				if(mosq == NULL){
 
 					/* On affiche le message d'erreur*/
-					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
+					fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memory.\n",__func__ );
 					/* On libere les fonctions utilisé*/
 					mosquitto_lib_cleanup();
 
