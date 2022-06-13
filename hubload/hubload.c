@@ -60,7 +60,7 @@ double power = 0;
 double current = 0;
 int charge_active = 0;
 int mode_phase = 0; // 1 -> tri | 0 -> Mono
-int delay = 0;
+int tempo = 0;
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
@@ -654,7 +654,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 
-	if(delay > 40){
+	if(tempo > 40){
 
 		temp = toDegres(readAdc(0,T_CS));
 		sprintf(str_temp, "%lf", temp);
@@ -688,7 +688,7 @@ void publish_values(struct mosquitto *mosq)
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
-		delay = 0;
+		tempo = 0;
 	}
 
 
@@ -940,7 +940,7 @@ int main(int argc, char *argv[])
 			// Sleep(1);
 			usleep(50000);
             tentatives = 0;
-			delay++;
+			tempo++;
     		
            	publish_values(mosq);
 
