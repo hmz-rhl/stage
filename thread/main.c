@@ -1,13 +1,18 @@
-#include <mosquitto.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <unistd.h>
-#include <signal.h>
-#include <time.h>
-#include <wiringPi.h> // compilation ajouter -lwiringPi
-#include <pthread.h> // compilation ajouter -lptrhread
-#include <softPwm.h>
+#include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <linux/ioctl.h>
+#include <linux/types.h>
+#include <linux/i2c-dev.h>
+#include <stdarg.h>
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
 
 #define I2C_DEVICE          "/dev/i2c-1"
 
