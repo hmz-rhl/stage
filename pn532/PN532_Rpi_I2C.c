@@ -47,11 +47,11 @@ void PN532_Log(const char* log) {
 int PN532_I2C_ReadData(uint8_t* data, uint16_t count) {
     uint8_t status[] = {0x00};
     uint8_t frame[count + 1];
-    read(pn532->fd, status, sizeof(status));
+    read(fd, status, sizeof(status));
     if (status[0] != _I2C_READY) {
         return PN532_STATUS_ERROR;
     }
-    read(pn532->fd, frame, count + 1);
+    read(fd, frame, count + 1);
     for (uint8_t i = 0; i < count; i++) {
         data[i] = frame[i + 1];
     }
@@ -59,7 +59,7 @@ int PN532_I2C_ReadData(uint8_t* data, uint16_t count) {
 }
 
 int PN532_I2C_WriteData(uint8_t *data, uint16_t count) {
-    write(pn532->fd, data, count);
+    write(fd, data, count);
     return PN532_STATUS_OK;
 }
 
@@ -69,7 +69,7 @@ bool PN532_I2C_WaitReady(uint32_t timeout) {
     struct timespec timestart;
     clock_gettime(CLOCK_MONOTONIC, &timestart);
     while (1) {
-        read(pn532->fd, status, sizeof(status));
+        read(fd, status, sizeof(status));
         if (status[0] == _I2C_READY) {
             return true;
         } else {
@@ -105,12 +105,12 @@ int PN532_I2C_Init(PN532* pn532) {
     pn532->log = PN532_Log;
     char devname[20];
     snprintf(devname, 19, "/dev/i2c-%d", _I2C_CHANNEL);
-    pn532->fd = open(devname, O_RDWR);
-    if (pn532->fd < 0) {
+    fd = open(devname, O_RDWR);
+    if (fd < 0) {
         fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
         return -1;
     }
-    if (ioctl(pn532->fd, I2C_SLAVE, _I2C_ADDRESS) < 0) {
+    if (ioctl(fd, I2C_SLAVE, _I2C_ADDRESS) < 0) {
         fprintf(stderr, "Unable to open i2c device: %s\n", strerror(errno));
         return -1;
     }
@@ -126,11 +126,11 @@ int PN532_I2C_Init(PN532* pn532) {
     return 0;
 }
 
-void PN532_I2C_Close(PN532* pn532){
+void PN532_I2C_Close(){
 
-    if(close(pn532->fd) <0){
+    if(close(fd) <0){
 
-        fprintf(stderr, "Error %s: Unable to close file device: %s\n",__func__ strerror(errno));
+        fprintf(stderr, "Unable to cloe i2c device: %s\n", strerror(errno));
 
     }
 }

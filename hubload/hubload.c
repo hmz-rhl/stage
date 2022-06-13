@@ -304,6 +304,7 @@ void *thread_rfid(void *ptr)
 					printf("\r\n");
 					
 					//scan_activated = 0;
+					PN532_I2C_Close();
 					break;
 								
 				}
@@ -958,7 +959,7 @@ int main(int argc, char *argv[])
 		else{
 
 			// Sleep(1);
-			usleep(500000);
+			usleep(50000);
             tentatives = 0;
 			// delay++;
     		

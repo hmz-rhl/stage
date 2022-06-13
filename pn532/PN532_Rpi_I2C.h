@@ -12,7 +12,7 @@ int PN532_I2C_ReadData(uint8_t* data, uint16_t count);
 int PN532_I2C_WriteData(uint8_t *data, uint16_t count);
 bool PN532_I2C_WaitReady(uint32_t timeout);
 int PN532_I2C_Wakeup(void);
-void PN532_I2C_Close(PN532* pn532);
+void PN532_I2C_Close(void);
 
 
 #endif 
