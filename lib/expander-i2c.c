@@ -133,8 +133,8 @@ void expander_openI2C(expander_t *exp){
         if(exp->fd < 0) {
         
             fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
         }
         
     }
@@ -157,13 +157,13 @@ void expander_closeI2C(expander_t *exp){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-    // if(close(exp->fd) < 0) {
+    if(close(exp->fd) < 0) {
 
-    //     fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno));
-    //     exit(EXIT_FAILURE);
-    //     exp->erreur = -1;
+        fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno));
+        exit(EXIT_FAILURE);
+        exp->erreur = -1;
 
-    // }
+    }
 }
 
 
@@ -357,8 +357,8 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
 
@@ -372,8 +372,8 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
     #ifdef DEBUG
@@ -425,8 +425,8 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
         
         }
 
@@ -440,8 +440,8 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
         #ifdef DEBUG
@@ -516,8 +516,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
 
@@ -529,8 +529,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
     #ifdef DEBUG
@@ -569,8 +569,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
 
@@ -580,8 +580,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
     #endif
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
         
         }
     #ifdef DEBUG
@@ -628,8 +628,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         if(write(exp->fd,exp->buff,2) != 2) {
             
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
         exp->buff[0] = REG_OLAT;
@@ -640,8 +640,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
         if(write(exp->fd,exp->buff,2) != 2) {
             
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
         
         }
         #ifdef DEBUG
@@ -687,8 +687,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur IODIR\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
         
@@ -699,8 +699,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
     #endif
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
         #ifdef DEBUG
@@ -748,8 +748,8 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
 
         if(write(exp->fd,exp->buff,2) != 2) {
             printf("ERREUR d'ecriture sur OLAT\r\n");
-            exit(EXIT_FAILURE);
             exp->erreur = -1;
+            exit(EXIT_FAILURE);
 
         }
         #ifdef DEBUG

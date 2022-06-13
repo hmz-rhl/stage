@@ -3424,24 +3424,14 @@ void interruption(int sig){
 }
 int main(int argc, char *argv[])
 {
-    wiringPiSetup();
-    pinMode(LED_DATA,OUTPUT);
-    pinMode(21, OUTPUT);
-    digitalWrite(21, 1);
-    signal(SIGINT, interruption);
+    int fd;
+
 
     while(1)
     {
-        
-        // led_red();
-        // led_reset();
-       digitalWrite(LED_DATA,1);
-       wait500();
-    
-        digitalWrite(LED_DATA,0);
-       wait500();
-    
-        
+        fd = open(I2C_DEVICE, O_RDWR);
+        close(fd);
+        usleep(1);
     }
 
     return 0;
