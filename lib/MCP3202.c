@@ -77,6 +77,7 @@ int readAdc(int channel, uint8_t cs){
 		if(attente > 5)
 		{
 			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
+			close(fd);
 			exit(EXIT_FAILURE);
 		}
 	}
