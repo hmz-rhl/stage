@@ -60,8 +60,9 @@ double power = 0;
 double current = 0;
 int charge_active = 0;
 int mode_phase = 0; // 1 -> tri | 0 -> Mono
+int old_PP;
 
-
+// sleep plus precis en seconde
 void Sleep(uint time) {
 
 	usleep(1000000*time);
@@ -565,7 +566,7 @@ void publish_values(struct mosquitto *mosq)
 	// printf("%s: Lecture de Temperature\n", __func__);
 	//conversion en degres
 	temp = toDegres(readAdc(0,T_CS));
-	usleep(50000);
+	// usleep(50000);
 
 // affiche sur la console
 
@@ -573,14 +574,14 @@ void publish_values(struct mosquitto *mosq)
 	//conversion en volt
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
-	usleep(50000);
+	// usleep(50000);
 
 // affiche sur la console
 
 	// printf("%s: Lecture de PP\n", __func__);
 	//conversion en volt
 	pp = toVolt(readAdc(0,PP_CS));
-	usleep(50000);
+	// usleep(50000);
 
 	sprintf(str_temp, "%lf", temp);
 
@@ -672,12 +673,12 @@ void publish_values(struct mosquitto *mosq)
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
-	usleep(100);
+	
 	rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 	}
-	usleep(100);
+	
 
 	rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
@@ -692,7 +693,7 @@ void publish_values(struct mosquitto *mosq)
 	sprintf(str_power, "%.2lf", power);
 
 	//printf("tic : %s\n", str_tic);
-	usleep(100);
+	
 	rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
@@ -955,19 +956,19 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			Sleep(1);
-			
+			// Sleep(1);
+			usleep(1);
             tentatives = 0;
-			delay++;
+			// delay++;
     		
-           
+           	publish_values(mosq);
 
-            if(delay > 4){
+            // if(delay > 4){
 
-                delay = 0;
-			    publish_values(mosq);
+            //     delay = 0;
+			//     publish_values(mosq);
 
-            }
+            // }
 
 		}	
 		

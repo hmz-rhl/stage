@@ -91,13 +91,13 @@ int readAdc(int channel, uint8_t cs){
 	// cs concerné 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
-	usleep(1);
+	usleep(1); //temps minimal avant trnsaction spi 100ns
 
 	wiringPiSPIDataRW(0, data, 3);
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 
-	usleep(1); // temps necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
+	usleep(1); // temps minimal necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
 	expander_setPinGPIO(exp, cs);
 
 
@@ -105,6 +105,7 @@ int readAdc(int channel, uint8_t cs){
 
 	// printf("ADC retourne : %d\n", reData);
 	expander_closeAndFree(exp);
+
 	
 	close(fd);
 #ifdef DEBUG
