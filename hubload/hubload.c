@@ -654,7 +654,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 
-	if(tempo > 40){
+	if(tempo > 30){
 
 		temp = toDegres(readAdc(0,T_CS));
 		sprintf(str_temp, "%lf", temp);
@@ -938,7 +938,7 @@ int main(int argc, char *argv[])
 		else{
 
 			// Sleep(1);
-			usleep(50000);
+			usleep(100000);
             tentatives = 0;
 			tempo++;
     		
