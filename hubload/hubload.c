@@ -957,7 +957,7 @@ int main(int argc, char *argv[])
 		else{
 
 			// Sleep(1);
-			usleep(1);
+			usleep(1000);
             tentatives = 0;
 			// delay++;
     		
