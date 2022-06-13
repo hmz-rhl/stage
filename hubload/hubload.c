@@ -654,7 +654,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 
-	if(delay > 80){
+	if(delay > 40){
 
 		temp = toDegres(readAdc(0,T_CS));
 		sprintf(str_temp, "%lf", temp);
