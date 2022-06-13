@@ -157,7 +157,8 @@ void expander_closeI2C(expander_t *exp){
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
         exit(EXIT_FAILURE);
     }
-    if(close(exp->fd) < 0) {
+    int res = close(exp->fd);
+    if(res < 0) {
 
         fprintf(stderr, "fonction %s: Unable to close i2c device: %s\n", __func__, strerror(errno));
         exit(EXIT_FAILURE);
