@@ -126,7 +126,9 @@ void expander_openI2C(expander_t *exp){
     exp->fd = open(I2C_DEVICE, O_RDWR);
     if(exp->fd < 0) {
 
+        printf("Warning fonction %s : pas pu ouvrir l'i2c on retente apres 1sec\n", __func__);
         sleep(1);
+
         exp->fd = open(I2C_DEVICE, O_RDWR);
         if(exp->fd < 0) {
         
