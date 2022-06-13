@@ -72,8 +72,8 @@ int readAdc(int channel, uint8_t cs){
 	start = clock();
 	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
 	{
-		end = clock();
-		attente = 100*(double)(end - start) / (double)(CLOCKS_PER_SEC);
+		usleep(1000000);
+		attente++;
 		if(attente > 5)
 		{
 			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
@@ -81,13 +81,13 @@ int readAdc(int channel, uint8_t cs){
 		}
 	}
 
-	waitForSPIReady(exp);
+	// waitForSPIReady(exp);
 
 	expander_setPinGPIO(exp,CP_DIS);
-	expander_setPinGPIO(exp, CP_CS);
-	expander_setPinGPIO(exp, PM_CS);
-	expander_setPinGPIO(exp, T_CS);
-	expander_setPinGPIO(exp, PP_CS);
+	// expander_setPinGPIO(exp, CP_CS);
+	// expander_setPinGPIO(exp, PM_CS);
+	// expander_setPinGPIO(exp, T_CS);
+	// expander_setPinGPIO(exp, PP_CS);
 	// cs concerné 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
@@ -97,8 +97,8 @@ int readAdc(int channel, uint8_t cs){
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
 
 
-	usleep(1); // temps minimal necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
 	expander_setPinGPIO(exp, cs);
+	usleep(1); // temps minimal necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
 
 
 	reData = (((data[1] << 8) + data[2]) & MSBF_MASK);

@@ -335,6 +335,7 @@ void spiWrite32(uint16_t addresse, uint32_t value){
 // on attend que irq1 passe a 0
 
 	expander_t *exp = expander_init(EXPANDER_2);
+	int fd = wiringPiSPISetupMode(0, 2000000, 0);
 
 	// on attend que tout les CS se libere pour eviter d'entrer en conflit sur le bus spi
 	// on si on depasse un certain timeout on return
