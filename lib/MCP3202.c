@@ -91,7 +91,7 @@ int readAdc(int channel, uint8_t cs){
 	// cs concerné 0 uniquement lui les autres 1 
 	expander_resetPinGPIO(exp, cs);
 	
-	usleep(1); //temps minimal avant trnsaction spi 100ns
+	usleep(1); //temps minimal avant transaction spi 100ns
 
 	wiringPiSPIDataRW(0, data, 3);
 	// expander_setAndResetSomePinsGPIO(exp, ancienne_config);
