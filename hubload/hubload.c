@@ -510,7 +510,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     }
     
-    else if(!strcmp(msg->topic,"down/lockType2/open")){
+    else if(!strcmp(msg->topic,"down/lockType2/close")){
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_setPinGPIO(expander, LOCK_D);
@@ -521,9 +521,9 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		digitalWrite(LOCK_P,0);
 
 		expander_closeAndFree(expander);
-        printf("Le moteur est ouvert\n");
+        printf("Le moteur est ferme\n");
     }
-    else if(!strcmp(msg->topic,"down/lockType2/close")){
+    else if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
 		digitalWrite(LOCK_P,1);
@@ -533,7 +533,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		expander_closeAndFree(expander);
 		
-        printf("Le moteur est ferme\n");
+        printf("Le moteur est ouvert\n");
     }
 
 	else if( !strcmp(msg->topic, "down/scan/activate"))
@@ -594,6 +594,7 @@ void publish_values(struct mosquitto *mosq)
 
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
+	printf("cp reel : %lf\n",cp_reel);
 
 
 	
