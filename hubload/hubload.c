@@ -331,10 +331,10 @@ void *thread_pwm(void *ptr){
 
 	while(1){
 
-		digitalWrite(CP_PWM, 1);
-		usleep(time_up);
+		if(time_up != 0) digitalWrite(CP_PWM, 1);
+		delayMicroseconds(time_up);
 		if(time_low != 0) digitalWrite(CP_PWM, 0);
-		usleep(time_low);
+		delayMicroseconds(time_low);
 	}
 }
 // fonction a executer lors d'une interruption par ctrl+C
