@@ -269,7 +269,7 @@ void *thread_rfid(void *ptr)
 
         
 
-	while(1){
+	for(;;){
 
 		if(scan_activated){
 			
@@ -329,7 +329,8 @@ void *thread_rfid(void *ptr)
 
 void *thread_pwm(void *ptr){
 
-	while(1){
+	piHiPri(90);
+	for(;;){
 
 		if(time_up != 0) digitalWrite(CP_PWM, 1);
 		delayMicroseconds(time_up);
