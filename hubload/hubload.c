@@ -329,7 +329,7 @@ void *thread_rfid(void *ptr)
 
 void *thread_pwm(void *ptr){
 
-	piHiPri(90);
+	piHiPri(100);
 	for(;;){
 
 		if(time_up != 0) digitalWrite(CP_PWM, 1);
