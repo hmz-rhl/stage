@@ -503,7 +503,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         if(dutycycle >= 0 && dutycycle <= 100){
             
             printf("dutycycle %d \n",dutycycle);
-			time_up = 1000*dutycyle/100;
+			time_up = 1000*dutycycle/100;
 			time_low = 1000*(100-dutycycle)/100;
         }
 		//softPwmWrite(CP_PWM, dutycycle/10);
