@@ -333,7 +333,7 @@ void *thread_pwm(void *ptr){
 
 		digitalWrite(CP_PWM, 1);
 		usleep(time_up);
-		digitalWrite(CP_PWM, 0);
+		if(time_low != 0) digitalWrite(CP_PWM, 0);
 		usleep(time_low);
 	}
 }
