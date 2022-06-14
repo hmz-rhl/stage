@@ -63,6 +63,9 @@ int mode_phase = 0; // 1 -> tri | 0 -> Mono
 int tempo = 0;
 int cp_old = -1;
 int pp_old = -1;
+int time_up = 1000;
+int time_low = 0;
+
 
 
 // sleep plus precis en seconde
@@ -324,6 +327,16 @@ void *thread_rfid(void *ptr)
 	}
 }
 
+void *thread_pwm(void *ptr){
+
+	while(1){
+
+		digitalWrite(CP_PWM, 1);
+		usleep(time_up);
+		digitalWrite(CP_PWM, 0);
+		usleep(time_low);
+	}
+}
 // fonction a executer lors d'une interruption par ctrl+C
 void nettoyage(int n)
 {
@@ -490,8 +503,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         if(dutycycle >= 0 && dutycycle <= 100){
             
             printf("dutycycle %d \n",dutycycle);
+			time_up = 1000*dutycyle/100;
+			time_low = 1000*(100-dutycycle)/100;
         }
-		softPwmWrite(CP_PWM, dutycycle/10);
+		//softPwmWrite(CP_PWM, dutycycle/10);
 
     }
     
@@ -777,7 +792,7 @@ int main(int argc, char *argv[])
 	pinMode(PP_IN, INPUT);
 	pullUpDnControl(PP_IN, PUD_OFF);
 
-	pinMode(CP_PWM,PWM_OUTPUT);
+	pinMode(CP_PWM,OUTPUT);
 
 	pinMode(LED_STRIP_D, OUTPUT);
 
@@ -797,16 +812,12 @@ int main(int argc, char *argv[])
 	digitalWrite(LOCK_P, 0);
 	
 
-	if(softPwmCreate (CP_PWM,10 ,10)<0){
+	if(softPwmCreate(CP_PWM,10 ,10)<0){
 
 		fprintf(stderr, "fonction %s: Unable to set up PWM: %s\n", __func__, strerror(errno));
 		exit(EXIT_FAILURE);
 
 	}
-
-	rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-
-	rtc_eeprom_closeAndFree(rtc_eeprom);
 
 
 	// declartion des variables
@@ -816,6 +827,7 @@ int main(int argc, char *argv[])
     time_t start, end;
 	start = 0;
 	pthread_t thread_obj;
+	pthread_t thread_obj2;
 
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
@@ -823,6 +835,7 @@ int main(int argc, char *argv[])
 
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+	pthread_create(&thread_obj2, NULL, *thread_pwm, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
