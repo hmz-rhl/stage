@@ -507,7 +507,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			time_up = (825)*dutycycle/100;
 			time_low = (825)*(100-dutycycle)/100;
         }
-		//softPwmWrite(CP_PWM, dutycycle/10);
+		softPwmWrite(CP_PWM, dutycycle/10);
 
     }
     
@@ -837,7 +837,7 @@ int main(int argc, char *argv[])
 
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
-	pthread_create(&thread_obj2, NULL, *thread_pwm, NULL);
+	//pthread_create(&thread_obj2, NULL, *thread_pwm, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
