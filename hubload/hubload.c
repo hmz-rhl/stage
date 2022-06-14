@@ -803,7 +803,7 @@ int main(int argc, char *argv[])
 	expander_setPullup(exp1, 0XFF);
 	expander_setPullup(exp1, 0XFF);
 	expander_setAndResetSomePinsGPIO(exp1, 0b11111111);
-	expander_setAndResetSomePinsGPIO(exp2, 0b11111000);
+	expander_setAndResetSomePinsGPIO(exp2, 0b11110000);
 	expander_closeAndFree(exp1);
 	expander_closeAndFree(exp2);
 // on ouvre la prise on sait jamais
