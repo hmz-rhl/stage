@@ -327,17 +327,6 @@ void *thread_rfid(void *ptr)
 	}
 }
 
-void *thread_pwm(void *ptr){
-
-	piHiPri(100);
-	for(;;){
-
-		if(time_up != 0) digitalWrite(CP_PWM, 1);
-		delayMicroseconds(time_up);
-		if(time_low != 0) digitalWrite(CP_PWM, 0);
-		delayMicroseconds(time_low);
-	}
-}
 // fonction a executer lors d'une interruption par ctrl+C
 void nettoyage(int n)
 {
@@ -504,10 +493,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         if(dutycycle >= 0 && dutycycle <= 100){
             
             printf("dutycycle %d \n",dutycycle);
-			time_up = (825)*dutycycle/100;
-			time_low = (825)*(100-dutycycle)/100;
+			pwmWrite(CP_PWM, dutycyle);
+			
         }
-		softPwmWrite(CP_PWM, dutycycle/10);
+		
 
     }
     
@@ -794,7 +783,11 @@ int main(int argc, char *argv[])
 	pinMode(PP_IN, INPUT);
 	pullUpDnControl(PP_IN, PUD_OFF);
 
-	pinMode(CP_PWM,OUTPUT);
+	pinMode (CP_PWM, PWM_OUTPUT) ; /* set PWM pin as output */
+ 	pwmSetClock (190);
+ 	pwmSetRange(100);
+  	pwmSetMode(PWM_MODE_MS);
+    pwmWrite(PWM_pin, 100);
 
 	pinMode(LED_STRIP_D, OUTPUT);
 
