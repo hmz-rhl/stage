@@ -520,6 +520,22 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
+		if(digitalWrite(LOCK_FB) != 1){
+		expander_setPinGPIO(expander, LOCK_D);
+
+			digitalWrite(LOCK_P,1);
+			Sleep(1);
+			digitalWrite(LOCK_P,0);
+			if(digitalWrite(LOCK_FB) != 1){
+				
+				rc = mosquitto_publish(mosq, NULL, "up/log", strlen("erreur fb"), str_cp, 2, false);
+				if(rc != MOSQ_ERR_SUCCESS){
+					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+				}
+
+			}
+		}
+
 		expander_closeAndFree(expander);
 		
         printf("Le moteur est ouvert\n");
@@ -591,7 +607,7 @@ void publish_values(struct mosquitto *mosq)
 
 // on donne a CP les vraies valeurs correspondantes 
 	CP = -12;
-	if (cp_reel > 9.5){
+	if (cp_reel > 10.5){
 
 		CP = 12;
 	}
