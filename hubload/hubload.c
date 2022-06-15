@@ -583,7 +583,7 @@ void publish_values(struct mosquitto *mosq)
 
 	cp = toVolt(readAdc(0,CP_CS));
 	cp_reel = 4.0*cp;
-	printf("cp reel : %lf\n",cp_reel);
+	//printf("cp reel : %lf\n",cp_reel);
 
 
 	
