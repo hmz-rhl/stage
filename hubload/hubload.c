@@ -783,7 +783,7 @@ int main(int argc, char *argv[])
 	pullUpDnControl(PP_IN, PUD_OFF);
 
 	pinMode (CP_PWM, PWM_OUTPUT) ; /* set PWM pin as output */
- 	pwmSetClock (190);
+ 	pwmSetClock (192);
  	pwmSetRange(100);
   	pwmSetMode(PWM_MODE_MS);
     pwmWrite(CP_PWM, 100);
