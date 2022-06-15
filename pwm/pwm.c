@@ -17,7 +17,7 @@ int main (void)
   pwmSetClock (190);
   pwmSetRange(100);
   pwmSetMode(PWM_MODE_MS);
-    pwmWrite(PWM_pin, 20);
+    pwmWrite(PWM_pin, 50);
   while (1)
   {
 
