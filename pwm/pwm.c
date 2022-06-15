@@ -14,14 +14,11 @@ int main (void)
     exit (1) ;
 
   pinMode (PWM_pin, PWM_OUTPUT) ; /* set PWM pin as output */
-  pwmSetClock (intensity);
+  pwmSetClock (2048);
   pwmSetRange(100);
     pwmWrite(PWM_pin, 20);
   while (1)
   {
-     pwmSetClock (intensity);
-     intensity = (intensity+1) % 2049;
-	usleep(250000);
     // for (intensity = 0 ; intensity < 1024 ; ++intensity)
     // {
     //   pwmWrite (PWM_pin, intensity) ;	/* provide PWM value for duty cycle */
