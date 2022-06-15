@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 const int PWM_pin = 23;   /* GPIO 1 as per WiringPi, GPIO18 as per BCM */
 
