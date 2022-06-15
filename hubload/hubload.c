@@ -804,14 +804,6 @@ int main(int argc, char *argv[])
 	digitalWrite(LOCK_P, 1);
 	Sleep(1);
 	digitalWrite(LOCK_P, 0);
-	
-
-	if(softPwmCreate(CP_PWM,10 ,10)<0){
-
-		fprintf(stderr, "fonction %s: Unable to set up PWM: %s\n", __func__, strerror(errno));
-		exit(EXIT_FAILURE);
-
-	}
 
 
 	// declartion des variables
