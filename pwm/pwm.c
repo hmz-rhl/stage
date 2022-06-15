@@ -14,7 +14,7 @@ int main (void)
 
   pinMode (PWM_pin, PWM_OUTPUT) ; /* set PWM pin as output */
   pwmSetClock (192);
-  pwmRange(100);
+  pwmSetRange(100);
     pwmWrite(PWM_pin, 20);
   while (1)
   {
