@@ -7,18 +7,20 @@ const int PWM_pin = 23;   /* GPIO 1 as per WiringPi, GPIO18 as per BCM */
 
 int main (void)
 {
-  int intensity ;            
+  int intensity = 0;            
 
   if (wiringPiSetup() == -1)
     exit (1) ;
 
   pinMode (PWM_pin, PWM_OUTPUT) ; /* set PWM pin as output */
-  pwmSetClock (193);
+  pwmSetClock (intensity);
   pwmSetRange(100);
     pwmWrite(PWM_pin, 20);
   while (1)
   {
-	
+     pwmSetClock (intensity);
+     intensity = (intensity+1) % 2049;
+	usleep(250);
     // for (intensity = 0 ; intensity < 1024 ; ++intensity)
     // {
     //   pwmWrite (PWM_pin, intensity) ;	/* provide PWM value for duty cycle */
