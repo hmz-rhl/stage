@@ -21,7 +21,7 @@ int main (void)
   {
      pwmSetClock (intensity);
      intensity = (intensity+1) % 2049;
-	usleep(250);
+	usleep(250000);
     // for (intensity = 0 ; intensity < 1024 ; ++intensity)
     // {
     //   pwmWrite (PWM_pin, intensity) ;	/* provide PWM value for duty cycle */
