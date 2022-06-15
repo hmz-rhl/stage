@@ -19,7 +19,6 @@
 #include <sys/time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
-#include <softPwm.h>
 #include "../pn532/pn532.h"
 #include "../pn532/PN532_Rpi_I2C.h"
 #include "../lib/rtc_eeprom.h"
@@ -493,7 +492,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         if(dutycycle >= 0 && dutycycle <= 100){
             
             printf("dutycycle %d \n",dutycycle);
-			pwmWrite(CP_PWM, dutycyle);
+			pwmWrite(CP_PWM, dutycycle);
 			
         }
 		
@@ -787,7 +786,7 @@ int main(int argc, char *argv[])
  	pwmSetClock (190);
  	pwmSetRange(100);
   	pwmSetMode(PWM_MODE_MS);
-    pwmWrite(PWM_pin, 100);
+    pwmWrite(CP_PWM, 100);
 
 	pinMode(LED_STRIP_D, OUTPUT);
 
