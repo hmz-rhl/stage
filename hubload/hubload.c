@@ -524,10 +524,15 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 				}
 
 			}
+			else{
+				printf("Le moteur est ferme\n");
+			}
+		}
+        else{
+			printf("Le moteur est ferme\n");
 		}
 		expander_closeAndFree(expander);
-        printf("Le moteur est ferme\n");
-    }
+	}
     else if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
@@ -550,11 +555,16 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 				}
 
 			}
+			else{
+				printf("Le moteur est ouvert\n");
+			}
+		}
+        else{
+			printf("Le moteur est ouvert\n");
 		}
 
 		expander_closeAndFree(expander);
 		
-        printf("Le moteur est ouvert\n");
     }
 
 	else if( !strcmp(msg->topic, "down/scan/activate"))
