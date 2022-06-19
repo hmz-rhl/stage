@@ -518,7 +518,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 			if(digitalRead(LOCK_FB) != 0){
 				
-				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
@@ -549,7 +549,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			digitalWrite(LOCK_P,0);
 			if(digitalRead(LOCK_FB) != 1){
 				
-				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
