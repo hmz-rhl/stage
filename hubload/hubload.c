@@ -577,11 +577,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		scan_activated = 0;
 	}
 
-	else if(!strcmp(msg->topic, "down/tic/reset")){
-		
-		compteur_tic = 0;
-	}
-
 	else if(!strcmp(msg->topic, "down/ID/write")){
 		eeprom_writeID(msg->payload);
 	}
@@ -939,8 +934,8 @@ int main(int argc, char *argv[])
 			if(tentatives >= 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
-				// close(fd);
-				return EXIT_FAILURE;
+				nettoyage(0);
+				//return EXIT_FAILURE;
 			}
 
 			// affichage de l'erreur pour le debug
@@ -1004,20 +999,12 @@ int main(int argc, char *argv[])
 		}
 			/* Si tout va bien on publie */
 		else{
-
-			// Sleep(1);
+			
 			usleep(100000);
             tentatives = 0;
 			tempo++;
     		
            	publish_values(mosq);
-
-            // if(delay > 4){
-
-            //     delay = 0;
-			//     publish_values(mosq);
-
-            // }
 
 		}	
 		
