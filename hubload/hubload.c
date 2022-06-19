@@ -509,14 +509,14 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalWrite(LOCK_FB) != 0){
+		if(digitalRead(LOCK_FB) != 0){
 			expander_resetPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
 			Sleep(1);
 			digitalWrite(LOCK_P,0);
 
-			if(digitalWrite(LOCK_FB) != 0){
+			if(digitalRead(LOCK_FB) != 0){
 				
 				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
@@ -541,13 +541,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalWrite(LOCK_FB) != 1){
+		if(digitalRead(LOCK_FB) != 1){
 			expander_setPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
 			Sleep(1);
 			digitalWrite(LOCK_P,0);
-			if(digitalWrite(LOCK_FB) != 1){
+			if(digitalRead(LOCK_FB) != 1){
 				
 				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
