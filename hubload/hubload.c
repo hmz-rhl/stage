@@ -123,7 +123,7 @@ void eeprom_writeID(char *id){
 
 
 
-// on verifie l'id
+// on verifie l'id, il doit etre dans le format suivant : ABCDEF012345
 	for(int i = 0; i<12 ; i++){
 
 		if((id[i] >= 48 && id[i]<=57) || (id[i] >= 'A' && id[i] < 'Z'))
