@@ -502,7 +502,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalRead(LOCK_FB) != 0){
+
+		if(strcmp("force",msg-payload) && digitalRead(LOCK_FB) != 0){
 			expander_resetPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
@@ -517,10 +518,15 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 				}
 
 			}
+			else{
+				printf("Le moteur est ferme\n");
+			}
+		}
+        else{
+			printf("Le moteur est ferme\n");
 		}
 		expander_closeAndFree(expander);
-        printf("Le moteur est ferme\n");
-    }
+	}
     else if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
@@ -529,7 +535,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalRead(LOCK_FB) != 1){
+		if(strcmp("force",msg-payload) && digitalRead(LOCK_FB) != 1){
+
 			expander_setPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
@@ -543,11 +550,16 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 				}
 
 			}
+			else{
+				printf("Le moteur est ouvert\n");
+			}
+		}
+        else{
+			printf("Le moteur est ouvert\n");
 		}
 
 		expander_closeAndFree(expander);
 		
-        printf("Le moteur est ouvert\n");
     }
 
 	else if( !strcmp(msg->topic, "down/scan/activate"))
@@ -558,11 +570,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	else if( !strcmp(msg->topic, "down/scan/shutdown"))
 	{
 		scan_activated = 0;
-	}
-
-	else if(!strcmp(msg->topic, "down/tic/reset")){
-		
-		compteur_tic = 0;
 	}
 
 	else if(!strcmp(msg->topic, "down/ID/write")){
@@ -922,8 +929,8 @@ int main(int argc, char *argv[])
 			if(tentatives >= 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
-				// close(fd);
-				return EXIT_FAILURE;
+				nettoyage(0);
+				//return EXIT_FAILURE;
 			}
 
 			// affichage de l'erreur pour le debug
@@ -988,19 +995,11 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			// Sleep(1);
 			usleep(100000);
             tentatives = 0;
 			tempo++;
     		
            	publish_values(mosq);
-
-            // if(delay > 4){
-
-            //     delay = 0;
-			//     publish_values(mosq);
-
-            // }
 
 		}	
 		
