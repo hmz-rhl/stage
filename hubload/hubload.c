@@ -309,7 +309,7 @@ void *thread_rfid(void *ptr)
 					printf("\r\n");
 								
 				}
-
+				Sleep(1);
 
 			}
 		
