@@ -267,13 +267,17 @@ void *thread_rfid(void *ptr)
 			
 			Sleep(1);
 
-			while(PN532_I2C_Init(&pn532) < 0){
+			while(PN532_I2C_Init(&pn532) < 0 && scan_activated){
 
 				Sleep(1);
 			}
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
 				Sleep(1);
+				if(scan_activated == 0){
+					PN532_I2C_Close();
+					break;
+				}
     		}
 
 			printf("Found PN532 with firmware version: %d.%d\r\n", buff[1], buff[2]);
@@ -282,7 +286,10 @@ void *thread_rfid(void *ptr)
 			printf("Waiting for RFID/NFC card...\r\n");
 			while(scan_activated)
 			{
-			
+				if(scan_activated == 0){
+					PN532_I2C_Close();
+					break;
+				}
 				// Check if a card is available to read
 				uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
 				if (uid_len == PN532_STATUS_ERROR) 
@@ -300,10 +307,6 @@ void *thread_rfid(void *ptr)
 					sprintf(message, "%02x . %02x . %02x . %02x . %02x . %02x . %02x . %02x", uid[0],uid[1],uid[2],uid[3],uid[4],uid[5],uid[6],uid[7]);
 					mosquitto_publish(mosq,NULL,"up/scan",strlen(message),message,2,false);
 					printf("\r\n");
-					
-					//scan_activated = 0;
-					PN532_I2C_Close();
-					break;
 								
 				}
 
