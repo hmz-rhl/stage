@@ -123,7 +123,7 @@ void eeprom_writeID(char *id){
 
 
 
-// on verifie l'id
+// on verifie l'id, il doit etre dans le format suivant : ABCDEF012345
 	for(int i = 0; i<12 ; i++){
 
 		if((id[i] >= 48 && id[i]<=57) || (id[i] >= 'A' && id[i] < 'Z'))
@@ -171,14 +171,7 @@ uint16_t eeprom_getWh()
     return result;
 }
 
-void S0_interrupt(void){
-    // registre   F1 F0     F1 F0        F1 F0     F1 F0   
-    // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
-
-    // 1) on incrémente le bite de poids faible a chaque intérruption
-    // 2) Quand il atteint la valeur max ( 0xFF ) on le passe a zéro et on incrémente le 2e bite
-    // 3) On remet a 0 le 2e registre quand il atteind 0xFF et que le premier atteint 0xFF
- 
+void S0_interrupt(void){ 
 
     gettimeofday(&end, NULL);
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
@@ -873,7 +866,7 @@ int main(int argc, char *argv[])
 			if(mosq == NULL){
 
 				mosquitto_lib_cleanup();
-				fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
+				fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memory\n",__func__);
 				// close(fd);
 				
 				return 1;
