@@ -496,7 +496,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_setPinGPIO(expander, LOCK_D);
-
+		usleep(1);
 		digitalWrite(LOCK_P,1);
 
 		sleep(1);
@@ -505,6 +505,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		if(strcmp("force",msg->payload) && digitalRead(LOCK_FB) != 0){
 			expander_resetPinGPIO(expander, LOCK_D);
+			usleep(1);
 
 			digitalWrite(LOCK_P,1);
 			Sleep(1);
@@ -530,6 +531,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     else if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
+		usleep(1);
+
 		digitalWrite(LOCK_P,1);
 
 		Sleep(1);
@@ -538,6 +541,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		if(strcmp("force",msg->payload) && digitalRead(LOCK_FB) != 1){
 
 			expander_setPinGPIO(expander, LOCK_D);
+			usleep(1);
 
 			digitalWrite(LOCK_P,1);
 			Sleep(1);
