@@ -280,7 +280,7 @@ void *thread_rfid(void *ptr)
     		PN532_SamConfiguration(&pn532);
 
 			printf("Waiting for RFID/NFC card...\r\n");
-			while(1)
+			while(scan_activated)
 			{
 			
 				// Check if a card is available to read
