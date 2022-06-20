@@ -2,7 +2,7 @@
  * @file expander-set-gpio.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.1
+ * @version 0.2
  * @date 2022-05-27
  * 
  * @copyright Copyright (c) 2022
@@ -27,30 +27,8 @@
 #define I2C_DEVICE          "/dev/i2c-1"
 #define MCP23008_ADDR       (0x26)
 
-/**
- * 
- * a corgier le dynamisme de l'adresse
- * 
- **/
-
-
-// registers
-#define REG_IODIR   0x00   //!< I/O direction register
-#define REG_IPOL    0x01    //!< Input polarity register
-#define REG_GPINTEN 0x02 //!< Interrupt-on-change control register
-#define REG_DEFVAL  0x03 //!< Default compare register for interrupt-on-change
-#define REG_INTCON  0x04 //!< Interrupt control register
-#define REG_IOCON   0x05  //!< Configuration register
-#define REG_GPPU    0x06   //!< Pull-up resistor configuration register
-#define REG_INTF    0x07   //!< Interrupt flag register
-#define REG_INTCAP  0x08 //!< Interrupt capture register
-#define REG_GPIO    0x09   //!< Port register
-#define REG_OLAT    0x0A   //!< Output latch register
-
-
 
 int fd;
-int ret;
 uint8_t buff = 0;;
 
 
@@ -60,27 +38,22 @@ int main(int argc, char* argv[]) {
 
     if(argc != 10){
 
-        printf("Usage:   ./expander-get-gpio <addr> <GPIO 7> ... <GPIO 0> \n");
-        printf("exemple: ./expander-get-gpio 26 0 1 0 1 0 1 1 1\n");
+        printf("Usage:   ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
+        printf("exemple: ./expander-set-gpio 26 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
     if(argc == 2 && (!strcmp(argv[1],"-h") || !strcmp(argv[1],"--help"))){
 
-        printf("Usage: ./expander-get-gpio -h, --help affiche ce message d'aide \n");
-        printf("       ./expander-get-gpio <GPIO 7> ... <GPIO 0> \n");
+        printf("Usage: ./expander-set-gpio -h, --help \taffiche ce message d'aide \n");
+        printf("       ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
 
-        printf("exemple: ./expander-get-gpio 0 1 0 1 0 1 1 1\n");
+
+        printf("exemple: ./expander-set-gpio 0 1 0 1 0 1 1 1\n");
         exit(EXIT_FAILURE);
 
     }
-    // if(argc == 2 && (!strcmp(argv[1],"-v") || !strcmp(argv[1],"--version"))){
-        
-    //     printf("version : %s\n", VERSION);
-    //     putchar('\n');
-    //     exit(EXIT_FAILURE);
 
-    // }
 
     else if(!strcmp(argv[1], "27")){
 

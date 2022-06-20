@@ -1,4 +1,13 @@
-// inclusion du driver de l'expander
+/**
+ * @file expander-get-gpio.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.2
+ * @date 2022-06-20
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../lib/expander-i2c.h"
 
 
@@ -9,8 +18,8 @@ int main(int argc, char *argv[]){
 
     if(argc != 2 || !strcmp(argv[1], "-h") || !strcmp(argv[1],"--help")){
     
-        printf("Usage: ./get-expander1-gpio <addresse> \n");
-        printf("exemple: ./set_expander1_gpio 26 \n");
+        printf("Usage: ./get-expander-gpio <addresse> \n");
+        printf("exemple: ./get_expander_gpio 26 \n");
         exit(EXIT_FAILURE);
 
     }
