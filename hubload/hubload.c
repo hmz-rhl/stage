@@ -509,7 +509,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalWrite(LOCK_FB) != 0){
+		if(strcmp("force",msg-payload) && digitalWrite(LOCK_FB) != 0){
 			expander_resetPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
@@ -536,7 +536,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(digitalWrite(LOCK_FB) != 1){
+		if(strcmp("force",msg-payload) && digitalWrite(LOCK_FB) != 1){
 			expander_setPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
