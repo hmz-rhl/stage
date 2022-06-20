@@ -123,7 +123,7 @@ void eeprom_writeID(char *id){
 
 
 
-// on verifie l'id
+// on verifie l'id, il doit etre dans le format suivant : ABCDEF012345
 	for(int i = 0; i<12 ; i++){
 
 		if((id[i] >= 48 && id[i]<=57) || (id[i] >= 'A' && id[i] < 'Z'))
@@ -502,7 +502,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(strcmp("force",msg-payload) && digitalWrite(LOCK_FB) != 0){
+
+		if(strcmp("force",msg-payload) && digitalRead(LOCK_FB) != 0){
 			expander_resetPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
@@ -534,7 +535,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		Sleep(1);
 		digitalWrite(LOCK_P,0);
 
-		if(strcmp("force",msg-payload) && digitalWrite(LOCK_FB) != 1){
+		if(strcmp("force",msg-payload) && digitalRead(LOCK_FB) != 1){
+
 			expander_setPinGPIO(expander, LOCK_D);
 
 			digitalWrite(LOCK_P,1);
@@ -871,7 +873,7 @@ int main(int argc, char *argv[])
 			if(mosq == NULL){
 
 				mosquitto_lib_cleanup();
-				fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memo__func__, ry.\n");
+				fprintf(stderr, "fonction %s: Error mosquitto_new: Out of memory\n",__func__);
 				// close(fd);
 				
 				return 1;
