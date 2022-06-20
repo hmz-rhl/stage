@@ -171,14 +171,7 @@ uint16_t eeprom_getWh()
     return result;
 }
 
-void S0_interrupt(void){
-    // registre   F1 F0     F1 F0        F1 F0     F1 F0   
-    // passé de 0x00 00 a 0x00 01 puis 0x00 FF a 0x01 00
-
-    // 1) on incrémente le bite de poids faible a chaque intérruption
-    // 2) Quand il atteint la valeur max ( 0xFF ) on le passe a zéro et on incrémente le 2e bite
-    // 3) On remet a 0 le 2e registre quand il atteind 0xFF et que le premier atteint 0xFF
- 
+void S0_interrupt(void){ 
 
     gettimeofday(&end, NULL);
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
@@ -516,18 +509,23 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			Sleep(1);
 			digitalWrite(LOCK_P,0);
 
-			if(digitalWrite(LOCK_FB) != 0){
+			if(digitalRead(LOCK_FB) != 0){
 				
-				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
 
 			}
+			else{
+				printf("Le moteur est ferme\n");
+			}
+		}
+        else{
+			printf("Le moteur est ferme\n");
 		}
 		expander_closeAndFree(expander);
-        printf("Le moteur est ferme\n");
-    }
+	}
     else if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
@@ -542,19 +540,24 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			digitalWrite(LOCK_P,1);
 			Sleep(1);
 			digitalWrite(LOCK_P,0);
-			if(digitalWrite(LOCK_FB) != 1){
+			if(digitalRead(LOCK_FB) != 1){
 				
-				rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
 
 			}
+			else{
+				printf("Le moteur est ouvert\n");
+			}
+		}
+        else{
+			printf("Le moteur est ouvert\n");
 		}
 
 		expander_closeAndFree(expander);
 		
-        printf("Le moteur est ouvert\n");
     }
 
 	else if( !strcmp(msg->topic, "down/scan/activate"))
@@ -565,11 +568,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	else if( !strcmp(msg->topic, "down/scan/shutdown"))
 	{
 		scan_activated = 0;
-	}
-
-	else if(!strcmp(msg->topic, "down/tic/reset")){
-		
-		compteur_tic = 0;
 	}
 
 	else if(!strcmp(msg->topic, "down/ID/write")){
@@ -929,8 +927,8 @@ int main(int argc, char *argv[])
 			if(tentatives >= 5){
 
 				printf("Arret du programme, impossible de fonctionner après 5 tentatives, verifier le service mosquitto\n");
-				// close(fd);
-				return EXIT_FAILURE;
+				nettoyage(0);
+				//return EXIT_FAILURE;
 			}
 
 			// affichage de l'erreur pour le debug
@@ -995,19 +993,11 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			// Sleep(1);
 			usleep(100000);
             tentatives = 0;
 			tempo++;
     		
            	publish_values(mosq);
-
-            // if(delay > 4){
-
-            //     delay = 0;
-			//     publish_values(mosq);
-
-            // }
 
 		}	
 		
