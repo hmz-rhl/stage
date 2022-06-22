@@ -27,13 +27,14 @@ expander_t* expander_init(uint8_t addr){
     if(addr > 0x27 || addr < 0x20 )
     {
         printf("ERREUR %s : vous avez saisie 0x%02x\nOr addr doit etre entre 0x20 et 0x27 pour l'expander\n",__func__);
-        
+        exp->erreur = -1;
         exit(EXIT_FAILURE);
         return NULL;
     }
     expander_t* exp = malloc(sizeof(expander_t));
     if (exp == NULL){
         printf("ERREUR %s : allocation echouee\n", __func__);
+        exp->erreur = -1;
         exit(EXIT_FAILURE);
         return NULL;
     }
@@ -121,6 +122,8 @@ void expander_openI2C(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     exp->fd = open(I2C_DEVICE, O_RDWR);
@@ -134,6 +137,7 @@ void expander_openI2C(expander_t *exp){
         
             fprintf(stderr, "fonction %s: Unable to open i2c device: %s\n", __func__, strerror(errno));
             exp->erreur = -1;
+
             exit(EXIT_FAILURE);
         }
         
@@ -155,6 +159,8 @@ void expander_closeI2C(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     if(close(exp->fd) < 0) {
@@ -181,6 +187,8 @@ void expander_setI2C(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -208,6 +216,8 @@ void expander_setPullup(expander_t * exp, uint8_t val){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     
@@ -238,6 +248,8 @@ uint8_t expander_getAllPinsGPIO(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -301,6 +313,8 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
         if(pin > 7 || pin < 0)
@@ -333,6 +347,8 @@ void expander_setPinGPIO(expander_t *exp, uint8_t pin){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     
@@ -400,6 +416,8 @@ void expander_resetPinGPIO(expander_t *exp, uint8_t pin){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+    
         exit(EXIT_FAILURE);
     }
 
@@ -502,6 +520,8 @@ void expander_setAllPinsGPIO(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -557,6 +577,8 @@ void expander_resetAllPinsGPIO(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     int cpt = 0;
@@ -608,6 +630,8 @@ void expander_setOnlyPinResetOthersGPIO(expander_t* exp, uint8_t pin){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
     
@@ -668,6 +692,8 @@ void expander_resetOnlyPinSetOthersGPIO(expander_t* exp, uint8_t pin){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -726,6 +752,8 @@ void expander_setAndResetSomePinsGPIO(expander_t* exp, uint8_t config){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
         exp->buff[0] = MCP23008_IODIR;
@@ -773,6 +801,8 @@ void expander_printGPIO(expander_t *exp){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -842,6 +872,8 @@ void expander_polGPIO(expander_t *exp, uint8_t val){
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+
         exit(EXIT_FAILURE);
     }
 
@@ -871,6 +903,8 @@ void expander_closeAndFree(expander_t *exp)
     if(exp == NULL || exp == 0)
     {
         printf("ERREUR fonction %s : parametre exp NULL (utiliser: expander_init())\n", __func__);
+        exp->erreur = -1;
+    
         return;
     }
     expander_closeI2C(exp);
