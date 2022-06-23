@@ -16,6 +16,7 @@
         "xstring": "cpp",
         "eeprom.h": "c",
         "utilities.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "pn532.h": "c"
     }
 }
