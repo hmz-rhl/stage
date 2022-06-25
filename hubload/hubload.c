@@ -498,6 +498,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     else if(!strcmp(msg->topic,"down/lockType2/close")){
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
+		
+
 		expander_setPinGPIO(expander, LOCK_D);
 		usleep(1);
 		digitalWrite(LOCK_P,1);
@@ -516,7 +518,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 			if(digitalRead(LOCK_FB) != 0){
 				
-				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				printf("Error %s: feedback non recu pour la fermeture de la prise\n",__func__);
+				int rc = mosquitto_publish(mosq, NULL, "up/logs", strlen("feedback non recu pour la fermeture de la prise"), "feedback non recu pour la fermeture de la prise", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
@@ -550,8 +553,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			Sleep(1);
 			digitalWrite(LOCK_P,0);
 			if(digitalRead(LOCK_FB) != 1){
-				
-				int rc = mosquitto_publish(mosq, NULL, "up/error", strlen("lockType2"), "lockType2", 2, false);
+				printf("Error %s: feedback non recu pour l'ouverture de la prise\n",__func__);
+				int rc = mosquitto_publish(mosq, NULL, "up/logs", strlen("feedback non recu pour l'ouverture de la prise"), "feedback non recu pour l'ouverture de la prise", 2, false);
 				if(rc != MOSQ_ERR_SUCCESS){
 					fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 				}
@@ -592,8 +595,157 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
+	else if(!strcmp(msg->topic,"down/lock_vae/open")){
 
+        if(!strcmp(msg->payload, "1")){
 
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 0);
+            printf("Le relais du velo 1 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "2")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 1);
+            printf("Le relais du velo 2 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "3")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 2);
+            printf("Le relais du velo 3 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "4")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 3);
+            printf("Le relais du velo 4 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+        
+    
+    }
+
+	else if(!strcmp(msg->topic,"down/lock_vae/close")){
+
+		if(!strcmp(msg->payload, "1")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 0);
+			printf("Le relais du velo 1 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "2")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 1);
+			printf("Le relais du velo 2 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "3")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 2);
+			printf("Le relais du velo 3 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "4")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 3);
+			printf("Le relais du velo 4 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+        
+    
+    }
+
+	else if(!strcmp(msg->topic,"down/power_vae/open")){
+
+        if(!strcmp(msg->payload, "1")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 4);
+            printf("La prise du velo 1 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "2")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 5);
+            printf("La prise du velo 2 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "3")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 6);
+            printf("La prise du velo 3 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+		else if(!strcmp(msg->payload, "4")){
+
+            expander_t* expander = expander_init(0x20); //Pour les relais
+            expander_resetPinGPIO(expander, 7);
+            printf("La prise du velo 4 est ouvert\n");
+            expander_closeAndFree(expander);
+			
+        }
+        
+    
+    }
+
+	else if(!strcmp(msg->topic,"down/power_vae/close")){
+
+		if(!strcmp(msg->payload, "1")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 4);
+			printf("La prise du velo 1 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "2")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 5);
+			printf("La prise du velo 2 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "3")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 6);
+			printf("La prise du velo 3 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+		else if(!strcmp(msg->payload, "4")){
+
+			expander_t* expander = expander_init(0x20); //Pour les relais
+			expander_setPinGPIO(expander, 7);
+			printf("La prise du velo 4 est ferme\n");
+			expander_closeAndFree(expander);
+			
+		}
+        
+    
+    }
 
 
 }
