@@ -809,6 +809,7 @@ void publish_values(struct mosquitto *mosq)
 
 	if(CP != cp_old){
 
+		printf("brute PP: %d\n", PP);
 		sprintf(str_cp, "%d", CP);
 		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
