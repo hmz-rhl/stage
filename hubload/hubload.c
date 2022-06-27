@@ -1163,7 +1163,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(100000);
+			usleep(1000000);
             tentatives = 0;
 			tempo++;
     		
