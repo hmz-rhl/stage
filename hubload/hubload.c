@@ -802,7 +802,8 @@ void publish_values(struct mosquitto *mosq)
 
 // on stringify ce qu'il faut publier
 	if(PP != pp_old){
-
+		
+		printf("brute PP: %d\n", PP);
 		sprintf(str_pp, "%d", PP);
 		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
@@ -851,7 +852,7 @@ void publish_values(struct mosquitto *mosq)
 
 	if(CP != cp_old){
 
-		printf("brute PP: %d\n", PP);
+		printf("brute CP: %d\n", CP);
 		sprintf(str_cp, "%d", CP);
 		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
