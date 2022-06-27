@@ -802,7 +802,7 @@ void publish_values(struct mosquitto *mosq)
 
 // on stringify ce qu'il faut publier
 	if(PP != pp_old){
-		
+
 		printf("brute PP: %d\n", PP);
 		sprintf(str_pp, "%d", PP);
 		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
@@ -1159,7 +1159,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(10000);
+			usleep(100000);
             tentatives = 0;
 			tempo++;
     		
