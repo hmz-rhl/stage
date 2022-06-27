@@ -863,7 +863,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 
-	if(tempo > 3000){
+	if(tempo > 300){
 
 
 
