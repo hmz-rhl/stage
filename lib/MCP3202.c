@@ -94,7 +94,7 @@ int readAdc(int channel, uint8_t cs){
 	
 	usleep(1); //temps minimal avant transaction spi 100ns
 
-	if(wiringPiSPIDataRW(0, data, 3) != 0){
+	if(wiringPiSPIDataRW(0, data, 3) < 0){
 		fprintf(stderr, "fonction %s: Error writing on SPI: %s\n", __func__, strerror(errno));
 		expander_setPinGPIO(exp, cs);
 		usleep(1); // temps minimal necessaire pour pouvoir redemander la valeur apres. ( TCSH = 500 ns)
