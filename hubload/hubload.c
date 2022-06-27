@@ -841,7 +841,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 	pp = toVolt(readAdc(0,PP_CS));
-	pp_tot =+ pp;
+	pp_tot += pp;
 	pp_cpt++;
 	// printf("brute adc_PP: %lfV\n", pp);
 
