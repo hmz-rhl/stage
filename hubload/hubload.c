@@ -897,19 +897,19 @@ void publish_values(struct mosquitto *mosq)
 
 
 
-		// sprintf(str_pp, "%d", PP);
+		sprintf(str_pp, "%d", pp_old);
 
-		// rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
-		// if(rc != MOSQ_ERR_SUCCESS){
-		// 	fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		// }
+		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
 		
-		// sprintf(str_cp, "%d", CP);
+		sprintf(str_cp, "%d", cp_old);
 
-		// rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
-		// if(rc != MOSQ_ERR_SUCCESS){
-		// 	fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		// }
+		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
 
 		temp = toDegres(readAdc(0,T_CS));
 		sprintf(str_temp, "%lf", temp);
