@@ -773,6 +773,8 @@ void publish_values(struct mosquitto *mosq)
 	char str_temp[100], str_cp[100],  str_pp[100];
 
 	pp = toVolt(readAdc(0,PP_CS));
+	printf("brute adc_PP: %lfV\n", pp);
+
 // on donne a PP les valeurs correspondantes 
 	if (pp < 0.58){
 
@@ -816,6 +818,8 @@ void publish_values(struct mosquitto *mosq)
 
 
 	cp = toVolt(readAdc(0,CP_CS));
+	printf("brute adc_CP: %lfV\n", cp);
+
 	cp_reel = 4.0*cp;
 	//printf("cp reel : %lf\n",cp_reel);
 
