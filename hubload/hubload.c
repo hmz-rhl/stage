@@ -872,7 +872,7 @@ void publish_values(struct mosquitto *mosq)
 
 	}
 
-	if(tempo > 300){
+	if(tempo > 3){
 
 
 
@@ -1163,7 +1163,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(1000);
+			usleep(1000000);
             tentatives = 0;
 			tempo++;
     		
