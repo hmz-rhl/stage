@@ -1,22 +1,51 @@
 {
-    "files.associations": {
-        "expander-get-gpio": "cpp",
-        "mosquitto.h": "c",
-        "logging_mosq.h": "c",
-        "SimuSPI.C": "cpp",
-        "xutility": "c",
-        "mcp3202-adc.h": "c",
-        "pn532_rpi_i2c.h": "c",
-        "expander-i2c.h": "c",
-        "mcp3202.h": "c",
-        "bcm2835.h": "c",
-        "cmath": "c",
-        "time.h": "c",
-        "initializer_list": "cpp",
-        "xstring": "cpp",
-        "eeprom.h": "c",
-        "utilities.h": "c",
-        "stdint.h": "c",
-        "pn532.h": "c"
-    }
+  "files.associations": {
+    "expander-get-gpio": "cpp",
+    "mosquitto.h": "c",
+    "logging_mosq.h": "c",
+    "SimuSPI.C": "cpp",
+    "xutility": "c",
+    "mcp3202-adc.h": "c",
+    "pn532_rpi_i2c.h": "c",
+    "expander-i2c.h": "c",
+    "mcp3202.h": "c",
+    "bcm2835.h": "c",
+    "cmath": "c",
+    "time.h": "c",
+    "initializer_list": "cpp",
+    "xstring": "cpp",
+    "eeprom.h": "c",
+    "utilities.h": "c",
+    "stdint.h": "c",
+    "pn532.h": "c"
+  },
+  "C_Cpp_Runner.cCompilerPath": "gcc",
+  "C_Cpp_Runner.cppCompilerPath": "g++",
+  "C_Cpp_Runner.debuggerPath": "gdb",
+  "C_Cpp_Runner.cStandard": "",
+  "C_Cpp_Runner.cppStandard": "",
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "C_Cpp_Runner.useMsvc": false,
+  "C_Cpp_Runner.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic"
+  ],
+  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.warningsAsError": false,
+  "C_Cpp_Runner.compilerArgs": [],
+  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.includePaths": [],
+  "C_Cpp_Runner.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "C_Cpp_Runner.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ]
 }

@@ -64,6 +64,10 @@ int cp_old = -1;
 int pp_old = -1;
 int time_up = 1000;
 int time_low = 0;
+double cp_cpt = 0;
+double cp_tot = 0;
+double pp_cpt = 0;
+double pp_tot = 0;
 
 
 
@@ -395,6 +399,7 @@ void on_subscribe(struct mosquitto *mosq, void *obj, int mid, int qos_count, con
 		 * the one SUBSCRIBE, so there is no point remaining connected. */
 		fprintf(stderr, "Error: All subscriptions rejected.\n");
 		mosquitto_disconnect(mosq);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -779,48 +784,55 @@ void publish_values(struct mosquitto *mosq)
 	// printf("brute adc_CP: %lfV\n", cp);
 
 	cp_reel = 4.0*cp;
+	cp_tot += cp_reel;
+	cp_cpt++;
 	//printf("cp reel : %lf\n",cp_reel);
 
 
 	
 
+	if(cp_cpt>=10){
 
-// on donne a CP les vraies valeurs correspondantes 
-	CP = -12;
-	if (cp_reel > 10.5){
-
-		CP = 12;
-	}
-	else if( cp_reel >= 7.5){
-
-		CP = 9;
-	}
-	else if( cp_reel >= 4.5){
-
-		CP = 6;
-	}
-	else if( cp_reel >= 1.5){
-
-		CP = 3;
-	}
-	else if( cp_reel > -1.5){
-
-		CP = 0;
-	}
-	else{
+	// on donne a CP les vraies valeurs correspondantes 
+		cp_reel = cp_tot/(double)cp_cpt;
+		cp_cpt = 0;
 
 		CP = -12;
-	}
+		if (cp_reel > 10.5){
 
-	if(CP != cp_old){
-
-		printf("brute CP: %d\n", CP);
-		sprintf(str_cp, "%d", CP);
-		rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			CP = 12;
 		}
-		cp_old = CP;
+		else if( cp_reel >= 7.5){
+
+			CP = 9;
+		}
+		else if( cp_reel >= 4.5){
+
+			CP = 6;
+		}
+		else if( cp_reel >= 1.5){
+
+			CP = 3;
+		}
+		else if( cp_reel > -1.5){
+
+			CP = 0;
+		}
+		else{
+
+			CP = -12;
+		}
+
+		if(CP != cp_old){
+
+			printf("brute CP: %d\n", CP);
+			sprintf(str_cp, "%d", CP);
+			rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
+			cp_old = CP;
+		}
 	}
 // on stringify ce qu'il faut publier
 // affiche sur la console
@@ -829,47 +841,56 @@ void publish_values(struct mosquitto *mosq)
 
 
 	pp = toVolt(readAdc(0,PP_CS));
+	pp_tot =+ pp;
+	pp_cpt++;
 	// printf("brute adc_PP: %lfV\n", pp);
 
 // on donne a PP les valeurs correspondantes 
-	if (pp < 0.58){
-
-		PP = 80;
-	}
-	else if( pp < 0.9 ){
-
-		PP = 63;
-	}
-	else if( pp < 1.5 ){
-
-		PP = 32;
-	}
-	else if( pp < 2.2 ){
-
-		PP = 20;
-	}
-	else if( pp < 2.6 ){
-
-		PP = 13;
-	}
-	else{
+	if(pp_cpt >= 10){
 		
-		PP = 6;
-	}
+		pp = pp_tot/pp_cpt;
+		pp_tot = 0;
+		pp_cpt = 0;
 
+		if (pp < 0.58){
 
-// on stringify ce qu'il faut publier
-	if(PP != pp_old){
+			PP = 80;
+		}
+		else if( pp < 0.9 ){
 
-		printf("brute PP: %d\n", PP);
-		sprintf(str_pp, "%d", PP);
-		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			PP = 63;
+		}
+		else if( pp < 1.5 ){
+
+			PP = 32;
+		}
+		else if( pp < 2.2 ){
+
+			PP = 20;
+		}
+		else if( pp < 2.6 ){
+
+			PP = 13;
+		}
+		else{
+			
+			PP = 6;
 		}
 
-		pp_old = PP;
 
+	// on stringify ce qu'il faut publier
+		if(PP != pp_old){
+
+			printf("brute PP: %d\n", PP);
+			sprintf(str_pp, "%d", PP);
+			rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
+
+			pp_old = PP;
+
+		}
 	}
 
 	if(tempo > 300){
