@@ -772,49 +772,7 @@ void publish_values(struct mosquitto *mosq)
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-	pp = toVolt(readAdc(0,PP_CS));
-	printf("brute adc_PP: %lfV\n", pp);
 
-// on donne a PP les valeurs correspondantes 
-	if (pp < 0.58){
-
-		PP = 80;
-	}
-	else if( pp < 0.9 ){
-
-		PP = 63;
-	}
-	else if( pp < 1.5 ){
-
-		PP = 32;
-	}
-	else if( pp < 2.2 ){
-
-		PP = 20;
-	}
-	else if( pp < 2.6 ){
-
-		PP = 13;
-	}
-	else{
-		
-		PP = 6;
-	}
-
-
-// on stringify ce qu'il faut publier
-	if(PP != pp_old){
-
-		printf("brute PP: %d\n", PP);
-		sprintf(str_pp, "%d", PP);
-		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		}
-
-		pp_old = PP;
-
-	}
 
 
 	cp = toVolt(readAdc(0,CP_CS));
@@ -870,7 +828,49 @@ void publish_values(struct mosquitto *mosq)
 	
 
 
+	pp = toVolt(readAdc(0,PP_CS));
+	printf("brute adc_PP: %lfV\n", pp);
 
+// on donne a PP les valeurs correspondantes 
+	if (pp < 0.58){
+
+		PP = 80;
+	}
+	else if( pp < 0.9 ){
+
+		PP = 63;
+	}
+	else if( pp < 1.5 ){
+
+		PP = 32;
+	}
+	else if( pp < 2.2 ){
+
+		PP = 20;
+	}
+	else if( pp < 2.6 ){
+
+		PP = 13;
+	}
+	else{
+		
+		PP = 6;
+	}
+
+
+// on stringify ce qu'il faut publier
+	if(PP != pp_old){
+
+		printf("brute PP: %d\n", PP);
+		sprintf(str_pp, "%d", PP);
+		rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
+		if(rc != MOSQ_ERR_SUCCESS){
+			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+		}
+
+		pp_old = PP;
+
+	}
 
 	if(tempo > 300){
 
