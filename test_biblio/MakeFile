@@ -6,9 +6,9 @@ OBJ= $(SRC.c=.o)
 LIB= lib$(SRC.c=)
 
 all: 	foo.o
-	sudo $(AR) -rv libfoo.a foo.o
+	sudo $(AR) -rv $(LIB) $(OBJ)
 foo.o:	foo.c
-	sudo $(CC) -c foo.c -o foo.o
+	sudo $(CC) -c $(SRC) -o $(OBJ)
 install:
 	sudo cp libfoo.a /usr/local/lib;
 	sudo cp foo.h /usr/local/include;
