@@ -1,5 +1,5 @@
 #
-# helloworld
+# maLibrairie
 # basic building rules
 #
 MALIBRAIRIE_VERSION = 1.1
