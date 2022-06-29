@@ -1,11 +1,12 @@
-#include <foo.h>
+#include <maLibrairie.h>
 #include <stdio.h>
 
 int main(int argc, char const *argv[])
 {
-    int a = 3;
-    printf("%d * 5 =",a);
-    cinq(&a);
-    printf("%d\n", a);
+    int a;
+    printf("a before: %d",a);
+    incremente(&a);
+    printf("a after increment : %d", a);
+
     return 0;
 }

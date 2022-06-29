@@ -1,6 +1,6 @@
 CC= gcc -Wall
 AR= ar
-NAME= expander-i2c.c
+NAME= maLibrairie
 SRC= $(NAME).c
 HDR= $(SRC:.c=.h)
 OBJ= $(SRC:.c=.o)
