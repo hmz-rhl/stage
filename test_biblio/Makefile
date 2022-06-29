@@ -2,8 +2,8 @@ CC= gcc -Wall
 AR= ar
 SRC= foo.c
 HDR= foo.h
-OBJ= $(SRC.c=.o)
-LIB= lib$(SRC.c=)
+OBJ= $(SRC:.c=.o)
+LIB= lib$(SRC:.c=)
 
 all: 	foo.o
 	sudo $(AR) -rv $(LIB) $(OBJ)
