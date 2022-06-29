@@ -1,19 +1,20 @@
 CC= gcc -Wall
 AR= ar
-SRC= foo.c
-HDR= foo.h
+NAME= expander-i2c.c
+SRC= $(NAME).c
+HDR= $(SRC:.c=.h)
 OBJ= $(SRC:.c=.o)
 LIB= lib$(SRC:.c=).a
 
-all: 	foo.o
+all: 	$(OBJ)
 	sudo $(AR) -rv $(LIB) $(OBJ)
-foo.o:	foo.c
+$(OBJ):	$(SRC)
 	sudo $(CC) -c $(SRC) -o $(OBJ)
 install:
-	sudo cp libfoo.a /usr/local/lib;
-	sudo cp foo.h /usr/local/include;
+	sudo cp $(LIB) /usr/local/lib;
+	sudo cp $(HDR) /usr/local/include;
 uninstall:
-	sudo rm -f /usr/local/lib/libfoo.a;
-	sudo rm -f /usr/local/include/foo.h;
+	sudo rm -f /usr/local/lib/$(LIB);
+	sudo rm -f /usr/local/include/$(HDR);
 clean:
 	sudo rm -f *.o *.a
