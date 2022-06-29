@@ -1,0 +1,9 @@
+all: 	libfoo.a
+	sudo ar -rv libfoo.a foo.o
+foo.o:	foo.c
+	sudo gcc -c foo.c -o foo.o
+install:
+	sudo cp libfoo /usr/local/lib;
+	sudo cp foo.h /usr/include;
+clean:
+	sudo rm -f *.o *.a
