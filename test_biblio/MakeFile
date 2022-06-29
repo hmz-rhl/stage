@@ -7,4 +7,3 @@ install:
 	sudo cp foo.h /usr/include;
 clean:
 	sudo rm -f *.o *.a
-	
