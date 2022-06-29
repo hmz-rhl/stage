@@ -3,7 +3,7 @@ AR= ar
 SRC= foo.c
 HDR= foo.h
 OBJ= $(SRC:.c=.o)
-LIB= lib$(SRC:.c=)
+LIB= lib$(SRC:.c=).a
 
 all: 	foo.o
 	sudo $(AR) -rv $(LIB) $(OBJ)
