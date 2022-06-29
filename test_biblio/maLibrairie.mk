@@ -4,7 +4,7 @@
 #
 HELLOWORLD_VERSION = 1.1
 HELLOWORLD_SOURCE = maLibrairie.tar.gz
-HELLOWORLD_SITE = http://github.com/hmz-rhl/$(HELLOWORLD_SOURCE)
+HELLOWORLD_SITE = https://github.com/hmz-rhl/$(HELLOWORLD_SOURCE)
 
 HELLOWORLD_INSTALL_STAGING = YES
 
