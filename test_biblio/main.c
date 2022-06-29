@@ -1,4 +1,4 @@
-#include "/usr/local/lib/foo.h"
+#include <foo.h>
 
 int main(int argc, char const *argv[])
 {
