@@ -5,9 +5,11 @@ SRC= $(NAME).c
 HDR= $(SRC:.c=.h)
 OBJ= $(SRC:.c=.o)
 LIB= lib$(SRC:.c=).a
+LD=
 
 all: 	$(OBJ)
 	sudo $(AR) -rv $(LIB) $(OBJ)
+	
 $(OBJ):	$(SRC)
 	sudo $(CC) -c $(SRC) -o $(OBJ)
 
