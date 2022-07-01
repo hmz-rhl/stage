@@ -12,6 +12,7 @@ all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
 #	cd ./lib;
 	@echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
+	gcc -o lib$(NAME).so -shared $^;
 
 	
 
@@ -38,7 +39,7 @@ PN532_Rpi_I2C.o:	PN532_Rpi_I2C.c
 .PHONY: install
 install:
 	@echo "installation des bibliothèques";
-	sudo cp *.a $(DIR)/usr/lib;
+	sudo cp *.a *.so $(DIR)/usr/lib;
 	sudo cp *.h $(DIR)/usr/include;
 	@echo "l'installation fini";
 	@echo "checking des installations";
