@@ -43,7 +43,7 @@ install:
 	echo "checking des installations";
 # cd ../test; 
 	sudo gcc ../test/test.c -o ../test/test.exe -Wall -lHubload;
-	sudo ./test/test.exe;
+	sudo ../test/test.exe;
 # cd ../;
 
 .PHONY: uninstall
