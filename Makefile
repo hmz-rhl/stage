@@ -8,23 +8,23 @@ LIB= lib$(SRC:.c=).a
 DIR=
 
 all: 	expander_i2c.o MCP3202.o rtc_eeprom.o
-	echo "On change de repertoire -> /lib"
+	echo "On change de repertoire -> /lib";
 	cd ./lib;
-	echo "On genere les bibliothèques statiques"
+	echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
 	
 
 %.o: %.c
-	echo "generation de l'objet..."
-    sudo $(CC) -o $@ -c $<
+	echo "generation de l'objet...";
+    sudo $(CC) -o $@ -c $<;
 
 .PHONY: install
 install:
-	echo "installation des bibliothèques"
+	echo "installation des bibliothèques";
 	sudo cp *.a $(DIR)/usr/lib;
 	sudo cp *.h $(DIR)/usr/include;
-	echo "l'installation fini"
-	echo "checking des installations"
+	echo "l'installation fini";
+	echo "checking des installations";
 	cd ../test; 
 	sudo gcc test.c -o test -Wall -lHubload;
 	sudo ./test;
