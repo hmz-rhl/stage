@@ -338,7 +338,7 @@ uint8_t expander_getPinGPIO(expander_t *exp, uint8_t pin){
         printf("ERREUR fonction %s : parametre pin selectionne non compris entre 0 et 7\n", __func__);
         exp->erreur = Er_Expander_Ecriture;
         //exit(EXIT_FAILURE);
-        return;
+        return 0;
     }
 
     uint8_t ret = expander_getAllPinsGPIO(exp);
