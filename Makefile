@@ -8,8 +8,7 @@ LIB= lib$(SRC:.c=).a
 DIR=
 
 all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
-	echo "On change de repertoire -> /lib";
-	cd ./lib;
+	
 	echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
 	
