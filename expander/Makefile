@@ -26,7 +26,7 @@ expander-set-gpio.o:	expander-set-gpio.c
 .PHONY: install
 install:
 	@echo "installation des commandes";
-	sudo cp expander-get-gpio expander-set-gpio $(DIR)/usr/bin;
+	sudo cp expander-get-gpio expander-set-gpio /usr/bin;
 	@echo "checking des installations";
 # cd ../test; 
 	expander-get-gpio 26;
@@ -35,8 +35,8 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	sudo rm -f $(DIR)/usr/lib/expander_i2c.a $(DIR)/usr/lib/MCP3202.a $(DIR)/usr/lib/rtc_eeprom.a;
-	sudo rm -f $(DIR)/usr/include/expander_i2c.h $(DIR)/usr/include/MCP3202.h $(DIR)/usr/include/rtc_eeprom.h;
+	sudo rm -f /usr/lib/expander_i2c.a /usr/lib/MCP3202.a /usr/lib/rtc_eeprom.a;
+	sudo rm -f /usr/include/expander_i2c.h /usr/include/MCP3202.h /usr/include/rtc_eeprom.h;
 
 .PHONY: clean
 clean:
