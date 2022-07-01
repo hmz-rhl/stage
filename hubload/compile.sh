@@ -1,1 +1,1 @@
-sudo gcc hubload.c ../lib/expander-i2c.c ../lib/MCP3202.c ../pn532/pn532.c ../pn532/PN532_Rpi_I2C.c ../lib/rtc_eeprom.c -o hubload -lmosquitto -lpthread -lwiringPi
+sudo gcc hubload.c ../lib/expander_i2c.c ../lib/MCP3202.c ../pn532/pn532.c ../pn532/PN532_Rpi_I2C.c ../lib/rtc_eeprom.c -o hubload -lmosquitto -lpthread -lwiringPi
