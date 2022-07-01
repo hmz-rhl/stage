@@ -44,6 +44,7 @@ install:
 	cd ../test; 
 	sudo gcc test.c -o test -Wall -lHubload;
 	sudo ./test;
+	cd ../;
 
 .PHONY: uninstall
 uninstall:
