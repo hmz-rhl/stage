@@ -18,6 +18,7 @@
 #define Er_Fermeture -4
 #define Er_I2C  -5
 #define Er_Expander_Ecriture -10
+#define VERSION_EXPANDER_I2C "1.0"
 
 
 

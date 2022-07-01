@@ -1,5 +1,5 @@
 CC= gcc -Wall
-AR= ar
+AR= ar -rv
 NAME= maLibrairie
 SRC= $(NAME).c
 HDR= $(SRC:.c=.h)
@@ -8,7 +8,7 @@ LIB= lib$(SRC:.c=).a
 DIR=
 
 all: 	$(OBJ)
-	sudo $(AR) -rv $(LIB) $(OBJ)
+	sudo $(AR) $(LIB) $(OBJ)
 
 $(OBJ):	$(SRC)
 	sudo $(CC) -c $(SRC) -o $(OBJ)
