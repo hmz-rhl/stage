@@ -25,6 +25,7 @@
 
 #define EEPROM_ADDRESS 0x57 // Adresse de l'EEPROM du MCP79410
 #define RTC_ADDRESS 0x6F // Adresse du RTC du MCP79410
+#define VERSION_RTC_EEPROM "1.0"
 
 typedef struct{
 

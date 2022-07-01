@@ -28,7 +28,7 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
-
+#define VERSION_MCP3202 "1.0"
 #define	START_BIT	0x01
 
 #define SGL_MODE	(1 << 0x7)		

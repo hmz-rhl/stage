@@ -12,7 +12,6 @@
  */
 
 #include "rtc_eeprom.h"
-#define VERSION_RTC_EEPROM "1.0"
 
 uint8_t int2bcd(uint8_t val){
     
