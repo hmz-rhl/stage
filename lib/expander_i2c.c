@@ -36,7 +36,7 @@
 expander_t* expander_init(uint8_t addr){
     if(addr > 0x27 || addr < 0x20 )
     {
-        printf("ERREUR %s : vous avez saisie 0x%02x\nOr addr doit etre entre 0x20 et 0x27 pour l'expander\n",__func__);
+        printf("ERREUR %s : vous avez saisie 0x%02x\nOr addr doit etre entre 0x20 et 0x27 pour l'expander\n",__func__, addr);
         //exit(EXIT_FAILURE);
         return NULL;
     }
@@ -861,7 +861,7 @@ void expander_printGPIO(expander_t *exp){
     printf("___");
     printf("Expander 0x%02x", exp->addr);
     printf("_______________\n");
-    for (size_t i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++)
     {
         
         printf("%s GPIO[%d] : %d\r\n",exp->label[i], i, (exp->buff[0] >> i ) & 0x01);

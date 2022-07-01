@@ -23,7 +23,7 @@
 
 
 
-#include "expander-i2c.h"
+#include "expander_i2c.h"
 
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
