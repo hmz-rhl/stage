@@ -39,7 +39,7 @@ PN532_Rpi_I2C.o:	PN532_Rpi_I2C.c
 .PHONY: install
 install:
 	@echo "installation des bibliothèques";
-	sudo cp *.a *.so $(DIR)/usr/lib;
+	sudo cp *.a $(DIR)/usr/lib;
 	sudo cp *.h $(DIR)/usr/include;
 	@echo "l'installation fini";
 	@echo "checking des installations";
@@ -55,4 +55,4 @@ uninstall:
 
 .PHONY: clean
 clean:
-	sudo rm -f *.o *.a *.so
+	sudo rm -f *.o *.a;
