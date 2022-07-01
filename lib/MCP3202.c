@@ -14,7 +14,7 @@ void waitForSPIReady(expander_t *exp){
 	time_t start, end;
 	double attente = 0;
 	start = clock();
-	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
+	while((( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100) != 0b00111100 ))
 	{
 		end = clock();
 		attente = 100*(double)(end - start) / (double)(CLOCKS_PER_SEC);
@@ -68,10 +68,10 @@ int readAdc(int channel, uint8_t cs){
 
 	
 
-	time_t start, end;
+	// time_t start, end;
 	double attente = 0;
-	start = clock();
-	while(( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100 != 0b00111100 ))
+	// start = clock();
+	while((( expander_getAllPinsGPIO(exp) & (uint8_t)0b00111100) != 0b00111100 ))
 	{
 		usleep(1000000);
 		attente++;
