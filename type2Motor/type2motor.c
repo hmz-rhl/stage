@@ -21,13 +21,15 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	if(reason_code != 0){
 		/* If the connection fails for any reason, we don't want to keep on
 		 * retrying in this example, so disconnect. Without this, the client
-		 * will attempt to reconnect. */
+		 * will attempt to reconnect.
+		 * */
 		mosquitto_disconnect(mosq);
 	}
 
 	/* Making subscriptions in the on_connect() callback means that if the
 	 * connection drops and is automatically resumed by the client, then the
-	 * subscriptions will be recreated when the client reconnects. */
+	 * subscriptions will be recreated when the client reconnects. 
+	 * */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
     char *topics[2]= {"down/lockType2/open","down/lockType2/close"};
 
