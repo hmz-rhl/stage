@@ -30,6 +30,8 @@
 
 
 #define I2C_DEVICE          "/dev/i2c-1"
+#define VERSION_EXPANDER_I2C "1.0"
+
 
 #define MAX_STRING          255
 
