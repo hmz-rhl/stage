@@ -41,10 +41,10 @@ install:
 	sudo cp *.h $(DIR)/usr/include;
 	echo "l'installation fini";
 	echo "checking des installations";
-	cd ../test; 
-	sudo gcc test.c -o test -Wall -lHubload;
-	sudo ./test;
-	cd ../;
+# cd ../test; 
+	sudo gcc ../test/test.c -o ../test/test.exe -Wall -lHubload;
+	sudo ./test/test.exe;
+# cd ../;
 
 .PHONY: uninstall
 uninstall:
