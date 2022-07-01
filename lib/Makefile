@@ -11,8 +11,8 @@ all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
 #	echo "On change de repertoire -> /lib";
 #	cd ./lib;
 	@echo "On genere les bibliothèques statiques";
-	sudo $(AR) lib$(NAME).a $^;
 	sudo gcc -o lib$(NAME).so -shared $^;
+	sudo $(AR) lib$(NAME).a $^;
 
 	
 
@@ -50,7 +50,7 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	sudo rm -f $(DIR)/usr/lib/expander_i2c.a $(DIR)/usr/lib/MCP3202.a $(DIR)/usr/lib/rtc_eeprom.a;
+	sudo rm -f $(DIR)/usr/lib/libHubload.a;
 	sudo rm -f $(DIR)/usr/include/expander_i2c.h $(DIR)/usr/include/MCP3202.h $(DIR)/usr/include/rtc_eeprom.h;
 
 .PHONY: clean
