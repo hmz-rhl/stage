@@ -1,3 +1,6 @@
+#ifndef _EXPANDER_I2C_H
+#define _EXPANDER_I2C_H
+
 /**
  * @file expander-i2c.c
  * @author Hamza RAHAL
@@ -8,6 +11,10 @@
  * @copyright Saemload (c) 2022
  * 
  */
+
+
+
+/* Contenu actuel de ton fichier */
 
 
 #include "expander_i2c.h"
@@ -923,3 +930,4 @@ void expander_closeAndFree(expander_t *exp)
     expander_closeI2C(exp);
     free(exp);
 }
+#endif
