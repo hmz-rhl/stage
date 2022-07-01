@@ -12,6 +12,7 @@ all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
 #	cd ./lib;
 	echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
+	make clean;
 	
 
 expander_i2c.o:	expander_i2c.c
@@ -42,8 +43,8 @@ install:
 	echo "l'installation fini";
 	echo "checking des installations";
 # cd ../test; 
-	sudo gcc ../test/test.c -o ../test/test.exe -Wall -lHubload;
-	sudo ../test/test.exe;
+	sudo gcc ../test/test_lib.c -o ../test/test_lib.exe -Wall -lHubload;
+	sudo ../test/test_lib.exe;
 # cd ../;
 
 .PHONY: uninstall

@@ -10,23 +10,27 @@ DIR=
 all:	expander-get-gpio.o expander-set-gpio.o
 #	echo "On change de repertoire -> /lib";
 #	cd ./lib;
-	sudo gcc expander-get-gpio
+	sudo gcc expander-get-gpio.o -o expander-get-gpio -Wall;
+	sudo gcc expander-set-gpio.o -o expander-set-gpio -Wall;
+	make clean;
 	
 
-expander_i2c.o:	expander_i2c.c
-	echo "generation de l'objet...";
+expander-get-gpio.o:	expander-get-gpio.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+expander-set-gpio.o:	expander-set-gpio.c
+	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
 .PHONY: install
 install:
-	echo "installation des bibliothèques";
-	sudo cp *.a $(DIR)/usr/lib;
-	sudo cp *.h $(DIR)/usr/include;
-	echo "l'installation fini";
+	echo "installation des commandes";
+	sudo cp expander-get-gpio expander-set-gpio $(DIR)/usr/bin;
 	echo "checking des installations";
 # cd ../test; 
-	sudo gcc ../test/test.c -o ../test/test.exe -Wall -lHubload;
-	sudo ../test/test.exe;
+	expander-get-gpio 26;
+	expander-set-gpio -h;
 # cd ../;
 
 .PHONY: uninstall
