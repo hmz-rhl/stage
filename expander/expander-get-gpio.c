@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
     
         printf("Usage: ./get-expander-gpio <addresse> \n");
         printf("exemple: ./get_expander_gpio 26 \n");
-        exit(EXIT_FAILURE);
+        return EXIT_SUCCESS;
 
     }
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
 
         printf("Usage: ./get-expander-gpio <addresse> \n");
         printf("exemple: ./get_expander_gpio 26 \n");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
 // on initialise un instance
