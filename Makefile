@@ -16,7 +16,7 @@ all: 	expander_i2c.o MCP3202.o rtc_eeprom.o
 
 %.o: %.c
 	echo "generation de l'objet...";
-    sudo $(CC) -o $@ -c $<;
+	sudo $(CC) -o $@ -c $<;
 
 .PHONY: install
 install:
