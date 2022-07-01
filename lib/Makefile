@@ -12,7 +12,7 @@ all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
 #	cd ./lib;
 	@echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
-	gcc -o lib$(NAME).so -shared $^;
+	sudo gcc -o lib$(NAME).so -shared $^;
 
 	
 
