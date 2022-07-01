@@ -12,7 +12,7 @@ all:	expander-get-gpio.o expander-set-gpio.o
 #	cd ./lib;
 	sudo gcc expander-get-gpio.o -o expander-get-gpio -Wall -lHubload;
 	sudo gcc expander-set-gpio.o -o expander-set-gpio -Wall -lHubload -lm;
-	make clean;
+#	make clean;
 	
 
 expander-get-gpio.o:	expander-get-gpio.c
