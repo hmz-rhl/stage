@@ -1,6 +1,6 @@
 CC= gcc -Wall
 AR= ar
-NAME= maLibrairie
+NAME=
 SRC= $(NAME).c
 HDR= $(SRC:.c=.h)
 OBJ= $(SRC:.c=.o)
