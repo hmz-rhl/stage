@@ -1,3 +1,5 @@
+#ifndef _RTC_EEPROM_H
+#define _RTC_EEPROM_H
 /**
  * @file EEPROM.c
  * @author Hamza RAHAL
@@ -1541,3 +1543,4 @@ void rtc_eeprom_closeAndFree(rtc_eeprom_t* rtc_eeprom){
     free(rtc_eeprom);
 }
 
+#endif

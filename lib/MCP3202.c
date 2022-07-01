@@ -1,3 +1,6 @@
+#ifndef _MCP3202_H
+#define _MCP3202_H
+
 #include "MCP3202.h"
 
 #define VERSION_MCP3202 "1.0"
@@ -167,3 +170,5 @@ double toMillivolt(int code){
 	}
 	return code*3300.0/4096;
 }
+
+#endif
