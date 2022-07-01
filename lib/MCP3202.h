@@ -22,8 +22,9 @@
 #include <time.h>
 
 
-
+#ifdef __EXPANDER_I2C_H
 #include "expander_i2c.h"
+#endif
 
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
