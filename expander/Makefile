@@ -25,9 +25,9 @@ expander-set-gpio.o:	expander-set-gpio.c
 
 .PHONY: install
 install:
-	echo "installation des commandes";
+	@echo "installation des commandes";
 	sudo cp expander-get-gpio expander-set-gpio $(DIR)/usr/bin;
-	echo "checking des installations";
+	@echo "checking des installations";
 # cd ../test; 
 	expander-get-gpio 26;
 	expander-set-gpio -h;
