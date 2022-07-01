@@ -632,7 +632,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     usleep(5000);
 
     //ici___________________________________________
-    if(rtc_readSeconds(rtc_eeprom) != int2bcd(val) & 0x7F)
+    if(rtc_readSeconds(rtc_eeprom) != (int2bcd(val) & 0x7F))
     {
 
         printf("%s:Error %02X was not written on 0x00 \n",__func__, int2bcd(val) & 0x7F);
