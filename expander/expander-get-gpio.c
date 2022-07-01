@@ -82,7 +82,7 @@ int main(int argc, char *argv[]){
         printf("fonction %s : addresse doit etre entre 20 et 27\n", __func__);
 
         printf("Usage: ./get-expander-gpio <addresse> \n");
-        printf("exemple: ./set_expander_gpio 26 \n");
+        printf("exemple: ./get_expander_gpio 26 \n");
         exit(EXIT_FAILURE);
     }
 
