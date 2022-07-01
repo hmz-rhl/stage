@@ -1,1 +1,0 @@
-sudo gcc ../lib/bcm2835/src/bcm2835.c cp_mqtt.c -o cp_mqtt -lmosquitto -lpthread

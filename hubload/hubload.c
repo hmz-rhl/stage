@@ -19,12 +19,14 @@
 #include <sys/time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
-#include "../lib/pn532.h"
-#include "../lib/PN532_Rpi_I2C.h"
-#include "../lib/rtc_eeprom.h"
-#include "../lib/expander_i2c.h"
 
-#include "../lib/MCP3202.h"
+
+#include <pn532.h>
+#include <PN532_Rpi_I2C.h>
+#include <rtc_eeprom.h>
+#include <expander_i2c.h>
+
+#include <MCP3202.h>
 
 //Pins Wpi
 #define LOCK_P 21

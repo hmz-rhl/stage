@@ -12,10 +12,6 @@
  */
 
 
-
-/* Contenu actuel de ton fichier */
-
-
 #include "expander_i2c.h"
 
 #define Er_Ecriture -1
