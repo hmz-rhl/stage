@@ -22,7 +22,7 @@
 #include "../lib/pn532.h"
 #include "../lib/PN532_Rpi_I2C.h"
 #include "../lib/rtc_eeprom.h"
-#include "../lib/expander-i2c.h"
+#include "../lib/expander_i2c.h"
 
 #include "../lib/MCP3202.h"
 

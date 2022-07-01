@@ -22,7 +22,7 @@
 #include <linux/ioctl.h>
 #include <linux/types.h>
 #include <linux/i2c-dev.h>
-#include "../lib/expander-i2c.h"
+#include "../lib/expander_i2c.h"
 
 #define I2C_DEVICE          "/dev/i2c-1"
 #define MCP23008_ADDR       (0x26)

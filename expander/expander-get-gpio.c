@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "../lib/expander-i2c.h"
+#include "../lib/expander_i2c.h"
 
 
 
