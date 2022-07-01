@@ -11,7 +11,8 @@
 | Differential	|   0  | 1    | IN-  IN+|     |
 |---------------|-------------|---------|-----|*/
 
-
+#ifndef _MCP3202_H
+#define _MCP3202_H
 
 
 #include <stdio.h>
@@ -61,3 +62,5 @@ int readAdc(int channel, uint8_t cs);
 double toVolt(int data);
 
 double toMillivolt(int code);
+
+#endif

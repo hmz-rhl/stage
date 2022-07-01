@@ -1,5 +1,5 @@
-#ifndef PN532_RPI
-#define PN532_RPI
+#ifndef _PN532_RPI_I2C_H
+#define _PN532_RPI_I2C_H
 
 #include "pn532.h"
 

@@ -1,5 +1,3 @@
-#ifndef _PN532_H
-#define _PN532_H
 /**************************************************************************
  *  @file     pn532.c
  *  @author   Yehui from Waveshare
@@ -506,5 +504,3 @@ int PN532_WriteGpioP(PN532* pn532, uint8_t pin_number, bool pin_state) {
     return PN532_CallFunction(pn532, PN532_COMMAND_WRITEGPIO, NULL, 0,
                               params, sizeof(params), PN532_DEFAULT_TIMEOUT);
 }
-
-#endif

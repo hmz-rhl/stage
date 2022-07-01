@@ -1,3 +1,4 @@
+
 /**************************************************************************
  *  @file     pn532.h
  *  @author   Yehui from Waveshare
@@ -27,17 +28,14 @@
  * THE SOFTWARE.
  **************************************************************************/
 
-#ifndef PN532_H
-#define PN532_H
+#ifndef _PN532_H
+#define _PN532_H
 
 #include <stdint.h>
 #include <stdbool.h>
 
 #define VERSION_PN532 "1.0"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define PN532_PREAMBLE                      (0x00)
 #define PN532_STARTCODE1                    (0x00)
@@ -270,10 +268,7 @@ bool PN532_ReadGpioI(PN532* pn532, uint8_t pin_number);
 int PN532_WriteGpio(PN532* pn532, uint8_t* pins_state);
 int PN532_WriteGpioP(PN532* pn532, uint8_t pin_number, bool pin_state);
 
-#ifdef __cplusplus
-}
-#endif
 
-#endif  /* PN532_H */
+#endif  /* _PN532_H */
 
 /* End of file */
