@@ -124,7 +124,7 @@ uint8_t eeprom_read(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
         exit(EXIT_FAILURE);
     }
     if(reg>=0x00 && reg<=0x7F){
@@ -182,7 +182,7 @@ void eeprom_write(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
         return;
     }
 
@@ -237,7 +237,7 @@ uint8_t eeprom_readProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg){
     
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
         exit(EXIT_FAILURE);
     }
     if(reg>=0x00 && reg<=0x7F){
@@ -295,7 +295,7 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
         exit(EXIT_FAILURE);
     }
     if(reg>=0x00 && reg<=0x7F){
@@ -369,13 +369,19 @@ void eeprom_writeProtected(rtc_eeprom_t* rtc_eeprom, uint8_t reg, uint8_t val){
  **/
 void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
 
-    for (size_t i = 1; i < 9; i++)
+    if(rtc_eeprom == NULL){
+
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 1; i < 9; i++)
     {
         rtc_eeprom->buf[i] = 0xFF;
         
     }
     
-    for (size_t i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++)
     {
         rtc_eeprom->buf[0] = 0x00 + 8*i;
 
@@ -389,7 +395,7 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
         usleep(5000);
 
      // ici________________________________
-        for (size_t j = 0; j < 8; j++)
+        for (int j = 0; j < 8; j++)
         {
             if(eeprom_read(rtc_eeprom, rtc_eeprom->buf[0x00 + 8*i + j]) != 0xFF)
             {
@@ -410,7 +416,12 @@ void eeprom_setAll(rtc_eeprom_t* rtc_eeprom){
 void eeprom_resetAllProtected(rtc_eeprom_t* rtc_eeprom)
 {
     
-    for (size_t i = 0; i < 8; i++)
+    if(rtc_eeprom == NULL){
+
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
+        exit(EXIT_FAILURE);
+    }
+    for (int i = 0; i < 8; i++)
     {
         eeprom_writeProtected(rtc_eeprom, 0xF0 + i, 0x00);
         if(eeprom_readProtected(rtc_eeprom, 0xF0 + i) != 0x00)
@@ -437,7 +448,7 @@ uint8_t eeprom_readStatus(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
     rtc_eeprom->buf[0] = 0xFF;
@@ -474,7 +485,7 @@ uint8_t eeprom_readStatus(rtc_eeprom_t* rtc_eeprom){
 void eeprom_print(rtc_eeprom_t *rtc_eeprom){
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n",__func__);
         exit(EXIT_FAILURE);
     }
 
@@ -499,7 +510,7 @@ void eeprom_print(rtc_eeprom_t *rtc_eeprom){
     
     printf("    EEPROM Registers    \n");
     printf("________________________\n");
-    for (size_t i = 0; i < 128; i++)
+    for (int i = 0; i < 128; i++)
     {
         /* code */
         printf("| 0x%02X : \t%02X \t|\n",i, rtc_eeprom->buf[i]);
@@ -520,7 +531,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -545,7 +556,7 @@ void eeprom_printProtected(rtc_eeprom_t *rtc_eeprom){
     
     printf("EEPROM Protected Registers\n");
     printf("__________________________\n");
-    for (size_t i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++)
     {
         /* code */
         printf("| 0x%02X : \t%02X \t  |\n",i+0XF0, rtc_eeprom->buf[i]);
@@ -566,7 +577,7 @@ uint8_t rtc_readSeconds(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -602,7 +613,7 @@ void rtc_writeSeconds(rtc_eeprom_t* rtc_eeprom, uint8_t val){
     
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -645,7 +656,7 @@ void rtc_writeMinutes(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -685,7 +696,7 @@ void rtc_writeHours(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 // TODO ecrire correctement sans changer les autres
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -732,7 +743,7 @@ void rtc_writeDate(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
     
@@ -777,7 +788,7 @@ void rtc_writeMonth(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -822,7 +833,7 @@ void rtc_writeYear(rtc_eeprom_t* rtc_eeprom, uint8_t val){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -870,7 +881,7 @@ uint8_t rtc_readMinutes(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -906,7 +917,7 @@ uint8_t rtc_readHours(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -942,7 +953,7 @@ uint8_t rtc_readDate(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -978,7 +989,7 @@ uint8_t rtc_readMonth(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1014,7 +1025,7 @@ uint8_t rtc_readYear(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1050,7 +1061,7 @@ uint8_t rtc_isPwrFail(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1088,7 +1099,7 @@ uint8_t rtc_isOscRunning(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1126,7 +1137,7 @@ uint8_t rtc_isVbatEnabled(rtc_eeprom_t *rtc_eeprom){
 
         if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1164,7 +1175,7 @@ void rtc_enableVbat(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1224,7 +1235,7 @@ void rtc_mode24h(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1274,7 +1285,7 @@ void rtc_mode12h(rtc_eeprom_t *rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1325,7 +1336,7 @@ void rtc_startClock(rtc_eeprom_t* rtc_eeprom){
     
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1387,7 +1398,7 @@ void rtc_stopClock(rtc_eeprom_t* rtc_eeprom){
     
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
@@ -1447,7 +1458,7 @@ void rtc_enableExtOsc(rtc_eeprom_t* rtc_eeprom){
 
     if(rtc_eeprom == NULL){
 
-        printf("Error %s: rtc_eeprom est NULL\n");
+        printf("Error %s: rtc_eeprom est NULL\n", __func__);
         exit(EXIT_FAILURE);
     }
 
