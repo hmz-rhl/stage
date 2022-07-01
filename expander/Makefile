@@ -35,8 +35,7 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	sudo rm -f /usr/lib/expander_i2c.a /usr/lib/MCP3202.a /usr/lib/rtc_eeprom.a;
-	sudo rm -f /usr/include/expander_i2c.h /usr/include/MCP3202.h /usr/include/rtc_eeprom.h;
+	sudo rm -f /usr/bin/expander-get-gpio /usr/bin/expander-set-gpio;
 
 .PHONY: clean
 clean:
