@@ -1,3 +1,6 @@
+#ifndef _EXPANDER_I2C_H
+#define _EXPANDER_I2C_H
+
 /**
  * @file expander-i2c.h
  * @author Hamza RAHAL
@@ -120,3 +123,4 @@ void expander_printGPIO(expander_t*);
 
 void expander_closeAndFree(expander_t*);
 
+#endif

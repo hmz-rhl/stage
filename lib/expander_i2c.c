@@ -1,5 +1,4 @@
-#ifndef _EXPANDER_I2C_H
-#define _EXPANDER_I2C_H
+
 
 /**
  * @file expander-i2c.c
@@ -930,4 +929,3 @@ void expander_closeAndFree(expander_t *exp)
     expander_closeI2C(exp);
     free(exp);
 }
-#endif
