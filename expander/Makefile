@@ -11,7 +11,7 @@ all:	expander-get-gpio.o expander-set-gpio.o
 #	echo "On change de repertoire -> /lib";
 #	cd ./lib;
 	sudo gcc expander-get-gpio.o -o expander-get-gpio -Wall -lHubload;
-	sudo gcc expander-set-gpio.o -o expander-set-gpio -Wall -lHubload;
+	sudo gcc expander-set-gpio.o -o expander-set-gpio -Wall -lHubload -lm;
 	make clean;
 	
 
