@@ -1,5 +1,5 @@
 #include <rtc_eeprom.h>
-#include <expander-i2c.h>
+#include <expander_i2c.h>
 #include <MCP3202.h>
 #include <pn532.h>
 #include <PN532_Rpi_I2C.h>
