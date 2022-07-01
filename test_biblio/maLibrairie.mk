@@ -3,8 +3,9 @@
 # basic building rules
 #
 MALIBRAIRIE_VERSION = 1.1
-MALIBRAIRIE_SOURCE = maLibrairie.tar.gz
-MALIBRAIRIE_SITE = https://github.com/hmz-rhl/$(MALIBRAIRIE_SOURCE)
+MALIBRAIRIE_SOURCE = main.tar.gz
+MALIBRAIRIE_SITE = https://github.com/hmz-rhl/maLibrairie/archive/refs/heads
+
 
 MALIBRAIRIE_INSTALL_STAGING = YES
 
@@ -13,10 +14,8 @@ define MALIBRAIRIE_BUILD_CMDS
 endef
 
 define MALIBRAIRIE_INSTALL_STAGING_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/libmaLibrairie.a $(STAGING_DIR)/usr/lib/libmaLibrairie.a
-    $(INSTALL) -D -m 0644 $(@D)/maLibrairie.h $(STAGING_DIR)/usr/include/maLibrairie.h
-    $(INSTALL) -D -m 0755 $(@D)/libmaLibrairie.so* $(STAGING_DIR)/usr/lib
+	$(make) CC="$(TARGET_CC)" DIR="$(STAGING_DIR)" -C $(@D) install
 endef
 
 
-$(eval $(call GENTARGETS,package,maLibrairie))
+$(eval $(generic-package))
