@@ -7,14 +7,30 @@ OBJ= $(SRC:.c=.o)
 LIB= lib$(SRC:.c=).a
 DIR=
 
-all: 	expander_i2c.o MCP3202.o rtc_eeprom.o
+all: 	expander_i2c.o MCP3202.o rtc_eeprom.o pn532.o PN532_Rpi_I2C.o
 	echo "On change de repertoire -> /lib";
 	cd ./lib;
 	echo "On genere les bibliothèques statiques";
 	sudo $(AR) lib$(NAME).a $^;
 	
 
-%.o: %.c
+expander_i2c.o: expander_i2c.c
+	echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+MCP3202.o: MCP3202.c
+	echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+rtc_eeprom.o: rtc_eeprom.c
+	echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+pn532.o: pn532.c
+	echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+PN532_Rpi_I2C.o: PN532_Rpi_I2C.c
 	echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
