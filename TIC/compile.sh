@@ -1,1 +1,0 @@
-sudo gcc main.c ../lib/rtc_eeprom.c -o test -lwiringPi

@@ -22,8 +22,8 @@ void waitForSPIReady(expander_t *exp){
 		attente = 100*(double)(end - start) / (double)(CLOCKS_PER_SEC);
 		if(attente > 5)
 		{
-			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
-			exit(EXIT_FAILURE);
+			perror("Warning timeout: SPI busy tout les CS ne sont pas a 1");
+			
 		}
 	}
 }

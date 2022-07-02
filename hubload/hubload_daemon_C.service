@@ -1,0 +1,12 @@
+[Unit]
+Description=Hubload C Daemon script
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=sudo /opt/hubload/scripts/hubload_daemon_C
+StandardOutput=file:/var/log/hubload_daemon_C.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
