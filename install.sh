@@ -10,6 +10,7 @@ make install;
 cd ../hubload/;
 sudo gcc hubload.c -o hubload_daemon_C -lmosquitto -lpthread -lwiringPi -lHubload;
 sudo service hubload_daemon_C stop;
+sudo service hubload_c stop;
 sleep 7;
 sudo cp hubload_daemon_C /opt/hubload/scripts/;
 sudo cp hubload_daemon_C.service /etc/systemd/system/;
