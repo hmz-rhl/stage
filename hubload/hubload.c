@@ -48,6 +48,8 @@
 #define LOCK_FB 10
 #define LED_STRIP_D 29
 
+#define MONO	1
+#define TRI		3
 
 struct mosquitto *mosq;
 int dutycycle;
@@ -60,7 +62,7 @@ struct timeval end;
 double power = 0;
 double current = 0;
 int charge_active = 0;
-int mode_phase = 0; // 1 -> tri | 0 -> Mono
+int mode_phase = MONO; // 1 -> tri | 0 -> Mono
 int tempo = 0;
 int cp_old = -1;
 int pp_old = -1;
@@ -217,9 +219,14 @@ void S0_interrupt(void){
 
 
     // printf("power : %lf W\n", 1.0/(temps/3600.0));
+	if(mode_phase == MONO){
 
-	power = 1.0/(temps/3600.0);
-	current = power/230.0;
+		power = 1.0/(temps/3600.0);
+		current = power/230.0;
+	}
+	else{
+		// TODO
+	}
 
 
     start = end;
@@ -370,9 +377,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[15]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close"};
+    char *topics[16]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,15,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,16,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -753,7 +760,19 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         
     
     }
+	else if(!strcmp(msg->topic,"down/charger/phases")){
+		
+		if(!strcmp(msg->payload, "1")){
 
+			mode_phase = MONO;
+			
+		}
+		else if(!strcmp(msg->payload, "3")){
+
+			mode_phase = TRI;
+			
+		}
+	}
 
 }
 

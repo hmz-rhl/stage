@@ -36,13 +36,7 @@ uint8_t buff = 0;;
 int main(int argc, char* argv[]) {
 
 
-    if(argc != 10){
 
-        printf("Usage:   ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
-        printf("exemple: ./expander-set-gpio 26 0 1 0 1 0 1 1 1\n");
-        exit(EXIT_FAILURE);
-
-    }
     if(argc == 2 && (!strcmp(argv[1],"-h") || !strcmp(argv[1],"--help"))){
 
         printf("Usage: ./expander-set-gpio -h, --help \taffiche ce message d'aide \n");
@@ -54,8 +48,15 @@ int main(int argc, char* argv[]) {
 
     }
 
+    if(argc != 10){
 
-    else if(!strcmp(argv[1], "27")){
+        printf("Usage:   ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
+        printf("exemple: ./expander-set-gpio 26 0 1 0 1 0 1 1 1\n");
+        exit(EXIT_FAILURE);
+
+    }
+
+    if(!strcmp(argv[1], "27")){
 
         expander_t *exp = expander_init(0x27);
         for (size_t i = 0; i < 8; i++)
