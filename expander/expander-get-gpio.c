@@ -2,7 +2,7 @@
  * @file expander-get-gpio.c
  * @author your name (you@domain.com)
  * @brief 
- * @version 0.2
+ * @version 0.3
  * @date 2022-06-20
  * 
  * @copyright Copyright (c) 2022
@@ -18,8 +18,8 @@ int main(int argc, char *argv[]){
 
     if(argc != 2 || !strcmp(argv[1], "-h") || !strcmp(argv[1],"--help")){
     
-        printf("Usage: ./get-expander-gpio <addresse> \n");
-        printf("exemple: ./get_expander_gpio 26 \n");
+        printf("Usage: ./expander-get-gpio <addresse> \n");
+        printf("exemple: ./expander-get-gpio 26 \n");
         return EXIT_SUCCESS;
 
     }
@@ -81,12 +81,12 @@ int main(int argc, char *argv[]){
 
         printf("fonction %s : addresse doit etre entre 20 et 27\n", __func__);
 
-        printf("Usage: ./get-expander-gpio <addresse> \n");
-        printf("exemple: ./get_expander_gpio 26 \n");
+        printf("Usage: ./expander-get-gpio <addresse> \n");
+        printf("exemple: ./expander-get-gpio 26 \n");
         return EXIT_FAILURE;
     }
 
-// on initialise un instance
+// on initialise une instance
     expander_t *e = expander_init(addr);
 
 // on affiche les gpio sur la console
