@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 
 
         printf("exemple: ./expander-set-gpio 0 1 0 1 0 1 1 1\n");
-        exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
 
     }
 
