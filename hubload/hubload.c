@@ -820,7 +820,7 @@ void publish_values(struct mosquitto *mosq)
 	if(cp_cpt>=10){
 
 	// on donne a CP les vraies valeurs correspondantes 
-		cp_reel = cp_tot/(double)cp_cpt-1;
+		cp_reel = cp_tot/(double)cp_cpt+1;
 		cp_cpt = 0;
 
 		CP = -12;
