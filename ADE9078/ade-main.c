@@ -1,4 +1,4 @@
-#include "../lib/ADE9078registers.h"
+#include "../lib/ADE/ADE9078registers.h"
 
 #include <stdint.h>
 #include <unistd.h>
