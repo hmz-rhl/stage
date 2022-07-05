@@ -18,4 +18,4 @@ sudo cp hubload_daemon_C.service /etc/systemd/system/;
 sudo systemctl enable hubload_daemon_C.service;
 sudo service hubload_daemon_C start;
 sleep 7;
-sudo reboot;
+#sudo reboot;
