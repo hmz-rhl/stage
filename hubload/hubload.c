@@ -937,6 +937,9 @@ void publish_values(struct mosquitto *mosq)
 		}
 		csv_activated = 0;
 		cpt_csv = 0;
+		
+		fclose(cpFile);
+		fclose(ppFile);
 	}
 
     //time_t seconds;
@@ -998,8 +1001,7 @@ void publish_values(struct mosquitto *mosq)
 		tempo = 0;
 	}
 
-	fclose(cpFile);
-	fclose(ppFile);
+	
 }
 
 int main(int argc, char *argv[])
