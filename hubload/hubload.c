@@ -823,6 +823,7 @@ void publish_values(struct mosquitto *mosq)
 		cp_reel = cp_tot/(double)10;
 		printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
 
+
 		cp_cpt = 0;
 
 		CP = -12;
@@ -850,7 +851,8 @@ void publish_values(struct mosquitto *mosq)
 
 			CP = -12;
 		}
-
+		printf("-->CP: %d\n", CP);
+		
 		if(CP != cp_old || tempo>300){
 
 			printf("brute CP: %d\n", CP);
