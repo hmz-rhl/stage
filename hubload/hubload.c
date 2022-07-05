@@ -920,8 +920,8 @@ void publish_values(struct mosquitto *mosq)
 	}
 	if(csv_activated){
 
-		FILE* cpFile = fopen("/home/pi/cp.csv","a+");
-		FILE* ppFile = fopen("/home/pi/pp.csv","a+");
+		FILE* cpFile = fopen("/home/pi/cp.csv","a");
+		FILE* ppFile = fopen("/home/pi/pp.csv","a");
 		if(cpFile != NULL){
 			if(cpt_csv < 1000){
 
@@ -937,7 +937,7 @@ void publish_values(struct mosquitto *mosq)
 		}
 		csv_activated = 0;
 		cpt_csv = 0;
-		
+
 		fclose(cpFile);
 		fclose(ppFile);
 	}
