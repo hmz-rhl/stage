@@ -813,14 +813,16 @@ void publish_values(struct mosquitto *mosq)
 	cp_tot += cp_reel;
 	cp_cpt++;
 	//printf("cp reel : %lf\n",cp_reel);
-	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
 
 	
 
 	if(cp_cpt>=10){
 
 	// on donne a CP les vraies valeurs correspondantes 
-		cp_reel = cp_tot/(double)cp_cpt+1;
+		printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
+		cp_reel = cp_tot/(double)10;
+		printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
+
 		cp_cpt = 0;
 
 		CP = -12;
