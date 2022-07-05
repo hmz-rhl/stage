@@ -934,8 +934,12 @@ void publish_values(struct mosquitto *mosq)
 				fprintf(ppFile, "%ld;%lf\n", time(NULL),pp );
 				cpt_csv++;
 			}
+				
+			else{
+			
+				csv_activated = 0;
+			}
 		}
-		csv_activated = 0;
 		cpt_csv = 0;
 
 		fclose(cpFile);
