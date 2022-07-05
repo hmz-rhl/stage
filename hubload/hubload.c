@@ -813,7 +813,7 @@ void publish_values(struct mosquitto *mosq)
 	cp_tot += cp_reel;
 	cp_cpt++;
 	//printf("cp reel : %lf\n",cp_reel);
-
+	printf("cpt %lf \ncp_reel %lf", cp_cpt, cp_reel);
 
 	
 
