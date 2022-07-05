@@ -72,6 +72,7 @@ double cp_cpt = 0;
 double cp_tot = 0;
 double pp_cpt = 0;
 double pp_tot = 0;
+int modeS0 = 1;
 
 
 
@@ -761,7 +762,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     
     }
 	else if(!strcmp(msg->topic,"down/charger/phases")){
-		
+
 		if(!strcmp(msg->payload, "1")){
 
 			mode_phase = MONO;
