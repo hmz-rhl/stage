@@ -1,3 +1,4 @@
+#include <expander_i2c.h>
 #include "../lib/ADE/ADE9078registers.h"
 
 #include <stdint.h>
