@@ -73,6 +73,8 @@ double cp_tot = 0;
 double pp_cpt = 0;
 double pp_tot = 0;
 int modeS0 = 1;
+int cpt_csv = 0;
+int csv_activated = 0;
 
 
 
@@ -378,9 +380,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[16]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases"};
+    char *topics[17]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,16,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,17,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -775,6 +777,11 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 	}
 
+	else if(!strcmp(msg->topic,"down/csv/start")){
+
+		csv_activated = 1;
+	}
+
 }
 
 // fonction qui lit et publie les valeurs en mqtt
@@ -794,17 +801,14 @@ void publish_values(struct mosquitto *mosq)
 	char payload[20];
 	double pp, cp, temp, cp_reel;
 	int PP, CP;
-
+	
+	
 	// variable pour debug mqtt
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-
-
-
-	cp = toVolt(readAdc(0,CP_CS));
+    cp = toVolt(readAdc(0,CP_CS));
 	// printf("brute adc_CP: %lfV\n", cp);
-
 	cp_reel = 4.0*cp;
 	cp_tot += cp_reel;
 	cp_cpt++;
@@ -914,6 +918,32 @@ void publish_values(struct mosquitto *mosq)
 
 		}
 	}
+	if(csv_activated){
+
+		FILE* cpFile = fopen("/home/pi/cp.csv","a+");
+		FILE* ppFile = fopen("/home/pi/pp.csv","a+");
+		if(cpFile != NULL){
+			if(cpt_csv < 1000){
+
+				fprintf(cpFile, "%ld;%lf\n", time(NULL),cp );
+			}
+		}
+		if(ppFile != NULL){
+			if(cpt_csv < 1000){
+
+				fprintf(ppFile, "%ld;%lf\n", time(NULL),pp );
+				cpt_csv++;
+			}
+		}
+		csv_activated = 0;
+		cpt_csv = 0;
+	}
+
+    //time_t seconds;
+
+    //seconds = time(NULL);
+	
+
 
 	if(tempo > 300){
 
@@ -968,7 +998,8 @@ void publish_values(struct mosquitto *mosq)
 		tempo = 0;
 	}
 
-
+	fclose(cpFile);
+	fclose(ppFile);
 }
 
 int main(int argc, char *argv[])
@@ -1206,7 +1237,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(1000);
+			usleep(1100);
             tentatives = 0;
 			tempo++;
     		
