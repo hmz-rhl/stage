@@ -825,6 +825,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		cp_cpt = 0;
+		cp_tot = 0;
 
 		CP = -12;
 		if (cp_reel > 10.5){
