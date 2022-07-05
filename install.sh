@@ -1,6 +1,6 @@
 cat logo;
-sudo apt-get update;
-sudo apt-get upgrade;
+#sudo apt-get update;
+#sudo apt-get upgrade;
 cd lib/;
 make;
 make install;
