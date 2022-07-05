@@ -1,1 +1,1 @@
-sudo gcc ade-main.c ../lib/expander-i2c.c -o version -lwiringPi
+sudo gcc ade-main.c -o version -lwiringPi -lHubload
