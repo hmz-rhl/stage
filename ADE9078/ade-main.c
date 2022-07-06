@@ -984,6 +984,8 @@ void interruption(int n)
 	expander_resetPinGPIO(exp, TYPE_E_F_ON);
 	expander_resetPinGPIO(exp, TYPE_2_NL1_ON);
 	expander_resetPinGPIO(exp, TYPE_2_L2L3_ON);
+	expander_setPinGPIO(exp, PM0);
+	expander_setPinGPIO(exp, PM1);
 	close(is.fd);
 	expander_closeAndFree(exp);
 	exit(EXIT_SUCCESS);
