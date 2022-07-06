@@ -447,14 +447,14 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		power = 0;
     }
 
-    else if(!strcmp(msg->topic,"down/type_ef/close")){
+    if(!strcmp(msg->topic,"down/type_ef/close")){
         expander_t* expander = expander_init(0x26); //Pour les relais
         expander_setPinGPIO(expander, TYPE_E_F_ON);
         printf("Le relais de la prise E/F est ferme\n");
         expander_closeAndFree(expander);
     }
 
-    else if(!strcmp(msg->topic,"down/type2/close")){
+    if(!strcmp(msg->topic,"down/type2/close")){
 
         // if(!strcmp(msg->payload, "1")){
         //     expander_t* expander = expander_init(0x26); //Pour les relais
@@ -476,7 +476,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     }
 
-    else if(!strcmp(msg->topic,"down/type2/open")){
+    if(!strcmp(msg->topic,"down/type2/open")){
 
         // if(!strcmp(msg->payload, "1")){
         //     expander_t* expander = expander_init(0x26); //Pour les relais
@@ -497,7 +497,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     
     }
 
-    else if(!strcmp(msg->topic, "down/charger/pwm")){
+    if(!strcmp(msg->topic, "down/charger/pwm")){
 
         
         dutycycle = atoi(msg->payload);
@@ -512,7 +512,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     }
     
-    else if(!strcmp(msg->topic,"down/lockType2/close")){
+    if(!strcmp(msg->topic,"down/lockType2/close")){
 
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		
@@ -551,7 +551,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 		expander_closeAndFree(expander);
 	}
-    else if(!strcmp(msg->topic,"down/lockType2/open")){
+    if(!strcmp(msg->topic,"down/lockType2/open")){
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, LOCK_D);
 		usleep(1);
@@ -589,21 +589,21 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		
     }
 
-	else if( !strcmp(msg->topic, "down/scan/activate"))
+	if( !strcmp(msg->topic, "down/scan/activate"))
 	{
 		scan_activated = 1;
 	}
 
-	else if( !strcmp(msg->topic, "down/scan/shutdown"))
+	if( !strcmp(msg->topic, "down/scan/shutdown"))
 	{
 		scan_activated = 0;
 	}
 
-	else if(!strcmp(msg->topic, "down/ID/write")){
+	if(!strcmp(msg->topic, "down/ID/write")){
 		eeprom_writeID(msg->payload);
 	}
 
-	else if(!strcmp(msg->topic, "down/ID/read")){
+	if(!strcmp(msg->topic, "down/ID/read")){
 		
 		char ID[13];
 		eeprom_getStringID(ID);
@@ -612,7 +612,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
 	}
-	else if(!strcmp(msg->topic,"down/lock_vae/open")){
+	if(!strcmp(msg->topic,"down/lock_vae/open")){
 
         if(!strcmp(msg->payload, "1")){
 
@@ -650,7 +650,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     
     }
 
-	else if(!strcmp(msg->topic,"down/lock_vae/close")){
+	if(!strcmp(msg->topic,"down/lock_vae/close")){
 
 		if(!strcmp(msg->payload, "1")){
 
@@ -688,7 +688,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     
     }
 
-	else if(!strcmp(msg->topic,"down/power_vae/open")){
+	if(!strcmp(msg->topic,"down/power_vae/open")){
 
         if(!strcmp(msg->payload, "1")){
 
@@ -726,7 +726,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     
     }
 
-	else if(!strcmp(msg->topic,"down/power_vae/close")){
+	if(!strcmp(msg->topic,"down/power_vae/close")){
 
 		if(!strcmp(msg->payload, "1")){
 
@@ -763,7 +763,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         
     
     }
-	else if(!strcmp(msg->topic,"down/charger/phases")){
+	if(!strcmp(msg->topic,"down/charger/phases")){
 
 		if(!strcmp(msg->payload, "1")){
 
@@ -777,7 +777,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 	}
 
-	else if(!strcmp(msg->topic,"down/csv/start")){
+	if(!strcmp(msg->topic,"down/csv/start")){
 
 		csv_activated = 1;
 	}
