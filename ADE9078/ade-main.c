@@ -822,13 +822,13 @@ while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG1_16, 0b0001001100001100);
 
 while(digitalRead(IRQ0)){}
-  spiWrite32(AIGAIN_32, 0x00000001);
-  spiWrite32(AIGAIN0_32, 0x00000001);
-  spiWrite32(AIGAIN1_32, 0x00000001);
-  spiWrite32(AIGAIN2_32, 0x00000001);
-  spiWrite32(AIGAIN3_32, 0x00000001);
-  spiWrite32(AIGAIN4_32, 0x00000001);
-  spiWrite32(AIRMSOS_32, 0x00000000);
+//   spiWrite32(AIGAIN_32, 0x00000001);
+//   spiWrite32(AIGAIN0_32, 0x00000001);
+//   spiWrite32(AIGAIN1_32, 0x00000001);
+//   spiWrite32(AIGAIN2_32, 0x00000001);
+//   spiWrite32(AIGAIN3_32, 0x00000001);
+//   spiWrite32(AIGAIN4_32, 0x00000001);
+//   spiWrite32(AIRMSOS_32, 0x00000000);
 
 while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG2_16, 0x0000);
@@ -841,26 +841,26 @@ while(digitalRead(IRQ0)){}
 
 
 // // // #2: Configure Gains
-while(digitalRead(IRQ0)){}
-   spiWrite32(APGAIN_32, 10);
-while(digitalRead(IRQ0)){}
-   spiWrite32(BPGAIN_32, is->powerBGain);
-while(digitalRead(IRQ0)){}
-   spiWrite32(CPGAIN_32, is->powerCGain);
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(APGAIN_32, 10);
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(BPGAIN_32, is->powerBGain);
+// while(digitalRead(IRQ0)){}
+//    spiWrite32(CPGAIN_32, is->powerCGain);
 
-   	spiWrite32(AIGAIN_32, 1);
-	   while(digitalRead(IRQ0)){}
-	spiWrite32(BIGAIN_32, 1);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(CIGAIN_32, 1);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(NIGAIN_32, 1);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(AVGAIN_32, 10);
-while(digitalRead(IRQ0)){}
-	spiWrite32(BVGAIN_32, 1);
-	while(digitalRead(IRQ0)){}
-	spiWrite32(CVGAIN_32, 1);
+//    	spiWrite32(AIGAIN_32, 1);
+// 	   while(digitalRead(IRQ0)){}
+// 	spiWrite32(BIGAIN_32, 1);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(CIGAIN_32, 1);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(NIGAIN_32, 1);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(AVGAIN_32, 10);
+// while(digitalRead(IRQ0)){}
+// 	spiWrite32(BVGAIN_32, 1);
+// 	while(digitalRead(IRQ0)){}
+// 	spiWrite32(CVGAIN_32, 1);
 
 //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
 //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
