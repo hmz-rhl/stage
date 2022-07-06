@@ -1124,7 +1124,7 @@ int main(){
 // //		ADE9078_waitForDataReady();
 
 		// ADE9078_waitForDataReady();
-		printf("\n\nAVRMS : (decimal) %d\n", (int32_t)0xFB8B19B0);
+		printf("\n\nAVRMS : (decimal) %d\n", 0xFB8B19B0);
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 		
 // 		printf("\nBVRMS : %d\n", spiRead32(BVRMS_32));
