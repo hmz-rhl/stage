@@ -823,6 +823,13 @@ while(digitalRead(IRQ0)){}
 
 while(digitalRead(IRQ0)){}
   spiWrite32(AIGAIN_32, 0x00000001);
+  spiWrite32(AIGAIN0_32, 0x00000001);
+  spiWrite32(AIGAIN1_32, 0x00000001);
+  spiWrite32(AIGAIN2_32, 0x00000001);
+  spiWrite32(AIGAIN3_32, 0x00000001);
+  spiWrite32(AIGAIN4_32, 0x00000001);
+  spiWrite32(AIRMSOS_32, 0x00000000);
+
 while(digitalRead(IRQ0)){}
   spiWrite16(CONFIG2_16, 0x0000);
 while(digitalRead(IRQ0)){}
