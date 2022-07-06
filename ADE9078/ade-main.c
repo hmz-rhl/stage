@@ -1124,7 +1124,7 @@ int main(){
 // //		ADE9078_waitForDataReady();
 
 		// ADE9078_waitForDataReady();
-		printf("\n\nAVRMS : (decimal) %d\n", (int32_t)spiRead32(AVRMS_1_32));
+		printf("\n\nAVRMS : (decimal) %d\n", (int32_t)spiRead32(AVRMS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 		
 // 		printf("\nBVRMS : %d\n", spiRead32(BVRMS_32));
@@ -1135,7 +1135,7 @@ int main(){
 // 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 
 		// ADE9078_waitForDataReady();
-		printf("\nAIRMS : %d\n", (int32_t)spiRead32(AIRMS_1_32) - 43500000);
+		printf("\nAIRMS : %d\n", (int32_t)spiRead32(AIRMS_32));
 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 //		ADE9078_waitForDataReady();
 
