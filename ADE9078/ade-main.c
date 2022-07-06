@@ -980,14 +980,16 @@ uint32_t ADE9078_getPhaseCalibA(){
 void interruption(int n)
 {
 	expander_t *exp = expander_init(0x26);
+	expander_t *exp2 = expander_init(0x26);
 	// ouverture des relais
 	expander_resetPinGPIO(exp, TYPE_E_F_ON);
 	expander_resetPinGPIO(exp, TYPE_2_NL1_ON);
 	expander_resetPinGPIO(exp, TYPE_2_L2L3_ON);
-	expander_setPinGPIO(exp, PM0);
-	expander_setPinGPIO(exp, PM1);
+	expander_setPinGPIO(exp2, PM0);
+	expander_setPinGPIO(exp2, PM1);
 	close(is.fd);
 	expander_closeAndFree(exp);
+	expander_closeAndFree(exp2);
 	exit(EXIT_SUCCESS);
 }
 void print32bits(int v) {
