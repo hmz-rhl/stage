@@ -31,7 +31,7 @@
 int fd;
 uint8_t buff = 0;;
 
-expander-set-gpio 26 --pin 0-7 0-1
+//expander-set-gpio 26 --pin 0-7 0-1
 
 int main(int argc, char* argv[]) {
 
