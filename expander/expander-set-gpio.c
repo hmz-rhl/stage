@@ -68,6 +68,7 @@ int main(int argc, char* argv[]) {
         expander_closeAndFree(exp);
 
     }
+
     if(!strcmp(argv[1], "26")){
 
         expander_t *exp = expander_init(0x26);
