@@ -841,26 +841,26 @@ while(digitalRead(IRQ0)){}
 
 
 // // // #2: Configure Gains
-// while(digitalRead(IRQ0)){}
-//    spiWrite32(APGAIN_32, 10);
-// while(digitalRead(IRQ0)){}
-//    spiWrite32(BPGAIN_32, is->powerBGain);
-// while(digitalRead(IRQ0)){}
-//    spiWrite32(CPGAIN_32, is->powerCGain);
+while(digitalRead(IRQ0)){}
+   spiWrite32(APGAIN_32, 4);
+while(digitalRead(IRQ0)){}
+   spiWrite32(BPGAIN_32, 4);
+while(digitalRead(IRQ0)){}
+   spiWrite32(CPGAIN_32, 4);
 
-//    	spiWrite32(AIGAIN_32, 1);
-// 	   while(digitalRead(IRQ0)){}
-// 	spiWrite32(BIGAIN_32, 1);
-// 	while(digitalRead(IRQ0)){}
-// 	spiWrite32(CIGAIN_32, 1);
-// 	while(digitalRead(IRQ0)){}
-// 	spiWrite32(NIGAIN_32, 1);
-// 	while(digitalRead(IRQ0)){}
-// 	spiWrite32(AVGAIN_32, 10);
-// while(digitalRead(IRQ0)){}
-// 	spiWrite32(BVGAIN_32, 1);
-// 	while(digitalRead(IRQ0)){}
-// 	spiWrite32(CVGAIN_32, 1);
+   	spiWrite32(AIGAIN_32, 4);
+	   while(digitalRead(IRQ0)){}
+	spiWrite32(BIGAIN_32, 4);
+	while(digitalRead(IRQ0)){}
+	spiWrite32(CIGAIN_32, 4);
+	while(digitalRead(IRQ0)){}
+	spiWrite32(NIGAIN_32, 4);
+	while(digitalRead(IRQ0)){}
+	spiWrite32(AVGAIN_32, 4);
+while(digitalRead(IRQ0)){}
+	spiWrite32(BVGAIN_32, 4);
+	while(digitalRead(IRQ0)){}
+	spiWrite32(CVGAIN_32, 4);
 
 //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
 //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
