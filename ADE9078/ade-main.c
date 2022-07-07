@@ -928,7 +928,7 @@ while(digitalRead(IRQ0)){}
   // mask0, mask1, event_mask,
   // wfb_cfg,
 
-
+	spiWrite32(AIRMSOS_32, 100);
 
 //   #ifdef ADE9078_VERBOSE_DEBUG
 //    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
@@ -1154,6 +1154,9 @@ int main(){
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 		printf("\nAIRMSOS: %d\n", (int32_t)spiRead32(AIRMSOS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+
+
+
 //		ADE9078_waitForDataReady();
 
 // 		printf("\nBIRMS : %d\n", spiRead32(BIRMS_32));
