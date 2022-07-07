@@ -75,6 +75,7 @@ double pp_tot = 0;
 int modeS0 = 1;
 int cpt_csv = 0;
 int csv_activated = 0;
+int s0_activated = 0;
 
 
 
@@ -287,6 +288,7 @@ void *thread_rfid(void *ptr)
 
 				Sleep(1);
 			}
+			printf("PN532 initialised \n");
    			while(PN532_GetFirmwareVersion(&pn532, buff) != PN532_STATUS_OK) {
 		
 				Sleep(1);
@@ -380,9 +382,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[17]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start"};
+    char *topics[19]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,17,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,19,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -782,6 +784,17 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		csv_activated = 1;
 	}
 
+	if(!strcmp(msg->topic,"down/s0/activate")){
+
+		s0_activated = 1;
+	}
+
+	if(!strcmp(msg->topic,"down/s0/shutdown")){
+
+		s0_activated = 0;
+	}
+
+
 }
 
 // fonction qui lit et publie les valeurs en mqtt
@@ -983,31 +996,33 @@ void publish_values(struct mosquitto *mosq)
 		}
 		
 
+		if(s0_activated){
+			
+			char str_charge[128];
+			char str_current[128];
+			char str_power[128];
+			sprintf(str_charge, "%d", eeprom_getWh());
+			sprintf(str_current, "%.2lf", current);
+			sprintf(str_power, "%.2lf", power);
 
-		char str_charge[128];
-		char str_current[128];
-		char str_power[128];
-		sprintf(str_charge, "%d", eeprom_getWh());
-		sprintf(str_current, "%.2lf", current);
-		sprintf(str_power, "%.2lf", power);
+			//printf("tic : %s\n", str_tic);
+			
+			rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
 
-		//printf("tic : %s\n", str_tic);
-		
-		rc = mosquitto_publish(mosq, NULL, "up/value/s0/charge", strlen(str_charge), str_charge, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			rc = mosquitto_publish(mosq, NULL, "up/value/s0/power", strlen(str_power), str_power, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
+
+			rc = mosquitto_publish(mosq, NULL, "up/value/s0/current", strlen(str_current), str_current, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
+			tempo = 0;
 		}
-
-		rc = mosquitto_publish(mosq, NULL, "up/value/s0/power", strlen(str_power), str_power, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		}
-
-		rc = mosquitto_publish(mosq, NULL, "up/value/s0/current", strlen(str_current), str_current, 2, false);
-		if(rc != MOSQ_ERR_SUCCESS){
-			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-		}
-		tempo = 0;
 	}
 
 	

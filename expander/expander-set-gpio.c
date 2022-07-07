@@ -79,10 +79,13 @@ int main(int argc, char* argv[]) {
                 {
         
                     expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
                 }
                 else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
                 {
                     expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                    
                 }
             }
         }
@@ -113,10 +116,12 @@ int main(int argc, char* argv[]) {
                 {
         
                     expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
                 }
                 else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
                 {
                     expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
                 }
             }
         }
@@ -133,21 +138,25 @@ int main(int argc, char* argv[]) {
                 buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
             }
             expander_setAndResetSomePinsGPIO(exp, buff);
+            printf("%02x\n",buff);
             expander_printGPIO(exp);
         }
 
-        else if(argc == 4)
+        if(!strcmp(argv[2], "--pin"))
         {
-            if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
+            if(argc == 5)
             {
-    
-                expander_setPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
-            }
-            else if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "0")))
-            {
-                expander_resetPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
+                if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "1")))
+                {
+        
+                    expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
+                else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
+                {
+                    expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
             }
         }
         expander_closeAndFree(exp);
@@ -164,29 +173,33 @@ int main(int argc, char* argv[]) {
                 buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
             }
             expander_setAndResetSomePinsGPIO(exp, buff);
+            printf("%02x\n",buff);
             expander_printGPIO(exp);
         }
-        
-        else if(argc == 4)
+
+        if(!strcmp(argv[2], "--pin"))
         {
-            if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
+            if(argc == 5)
             {
-    
-                expander_setPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
-            }
-            else if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "0")))
-            {
-                expander_resetPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
+                if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "1")))
+                {
+        
+                    expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
+                else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
+                {
+                    expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
             }
         }
         expander_closeAndFree(exp);
 
     }
-        else if(!strcmp(argv[1], "23")){
+      else if(!strcmp(argv[1], "23")){
 
-       expander_t *exp = expander_init(0x23);
+        expander_t *exp = expander_init(0x23);
         if(argc == 10)
         {
             for (size_t i = 0; i < 8; i++)
@@ -247,63 +260,73 @@ int main(int argc, char* argv[]) {
         else if(!strcmp(argv[1], "21")){
 
         expander_t *exp = expander_init(0x21);
-        if(argc == 10)
+         if(argc == 10)
         {
             for (size_t i = 0; i < 8; i++)
             {
                 buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
             }
             expander_setAndResetSomePinsGPIO(exp, buff);
+            printf("%02x\n",buff);
             expander_printGPIO(exp);
         }
-        
-        else if(argc == 4)
+
+        if(!strcmp(argv[2], "--pin"))
         {
-            if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
+            if(argc == 5)
             {
-    
-                expander_setPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
-            }
-            else if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "0")))
-            {
-                expander_resetPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
+                if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "1")))
+                {
+        
+                    expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
+                else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
+                {
+                    expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
             }
         }
         expander_closeAndFree(exp);
 
     }
-            else if(!strcmp(argv[1], "20")){
+        else if(!strcmp(argv[1], "20")){
 
         expander_t *exp = expander_init(0x20);
-        if(argc == 10)
+         if(argc == 10)
         {
             for (size_t i = 0; i < 8; i++)
             {
                 buff += (uint8_t)(pow(2,i)*(atoi(argv[9-i])));
             }
             expander_setAndResetSomePinsGPIO(exp, buff);
+            printf("%02x\n",buff);
             expander_printGPIO(exp);
         }
-        
-        else if(argc == 4)
+
+        if(!strcmp(argv[2], "--pin"))
         {
-            if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
+            if(argc == 5)
             {
-    
-                expander_setPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
-            }
-            else if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "0")))
-            {
-                expander_resetPinGPIO(exp,atoi(argv[2]));
-                expander_printGPIO(exp);
+                if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "1")))
+                {
+        
+                    expander_setPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
+                else if(((!strcmp(argv[3], "0") || !strcmp(argv[3], "1") || !strcmp(argv[3], "3") || !strcmp(argv[3], "4") || !strcmp(argv[3], "5") || !strcmp(argv[3], "6") || !strcmp(argv[3], "7")) && !strcmp(argv[4], "0")))
+                {
+                    expander_resetPinGPIO(exp,atoi(argv[3]));
+                    expander_printGPIO(exp);
+                }
             }
         }
         expander_closeAndFree(exp);
 
     }
+
+    
 
 
 
