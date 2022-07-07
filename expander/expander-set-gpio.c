@@ -43,12 +43,12 @@ int main(int argc, char* argv[]) {
         printf("       ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
 
 
-        printf("exemple: ./expander-set-gpio 0 1 0 1 0 1 1 1\n");
+        printf("exemple: ./expander-set-gpio 27 0 1 0 1 0 1 1 1\n");
         exit(EXIT_SUCCESS);
 
     }
 
-    if(argc != 10 || argc != 3){
+    if(argc != 10 || argc != 4){
 
         printf("Usage:   ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
         printf("exemple: ./expander-set-gpio 26 0 1 0 1 0 1 1 1\n");
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
             expander_setAndResetSomePinsGPIO(exp, buff);
             expander_printGPIO(exp);
         }
-        if(argc == 3)
+        if(argc == 4)
         {
             if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
             {
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
             printf("%02x\n",buff);
             expander_printGPIO(exp);
         }
-        if(argc == 3)
+        if(argc == 4)
         {
             if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
             {
