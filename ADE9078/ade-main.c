@@ -928,7 +928,7 @@ while(digitalRead(IRQ0)){}
   // mask0, mask1, event_mask,
   // wfb_cfg,
 
-	spiWrite32(AIRMSOS_32, 100);
+	spiWrite32(AIRMSOS_32, 1000000); 
 
 //   #ifdef ADE9078_VERBOSE_DEBUG
 //    printf(" ADE9078:initialize function completed. Showing values and registers written \n");
