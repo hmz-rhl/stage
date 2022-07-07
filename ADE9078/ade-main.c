@@ -1152,6 +1152,8 @@ int main(){
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 		printf("\nAIRMS2: %d\n", (int32_t)spiRead32(AIRMS_2_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+		printf("\nAIRMSOS: %d\n", (int32_t)spiRead32(AIRMSOS_32));
+		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 //		ADE9078_waitForDataReady();
 
 // 		printf("\nBIRMS : %d\n", spiRead32(BIRMS_32));
