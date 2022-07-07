@@ -1146,22 +1146,22 @@ int main(){
 // 		printf("LAST_DATA: %08X\n", spiRead32(LAST_DATA_32_32));
 
 		// ADE9078_waitForDataReady();
-		printf("\nAIRMS : %d\n", (int32_t)spiRead32(AIRMS_32));
+		printf("\nAIRMS : %d\n", (int32_t)spiRead32(AVRMS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nAIRMS1 : %d\n", (int32_t)spiRead32(AIRMS_1_32));
+		printf("\nAVRMS1 : %d\n", (int32_t)spiRead32(AVRMS_1_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nAIRMS2: %d\n", (int32_t)spiRead32(AIRMS_2_32));
+		printf("\nAVRMS2: %d\n", (int32_t)spiRead32(AVRMS_2_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nAIRMSOS: %d\n", (int32_t)spiRead32(AIRMSOS_32));
+		printf("\nAVRMSOS: %d\n", (int32_t)spiRead32(AVRMSOS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 
-		printf("\nBIRMS : %d\n", (int32_t)spiRead32(BIRMS_32));
+		printf("\nBVRMS : %d\n", (int32_t)spiRead32(BIRMS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nBIRMS1 : %d\n", (int32_t)spiRead32(BIRMS_1_32));
+		printf("\nBVRMS1 : %d\n", (int32_t)spiRead32(BVRMS_1_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nBIRMS2: %d\n", (int32_t)spiRead32(BIRMS_2_32));
+		printf("\nBVRMS2: %d\n", (int32_t)spiRead32(BVRMS_2_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
-		printf("\nBIRMSOS: %d\n", (int32_t)spiRead32(BIRMSOS_32));
+		printf("\nBVRMSOS: %d\n", (int32_t)spiRead32(BVRMSOS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 
 
