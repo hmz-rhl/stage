@@ -79,7 +79,7 @@ int readAdc(int channel, uint8_t cs){
 		attente++;
 		if(attente > 5)
 		{
-			perror("Erreur timeout: SPI busy tout les CS ne sont pas a 1");
+			printf("fonction %s: Erreur timeout: SPI busy tout les CS ne sont pas a 1", __func__);
 			close(fd);
 			// exit(EXIT_FAILURE);
 			return 0;
