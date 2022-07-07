@@ -12,6 +12,7 @@
 
 
 
+
 int main(int argc, char *argv[]){
 
 // on affiche une aide si la personne ne met pas d'argument  

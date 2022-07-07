@@ -131,7 +131,7 @@ void PN532_I2C_Close(){
 
     if(close(fd) <0){
 
-        fprintf(stderr, "%s: Unable to cloe i2c device: %s\n",__func__, strerror(errno));
+        fprintf(stderr, "%s: Unable to close i2c device: %s\n",__func__, strerror(errno));
 
     }
 }
