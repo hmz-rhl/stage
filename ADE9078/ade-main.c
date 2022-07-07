@@ -842,25 +842,25 @@ while(digitalRead(IRQ0)){}
 
 // // // #2: Configure Gains
 while(digitalRead(IRQ0)){}
-   spiWrite32(APGAIN_32, 4);
+   spiWrite32(APGAIN_32, 1);
 while(digitalRead(IRQ0)){}
-   spiWrite32(BPGAIN_32, 4);
+   spiWrite32(BPGAIN_32, 1);
 while(digitalRead(IRQ0)){}
-   spiWrite32(CPGAIN_32, 4);
+   spiWrite32(CPGAIN_32, 1);
 
-   	spiWrite32(AIGAIN_32, 4);
+   	spiWrite32(AIGAIN_32, 1);
 	   while(digitalRead(IRQ0)){}
-	spiWrite32(BIGAIN_32, 4);
+	spiWrite32(BIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(CIGAIN_32, 4);
+	spiWrite32(CIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(NIGAIN_32, 4);
+	spiWrite32(NIGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(AVGAIN_32, 4);
+	spiWrite32(AVGAIN_32, 1);
 while(digitalRead(IRQ0)){}
-	spiWrite32(BVGAIN_32, 4);
+	spiWrite32(BVGAIN_32, 1);
 	while(digitalRead(IRQ0)){}
-	spiWrite32(CVGAIN_32, 4);
+	spiWrite32(CVGAIN_32, 1);
 
 //    uint16_t pgaGain = (is->vCGain << 12) + (is->vBGain << 10) + (is->vCGain << 8) +   // first 2 reserved, next 6 are v gains, next 8 are i gains.
 //                       (is->iNGain << 6) + (is->iCGain << 4) + (is->iBGain << 2) + is->iAGain;
@@ -1153,6 +1153,15 @@ int main(){
 		printf("\nAIRMS2: %d\n", (int32_t)spiRead32(AIRMS_2_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 		printf("\nAIRMSOS: %d\n", (int32_t)spiRead32(AIRMSOS_32));
+		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+
+		printf("\nBIRMS : %d\n", (int32_t)spiRead32(BIRMS_32));
+		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+		printf("\nBIRMS1 : %d\n", (int32_t)spiRead32(BIRMS_1_32));
+		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+		printf("\nBIRMS2: %d\n", (int32_t)spiRead32(BIRMS_2_32));
+		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
+		printf("\nBIRMSOS: %d\n", (int32_t)spiRead32(BIRMSOS_32));
 		printf("LAST_DATA: 0x%08X\n", spiRead32(LAST_DATA_32_32));
 
 
