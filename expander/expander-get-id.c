@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
 
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-    char* str_id;
+    char* str_id[20];
 
         long id = 0;
         long id2 = 0;
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         {
             /* code */
             id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
-            printf("id: %X \n", id);
+            //printf("id: %X \n", id);
         }
             for (size_t i = 0; i < 3; i++)
         {
@@ -47,6 +47,7 @@ int main(int argc, char* argv[])
         strcat(str_id,str_id2);
         strcat(str_id,str_id1);
         
+        printf("id : %X\n", str_id);
 
         
         rtc_eeprom_closeAndFree(rtc_eeprom);
