@@ -37,8 +37,8 @@ int main(int argc, char* argv[])
         }
         
         
-        char str_id1[7];
-        char str_id2[7];
+        char str_id1[8];
+        char str_id2[8];
 
 
         
