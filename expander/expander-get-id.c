@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
 {
 
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    char* str_id;
 
         long id = 0;
         long id2 = 0;
