@@ -65,9 +65,28 @@ int main(int argc, char* argv[]) {
         }
         expander_setAndResetSomePinsGPIO(exp, buff);
         expander_printGPIO(exp);
-        expander_closeAndFree(exp);
 
+        if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "1")))
+        {
+ 
+            expander_setPinGPIO(exp,atoi(argv[2]));
+        }
+        else if(((!strcmp(argv[2], "0") || !strcmp(argv[2], "1") || !strcmp(argv[2], "3") || !strcmp(argv[2], "4") || !strcmp(argv[2], "5") || !strcmp(argv[2], "6") || !strcmp(argv[2], "7")) && !strcmp(argv[3], "0")))
+        {
+            expander_resetPinGPIO(exp,atoi(argv[2]))
+        }
+
+        expander_closeAndFree(exp);
     }
+
+    
+
+       
+
+    
+
+   
+
 
     if(!strcmp(argv[1], "26")){
 
