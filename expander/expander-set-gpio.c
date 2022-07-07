@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 
     }
 
-    if(argc != 10 || argc != 4){
+    if(!(argc == 4 || argc == 10)){
 
         printf("Usage:   ./expander-set-gpio <addresse> <GPIO 7> ... <GPIO 0> \n");
         printf("exemple: ./expander-set-gpio 26 0 1 0 1 0 1 1 1\n");
