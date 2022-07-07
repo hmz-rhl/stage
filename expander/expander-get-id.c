@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         {
             /* code */
             id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
-            //printf("id: %X \n", id);
+            printf("id: %X \n", id);
         }
             for (size_t i = 0; i < 3; i++)
         {
@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
         sprintf(str_id2, "%.06X", id2);
         strcat(str_id,str_id2);
         strcat(str_id,str_id1);
+        
+
         
         rtc_eeprom_closeAndFree(rtc_eeprom);
 }
