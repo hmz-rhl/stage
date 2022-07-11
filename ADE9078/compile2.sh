@@ -1,0 +1,1 @@
+sudo gcc ade-main-2.c -o version -lwiringPi -lHubload

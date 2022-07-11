@@ -18,18 +18,19 @@ int main(int argc, char* argv[])
 {
 
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
-    char* str_id[64];
+
+    char* str_id[64]; 
 
         long id = 0;
         long id2 = 0;
 
-        for (size_t i = 0; i < 3; i++)
+        for (size_t i = 0; i < 6; i++)
         {
             /* code */
             id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
             //printf("id: %X \n", id);
         }
-            for (size_t i = 0; i < 3; i++)
+            for (size_t i = 0; i < 6; i++)
         {
             /* code */
             id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
