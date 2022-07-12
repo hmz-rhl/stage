@@ -405,30 +405,19 @@ void *thread_rfid(void *ptr)
 
 void *thread_led(void *ptr){
 
+	ledstring.freq = WS2811_TARGET_FREQ;
+	ledstring.dmanum = 10;
 
-	ledstring =
-	{
-		.freq = WS2811_TARGET_FREQ,
-		.dmanum = 10,
-		.channel =
-		{
-			[0] =
-			{
-				.gpionum = 21,
-				.invert = 0,
-				.count = 51,
-				.strip_type = WS2811_STRIP_GBR,
-				.brightness = 127,
-			},
-			[1] =
-			{
-				.gpionum = 0,
-				.invert = 0,
-				.count = 0,
-				.brightness = 0,
-			},
-		},
-	};
+	ledstring.channel[0].gpionum = 21;
+	ledstring.channel[0].invert = 0;
+	ledstring.channel[0].count = 51;
+	ledstring.channel[0].strip_type = WS2811_STRIP_GBR;
+	ledstring.channel[0].brightness = 127;
+
+	ledstring.channel[1].gpionum = 0,
+	ledstring.channel[1].invert = 0,
+	ledstring.channel[1].count = 0,
+	ledstring.channel[1].brightness = 0,
 	ws2811_return_t ret;
 
 
