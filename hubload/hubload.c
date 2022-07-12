@@ -427,9 +427,20 @@ void *thread_led(void *ptr){
         fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
         
     }
-
+	int sens = 1;
+	int j = 0;
+	int speed = 2;
     while (1)
     {
+		if(j>=100 || j<=0){
+			sens = 1- sens;
+		}
+		j = j+speed*sens;
+		for (size_t i = 0; i < 51; i++)
+		{
+			/* code */
+			ledstring.channel[0].leds[i] = ((mainled & (0XFF0000))/100 * j) + ((mainled & (0X00FF00))/100 *j) + ((mainled & (0X0000FF))/100 * j);
+		}
 		
         if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
         {
