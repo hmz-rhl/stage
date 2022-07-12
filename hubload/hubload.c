@@ -28,6 +28,14 @@
 
 #include <MCP3202.h>
 
+#include <clk.h>
+#include <gpio.h>
+#include <dma.h>
+#include <pwm.h>
+
+
+#include <ws2811.h>
+
 //Pins Wpi
 #define LOCK_P 21
 #define CP_PWM 23
@@ -76,8 +84,31 @@ int modeS0 = 1;
 int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
+uint32_t mainled = 0xF0F000
 
-
+ws2811_t ledstring =
+{
+	.freq = WS2811_TARGET_FREQ,
+	.dmanum = 10,
+	.channel =
+	{
+		[0] =
+		{
+			.gpionum = 21,
+			.invert = 0,
+			.count = 51,
+			.strip_type = WS2811_STRIP_GBR,
+			.brightness = 127,
+		},
+		[1] =
+		{
+			.gpionum = 0,
+			.invert = 0,
+			.count = 0,
+			.brightness = 0,
+		},
+	},
+};
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
@@ -85,6 +116,16 @@ void Sleep(uint time) {
 	usleep(1000000*time);
 }
 
+/**
+ ** 
+ * @brief  permet d'obtenir l'ID de la borne stocker dans l'eeprom 
+ * 
+ * @param   str_id chaine de caractere dans laquelle sera stocker l'ID
+ * 
+ * 
+ * @return  ne retourne rien 
+ *  
+ **/
 void eeprom_getStringID(char* str_id)
 {
 
@@ -122,18 +163,25 @@ void eeprom_getStringID(char* str_id)
 	
 }
 
+/**
+ ** 
+ * @brief  permet d'ecrire un ID dans l'eeprom
+ * 
+ * @param  id ID a ecrire 
+ * 
+ * 
+ * @return  ne retourne rien
+ *  
+ **/
 void eeprom_writeID(char *id){
 
 
 	uint8_t a,b;
 	if(strlen(id) != 12)
 	{
-		printf("Error %s: Id dépasse la taille autorisé (12 caractères 0-F)\n", __func__);
+		printf("Error %s: Id n'est pas de la taille autorisé (12 caractères 0-F)\n", __func__);
 		return;
 	}
-
-
-
 
 // on verifie l'id, il doit etre dans le format suivant : ABCDEF012345
 	for(int i = 0; i<12 ; i++){
@@ -171,7 +219,16 @@ void eeprom_writeID(char *id){
 
 }
 
-
+/**
+ ** 
+ * @brief  permet de lire l'energie cumulée en Wh dans les deux premiers registres de l'eeprom protégée
+ * 
+ * @param  
+ * 
+ * 
+ * @return  retourne la valeur de l'énergie cumulée 
+ *  
+ **/
 uint16_t eeprom_getWh()
 {
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
@@ -183,6 +240,16 @@ uint16_t eeprom_getWh()
     return result;
 }
 
+/**
+ ** 
+ * @brief  fonction d'interruption du S0, a chaque tic cette fonction afin de modifier l'eeprom protegee pour stocker l'energie cumulee
+ * 
+ * @param  
+ * 
+ * 
+ * @return  ne retourne rien
+ *  
+ **/
 void S0_interrupt(void){ 
 
     gettimeofday(&end, NULL);
@@ -219,17 +286,13 @@ void S0_interrupt(void){
 
     rtc_eeprom_closeAndFree(rtc_eeprom);
 
-    // printf("temps : %ld \n",temps);
-
-
-    // printf("power : %lf W\n", 1.0/(temps/3600.0));
 	if(mode_phase == MONO){
 
 		power = 1.0/(temps/3600.0);
 		current = power/230.0;
 	}
 	else{
-		// TODO
+		//TODO
 	}
 
 
@@ -237,6 +300,16 @@ void S0_interrupt(void){
 
 }
 
+/**
+ ** 
+ * @brief  publie via MQTT l'etat du bouton 
+ * 
+ * @param  
+ * 
+ * 
+ * @return ne retourne rien 
+ *  
+ **/
 void user_key_interrupt(void){
 
 	//printf("%s: Début de routine\n",__func__);
@@ -259,6 +332,16 @@ void user_key_interrupt(void){
 	//printf("%s: Fin de routine\n",__func__);
 }
 
+/**
+ ** 
+ * @brief  Lance le thread rfid 
+ * 
+ * @param  ptr pointeur null necessaire au fonctionnement du thread
+ * 
+ * 
+ * @return ne retourne rien
+ *  
+ **/
 void *thread_rfid(void *ptr)
 {
 	if(wiringPiSetup() < 0)
@@ -340,17 +423,71 @@ void *thread_rfid(void *ptr)
 	}
 }
 
-// fonction a executer lors d'une interruption par ctrl+C
+
+
+void *thread_led(void *ptr){
+
+
+
+	ws2811_return_t ret;
+
+
+
+    if ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
+    {
+        fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
+        return ret;
+    }
+
+    while (1)
+    {
+
+		ledstring.channel[0].leds[i] = mainled;
+        if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+        {
+            fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+            break;
+        }
+
+        // 15 frames /sec
+        usleep(1000000 / 15);
+    }
+
+	ws2811_fini(&ledstring);
+    
+
+}
+/**
+ ** 
+ * @brief  fonction a executer lors d'une interruption par ctrl+C qui permet de detruire l'instance mosquitto
+ * 
+ * @param  n
+ * 
+ * 
+ * @return  ne retourne rien 
+ *  
+ **/
 void nettoyage(int n)
 {
 	
 	printf("%s: interruption on detruit l'instance mosq\n", __func__);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
+	ws2811_fini(&ledstring);
 	exit(EXIT_SUCCESS);
 }
 
-// fonction qui passe de volt a degre pour le composant TMP36
+
+/**
+ ** 
+ * @brief  fonction qui passe de volt a degre pour le composant TMP36
+ * 
+ * @param  tension tension a convertir
+ * 
+ * 
+ * @return ne retourne rien 
+ *  
+ **/
 double toDegres(int tension){
 
 	if(tension < 0){
@@ -382,9 +519,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[19]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown"};
+    char *topics[20]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown","down/main_led"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,19,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,20,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -794,6 +931,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		s0_activated = 0;
 	}
 
+	if(!strcmp(msg->topic,"down/main_led")){
+
+		mainled = (uint32_t)strtol(msg->payload+1, NULL, 16);
+	}
 
 }
 

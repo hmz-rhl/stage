@@ -7,7 +7,7 @@ OBJ= $(SRC:.c=.o)
 LIB= lib$(SRC:.c=).a
 DIR=
 
-all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o
+all:	expander_i2c.o	MCP3202.o	rtc_eeprom.o	pn532.o	PN532_Rpi_I2C.o	clk.o	dma.o	gpio.o	mailbox.o	pcm.o	pwm.o	rpihw.o	ws2811.o
 #	echo "On change de repertoire -> /lib";
 #	cd ./lib;
 	@echo "On genere les bibliothèques statiques";
@@ -35,6 +35,45 @@ pn532.o:	pn532.c
 PN532_Rpi_I2C.o:	PN532_Rpi_I2C.c
 	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
+
+expander_i2c.o:	expander_i2c.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+clk.o:	clk.c
+
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+dma.o:	dma.c
+
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+gpio.o:	gpio.c
+
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+mailbox.o:	mailbox.c
+
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+pcm.o:	pcm.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+
+pwm.o:	pwm.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+rpihw.o:	rpihw.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
+
+ws2811.o:	ws2811.c
+	@echo "generation de l'objet...";
+	sudo $(CC) -o $@ -c $<;
+
 
 .PHONY: install
 install:
