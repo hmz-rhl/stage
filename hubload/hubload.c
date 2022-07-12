@@ -1182,7 +1182,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 		else if(!strcmp(msg->payload,"RAINBOW_CIRCLE")){
 
-			mode_led = BLUE_SHADE;
+			mode_led = RAINBOW_CIRCLE;
 		}
 		else{
 
