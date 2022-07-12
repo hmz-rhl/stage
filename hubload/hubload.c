@@ -59,6 +59,13 @@
 #define MONO	1
 #define TRI		3
 
+#define RGB_SHADE 1
+#define GREEN_SHADE 2
+#define RED_SHADE 3
+#define BLUE_SHADE 4
+#define RAINBOW_CIRCLE 5
+
+
 struct mosquitto *mosq;
 int dutycycle;
 uint8_t scan_activated = 0;
@@ -85,6 +92,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
+int mode_led = 0;
 
 ws2811_t ledstring;
 
@@ -430,15 +438,65 @@ void *thread_led(void *ptr){
 
     while (1)
     {
-		for(int j = 0; j < 3; j++ ) {
-    // Fade IN
+		if(mode_led == RGB_SHADE){
+
+			for(int j = 0; j < 3; j++ ) {
+		// Fade IN
+				for(int k = 0; k < 256; k++) {
+
+					
+					for (size_t i = 0; i < 51; i++)
+					{
+						/* code */
+						ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+					}
+					
+
+					if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+					{
+						fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+						break;
+					}
+					//delay(3);
+					usleep(3000);
+				}	
+				// Fade OUT
+				for(int k = 255; k >= 0; k--) {
+				
+					for (size_t i = 0; i < 51; i++)
+					{
+						/* code */
+						ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+					}
+					
+
+					if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+					{
+						fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+						break;
+					}
+					//delay(3);
+					usleep(3000);
+				}
+			}	
+		}
+		
+
+		else if(mode_led == RAINBOW_CIRCLE){
+
+		}
+
+		else if(mode_led == GREEN_SHADE){
+
+			
+			// Fade IN
 			for(int k = 0; k < 256; k++) {
 
 				
 				for (size_t i = 0; i < 51; i++)
 				{
 					/* code */
-					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8));
 				}
 				
 
@@ -468,8 +526,30 @@ void *thread_led(void *ptr){
 				//delay(3);
 				usleep(3000);
 			}
-		}	
-		
+				
+		}
+
+		else if(mode_led == RED_SHADE){
+			
+		}
+
+		else if(mode_led == BLUE_SHADE){
+			
+		}
+		else{
+
+			for (size_t i = 0; i < 51; i++)
+			{
+				/* code */
+				ledstring.channel[0].leds[i] = mainled;
+			}
+
+			if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+		}
     }
 
 	ws2811_fini(&ledstring);
