@@ -659,11 +659,11 @@ void *thread_led(void *ptr){
 					/* code */
 					ledstring.channel[0].leds[i] = 0;
 				}
-				ledstring.channel[0].leds[i] = 0x90;
+				ledstring.channel[0].leds[i] = 0x20;
 				for(int j = 1; j <= 1; j++) {
 					ledstring.channel[0].leds[i+j] = 0xFF;
 				}
-				ledstring.channel[0].leds[i+1+1] = 0x90;
+				ledstring.channel[0].leds[i+1+1] = 0x20;
 				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
 				{
 					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
