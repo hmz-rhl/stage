@@ -490,8 +490,8 @@ void *thread_led(void *ptr){
 			for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
 
 				for(i=0; i< 51; i++) {
-					if(mode_led != RAINBOW_CIRCLE) break ;
-					
+					if(mode_led != RAINBOW_CIRCLE) goto END ;
+
 					WheelPos = (((i * 256 / 51) + j) & 255);
 					if(WheelPos < 85) {
 						c[0]=WheelPos * 3;
@@ -518,6 +518,7 @@ void *thread_led(void *ptr){
 				}
 				
 				usleep(30000);
+				END:
 			}
 					
 
