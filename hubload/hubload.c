@@ -1184,8 +1184,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 			mode_led = RAINBOW_CIRCLE;
 		}
+		else if(!strcmp(msg->payload,"RGB_SHADE")){
+
+			mode_led = RGB_SHADE;
+		}
 		else{
 
+			mode_led = 0;
 			mainled = (uint32_t)strtol((msg->payload), NULL, 16);
 			for(int i = 0; i<51 ; i++){
 				// inversement de RGB -> BGR pour les fonctions du ws281x
