@@ -436,7 +436,7 @@ void *thread_led(void *ptr){
     if ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
     {
         fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
-        return ret;
+        
     }
 
     while (1)
