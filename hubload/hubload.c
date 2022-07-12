@@ -92,7 +92,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
-int mode_led = RED_SHADE;
+int mode_led = RAINBOW_CIRCLE;
 
 ws2811_t ledstring;
 
@@ -483,6 +483,41 @@ void *thread_led(void *ptr){
 		
 
 		else if(mode_led == RAINBOW_CIRCLE){
+			unsigned char c[3];
+			unsigned char WheelPos;
+			uint16_t i, j;
+
+			for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
+
+				for(i=0; i< 51; i++) {
+
+					WheelPos = (((i * 256 / 51) + j) & 255);
+					if(WheelPos < 85) {
+						c[0]=WheelPos * 3;
+						c[1]=255 - WheelPos * 3;
+						c[2]=0;
+					} else if(WheelPos < 170) {
+						WheelPos -= 85;
+						c[0]=255 - WheelPos * 3;
+						c[1]=0;
+						c[2]=WheelPos * 3;
+					} else {
+						WheelPos -= 170;
+						c[0]=0;
+						c[1]=WheelPos * 3;
+						c[2]=255 - WheelPos * 3;
+					}
+					ledstring.channel[0].leds[i] = c[2] + c[1] + c[0];
+				}
+
+				if ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
+					
+				}
+				usleep(2000);
+			}
+					
 
 		}
 
