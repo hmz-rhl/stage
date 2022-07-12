@@ -529,7 +529,7 @@ void *thread_led(void *ptr){
 				
 		}
 
-		else if(mode_led == RED_SHADE){
+		else if(mode_led == BLUE_SHADE){
 						for(int k = 0; k < 256; k++) {
 
 				
@@ -568,7 +568,7 @@ void *thread_led(void *ptr){
 			}
 		}
 
-		else if(mode_led == BLUE_SHADE){
+		else if(mode_led == RED_SHADE){
 						for(int k = 0; k < 256; k++) {
 
 				
