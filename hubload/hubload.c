@@ -1254,6 +1254,7 @@ int main(int argc, char *argv[])
     time_t start, end;
 	start = 0;
 	pthread_t thread_obj;
+	pthread_t thread_obj2;
 
 // on configure l'execution de la fonction interruption si ctrl+C
 	signal(SIGINT, nettoyage);
@@ -1261,6 +1262,7 @@ int main(int argc, char *argv[])
 
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
+	pthread_create(&thread_obj2, NULL, *thread_led, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
