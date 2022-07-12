@@ -517,8 +517,8 @@ void *thread_led(void *ptr){
 					break;
 				}
 				
+			END:
 				usleep(30000);
-END:
 			}
 					
 
