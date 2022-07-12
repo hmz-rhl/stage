@@ -507,7 +507,7 @@ void *thread_led(void *ptr){
 						c[1]=WheelPos * 3;
 						c[2]=255 - WheelPos * 3;
 					}
-					ledstring.channel[0].leds[i] = c[2] + c[1] + c[0];
+					ledstring.channel[0].leds[i] = (c[2]<<16) + (c[1]<<8) + c[0];
 				}
 				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
 				{
