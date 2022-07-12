@@ -93,7 +93,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
-int mode_led = CHENILLE;
+int mode_led = RED_SHADE;
 
 ws2811_t ledstring;
 
