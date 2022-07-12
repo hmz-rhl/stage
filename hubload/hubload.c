@@ -84,7 +84,7 @@ int modeS0 = 1;
 int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
-uint32_t mainled = 0xF0F000
+uint32_t mainled = 0xF0F000;
 
 ws2811_t ledstring;
 
