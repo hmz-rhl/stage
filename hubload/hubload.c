@@ -530,11 +530,81 @@ void *thread_led(void *ptr){
 		}
 
 		else if(mode_led == RED_SHADE){
+						for(int k = 0; k < 256; k++) {
+
+				
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<16);
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}	
+			// Fade OUT
+			for(int k = 255; k >= 0; k--) {
 			
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<16);
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}
 		}
 
 		else if(mode_led == BLUE_SHADE){
+						for(int k = 0; k < 256; k++) {
+
+				
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k);
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}	
+			// Fade OUT
+			for(int k = 255; k >= 0; k--) {
 			
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k);
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}
 		}
 		else{
 
