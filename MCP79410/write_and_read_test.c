@@ -10,11 +10,11 @@ int main(int argc, char const *argv[])
     eeprom_print(rtc_eeprom); // On lit l'EEPROM
     eeprom_printProtected(rtc_eeprom); // On lit l'EEPROM Protege
 
-    eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1); // On incremente le registre 0x0F l'EEPROM 
-    eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1); // On incremente le registre 0xF0 de l'EEPROM Protege
+    // eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1); // On incremente le registre 0x0F l'EEPROM 
+    // eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1); // On incremente le registre 0xF0 de l'EEPROM Protege
 
-    eeprom_print(rtc_eeprom); // On affiche l'EEPROM 
-    eeprom_printProtected(rtc_eeprom); // ON affiche l'EEPROM Protege
+    // eeprom_print(rtc_eeprom); // On affiche l'EEPROM 
+    // eeprom_printProtected(rtc_eeprom); // ON affiche l'EEPROM Protege
 
 
     // eeprom_setAll(rtc_eeprom);
