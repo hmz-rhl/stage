@@ -92,7 +92,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
-int mode_led = 0;
+int mode_led = 2;
 
 ws2811_t ledstring;
 
@@ -496,7 +496,7 @@ void *thread_led(void *ptr){
 				for (size_t i = 0; i < 51; i++)
 				{
 					/* code */
-					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8));
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<8);
 				}
 				
 
@@ -514,7 +514,7 @@ void *thread_led(void *ptr){
 				for (size_t i = 0; i < 51; i++)
 				{
 					/* code */
-					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<8);
 				}
 				
 
