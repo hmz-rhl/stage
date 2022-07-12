@@ -86,29 +86,7 @@ int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000
 
-ws2811_t ledstring =
-{
-	.freq = WS2811_TARGET_FREQ,
-	.dmanum = 10,
-	.channel =
-	{
-		[0] =
-		{
-			.gpionum = 21,
-			.invert = 0,
-			.count = 51,
-			.strip_type = WS2811_STRIP_GBR,
-			.brightness = 127,
-		},
-		[1] =
-		{
-			.gpionum = 0,
-			.invert = 0,
-			.count = 0,
-			.brightness = 0,
-		},
-	},
-}
+ws2811_t ledstring;
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
@@ -428,7 +406,29 @@ void *thread_rfid(void *ptr)
 void *thread_led(void *ptr){
 
 
-
+	ledstring =
+	{
+		.freq = WS2811_TARGET_FREQ,
+		.dmanum = 10,
+		.channel =
+		{
+			[0] =
+			{
+				.gpionum = 21,
+				.invert = 0,
+				.count = 51,
+				.strip_type = WS2811_STRIP_GBR,
+				.brightness = 127,
+			},
+			[1] =
+			{
+				.gpionum = 0,
+				.invert = 0,
+				.count = 0,
+				.brightness = 0,
+			},
+		},
+	}
 	ws2811_return_t ret;
 
 
