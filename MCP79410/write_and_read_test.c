@@ -5,8 +5,8 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    eeprom_printProtected(rtc_eeprom); // On lit l'EEPROM Protege
     rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+    eeprom_printProtected(rtc_eeprom); // On lit l'EEPROM Protege
     char str_id[100];
 	long id = 0;
     long id2 = 0;
