@@ -669,7 +669,7 @@ void *thread_led(void *ptr){
 					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
 					break;
 				}
-				delay(3000);
+				usleep(3000);
  			}
 		}
 		else{
