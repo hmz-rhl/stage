@@ -428,7 +428,7 @@ void *thread_led(void *ptr){
 				.brightness = 0,
 			},
 		},
-	}
+	};
 	ws2811_return_t ret;
 
 
