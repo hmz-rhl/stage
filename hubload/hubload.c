@@ -441,8 +441,7 @@ void *thread_led(void *ptr){
 
     while (1)
     {
-
-		ledstring.channel[0].leds[i] = mainled;
+		
         if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
         {
             fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
@@ -934,6 +933,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	if(!strcmp(msg->topic,"down/main_led")){
 
 		mainled = (uint32_t)strtol(msg->payload+1, NULL, 16);
+		for(int i = 0; i<51 ; i++){
+
+			ledstring.channel[0].leds[i] = mainled;
+		}
 	}
 
 }
