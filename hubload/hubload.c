@@ -921,7 +921,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic,"down/main_led")){
 
-		mainled = (uint32_t)strtol((msg->payload)+1, NULL, 16);
+		mainled = (uint32_t)strtol((msg->payload), NULL, 16);
 		for(int i = 0; i<51 ; i++){
 
 			ledstring.channel[0].leds[i] = mainled;
