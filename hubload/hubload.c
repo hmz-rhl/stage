@@ -439,7 +439,7 @@ void *thread_led(void *ptr){
 		for (size_t i = 0; i < 51; i++)
 		{
 			/* code */
-			ledstring.channel[0].leds[i] = ((mainled & (0XFF0000))/100 * j) + ((mainled & (0X00FF00))/100 *j) + ((mainled & (0X0000FF))/100 * j);
+			ledstring.channel[0].leds[i] = ((mainled & (0XFF0000))/100.0 * j) + ((mainled & (0X00FF00))/100.0 *j) + ((mainled & (0X0000FF))/100.0 * j);
 		}
 		
         if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
