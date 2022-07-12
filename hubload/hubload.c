@@ -509,12 +509,12 @@ void *thread_led(void *ptr){
 					}
 					ledstring.channel[0].leds[i] = c[2] + c[1] + c[0];
 				}
-
-				if ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
 				{
-					fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
-					
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
 				}
+				
 				usleep(2000);
 			}
 					
