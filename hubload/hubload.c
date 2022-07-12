@@ -732,7 +732,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic, "down/ID/read")){
 		
-		char ID[100];
+		char ID[] = "000000000000";
 		// eeprom_getStringID(ID);
 		rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
 
@@ -753,8 +753,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 		
 		
-		char str_id1[7];
-		char str_id2[7];
+		char str_id1[] = "000";
+		char str_id2[] = "000";
 
 
 		
@@ -764,7 +764,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		strcat(ID,str_id1);
 		
 		rtc_eeprom_closeAndFree(rtc_eeprom);
-		int rc = mosquitto_publish(mosq, NULL, "up/ID", 12, ID, 2, false);
+		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 		}
