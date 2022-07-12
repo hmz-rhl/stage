@@ -37,18 +37,15 @@ PN532_Rpi_I2C.o:	PN532_Rpi_I2C.c
 	sudo $(CC) -o $@ -c $<;
 
 gpio.o:	gpio.c
-
 	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
 dma.o:	dma.c
-
 	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
 
 mailbox.o:	mailbox.c
-
 	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
