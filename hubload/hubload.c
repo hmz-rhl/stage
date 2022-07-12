@@ -108,7 +108,7 @@ ws2811_t ledstring =
 			.brightness = 0,
 		},
 	},
-};
+}
 
 // sleep plus precis en seconde
 void Sleep(uint time) {
