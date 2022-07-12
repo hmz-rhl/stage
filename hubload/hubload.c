@@ -732,8 +732,38 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic, "down/ID/read")){
 		
-		char ID[13];
-		eeprom_getStringID(ID);
+		char ID[14];
+		// eeprom_getStringID(ID);
+		rtc_eeprom_t *rtc_eeprom = rtc_eeprom_init();
+
+		long id = 0;
+		long id2 = 0;
+
+		for (size_t i = 0; i < 3; i++)
+		{
+			/* code */
+			id = id + (eeprom_readProtected(rtc_eeprom, 0xF2 + i) << (8*i));
+			//printf("id: %X \n", id);
+		}
+			for (size_t i = 0; i < 3; i++)
+		{
+			/* code */
+			id2 = id2 + (eeprom_readProtected(rtc_eeprom, 0xF5 + i) << (8*i));
+			//printf("id2: %X \n", id2);
+		}
+		
+		
+		char str_id1[7];
+		char str_id2[7];
+
+
+		
+		sprintf(str_id1, "%.06X", id);
+		sprintf(str_id2, "%.06X", id2);
+		strcat(ID,str_id2);
+		strcat(ID,str_id1);
+		
+		rtc_eeprom_closeAndFree(rtc_eeprom);
 		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
 		if(rc != MOSQ_ERR_SUCCESS){
 			fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));

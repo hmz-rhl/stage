@@ -34,8 +34,7 @@ int main(int argc, char const *argv[])
     sprintf(str_id2, "%.06X", id2);
     strcat(str_id,str_id2);
     strcat(str_id,str_id1);
-	printf("%s\n", str_id);
-	rtc_eeprom_closeAndFree(rtc_eeprom);
+	printf("yo%s\n", str_id);
     // eeprom_write(rtc_eeprom, 0x0F, eeprom_read(rtc_eeprom,0x0F) + 1); // On incremente le registre 0x0F l'EEPROM 
     // eeprom_writeProtected(rtc_eeprom, 0xF0, eeprom_readProtected(rtc_eeprom,0xF0) + 1); // On incremente le registre 0xF0 de l'EEPROM Protege
 
