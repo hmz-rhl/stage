@@ -1168,10 +1168,29 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic,"down/main_led")){
 
-		mainled = (uint32_t)strtol((msg->payload), NULL, 16);
-		for(int i = 0; i<51 ; i++){
-			// inversement de RGB -> BGR pour les fonctions du ws281x
-			ledstring.channel[0].leds[i] = (mainled & 0x00FF00) + ((mainled & 0x0000FF) << 16) + ((mainled & 0xFF0000) >> 16);
+		if(!strcmp(msg->payload,"RED_SHADE"))
+		{
+			mode_led = RED_SHADE;
+		}
+		else if(!strcmp(msg->payload,"GREEN_SHADE")){
+
+			mode_led = GREEN_SHADE;
+		}
+		else if(!strcmp(msg->payload,"BLUE_SHADE")){
+
+			mode_led = BLUE_SHADE;
+		}
+		else if(!strcmp(msg->payload,"RAINBOW_CIRCLE")){
+
+			mode_led = BLUE_SHADE;
+		}
+		else{
+
+			mainled = (uint32_t)strtol((msg->payload), NULL, 16);
+			for(int i = 0; i<51 ; i++){
+				// inversement de RGB -> BGR pour les fonctions du ws281x
+				ledstring.channel[0].leds[i] = (mainled & 0x00FF00) + ((mainled & 0x0000FF) << 16) + ((mainled & 0xFF0000) >> 16);
+			}
 		}
 	}
 
