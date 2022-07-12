@@ -1219,6 +1219,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 			mode_led = RGB_SHADE;
 		}
+		else if(!strcmp(msg->payload,"CHENILLE")){
+
+			mode_led = CHENILLE;
+		}
 		else{
 
 			mainled = (uint32_t)strtol((msg->payload), NULL, 16);
