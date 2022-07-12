@@ -427,29 +427,49 @@ void *thread_led(void *ptr){
         fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
         
     }
-	int sens = 1;
-	int j = 0;
-	int speed = 2;
+
     while (1)
     {
-		if(j>=100 || j<=0){
-			sens = 1- sens;
-		}
-		j = j+speed*sens;
-		for (size_t i = 0; i < 51; i++)
-		{
-			/* code */
-			ledstring.channel[0].leds[i] = ((mainled & (0XFF0000))/100.0 * j) + ((mainled & (0X00FF00))/100.0 *j) + ((mainled & (0X0000FF))/100.0 * j);
-		}
-		
-        if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
-        {
-            fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
-            break;
-        }
+		for(int j = 0; j < 3; j++ ) {
+    // Fade IN
+			for(int k = 0; k < 256; k++) {
 
-        // 15 frames /sec
-        usleep(1000000 / 15);
+				
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}	
+			// Fade OUT
+			for(int k = 255; k >= 0; k--) {
+			
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
+				}
+				
+
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				//delay(3);
+				usleep(3000);
+			}
+		}	
+		
     }
 
 	ws2811_fini(&ledstring);
