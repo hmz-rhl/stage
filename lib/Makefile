@@ -62,7 +62,7 @@ rpihw.o:	rpihw.c
 
 ws2811.o:	ws2811.c
 	@echo "generation de l'objet...";
-	sudo $(CC) -o $@ -c $<;
+	sudo $(CC) -o $@ -c $< -lm;
 
 
 .PHONY: install
