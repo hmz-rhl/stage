@@ -762,6 +762,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		sprintf(str_id2, "%.06X", id2);
 		strcat(ID,str_id2);
 		strcat(ID,str_id1);
+		//correction des 3 valeurs chelou :/
 		strcpy(ID,ID + 3);
 		rtc_eeprom_closeAndFree(rtc_eeprom);
 		int rc = mosquitto_publish(mosq, NULL, "up/ID", strlen(ID), ID, 2, false);
