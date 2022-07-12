@@ -64,6 +64,7 @@
 #define RED_SHADE 3
 #define BLUE_SHADE 4
 #define RAINBOW_CIRCLE 5
+#define CHENILLE 6
 
 
 struct mosquitto *mosq;
@@ -92,7 +93,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
-int mode_led = RED_SHADE;
+int mode_led = CHENILLE;
 
 ws2811_t ledstring;
 
@@ -649,6 +650,28 @@ void *thread_led(void *ptr){
 				usleep(3000);
 			}
 		}
+		
+		else if(mode_led == CHENILLE){
+
+			for(int i = 0; i < 51-3-2; i++) {
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0;
+				}
+				ledstring.channel[0].leds[i] = 0xFF/10;
+				for(int j = 1; j <= 3; j++) {
+				ledstring.channel[0].leds[i+j] = 0xFF;
+				}
+				ledstring.channel[0].leds[i+3+1] = 0xFF/10;
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				delay(3000);
+ 			}
+		}
 		else{
 
 			for (size_t i = 0; i < 51; i++)
@@ -658,10 +681,10 @@ void *thread_led(void *ptr){
 			}
 
 			if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
-				{
-					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
-					break;
-				}
+			{
+				fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+				break;
+			}
 		}
     }
 
