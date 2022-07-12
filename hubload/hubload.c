@@ -414,10 +414,10 @@ void *thread_led(void *ptr){
 	ledstring.channel[0].strip_type = WS2811_STRIP_GBR;
 	ledstring.channel[0].brightness = 127;
 
-	ledstring.channel[1].gpionum = 0,
-	ledstring.channel[1].invert = 0,
-	ledstring.channel[1].count = 0,
-	ledstring.channel[1].brightness = 0,
+	ledstring.channel[1].gpionum = 0;
+	ledstring.channel[1].invert = 0;
+	ledstring.channel[1].count = 0;
+	ledstring.channel[1].brightness = 0;
 	ws2811_return_t ret;
 
 
