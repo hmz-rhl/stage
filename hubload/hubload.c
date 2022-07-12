@@ -923,8 +923,8 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		mainled = (uint32_t)strtol((msg->payload), NULL, 16);
 		for(int i = 0; i<51 ; i++){
-
-			ledstring.channel[0].leds[i] = mainled;
+			// inversement de RGB -> BGR pour les fonctions du ws281x
+			ledstring.channel[0].leds[i] = (mainled & 0x00FF00) + ((mainled & 0x0000FF) << 16) + ((mainled & 0xFF0000) >> 16);
 		}
 	}
 
