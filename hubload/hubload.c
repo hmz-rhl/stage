@@ -653,17 +653,17 @@ void *thread_led(void *ptr){
 		
 		else if(mode_led == CHENILLE){
 
-			for(int i = 0; i < 51-3-2; i++) {
+			for(int i = 0; i < 51-1-2; i++) {
 				for (size_t i = 0; i < 51; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0;
 				}
 				ledstring.channel[0].leds[i] = 0x90;
-				for(int j = 1; j <= 3; j++) {
+				for(int j = 1; j <= 1; j++) {
 					ledstring.channel[0].leds[i+j] = 0xFF;
 				}
-				ledstring.channel[0].leds[i+3+1] = 0x90;
+				ledstring.channel[0].leds[i+1+1] = 0x90;
 				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
 				{
 					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
