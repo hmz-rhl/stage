@@ -36,10 +36,6 @@ PN532_Rpi_I2C.o:	PN532_Rpi_I2C.c
 	@echo "generation de l'objet...";
 	sudo $(CC) -o $@ -c $<;
 
-expander_i2c.o:	expander_i2c.c
-	@echo "generation de l'objet...";
-	sudo $(CC) -o $@ -c $<;
-
 dma.o:	dma.c
 
 	@echo "generation de l'objet...";
