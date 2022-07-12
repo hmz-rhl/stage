@@ -921,7 +921,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic,"down/main_led")){
 
-		mainled = (uint32_t)strtol(msg->payload+1, NULL, 16);
+		mainled = (uint32_t)strtol((msg->payload)+1, NULL, 16);
 		for(int i = 0; i<51 ; i++){
 
 			ledstring.channel[0].leds[i] = mainled;
@@ -1025,7 +1025,7 @@ void publish_values(struct mosquitto *mosq)
 // on donne a PP les valeurs correspondantes 
 	if(pp_cpt >= 10){
 		
-		pp = pp_tot/pp_cpt;
+		pp = pp_tot/(double)pp_cpt;
 		pp_tot = 0;
 		pp_cpt = 0;
 
