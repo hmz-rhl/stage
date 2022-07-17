@@ -59,12 +59,14 @@
 #define MONO	1
 #define TRI		3
 
-#define RGB_SHADE 1
-#define GREEN_SHADE 2
-#define RED_SHADE 3
-#define BLUE_SHADE 4
+#define RGB_BLINK 1
+#define GREEN_BLINK 2
+#define RED_BLINK 3
+#define BLUE_BLINK 4
 #define RAINBOW_CIRCLE 5
-#define CHENILLE 6
+#define RED_CHENILLE 6
+#define GREEN_CHENILLE 7
+#define BLUE_CHENILLE 8
 
 
 struct mosquitto *mosq;
@@ -93,7 +95,7 @@ int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
-int mode_led = CHENILLE;
+int mode_led = RED_CHENILLE;
 
 ws2811_t ledstring;
 
@@ -229,7 +231,7 @@ uint16_t eeprom_getWh()
 
 /**
  ** 
- * @brief  fonction d'interruption du S0, a chaque tic cette fonction afin de modifier l'eeprom protegee pour stocker l'energie cumulee
+ * @brief  fonction d'interruption du S0, a chaque tic cette fonctionest appelé afin de modifier l'eeprom protegee pour stocker l'energie cumulee
  * 
  * @param  
  * 
@@ -321,9 +323,9 @@ void user_key_interrupt(void){
 
 /**
  ** 
- * @brief  Lance le thread rfid 
+ * @brief  fonction principale du thread rfid 
  * 
- * @param  ptr pointeur null necessaire au fonctionnement du thread
+ * @param  ptr pointeur sur arguments a donner au thread(pas utilisé)
  * 
  * 
  * @return ne retourne rien
@@ -411,7 +413,16 @@ void *thread_rfid(void *ptr)
 }
 
 
-
+/**
+ ** 
+ * @brief  fonction principale du thread led 
+ * 
+ * @param  ptr pointeur sur arguments a donner au thread(pas utilisé)
+ * 
+ * 
+ * @return ne retourne rien
+ *  
+ **/
 void *thread_led(void *ptr){
 
 	ledstring.freq = WS2811_TARGET_FREQ;
@@ -439,7 +450,7 @@ void *thread_led(void *ptr){
 
     while (1)
     {
-		if(mode_led == RGB_SHADE){
+		if(mode_led == RGB_BLINK){
 
 			for(int j = 0; j < 3; j++ ) {
 		// Fade IN
@@ -530,7 +541,7 @@ void *thread_led(void *ptr){
 
 		}
 
-		else if(mode_led == GREEN_SHADE){
+		else if(mode_led == GREEN_BLINK){
 
 			
 			// Fade IN
@@ -573,7 +584,7 @@ void *thread_led(void *ptr){
 				
 		}
 
-		else if(mode_led == BLUE_SHADE){
+		else if(mode_led == BLUE_BLINK){
 						for(int k = 0; k < 256; k++) {
 
 				
@@ -612,7 +623,7 @@ void *thread_led(void *ptr){
 			}
 		}
 
-		else if(mode_led == RED_SHADE){
+		else if(mode_led == RED_BLINK){
 						for(int k = 0; k < 256; k++) {
 
 				
@@ -651,7 +662,7 @@ void *thread_led(void *ptr){
 			}
 		}
 		
-		else if(mode_led == CHENILLE){
+		else if(mode_led == RED_CHENILLE){
 
 			for(int i = 0; i < 51-1-2; i++) {
 				for (size_t i = 0; i < 51; i++)
@@ -664,6 +675,49 @@ void *thread_led(void *ptr){
 					ledstring.channel[0].leds[i+j] = 0xFF;
 				}
 				ledstring.channel[0].leds[i+1+1] = 0x20;
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				usleep(30000);
+ 			}
+		}
+
+		else if(mode_led == GREEN_CHENILLE){
+
+			for(int i = 0; i < 51-1-2; i++) {
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0;
+				}
+				ledstring.channel[0].leds[i] = 0x2000;
+				for(int j = 1; j <= 1; j++) {
+					ledstring.channel[0].leds[i+j] = 0xFF00;
+				}
+				ledstring.channel[0].leds[i+1+1] = 0x2000;
+				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
+				{
+					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
+					break;
+				}
+				usleep(30000);
+ 			}
+		}
+		else if(mode_led == BLUE_CHENILLE){
+
+			for(int i = 0; i < 51-1-2; i++) {
+				for (size_t i = 0; i < 51; i++)
+				{
+					/* code */
+					ledstring.channel[0].leds[i] = 0;
+				}
+				ledstring.channel[0].leds[i] = 0x200000;
+				for(int j = 1; j <= 1; j++) {
+					ledstring.channel[0].leds[i+j] = 0xFF0000;
+				}
+				ledstring.channel[0].leds[i+1+1] = 0x200000;
 				if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
 				{
 					fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
@@ -1199,29 +1253,37 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 	if(!strcmp(msg->topic,"down/main_led")){
 
-		if(!strcmp(msg->payload,"RED_SHADE"))
+		if(!strcmp(msg->payload,"RED_BLINK"))
 		{
-			mode_led = RED_SHADE;
+			mode_led = RED_BLINK;
 		}
-		else if(!strcmp(msg->payload,"GREEN_SHADE")){
+		else if(!strcmp(msg->payload,"GREEN_BLINK")){
 
-			mode_led = GREEN_SHADE;
+			mode_led = GREEN_BLINK;
 		}
-		else if(!strcmp(msg->payload,"BLUE_SHADE")){
+		else if(!strcmp(msg->payload,"BLUE_BLINK")){
 
-			mode_led = BLUE_SHADE;
+			mode_led = BLUE_BLINK;
 		}
 		else if(!strcmp(msg->payload,"RAINBOW_CIRCLE")){
 
 			mode_led = RAINBOW_CIRCLE;
 		}
-		else if(!strcmp(msg->payload,"RGB_SHADE")){
+		else if(!strcmp(msg->payload,"RGB_BLINK")){
 
-			mode_led = RGB_SHADE;
+			mode_led = RGB_BLINK;
 		}
-		else if(!strcmp(msg->payload,"CHENILLE")){
+		else if(!strcmp(msg->payload,"RED_CHENILLE")){
 
-			mode_led = CHENILLE;
+			mode_led = RED_CHENILLE;
+		}
+		else if(!strcmp(msg->payload,"GREEN_CHENILLE")){
+
+			mode_led = GREEN_CHENILLE;
+		}
+		else if(!strcmp(msg->payload,"BLUE_CHENILLE")){
+
+			mode_led = BLUE_CHENILLE;
 		}
 		else{
 
