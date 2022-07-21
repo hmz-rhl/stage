@@ -19,6 +19,9 @@
 #include <sys/time.h>
 #include <wiringPi.h> // compilation ajouter -lwiringPi
 #include <pthread.h> // compilation ajouter -lptrhread
+// #include <softPwm.h>
+
+// #include <bcm2835.h>
 
 
 #include <pn532.h>
@@ -55,6 +58,7 @@
 #define IRQ0 6
 #define LOCK_FB 10
 #define LED_STRIP_D 29
+#define SCREEN_PWM 26
 
 #define MONO	1
 #define TRI		3
@@ -442,10 +446,10 @@ void *thread_led(void *ptr){
 
 
 
-    if ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
+   	while ((ret = ws2811_init(&ledstring)) != WS2811_SUCCESS)
     {
         fprintf(stderr, "ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
-        
+        sleep(1);
     }
 
     while (1)
@@ -762,7 +766,8 @@ void nettoyage(int n)
 	printf("%s: interruption on detruit l'instance mosq\n", __func__);
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
-	ws2811_fini(&ledstring);
+	if(&ledstring != NULL)	ws2811_fini(&ledstring);
+	
 	exit(EXIT_SUCCESS);
 }
 
@@ -1367,7 +1372,14 @@ void publish_values(struct mosquitto *mosq)
 			CP = -12;
 		}
 		//printf("-->CP: %d\n", CP);
-		
+		if(CP==12){
+			
+			pwmWrite(CP_PWM, 100);
+		}
+		else{
+
+			pwmWrite(CP_PWM, dutycycle);
+		}
 		if(CP != cp_old || tempo>300){
 
 			//printf("brute CP: %d\n", CP);
@@ -1589,6 +1601,8 @@ int main(int argc, char *argv[])
   	pwmSetMode(PWM_MODE_MS);
     pwmWrite(CP_PWM, 100);
 
+	// softPwmCreate (SCREEN_PWM, 50, 100) ;
+
 	pinMode(LED_STRIP_D, OUTPUT);
 
 	// // on attend 10 secondes le temps que les services soient bien démarrés ( i2c par exemple ici)
@@ -1622,7 +1636,7 @@ int main(int argc, char *argv[])
 
 //création du thread du scan rfid
 	pthread_create(&thread_obj, NULL, *thread_rfid, NULL);
-	pthread_create(&thread_obj2, NULL, *thread_led, NULL);
+	// pthread_create(&thread_obj2, NULL, *thread_led, NULL);
 
 // phase d'initialisation
 	/* initialisation mosquitto, a faire avant toutes appels au fonction mosquitto */
