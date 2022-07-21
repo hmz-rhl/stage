@@ -901,13 +901,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     }
 
     if(!strcmp(msg->topic,"down/type2/open")){
-		/*
+		
 		expander_t* expander = expander_init(0x26); //Pour les relais
 		expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
 		expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
 		printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
 		expander_closeAndFree(expander);
-		*/
+		
     }
 
     if(!strcmp(msg->topic, "down/charger/pwm")){
