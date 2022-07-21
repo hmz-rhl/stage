@@ -890,46 +890,24 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     }
 
     if(!strcmp(msg->topic,"down/type2/close")){
+		/*
+		expander_t* expander = expander_init(0x26); //Pour les relais
+		expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+		expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
 
-        // if(!strcmp(msg->payload, "1")){
-        //     expander_t* expander = expander_init(0x26); //Pour les relais
-        //     expander_setPinGPIO(expander,TYPE_2_NL1_ON);
-        //     expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
-
-        //     printf("Les relais N et L1 de la prise type 2 sont fermes\n");
-        //     expander_closeAndFree(expander);
-        // }
-        // else if(!strcmp(msg->payload, "3")){
-            expander_t* expander = expander_init(0x26); //Pour les relais
-            expander_setPinGPIO(expander,TYPE_2_NL1_ON);
-            expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
-
-            printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
-            expander_closeAndFree(expander);
-
-        // }
-
+		printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
+		expander_closeAndFree(expander);
+		*/
     }
 
     if(!strcmp(msg->topic,"down/type2/open")){
-
-        // if(!strcmp(msg->payload, "1")){
-        //     expander_t* expander = expander_init(0x26); //Pour les relais
-        //     expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
-        //     // expander_resetPinGPIO(expander, 1);
-        //     printf("Les relais N et L1 de la prise type 2 sont ouverts\n");
-        //     expander_closeAndFree(expander);
-		// 	current = 0;
-		// 	power = 0;
-        // }
-        // else if(!strcmp(msg->payload, "3")):{
-            expander_t* expander = expander_init(0x26); //Pour les relais
-            expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
-            expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
-            printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
-            expander_closeAndFree(expander);
-        // }
-    
+		/*
+		expander_t* expander = expander_init(0x26); //Pour les relais
+		expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
+		expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+		printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
+		expander_closeAndFree(expander);
+		*/
     }
 
     if(!strcmp(msg->topic, "down/charger/pwm")){
