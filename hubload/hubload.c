@@ -918,6 +918,9 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             
 			int dutyCycleValue = atoi(msg->payload);
         	if (dutyCycleValue < 100) {
+				if (dutyCycleValue < 10) {
+					dutyCycleValue = 10;
+				}
 				dutycycle = dutyCycleValue;
 			}
             printf("dutycycle %d \n",dutycycle);
