@@ -1358,20 +1358,22 @@ void publish_values(struct mosquitto *mosq)
 			CP = -12;
 		}
 		//printf("-->CP: %d\n", CP);
+		if(CP==12){
+			if (lastDutyValue < 100) {
+				pwmWrite(CP_PWM, 100);
+				lastDutyValue = 100;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+		else{
+			if (lastDutyValue != dutycycle) {
+				pwmWrite(CP_PWM, dutycycle);
+				lastDutyValue = dutycycle;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
 
 		if (CP != cp_old) {
-			if(CP==12){
-				if (lastDutyValue < 100) {
-					pwmWrite(CP_PWM, 100);
-					lastDutyValue = 100;
-				}
-			}
-			else{
-				if (lastDutyValue != dutycycle) {
-					pwmWrite(CP_PWM, dutycycle);
-					lastDutyValue = dutycycle;
-				}
-			}
 
 			if (CP == 6 || CP == 3) {
 				expander_t* expander = expander_init(0x26); //Pour les relais
