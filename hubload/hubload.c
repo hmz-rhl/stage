@@ -75,6 +75,8 @@
 
 struct mosquitto *mosq;
 int dutycycle;
+int lastDutyValue = 10;
+
 uint8_t scan_activated = 0;
 int user_key_clicked = 0;
 unsigned long long compteur_tic = 0;
@@ -936,7 +938,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
         if(atoi(msg->payload) >= 0 && atoi(msg->payload) <= 100){
             
-        	dutycycle = atoi(msg->payload);
+			int dutyCycleValue = atoi(msg->payload);
+        	if (dutyCycleValue < 100) {
+				dutycycle = dutyCycleValue;
+			}
             printf("dutycycle %d \n",dutycycle);
 			//pwmWrite(CP_PWM, dutycycle);
 			
@@ -1372,14 +1377,38 @@ void publish_values(struct mosquitto *mosq)
 			CP = -12;
 		}
 		//printf("-->CP: %d\n", CP);
-		if(CP==12){
-			
-			pwmWrite(CP_PWM, 100);
-		}
-		else{
 
-			pwmWrite(CP_PWM, dutycycle);
+		if (CP != cp_old) {
+			if(CP==12){
+				if (lastDutyValue < 100) {
+					pwmWrite(CP_PWM, 100);
+					lastDutyValue = 100;
+				}
+			}
+			else{
+				if (lastDutyValue != dutycycle) {
+					pwmWrite(CP_PWM, dutycycle);
+					lastDutyValue = dutycycle;
+				}
+			}
+
+			if (CP == 6 || CP == 3) {
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
+				expander_closeAndFree(expander);
+			}
+			else {
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
+				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+				printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
+				expander_closeAndFree(expander);
+			}
 		}
+
 		if(CP != cp_old || tempo>300){
 
 			//printf("brute CP: %d\n", CP);
