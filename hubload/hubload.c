@@ -933,12 +933,12 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
     if(!strcmp(msg->topic, "down/charger/pwm")){
 
         
-        dutycycle = atoi(msg->payload);
 
-        if(dutycycle >= 0 && dutycycle <= 100){
+        if(atoi(msg->payload) >= 0 && atoi(msg->payload) <= 100){
             
+        	dutycycle = atoi(msg->payload);
             printf("dutycycle %d \n",dutycycle);
-			pwmWrite(CP_PWM, dutycycle);
+			//pwmWrite(CP_PWM, dutycycle);
 			
         }
 		
