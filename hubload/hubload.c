@@ -893,11 +893,9 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     if(!strcmp(msg->topic,"down/cp/activate")){
 		// On active le CP
-		if (cp_activated == 0) {
-			cp_activated = 1;
-		}
+		cp_activated = 1;
 
-		if (lastDutyValue == 0) {
+		if (lastDutyValue < 100>) {
 			pwmWrite(CP_PWM, 100);
 			pwmChange = 0;
 			lastDutyValue = 100;
@@ -907,9 +905,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     if(!strcmp(msg->topic,"down/cp/shutdown")){
 		// On n'active pas le CP
-		if (cp_activated == 1) {
-			cp_activated = 0;
-		}
+		icp_activated = 0;
 
 		pwmWrite(CP_PWM, 0);
 		pwmChange = 0;
