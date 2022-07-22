@@ -905,7 +905,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
     if(!strcmp(msg->topic,"down/cp/shutdown")){
 		// On n'active pas le CP
-		icp_activated = 0;
+		cp_activated = 0;
 
 		pwmWrite(CP_PWM, 0);
 		pwmChange = 0;
