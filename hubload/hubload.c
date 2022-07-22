@@ -74,7 +74,7 @@
 
 
 struct mosquitto *mosq;
-int dutycycle;
+int dutycycle = 10;
 int lastDutyValue = 10;
 
 uint8_t scan_activated = 0;
@@ -100,6 +100,7 @@ int modeS0 = 1;
 int cpt_csv = 0;
 int csv_activated = 0;
 int s0_activated = 0;
+int cp_activated = 0;
 uint32_t mainled = 0xF0F000;
 int mode_led = RED_CHENILLE;
 
@@ -439,7 +440,7 @@ void *thread_led(void *ptr){
 	ledstring.channel[0].count = 51;
 	ledstring.channel[0].strip_type = WS2811_STRIP_GBR;
 	ledstring.channel[0].brightness = 127;
-//inutile mais on definit
+	//inutile mais on definit
 	ledstring.channel[1].gpionum = 0;
 	ledstring.channel[1].invert = 0;
 	ledstring.channel[1].count = 0;
@@ -815,7 +816,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[20]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown","down/main_led"};
+    char *topics[20]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/cp/activate","down/cp/shutdown","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown","down/main_led"};
 
     rc = mosquitto_subscribe_multiple(mosq,NULL,20,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
@@ -889,15 +890,30 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
         expander_closeAndFree(expander);
     }
 
-    if(!strcmp(msg->topic,"down/type2/close")){
-		/*
-		expander_t* expander = expander_init(0x26); //Pour les relais
-		expander_setPinGPIO(expander,TYPE_2_NL1_ON);
-		expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
+    if(!strcmp(msg->topic,"down/cp/activate")){
+		// On active le CP
+		if (cp_activated == 0) {
+			cp_activated = 1;
 
-		printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
-		expander_closeAndFree(expander);
-		*/
+			if (lastDutyValue == 0) {
+				pwmWrite(CP_PWM, 100);
+				lastDutyValue = 100;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+    }
+
+    if(!strcmp(msg->topic,"down/cp/shutdown")){
+		// On n'active pas le CP
+		if (cp_activated == 1) {
+			cp_activated = 0;
+
+			if (lastDutyValue > 0) {
+				pwmWrite(CP_PWM, 0);
+				lastDutyValue = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
     }
 
     if(!strcmp(msg->topic,"down/type2/open")){
@@ -923,9 +939,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 				}
 				dutycycle = dutyCycleValue;
 			}
-            printf("dutycycle %d \n",dutycycle);
-			//pwmWrite(CP_PWM, dutycycle);
-			
+            printf("dutycycle %d \n",dutycycle);			
         }
 		
 
@@ -1358,14 +1372,24 @@ void publish_values(struct mosquitto *mosq)
 			CP = -12;
 		}
 		//printf("-->CP: %d\n", CP);
-		if(CP==12){
+		if(CP == 12){
 			if (lastDutyValue < 100) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
 			}
 		}
-		else{
+		else if(CP == 0){
+			// Rien à faire 
+		}
+		else if(CP == -12){
+			if (lastDutyValue > 0) {
+				pwmWrite(CP_PWM, 100);
+				lastDutyValue = 100;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+		else {
 			if (lastDutyValue != dutycycle) {
 				pwmWrite(CP_PWM, dutycycle);
 				lastDutyValue = dutycycle;
@@ -1392,7 +1416,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 		}
 
-		if(CP != cp_old || tempo>300){
+		if(CP != cp_old || tempo>3000){
 
 			//printf("brute CP: %d\n", CP);
 			sprintf(str_cp, "%d", CP);
@@ -1403,8 +1427,8 @@ void publish_values(struct mosquitto *mosq)
 			cp_old = CP;
 		}
 	}
-// on stringify ce qu'il faut publier
-// affiche sur la console
+	// on stringify ce qu'il faut publier
+	// affiche sur la console
 
 	
 
@@ -1414,7 +1438,7 @@ void publish_values(struct mosquitto *mosq)
 	pp_cpt++;
 	// printf("brute adc_PP: %lfV\n", pp);
 
-// on donne a PP les valeurs correspondantes 
+	// on donne a PP les valeurs correspondantes 
 	if(pp_cpt >= 10){
 		
 		pp = pp_tot/(double)pp_cpt;
@@ -1447,8 +1471,8 @@ void publish_values(struct mosquitto *mosq)
 		}
 
 
-	// on stringify ce qu'il faut publier
-		if(PP != pp_old || tempo > 300){
+		// on stringify ce qu'il faut publier
+		if(PP != pp_old || tempo > 3000){
 
 			printf("brute PP: %d\n", PP);
 			sprintf(str_pp, "%d", PP);
