@@ -899,7 +899,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			pwmWrite(CP_PWM, 100);
 			pwmChange = 0;
 			lastDutyValue = 100;
-			printf("On met le PWM a: %d\n",lastDutyValue);
+			printf("1On met le PWM a: %d\n",lastDutyValue);
 		}
     }
 
@@ -910,7 +910,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		pwmWrite(CP_PWM, 0);
 		pwmChange = 0;
 		lastDutyValue = 0;
-		printf("On met le PWM a: %d\n",lastDutyValue);
+		printf("2On met le PWM a: %d\n",lastDutyValue);
     }
 
     if(!strcmp(msg->topic,"down/type2/open")){
@@ -1365,7 +1365,7 @@ void publish_values(struct mosquitto *mosq)
 					pwmWrite(CP_PWM, 0);
 					lastDutyValue = 0;
 					pwmChange = 0;
-					printf("On met le PWM a: %lf\n",lastDutyValue);
+					printf("3On met le PWM a: %lf\n",lastDutyValue);
 				}
 			}
 
@@ -1442,13 +1442,13 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 0);
 				lastDutyValue = 0;
 				pwmChange = 0;
-				printf("On met le PWM a: %d\n",lastDutyValue);
+				printf("4On met le PWM a: %d\n",lastDutyValue);
 			}
 			else if (lastDutyValue < 100) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				pwmChange = 0;
-				printf("On met le PWM a: %d\n",lastDutyValue);
+				printf("5On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else if(CP == 0){
@@ -1456,7 +1456,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 0);
 				lastDutyValue = 0;
 				pwmChange = 0;
-				printf("On met le PWM a: %d\n",lastDutyValue);
+				printf("6On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else if(CP == -12){
@@ -1464,7 +1464,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				pwmChange = 0;
-				printf("On met le PWM a: %d\n",lastDutyValue);
+				printf("7On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else {
@@ -1472,7 +1472,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, dutycycle);
 				lastDutyValue = dutycycle;
 				pwmChange = 0;
-				printf("On met le PWM a: %d\n",lastDutyValue);
+				printf("8On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 
