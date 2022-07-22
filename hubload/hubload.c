@@ -1442,13 +1442,13 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 0);
 				lastDutyValue = 0;
 				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
+				printf("On met le PWM a: %d\n",lastDutyValue);
 			}
 			else if (lastDutyValue < 100) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
+				printf("On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else if(CP == 0){
@@ -1456,7 +1456,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 0);
 				lastDutyValue = 0;
 				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
+				printf("On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else if(CP == -12){
@@ -1464,7 +1464,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
+				printf("On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 		else {
@@ -1472,7 +1472,7 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, dutycycle);
 				lastDutyValue = dutycycle;
 				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
+				printf("On met le PWM a: %d\n",lastDutyValue);
 			}
 		}
 
