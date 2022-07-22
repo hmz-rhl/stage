@@ -1332,7 +1332,7 @@ void publish_values(struct mosquitto *mosq)
 	// printf("brute adc_PP: %lfV\n", pp);
 
 	// on donne a PP les valeurs correspondantes 
-	if(pp_cpt >= 10 && pwmChange > 10){
+	if(pp_cpt >= 10 && pwmChange > 150){
 		
 		pp = pp_tot/(double)pp_cpt;
 		pp_tot = 0;
@@ -1395,7 +1395,7 @@ void publish_values(struct mosquitto *mosq)
 	cp_cpt++;
 	//printf("cp reel : %lf\n",cp_reel);
 
-	if(cp_cpt>=10 && pwmChange > 10){
+	if(cp_cpt>=10 && pwmChange > 150){
 
 	// on donne a CP les vraies valeurs correspondantes 
 	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
