@@ -909,11 +909,9 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			cp_activated = 0;
 		}
 
-		if (lastDutyValue > 0) {
-			pwmWrite(CP_PWM, 0);
-			lastDutyValue = 0;
-			printf("On met le PWM a: %lf\n",lastDutyValue);
-		}
+		pwmWrite(CP_PWM, 0);
+		lastDutyValue = 0;
+		printf("On met le PWM a: %lf\n",lastDutyValue);
     }
 
     if(!strcmp(msg->topic,"down/type2/open")){
