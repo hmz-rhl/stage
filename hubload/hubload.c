@@ -1327,121 +1327,7 @@ void publish_values(struct mosquitto *mosq)
 	int rc;
 	char str_temp[100], str_cp[100],  str_pp[100];
 
-    cp = toVolt(readAdc(0,CP_CS));
-	// printf("brute adc_CP: %lfV\n", cp);
-	cp_reel = 4.0*cp;
-	cp_tot += cp_reel;
-	cp_cpt++;
 	pwmChange++;
-	//printf("cp reel : %lf\n",cp_reel);
-
-	
-
-	if(cp_cpt>=10 && pwmChange > 10){
-
-	// on donne a CP les vraies valeurs correspondantes 
-	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
-		cp_reel = cp_tot/(double)cp_cpt;
-	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
-
-
-		cp_cpt = 0;
-		cp_tot = 0;
-
-		CP = -12;
-		if (cp_reel > 10.5){
-
-			CP = 12;
-		}
-		else if( cp_reel >= 7.5){
-
-			CP = 9;
-		}
-		else if( cp_reel >= 4.5){
-
-			CP = 6;
-		}
-		else if( cp_reel >= 1.5){
-
-			CP = 3;
-		}
-		else if( cp_reel > -1.5){
-
-			CP = 0;
-		}
-		else{
-
-			CP = -12;
-		}
-		//printf("-->CP: %d\n", CP);
-		if(CP == 12){
-			if (cp_activated == 0) {
-				pwmWrite(CP_PWM, 0);
-				lastDutyValue = 0;
-				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
-			else if (lastDutyValue < 100) {
-				pwmWrite(CP_PWM, 100);
-				lastDutyValue = 100;
-				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
-		}
-		else if(CP == 0){
-			// Rien à faire 
-		}
-		else if(CP == -12){
-			if (lastDutyValue > 0) {
-				pwmWrite(CP_PWM, 100);
-				lastDutyValue = 100;
-				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
-		}
-		else {
-			if (lastDutyValue != dutycycle) {
-				pwmWrite(CP_PWM, dutycycle);
-				lastDutyValue = dutycycle;
-				pwmChange = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
-		}
-
-		if (CP != cp_old) {
-
-			if (CP == 6 || CP == 3) {
-				expander_t* expander = expander_init(0x26); //Pour les relais
-				expander_setPinGPIO(expander,TYPE_2_NL1_ON);
-				expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
-
-				printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
-				expander_closeAndFree(expander);
-			}
-			else {
-				expander_t* expander = expander_init(0x26); //Pour les relais
-				expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
-				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
-				printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
-				expander_closeAndFree(expander);
-			}
-		}
-
-		if(CP != cp_old){
-
-			//printf("brute CP: %d\n", CP);
-			sprintf(str_cp, "%d", CP);
-			rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
-			if(rc != MOSQ_ERR_SUCCESS){
-				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
-			}
-			cp_old = CP;
-		}
-	}
-	// on stringify ce qu'il faut publier
-	// affiche sur la console
-
-	
 
 
 	pp = toVolt(readAdc(0,PP_CS));
@@ -1504,7 +1390,131 @@ void publish_values(struct mosquitto *mosq)
 			pp_old = PP;
 
 		}
+	}	
+
+    cp = toVolt(readAdc(0,CP_CS));
+	// printf("brute adc_CP: %lfV\n", cp);
+	cp_reel = 4.0*cp;
+	cp_tot += cp_reel;
+	cp_cpt++;
+	//printf("cp reel : %lf\n",cp_reel);
+
+	if(cp_cpt>=10 && pwmChange > 10){
+
+	// on donne a CP les vraies valeurs correspondantes 
+	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
+		cp_reel = cp_tot/(double)cp_cpt;
+	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
+
+
+		cp_cpt = 0;
+		cp_tot = 0;
+
+		CP = -12;
+		if (cp_reel > 10.5){
+
+			CP = 12;
+		}
+		else if( cp_reel >= 7.5){
+
+			CP = 9;
+		}
+		else if( cp_reel >= 4.5){
+
+			CP = 6;
+		}
+		else if( cp_reel >= 1.5){
+
+			CP = 3;
+		}
+		else if( cp_reel > -1.5){
+
+			CP = 0;
+		}
+		else{
+
+			CP = -12;
+		}
+
+		if (PP <= 6) {
+			CP = 0;
+		}
+
+		//printf("-->CP: %d\n", CP);
+		if(CP == 12){
+			if (cp_activated == 0) {
+				pwmWrite(CP_PWM, 0);
+				lastDutyValue = 0;
+				pwmChange = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+			else if (lastDutyValue < 100) {
+				pwmWrite(CP_PWM, 100);
+				lastDutyValue = 100;
+				pwmChange = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+		else if(CP == 0){
+			if (lastDutyValue > 0) {
+				pwmWrite(CP_PWM, 0);
+				lastDutyValue = 0;
+				pwmChange = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+		else if(CP == -12){
+			if (lastDutyValue > 0) {
+				pwmWrite(CP_PWM, 100);
+				lastDutyValue = 100;
+				pwmChange = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+		else {
+			if (lastDutyValue != dutycycle) {
+				pwmWrite(CP_PWM, dutycycle);
+				lastDutyValue = dutycycle;
+				pwmChange = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+		}
+
+		if (CP != cp_old) {
+
+			if (CP == 6 || CP == 3) {
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
+				expander_closeAndFree(expander);
+			}
+			else {
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_resetPinGPIO(expander, TYPE_2_NL1_ON);
+				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+				printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
+				expander_closeAndFree(expander);
+			}
+		}
+
+		if(CP != cp_old){
+
+			//printf("brute CP: %d\n", CP);
+			sprintf(str_cp, "%d", CP);
+			rc = mosquitto_publish(mosq, NULL, "up/value/cp", strlen(str_cp), str_cp, 2, false);
+			if(rc != MOSQ_ERR_SUCCESS){
+				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
+			}
+			cp_old = CP;
+		}
 	}
+	// on stringify ce qu'il faut publier
+	// affiche sur la console
+
+	
+
 	if(csv_activated){
 
 		FILE* cpFile = fopen("/home/pi/cp.csv","a");
