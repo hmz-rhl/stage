@@ -894,12 +894,12 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		// On active le CP
 		if (cp_activated == 0) {
 			cp_activated = 1;
+		}
 
-			if (lastDutyValue == 0) {
-				pwmWrite(CP_PWM, 100);
-				lastDutyValue = 100;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
+		if (lastDutyValue == 0) {
+			pwmWrite(CP_PWM, 100);
+			lastDutyValue = 100;
+			printf("On met le PWM a: %lf\n",lastDutyValue);
 		}
     }
 
@@ -907,12 +907,12 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		// On n'active pas le CP
 		if (cp_activated == 1) {
 			cp_activated = 0;
+		}
 
-			if (lastDutyValue > 0) {
-				pwmWrite(CP_PWM, 0);
-				lastDutyValue = 0;
-				printf("On met le PWM a: %lf\n",lastDutyValue);
-			}
+		if (lastDutyValue > 0) {
+			pwmWrite(CP_PWM, 0);
+			lastDutyValue = 0;
+			printf("On met le PWM a: %lf\n",lastDutyValue);
 		}
     }
 
@@ -1373,7 +1373,12 @@ void publish_values(struct mosquitto *mosq)
 		}
 		//printf("-->CP: %d\n", CP);
 		if(CP == 12){
-			if (lastDutyValue < 100) {
+			if (cp_activated == 0) {
+				pwmWrite(CP_PWM, 0);
+				lastDutyValue = 0;
+				printf("On met le PWM a: %lf\n",lastDutyValue);
+			}
+			else if (lastDutyValue < 100) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
