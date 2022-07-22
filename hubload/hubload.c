@@ -895,7 +895,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		// On active le CP
 		cp_activated = 1;
 
-		if (lastDutyValue < 100>) {
+		if (lastDutyValue < 100) {
 			pwmWrite(CP_PWM, 100);
 			pwmChange = 0;
 			lastDutyValue = 100;
