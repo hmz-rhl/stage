@@ -1416,7 +1416,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 		}
 
-		if(CP != cp_old || tempo>3000){
+		if(CP != cp_old){
 
 			//printf("brute CP: %d\n", CP);
 			sprintf(str_cp, "%d", CP);
@@ -1472,7 +1472,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		// on stringify ce qu'il faut publier
-		if(PP != pp_old || tempo > 3000){
+		if(PP != pp_old){
 
 			printf("brute PP: %d\n", PP);
 			sprintf(str_pp, "%d", PP);
@@ -1570,8 +1570,9 @@ void publish_values(struct mosquitto *mosq)
 			if(rc != MOSQ_ERR_SUCCESS){
 				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 			}
-			tempo = 0;
 		}
+
+		tempo = 0;
 	}
 
 	
