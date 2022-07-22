@@ -899,7 +899,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			pwmWrite(CP_PWM, 100);
 			pwmChange = 0;
 			lastDutyValue = 100;
-			printf("On met le PWM a: %lf\n",lastDutyValue);
+			printf("On met le PWM a: %d\n",lastDutyValue);
 		}
     }
 
