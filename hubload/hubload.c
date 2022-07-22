@@ -1365,7 +1365,7 @@ void publish_values(struct mosquitto *mosq)
 					pwmWrite(CP_PWM, 0);
 					lastDutyValue = 0;
 					pwmChange = 0;
-					printf("3On met le PWM a: %lf\n",lastDutyValue);
+					printf("3On met le PWM a: %d\n",lastDutyValue);
 				}
 			}
 
