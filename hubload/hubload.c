@@ -103,6 +103,7 @@ int s0_activated = 1;
 int cp_activated = 0;
 uint32_t mainled = 0xF0F000;
 int mode_led = RED_CHENILLE;
+int pwmChange = 0;
 
 ws2811_t ledstring;
 
@@ -898,6 +899,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 		if (lastDutyValue == 0) {
 			pwmWrite(CP_PWM, 100);
+			pwmChange = 0;
 			lastDutyValue = 100;
 			printf("On met le PWM a: %lf\n",lastDutyValue);
 		}
@@ -910,6 +912,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}
 
 		pwmWrite(CP_PWM, 0);
+		pwmChange = 0;
 		lastDutyValue = 0;
 		printf("On met le PWM a: %lf\n",lastDutyValue);
     }
@@ -1329,11 +1332,12 @@ void publish_values(struct mosquitto *mosq)
 	cp_reel = 4.0*cp;
 	cp_tot += cp_reel;
 	cp_cpt++;
+	pwmChange++;
 	//printf("cp reel : %lf\n",cp_reel);
 
 	
 
-	if(cp_cpt>=10){
+	if(cp_cpt>=10 && pwmChange > 10){
 
 	// on donne a CP les vraies valeurs correspondantes 
 	//	printf("cpt %lf \ncp_reel %lf\n", cp_cpt, cp_reel);
@@ -1374,11 +1378,13 @@ void publish_values(struct mosquitto *mosq)
 			if (cp_activated == 0) {
 				pwmWrite(CP_PWM, 0);
 				lastDutyValue = 0;
+				pwmChange = 0;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
 			}
 			else if (lastDutyValue < 100) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
+				pwmChange = 0;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
 			}
 		}
@@ -1389,6 +1395,7 @@ void publish_values(struct mosquitto *mosq)
 			if (lastDutyValue > 0) {
 				pwmWrite(CP_PWM, 100);
 				lastDutyValue = 100;
+				pwmChange = 0;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
 			}
 		}
@@ -1396,6 +1403,7 @@ void publish_values(struct mosquitto *mosq)
 			if (lastDutyValue != dutycycle) {
 				pwmWrite(CP_PWM, dutycycle);
 				lastDutyValue = dutycycle;
+				pwmChange = 0;
 				printf("On met le PWM a: %lf\n",lastDutyValue);
 			}
 		}
@@ -1442,7 +1450,7 @@ void publish_values(struct mosquitto *mosq)
 	// printf("brute adc_PP: %lfV\n", pp);
 
 	// on donne a PP les valeurs correspondantes 
-	if(pp_cpt >= 10){
+	if(pp_cpt >= 10 && pwmChange > 10){
 		
 		pp = pp_tot/(double)pp_cpt;
 		pp_tot = 0;
@@ -1474,6 +1482,7 @@ void publish_values(struct mosquitto *mosq)
 				if (lastDutyValue > 0) {
 					pwmWrite(CP_PWM, 0);
 					lastDutyValue = 0;
+					pwmChange = 0;
 					printf("On met le PWM a: %lf\n",lastDutyValue);
 				}
 			}
@@ -1647,8 +1656,8 @@ int main(int argc, char *argv[])
  	pwmSetClock (192);
  	pwmSetRange(100);
   	pwmSetMode(PWM_MODE_MS);
-    pwmWrite(CP_PWM, 100);
-
+    pwmWrite(CP_PWM, 0);
+	pwmChange = 0;
 	// softPwmCreate (SCREEN_PWM, 50, 100) ;
 
 	pinMode(LED_STRIP_D, OUTPUT);
