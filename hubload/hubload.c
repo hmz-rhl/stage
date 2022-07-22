@@ -1471,7 +1471,15 @@ void publish_values(struct mosquitto *mosq)
 			PP = 13;
 		}
 		else{
-			
+			if (cp_activated == 1) {
+				cp_activated = 0;
+				if (lastDutyValue > 0) {
+					pwmWrite(CP_PWM, 0);
+					lastDutyValue = 0;
+					printf("On met le PWM a: %lf\n",lastDutyValue);
+				}
+			}
+
 			PP = 6;
 		}
 
