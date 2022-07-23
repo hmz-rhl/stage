@@ -1454,7 +1454,7 @@ void publish_values(struct mosquitto *mosq)
 	// on stringify ce qu'il faut publier
 		if(PP != pp_old || tempo > 300){
 
-			printf("brute PP: %d\n", PP);
+			//printf("brute PP: %d\n", PP);
 			sprintf(str_pp, "%d", PP);
 			rc = mosquitto_publish(mosq, NULL, "up/value/pp", strlen(str_pp), str_pp, 2, false);
 			if(rc != MOSQ_ERR_SUCCESS){
@@ -1469,7 +1469,7 @@ void publish_values(struct mosquitto *mosq)
 
 	if(cp_activated && plugged){
 		
-
+		
 		// pour commencer une charge
 		if(CP == 0){
 			mode_led = GREEN_BLINK;
