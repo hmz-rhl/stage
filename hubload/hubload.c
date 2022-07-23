@@ -439,7 +439,7 @@ void *thread_led(void *ptr){
 
 	ledstring.channel[0].gpionum = 21;
 	ledstring.channel[0].invert = 0;
-	ledstring.channel[0].count = 51;
+	ledstring.channel[0].count = 100;
 	ledstring.channel[0].strip_type = WS2811_STRIP_GBR;
 	ledstring.channel[0].brightness = 127;
 //inutile mais on definit
