@@ -1618,6 +1618,25 @@ void publish_values(struct mosquitto *mosq)
 			old_pwm = 100;
 			usleep(150000);
 		}
+
+		if(CP == 12 && (cp_old == 6 || cp_old == 3)){
+			if(type2_closed = 1){
+
+				type2_closed = 0;
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont ouvert\n");
+				expander_closeAndFree(expander);
+			}
+			if(old_pwm != 100){
+				pwmWrite(CP_PWM, 100);
+				old_pwm = 100;
+				usleep(150000);
+			}
+
+		}
 		
 
 		
@@ -1692,17 +1711,6 @@ void publish_values(struct mosquitto *mosq)
 		}
 
 
-		// avant une charge(impossible car cp_activated = 0 -> pwm a 0, mais on traite quand meme)
-		else if(CP == 9 && (cp_old == 12 || cp_old == 0)){
-			
-			if(old_pwm != 0){
-				pwmWrite(CP_PWM, 0);
-				old_pwm = 0;
-				usleep(150000);
-			}
-
-		}
-
 		else if(CP != 0){
 			
 			pwmWrite(CP_PWM, 0);
@@ -1715,7 +1723,7 @@ void publish_values(struct mosquitto *mosq)
 	}
 
 	else if (cp_activated == 0 && plugged == 0){
-		
+
 		if(mode_led != 0 && mainled != 0xFF0000){
 			mode_led = 0;
 			mainled = 0xFF0000;
