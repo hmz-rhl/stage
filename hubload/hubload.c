@@ -1474,7 +1474,7 @@ void publish_values(struct mosquitto *mosq)
 		if(CP == 0){
 			mode_led = GREEN_BLINK;
 			if(old_pwm != 100){
-
+				printf("on mets le pwm a 100 (CP == 0)\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1485,7 +1485,7 @@ void publish_values(struct mosquitto *mosq)
 			mode_led = GREEN_BLINK;
 
 			if(old_pwm != 100){
-
+				printf("on mets le pwm a 100 (CP == 12 && cp_old == 0)\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1509,6 +1509,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 			
 			if(old_pwm != dutycycle){
+				printf("on mets le pwm a %d (CP == 9 && (cp_old == 12 || cp_old == 0)\n", dutycycle);
 
 				pwmWrite(CP_PWM, dutycycle);
 				old_pwm = dutycycle;
@@ -1546,6 +1547,8 @@ void publish_values(struct mosquitto *mosq)
 				pwmWrite(CP_PWM, dutycycle);
 				old_pwm = dutycycle;
 				usleep(150000);
+				printf("on mets le pwm a %d (CP == 6 || CP == 3)\n", dutycycle);
+
 			}
 
 		}
@@ -1574,6 +1577,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 			if(old_pwm != 0){
 
+				printf("on mets le pwm a 100 (CP = -12)\n");
 				pwmWrite(CP_PWM, 0);
 				old_pwm = 0;
 				usleep(150000);
@@ -1625,6 +1629,7 @@ void publish_values(struct mosquitto *mosq)
 
 		// on mets a 12v la ligne CP pour preparer au futur branchement
 		if(old_pwm != 100){
+			printf("on mets le pwm a 100 (cp_activated == 1 && plugged == 0)\n");
 			pwmWrite(CP_PWM, 100);
 			old_pwm = 100;
 			usleep(150000);
@@ -1642,6 +1647,7 @@ void publish_values(struct mosquitto *mosq)
 				expander_closeAndFree(expander);
 			}
 			if(old_pwm != 100){
+				printf("on mets le pwm a 100 (CP == 12 && (cp_old == 6 || cp_old == 3))\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1705,7 +1711,7 @@ void publish_values(struct mosquitto *mosq)
 
 			// si on a deja mis le pwm a 100
 			if(old_pwm == 100){
-
+				printf("on mets le pwm a 0 car a 100(CP == 9 && (cp_old == 6 || cp_old == 3))\n");
 				pwmWrite(CP_PWM, 0);
 				old_pwm = 0;
 				usleep(150000);
@@ -1713,7 +1719,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 			// si on a pas encore desenclencher une charge
 			else if(old_pwm != 100){
-
+				printf("on mets le pwm a 100 (CP == 9 && (cp_old == 6 || cp_old == 3))\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1723,7 +1729,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		else if(CP != 0){
-			
+			printf("on mets le pwm a 0 car CP!=0 (cp_activated == 0 && plugged == 0)\n");
 			pwmWrite(CP_PWM, 0);
 			old_pwm = 0;
 			usleep(150000);
@@ -1741,7 +1747,7 @@ void publish_values(struct mosquitto *mosq)
 
 		}
 		if(CP != 0 || old_pwm != 0){
-			
+			printf("on mets le pwm a 0 (cp_activated == 0 && plugged == 0)\n");
 			pwmWrite(CP_PWM, 0);
 			old_pwm = 0;
 			usleep(150000);
