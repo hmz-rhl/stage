@@ -466,7 +466,7 @@ void *thread_led(void *ptr){
 				for(int k = 0; k < 256; k++) {
 
 					
-					for (size_t i = 0; i < 51; i++)
+					for (size_t i = 0; i < 100; i++)
 					{
 						/* code */
 						ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
@@ -484,7 +484,7 @@ void *thread_led(void *ptr){
 				// Fade OUT
 				for(int k = 255; k >= 0; k--) {
 				
-					for (size_t i = 0; i < 51; i++)
+					for (size_t i = 0; i < 100; i++)
 					{
 						/* code */
 						ledstring.channel[0].leds[i] = 0x000000 + (k<<(16-8*j));
@@ -510,10 +510,10 @@ void *thread_led(void *ptr){
 
 			for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
 
-				for(i=0; i< 51; i++) {
+				for(i=0; i< 100; i++) {
 					
 
-					WheelPos = (((i * 256 / 51) + j) & 255);
+					WheelPos = (((i * 256 / 100) + j) & 255);
 					if(WheelPos < 85) {
 						c[0]=WheelPos * 3;
 						c[1]=255 - WheelPos * 3;
@@ -532,7 +532,7 @@ void *thread_led(void *ptr){
 					ledstring.channel[0].leds[i] = (c[2]<<16) + (c[1]<<8) + c[0];
 					if(mode_led != RAINBOW_CIRCLE){
 						j= 256*5;
-						i= 51;
+						i= 100;
 						
 					}
 				}
@@ -557,7 +557,7 @@ void *thread_led(void *ptr){
 			for(int k = 0; k < 256; k++) {
 
 				
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k<<8);
@@ -575,7 +575,7 @@ void *thread_led(void *ptr){
 			// Fade OUT
 			for(int k = 255; k >= 0; k--) {
 			
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k<<8);
@@ -597,7 +597,7 @@ void *thread_led(void *ptr){
 						for(int k = 0; k < 256; k++) {
 
 				
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k<<16);
@@ -615,7 +615,7 @@ void *thread_led(void *ptr){
 			// Fade OUT
 			for(int k = 255; k >= 0; k--) {
 			
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k<<16);
@@ -636,7 +636,7 @@ void *thread_led(void *ptr){
 						for(int k = 0; k < 256; k++) {
 
 				
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k);
@@ -654,7 +654,7 @@ void *thread_led(void *ptr){
 			// Fade OUT
 			for(int k = 255; k >= 0; k--) {
 			
-				for (size_t i = 0; i < 51; i++)
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0x000000 + (k);
@@ -673,8 +673,8 @@ void *thread_led(void *ptr){
 		
 		else if(mode_led == RED_CHENILLE){
 
-			for(int i = 0; i < 51-1-2; i++) {
-				for (size_t i = 0; i < 51; i++)
+			for(int i = 0; i < 100-1-2; i++) {
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0;
@@ -695,8 +695,8 @@ void *thread_led(void *ptr){
 
 		else if(mode_led == GREEN_CHENILLE){
 
-			for(int i = 0; i < 51-1-2; i++) {
-				for (size_t i = 0; i < 51; i++)
+			for(int i = 0; i < 100-1-2; i++) {
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0;
@@ -716,8 +716,8 @@ void *thread_led(void *ptr){
 		}
 		else if(mode_led == BLUE_CHENILLE){
 
-			for(int i = 0; i < 51-1-2; i++) {
-				for (size_t i = 0; i < 51; i++)
+			for(int i = 0; i < 100-1-2; i++) {
+				for (size_t i = 0; i < 100; i++)
 				{
 					/* code */
 					ledstring.channel[0].leds[i] = 0;
@@ -737,7 +737,7 @@ void *thread_led(void *ptr){
 		}
 		else{
 
-			for (size_t i = 0; i < 51; i++)
+			for (size_t i = 0; i < 100; i++)
 			{
 				/* code */
 				ledstring.channel[0].leds[i] = mainled;
