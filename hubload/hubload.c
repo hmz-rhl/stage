@@ -91,7 +91,10 @@ int charge_active = 0;
 int mode_phase = MONO; // 1 -> tri | 0 -> Mono
 int tempo = 0;
 int cp_old = -1;
+int cp_old2 = 0;
+
 int pp_old = -1;
+
 int time_up = 1000;
 int time_low = 0;
 double cp_cpt = 0;
@@ -1401,7 +1404,12 @@ void publish_values(struct mosquitto *mosq)
 			if(rc != MOSQ_ERR_SUCCESS){
 				fprintf(stderr, "fonction %s: Error mosquitto_publish: %s\n", __func__, mosquitto_strerror(rc));
 			}
-			cp_old = CP;
+			if(CP != cp_old){
+
+				cp_old2 = cp_old;
+				cp_old = CP;
+
+			}
 		}
 	}
 // on stringify ce qu'il faut publier
@@ -1484,11 +1492,11 @@ void publish_values(struct mosquitto *mosq)
 			}
 		}
 		// avant une charge
-		else if(CP == 12 && cp_old == 0){
+		else if(CP == 12 && cp_old2 == 0){
 			mode_led = GREEN_BLINK;
 
 			if(old_pwm != 100){
-				printf("on mets le pwm a 100 (CP == 12 && cp_old == 0)\n");
+				printf("on mets le pwm a 100 (CP == 12 && cp_old2 == 0)\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1496,7 +1504,7 @@ void publish_values(struct mosquitto *mosq)
 
 		}
 		// prepare une charge
-		else if(CP == 9 && (cp_old == 12 || cp_old == 0)){
+		else if(CP == 9 && (cp_old2 == 12 || cp_old2 == 0)){
 
 			mode_led = GREEN_BLINK;
 			// on ouvre les relais si jamais ils sont fermer on ne sait jamais
@@ -1512,7 +1520,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 			
 			if(old_pwm != dutycycle){
-				printf("on mets le pwm a %d (CP == 9 && (cp_old == 12 || cp_old == 0)\n", dutycycle);
+				printf("on mets le pwm a %d (CP == 9 && (cp_old2 == 12 || cp_old2 == 0)\n", dutycycle);
 
 				pwmWrite(CP_PWM, dutycycle);
 				old_pwm = dutycycle;
@@ -1588,7 +1596,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		}
-		else if (CP == 9 & (cp_old == 6 || cp_old == 3)){
+		else if (CP == 9 & (cp_old2 == 6 || cp_old2 == 3)){
 
 			if(type2_closed = 1){
 
@@ -1638,7 +1646,7 @@ void publish_values(struct mosquitto *mosq)
 			usleep(150000);
 		}
 
-		if(CP == 12 && (cp_old == 6 || cp_old == 3)){
+		if(CP == 12 && (cp_old2 == 6 || cp_old2 == 3)){
 			if(type2_closed = 1){
 
 				type2_closed = 0;
@@ -1650,7 +1658,7 @@ void publish_values(struct mosquitto *mosq)
 				expander_closeAndFree(expander);
 			}
 			if(old_pwm != 100){
-				printf("on mets le pwm a 100 (CP == 12 && (cp_old == 6 || cp_old == 3))\n");
+				printf("on mets le pwm a 100 (CP == 12 && (cp_old2 == 6 || cp_old2 == 3))\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
@@ -1667,7 +1675,7 @@ void publish_values(struct mosquitto *mosq)
 		mode_led = BLUE_BLINK;
 		
 		// fin de charge
-		if((CP == 6 && cp_old == 9) || (CP == 3 && cp_old == 9) || (CP == 3 && cp_old == 6) || (CP == 6 && cp_old == 3)){
+		if((CP == 6 && cp_old2 == 9) || (CP == 3 && cp_old2 == 9) || (CP == 3 && cp_old2 == 6) || (CP == 6 && cp_old2 == 3)){
 			
 			if(type2_closed = 1){
 
@@ -1692,7 +1700,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		// après une charge
-		else if (CP == 9 && (cp_old == 6 || cp_old == 3)){
+		else if (CP == 9 && (cp_old2 == 6 || cp_old2 == 3)){
 
 			if(type2_closed = 1){
 
@@ -1714,7 +1722,7 @@ void publish_values(struct mosquitto *mosq)
 
 			// si on a deja mis le pwm a 100
 			if(old_pwm == 100){
-				printf("on mets le pwm a 0 car a 100(CP == 9 && (cp_old == 6 || cp_old == 3))\n");
+				printf("on mets le pwm a 0 car a 100(CP == 9 && (cp_old2 == 6 || cp_old2 == 3))\n");
 				pwmWrite(CP_PWM, 0);
 				old_pwm = 0;
 				usleep(150000);
@@ -1722,7 +1730,7 @@ void publish_values(struct mosquitto *mosq)
 			}
 			// si on a pas encore desenclencher une charge
 			else if(old_pwm != 100){
-				printf("on mets le pwm a 100 (CP == 9 && (cp_old == 6 || cp_old == 3))\n");
+				printf("on mets le pwm a 100 (CP == 9 && (cp_old2 == 6 || cp_old2 == 3))\n");
 				pwmWrite(CP_PWM, 100);
 				old_pwm = 100;
 				usleep(150000);
