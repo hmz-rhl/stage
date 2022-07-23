@@ -1735,7 +1735,7 @@ void publish_values(struct mosquitto *mosq)
 
 	else if (cp_activated == 0 && plugged == 0){
 
-		if(mode_led != 0 && mainled != 0xFF0000){
+		if(mode_led != 0 && mainled != 0x00FF00){
 			mode_led = 0;
 			mainled = 0xFF0000;
 
