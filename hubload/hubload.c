@@ -1729,7 +1729,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		else if(CP != 0){
-			printf("on mets le pwm a 0 car CP!=0 (cp_activated == 0 && plugged == 0)\n");
+			printf("on mets le pwm a 0 car CP!=0 (cp_activated == 0 && plugged == 1)\n");
 			pwmWrite(CP_PWM, 0);
 			old_pwm = 0;
 			usleep(150000);
