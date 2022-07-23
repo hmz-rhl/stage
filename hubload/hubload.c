@@ -754,6 +754,7 @@ void *thread_led(void *ptr){
 				fprintf(stderr, "ws2811_render failed: %s\n", ws2811_get_return_t_str(ret));
 				break;
 			}
+			usleep(30000);
 		}
     }
 
@@ -1754,7 +1755,7 @@ void publish_values(struct mosquitto *mosq)
 
 		if(mode_led != 0 && mainled != 0x00FF00){
 			mode_led = 0;
-			mainled = 0xFF0000;
+			mainled = 0x80000;
 
 		}
 		if(CP != 0 || old_pwm != 0){
