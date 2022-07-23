@@ -103,6 +103,8 @@ int mode_led = RED_CHENILLE;
 int cp_activated = 0 ;
 int plugged = 0;
 int old_pwm = 0;
+int type2_closed = 0;
+
 ws2811_t ledstring;
 
 // sleep plus precis en seconde
@@ -906,6 +908,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
             printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
             expander_closeAndFree(expander);
+			type2_closed = 1;
 
         // }
 
@@ -928,6 +931,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
             expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
             printf("Les relais L2 et L3 de la prise type 2 sont ouvert\n");
             expander_closeAndFree(expander);
+			type2_closed = 0;
         // }
     
     }
@@ -1460,37 +1464,157 @@ void publish_values(struct mosquitto *mosq)
 
 		}
 	}
+	// si branché et authentifié
 
 	if(cp_activated && plugged){
-		if(old_pwm != 100 && CP==12){
+		
+
+		// pour commencer une charge
+		if(CP == 0){
+
+			if(old_pwm != 100){
+
+				pwmWrite(CP_PWM, 100);
+				old_pwm = 100;
+			}
+		}
+		// avant une charge
+		else if(CP == 12 && cp_old == 0){
+			
+			if(old_pwm != 100){
+
+				pwmWrite(CP_PWM, 100);
+				old_pwm = 100;
+			}
+
+		}
+		// prepare une charge
+		else if(CP == 9 && (cp_old == 12 || cp_old == 0)){
+
+			// on ouvre les relais si jamais ils sont fermer on ne sait jamais
+			if(type2_closed = 1){
+
+				type2_closed = 0;
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont ouvert\n");
+				expander_closeAndFree(expander);
+			}
+			
+			if(old_pwm != dutycycle){
+
+				pwmWrite(CP_PWM, dutycycle);
+				old_pwm = dutycycle;
+			}
+
+		}
+		else if((CP == 6 || CP == 3)){
+
+			
+			if(type2_closed = 0){
+
+				type2_closed = 1;
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_setPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_setPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont fermes\n");
+				expander_closeAndFree(expander);
+			}
+			if(old_pwm != dutycycle){
+
+				pwmWrite(CP_PWM, dutycycle);
+				old_pwm = dutycycle;
+			}
+
+		}
+		
+	}
+	// si authentifié mais pas branché
+	else if (cp_activated == 1 && plugged == 0){
+		
+		// si debranchement en cours de charge en principe impossible grace au lock
+		if(type2_closed = 1){
+
+			type2_closed = 0;
+			expander_t* expander = expander_init(0x26); //Pour les relais
+			expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
+			expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+
+			printf("Les relais N, L2 et L3 de la prise type 2 sont ouvert\n");
+			expander_closeAndFree(expander);
+		}
+
+		// on mets a 12v la ligne CP pour preparer au futur branchement
+		if(old_pwm != 100){
 			pwmWrite(CP_PWM, 100);
 			old_pwm = 100;
 		}
-		else if(old_pwm != dutycycle && CP==9){
-			pwmWrite(CP_PWM, dutycycle);
-		}
+		
+
+		
+
 	}
 	else if (cp_activated == 0 && plugged == 1){
-		if(old_pwm != 100 && CP==6){
-			pwmWrite(CP_PWM, 100);
-			old_pwm = 100;
+		
+		
+		
+		//pendant la charge
+		if(CP==6 && cp_old == 9){
+			if(type2_closed = 1){
+
+				type2_closed = 0;
+				expander_t* expander = expander_init(0x26); //Pour les relais
+				expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
+				expander_resetPinGPIO(expander, TYPE_2_L2L3_ON);
+
+				printf("Les relais N, L2 et L3 de la prise type 2 sont ouvert\n");
+				expander_closeAndFree(expander);
+			}
+			
 		}
-		else if(old_pwm != 100 && CP==9){
-			pwmWrite(CP_PWM, 100);
-			old_pwm = 100;
+
+
+		// après une charge
+		else if (CP == 9 && cp_old == 6){
+			// si on a deja mis le pwm a 100
+			if(old_pwm == 100){
+
+				pwmWrite(CP_PWM, 0);
+				old_pwm = 0;
+				
+			}
+			// si on a pas encore desenclencher une charge
+			else if(old_pwm != 100){
+
+				pwmWrite(CP_PWM, 100);
+				old_pwm = 100;
+				usleep(10000);
+			}
 		}
-		else if(old_pwm != dutycycle && CP==9){
-			pwmWrite(CP_PWM, dutycycle);
+
+
+		// avant une charge(impossible mets on traite quand meme)
+		else if(CP == 9 && (cp_old == 12 || cp_old == 0)){
+			
+			if(old_pwm != 0){
+				pwmWrite(CP_PWM, 0);
+				old_pwm = 0;
+			}
+
 		}
+
+		
+
 	}
+
 	else if (cp_activated == 0 && plugged == 0){
 		if(old_pwm != 0){
 			pwmWrite(CP_PWM, 0);
 			old_pwm = 0;
 		}
-	}
-	else if (cp_activated == 1 && plugged == 0){
-
 	}
 	
 	if(csv_activated){
@@ -1824,7 +1948,7 @@ int main(int argc, char *argv[])
 			/* Si tout va bien on publie */
 		else{
 
-			usleep(1100);
+			usleep(1000);
             tentatives = 0;
 			tempo++;
     		
