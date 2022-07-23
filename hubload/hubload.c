@@ -100,7 +100,9 @@ int csv_activated = 0;
 int s0_activated = 0;
 uint32_t mainled = 0xF0F000;
 int mode_led = RED_CHENILLE;
-
+int cp_activated = 0 ;
+int plugged = 0;
+int old_pwm = 0;
 ws2811_t ledstring;
 
 // sleep plus precis en seconde
@@ -813,9 +815,9 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	 * connection drops and is automatically resumed by the client, then the
 	 * subscriptions will be recreated when the client reconnects. */
 	//rc = mosquitto_subscribe(mosq, NULL, "example/temperature", 1);
-    char *topics[20]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown","down/main_led"};
+    char *topics[22]= {"down/type_ef/open","down/type_ef/close","down/type2/open","down/type2/close","down/charger/pwm","down/lockType2/open","down/lockType2/close","down/scan/activate","down/scan/shutdown", "down/ID/write", "down/ID/read", "down/lock_vae/open", "down/lock_vae/close", "down/power_vae/open", "down/power_vae/close","down/charger/phases","down/csv/start","down/s0/activate", "down/s0/shutdown","down/main_led","down/cp/activate","down/cp/shutdown"};
 
-    rc = mosquitto_subscribe_multiple(mosq,NULL,20,topics,2,0,NULL);
+    rc = mosquitto_subscribe_multiple(mosq,NULL,22,topics,2,0,NULL);
 	if(rc != MOSQ_ERR_SUCCESS){
 		fprintf(stderr, "Error subscribing: %s\n", mosquitto_strerror(rc));
 		/* We might as well disconnect if we were unable to subscribe */
@@ -1256,6 +1258,16 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		s0_activated = 0;
 	}
 
+	if(!strcmp(msg->topic,"down/cp/activate")){
+
+		cp_activated = 1;
+	}
+
+	if(!strcmp(msg->topic,"down/cp/shutdown")){
+
+		cp_activated = 0;
+	}
+
 	if(!strcmp(msg->topic,"down/main_led")){
 
 		if(!strcmp(msg->payload,"RED_BLINK"))
@@ -1372,14 +1384,7 @@ void publish_values(struct mosquitto *mosq)
 			CP = -12;
 		}
 		//printf("-->CP: %d\n", CP);
-		if(CP==12){
-			
-			pwmWrite(CP_PWM, 100);
-		}
-		else{
-
-			pwmWrite(CP_PWM, dutycycle);
-		}
+		
 		if(CP != cp_old || tempo>300){
 
 			//printf("brute CP: %d\n", CP);
@@ -1412,26 +1417,32 @@ void publish_values(struct mosquitto *mosq)
 		if (pp < 0.58){
 
 			PP = 80;
+			plugged = 1;
 		}
 		else if( pp < 0.9 ){
 
 			PP = 63;
+			plugged = 1;
 		}
 		else if( pp < 1.5 ){
 
 			PP = 32;
+			plugged = 1;
 		}
 		else if( pp < 2.2 ){
 
 			PP = 20;
+			plugged = 1;
 		}
 		else if( pp < 2.6 ){
 
 			PP = 13;
+			plugged = 1;
 		}
 		else{
 			
 			PP = 6;
+			plugged = 0;
 		}
 
 
@@ -1449,6 +1460,39 @@ void publish_values(struct mosquitto *mosq)
 
 		}
 	}
+
+	if(cp_activated && plugged){
+		if(old_pwm != 100 && CP==12){
+			pwmWrite(CP_PWM, 100);
+			old_pwm = 100;
+		}
+		else if(old_pwm != dutycycle && CP==9){
+			pwmWrite(CP_PWM, dutycycle);
+		}
+	}
+	else if (cp_activated == 0 && plugged == 1){
+		if(old_pwm != 100 && CP==6){
+			pwmWrite(CP_PWM, 100);
+			old_pwm = 100;
+		}
+		else if(old_pwm != 100 && CP==9){
+			pwmWrite(CP_PWM, 100);
+			old_pwm = 100;
+		}
+		else if(old_pwm != dutycycle && CP==9){
+			pwmWrite(CP_PWM, dutycycle);
+		}
+	}
+	else if (cp_activated == 0 && plugged == 0){
+		if(old_pwm != 0){
+			pwmWrite(CP_PWM, 0);
+			old_pwm = 0;
+		}
+	}
+	else if (cp_activated == 1 && plugged == 0){
+
+	}
+	
 	if(csv_activated){
 
 		FILE* cpFile = fopen("/home/pi/cp.csv","a");
@@ -1599,7 +1643,7 @@ int main(int argc, char *argv[])
  	pwmSetClock (192);
  	pwmSetRange(100);
   	pwmSetMode(PWM_MODE_MS);
-    pwmWrite(CP_PWM, 100);
+    pwmWrite(CP_PWM, 0);
 
 	// softPwmCreate (SCREEN_PWM, 50, 100) ;
 
