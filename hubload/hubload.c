@@ -1572,7 +1572,7 @@ void publish_values(struct mosquitto *mosq)
 
 
 		}
-		else if (CP == 9 &(cp_old == 6 || cp_old == 3)){
+		else if (CP == 9 & (cp_old == 6 || cp_old == 3)){
 
 			if(type2_closed = 1){
 
@@ -1598,7 +1598,8 @@ void publish_values(struct mosquitto *mosq)
 	}
 	// si authentifié mais pas branché
 	else if (cp_activated == 1 && plugged == 0){
-		
+		mode_led = 0;
+		mainled = 0x00FF00;
 		// si debranchement en cours de charge en principe impossible grace au lock
 		if(type2_closed = 1){
 
@@ -1624,7 +1625,7 @@ void publish_values(struct mosquitto *mosq)
 	}
 	else if (cp_activated == 0 && plugged == 1){
 		
-		
+		mode_led = BLUE_BLINK;
 		
 		// fin de charge
 		if((CP == 6 && cp_old == 9) || (CP == 3 && cp_old == 9) || (CP == 3 && cp_old == 6) || (CP == 6 && cp_old == 3)){
@@ -1646,6 +1647,7 @@ void publish_values(struct mosquitto *mosq)
 				printf("Les relais N, L2 et L3 de la prise type 2 ainsi que le lock sont ouvert\n");
 				expander_closeAndFree(expander);
 			}
+			
 			
 		}
 
@@ -1713,7 +1715,12 @@ void publish_values(struct mosquitto *mosq)
 	}
 
 	else if (cp_activated == 0 && plugged == 0){
+		
+		if(mode_led != 0 && mainled != 0xFF0000){
+			mode_led = 0;
+			mainled = 0xFF0000;
 
+		}
 		if(CP != 0 || old_pwm != 0){
 			
 			pwmWrite(CP_PWM, 0);
