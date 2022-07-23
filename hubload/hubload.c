@@ -1472,7 +1472,7 @@ void publish_values(struct mosquitto *mosq)
 
 		// pour commencer une charge
 		if(CP == 0){
-
+			mode_led = GREEN_BLINK;
 			if(old_pwm != 100){
 
 				pwmWrite(CP_PWM, 100);
@@ -1482,7 +1482,8 @@ void publish_values(struct mosquitto *mosq)
 		}
 		// avant une charge
 		else if(CP == 12 && cp_old == 0){
-			
+			mode_led = GREEN_BLINK;
+
 			if(old_pwm != 100){
 
 				pwmWrite(CP_PWM, 100);
@@ -1494,6 +1495,7 @@ void publish_values(struct mosquitto *mosq)
 		// prepare une charge
 		else if(CP == 9 && (cp_old == 12 || cp_old == 0)){
 
+			mode_led = GREEN_BLINK;
 			// on ouvre les relais si jamais ils sont fermer on ne sait jamais
 			if(type2_closed = 1){
 
@@ -1516,8 +1518,8 @@ void publish_values(struct mosquitto *mosq)
 		}
 		else if((CP == 6 || CP == 3)){
 
-			mode_led = RAINBOW_CIRCLE;
 			if(type2_closed = 0){
+				mode_led = GREEN_CHENILLE;
 
 				type2_closed = 1;
 				expander_t* expander = expander_init(0x26); //Pour les relais
@@ -1535,6 +1537,10 @@ void publish_values(struct mosquitto *mosq)
 				expander_closeAndFree(expander);
 			}
 
+			if(mode_led == RAINBOW_CIRCLE){
+
+				mode_led = RAINBOW_CIRCLE;
+			}
 			if(old_pwm != dutycycle){
 
 				pwmWrite(CP_PWM, dutycycle);
@@ -1546,7 +1552,7 @@ void publish_values(struct mosquitto *mosq)
 		else if (CP == -12){
 
 			if(type2_closed = 1){
-
+				mode_led = RED_CHENILLE;
 				type2_closed = 0;
 				expander_t* expander = expander_init(0x26); //Pour les relais
 				expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
@@ -1562,7 +1568,10 @@ void publish_values(struct mosquitto *mosq)
 				printf("Les relais N, L2 et L3 de la prise type 2 ainsi que le lock sont ouvert\n");
 				expander_closeAndFree(expander);
 			}
-			mode_led = RED_BLINK;
+			if(mode_led == RED_BLINK){
+
+				mode_led = RED_BLINK;
+			}
 			if(old_pwm != 0){
 
 				pwmWrite(CP_PWM, 0);
@@ -1598,11 +1607,13 @@ void publish_values(struct mosquitto *mosq)
 	}
 	// si authentifié mais pas branché
 	else if (cp_activated == 1 && plugged == 0){
-		mode_led = 0;
-		mainled = 0x00FF00;
+		
+		mode_led = GREEN_BLINK;
+
+
 		// si debranchement en cours de charge en principe impossible grace au lock
 		if(type2_closed = 1){
-
+			mode_led = RED_CHENILLE;
 			type2_closed = 0;
 			expander_t* expander = expander_init(0x26); //Pour les relais
 			expander_resetPinGPIO(expander,TYPE_2_NL1_ON);
